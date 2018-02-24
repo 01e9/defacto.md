@@ -7,7 +7,6 @@ Encore
     .setPublicPath('/build')
     .cleanupOutputBeforeBuild()
     .enableSourceMaps(!Encore.isProduction())
-    .enableVersioning(Encore.isProduction())
 
     .addEntry('app/scripts', './assets/app/js/index.js')
     .addStyleEntry('app/styles', './assets/app/css/index.scss')

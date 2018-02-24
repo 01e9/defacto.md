@@ -1,0 +1,50 @@
+<nav class="navbar sticky-top navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+
+        <a class="navbar-brand logo-effect" href="{{ path('home') }}">
+            <span class="text"></span>
+            <span class="check"></span>
+        </a>
+
+        <button class="navbar-toggler" type="button"
+                data-toggle="collapse" data-target="#navbarContent"
+                aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation"
+        >
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#"
+                       id="navbarPromisesDropdown" role="button"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                    >
+                        {{ 'title.promises'|trans }}
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarPromisesDropdown">
+                        <a class="dropdown-item" href="#">Compromise</a>
+                        <a class="dropdown-item" href="#">Declarații</a>
+                        <a class="dropdown-item" href="#">În Proces</a>
+                        <a class="dropdown-item" href="#">Nemăsurabil</a>
+                        <a class="dropdown-item" href="#">Nerealizate</a>
+                        <a class="dropdown-item" href="#">Realizate</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Prerogative</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Blog</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Despre noi</a>
+                </li>
+            </ul>
+            <form class="form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2" type="search" placeholder="{{ 'placeholder.search'|trans }}" aria-label="Search">
+                <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit">{{ 'action.search'|trans }}</button>
+            </form>
+        </div>
+    </div>
+</nav>

@@ -1,0 +1,27 @@
+{{ form_start(form) }}
+
+<div class="row">
+    <div class="col-lg-6">
+        {{ form_row(form.name) }}
+    </div>
+    <div class="col-lg-6">
+        {{ form_row(form.namePlural) }}
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-6">
+        {{ form_row(form.slug) }}
+    </div>
+    <div class="col-lg-6">
+        {{ form_row(form.effect) }}
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <button type="submit" class="btn btn-primary">{{ submitText is defined ? submitText : 'action.save'|trans }}</button>
+    </div>
+</div>
+
+{{ form_rest(form) }}
+
+{{ form_end(form) }}

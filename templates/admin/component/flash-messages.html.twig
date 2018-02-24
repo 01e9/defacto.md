@@ -1,0 +1,21 @@
+<div id="flash-messages" class="fixed-bottom mb-5 container animated zoomInDown">
+    {% for type, class in {
+        'error': 'danger',
+        'warning': 'warning',
+        'info': 'info',
+        'success': 'success',
+        }
+    %}
+        {% if app.session.flashbag.has(type) %}
+            <div class="alert alert-{{ class }}" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+
+                {% for message in app.session.flashbag.get(type) %}
+                    {{ message|raw }}<br>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endfor %}
+</div>

@@ -1,0 +1,35 @@
+{{ form_start(form) }}
+
+<div class="row">
+    <div class="col-lg-6">
+        {{ form_row(form.politician) }}
+    </div>
+    <div class="col-lg-6">
+        {{ form_row(form.institutionTitle) }}
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-6">
+        {{ form_row(form.beginDate) }}
+    </div>
+    <div class="col-lg-6">
+        {{ form_row(form.endDate) }}
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-6">
+        {{ form_row(form.votesCount) }}
+    </div>
+    <div class="col-lg-6">
+        {{ form_row(form.votesPercent) }}
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <button type="submit" class="btn btn-primary">{{ submitText is defined ? submitText : 'action.save'|trans }}</button>
+    </div>
+</div>
+
+{{ form_rest(form) }}
+
+{{ form_end(form) }}

@@ -1,0 +1,17 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block main %}
+    <div class="container">
+        {% include 'admin/component/breadcrumb.html.twig' with {
+            items: [
+                {title: 'title.politicians'|trans, link: path('admin_politicians')}
+            ],
+            current: {title: 'title.mandates'|trans}
+        } only %}
+
+        {% include 'admin/component/form/mandate.html.twig' with {
+            form: form,
+            submitText: 'action.add_mandate'|trans
+        } only %}
+    </div>
+{% endblock %}

@@ -1,0 +1,8 @@
+<div class="list-group list-group-flush">
+    {% for status in statuses %}
+        <a class="list-group-item list-group-item-action" href="{{ path('admin_status_edit', {id: status.id}) }}">
+            {{ status.name }}
+            <sup>{{ status.effect }}</sup>
+        </a>
+    {% endfor %}
+</div>

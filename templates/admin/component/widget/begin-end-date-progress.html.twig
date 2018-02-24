@@ -1,0 +1,23 @@
+{% set currentDate = date() %}
+{% if beginDate < currentDate and currentDate < endDate %}
+    {% set percent = 100 - 100
+        * (endDate.getTimestamp() - currentDate.getTimestamp())
+        / (endDate.getTimestamp() - beginDate.getTimestamp())
+    %}
+{% elseif endDate <= currentDate %}
+    {% set percent = 100 %}
+{% else %}
+    {% set percent = 0 %}
+{% endif %}
+
+<div class="d-flex align-items-center justify-content-between">
+    <div class="pr-3">{{ beginDate|date() }}</div>
+    <div class="progress" style="flex-grow: 1; height: 0.5em;">
+        <div class="progress-bar {% if percent == 100 %}bg-secondary{% else %}bg-info{% endif %}"
+             role="progressbar"
+             style="width: {{ percent }}%;"
+             aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"
+        ></div>
+    </div>
+    <div class="pl-3">{{ endDate|date() }}</div>
+</div>

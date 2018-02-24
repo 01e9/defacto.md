@@ -1,0 +1,32 @@
+{{ form_start(form) }}
+
+<div class="row">
+    <div class="col-lg-4">
+        {{ form_row(form.firstName) }}
+    </div>
+    <div class="col-lg-4">
+        {{ form_row(form.lastName) }}
+    </div>
+    <div class="col-lg-4">
+        {{ form_row(form.slug) }}
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-4">
+        <div class="card mb-3">
+            {% include 'admin/component/form/field/photo.html.twig' with {
+                field: form.photo,
+                imageDir: '/uploads/politicians/'
+            } only %}
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <button type="submit" class="btn btn-primary">{{ submitText is defined ? submitText : 'action.save'|trans }}</button>
+    </div>
+</div>
+
+{{ form_rest(form) }}
+
+{{ form_end(form) }}

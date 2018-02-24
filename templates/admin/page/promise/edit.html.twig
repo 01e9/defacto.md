@@ -1,0 +1,17 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block main %}
+    <div class="container">
+        {% include 'admin/component/breadcrumb.html.twig' with {
+            items: [
+                {title: 'title.promises'|trans, link: path('admin_promises')}
+            ],
+            current: {title: 'title.promise'|trans}
+        } only %}
+
+        {% include 'admin/component/form/promise.html.twig' with {
+            form: form,
+            submitText: 'action.edit_promise'|trans
+        } only %}
+    </div>
+{% endblock %}

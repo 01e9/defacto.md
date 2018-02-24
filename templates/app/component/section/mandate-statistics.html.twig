@@ -1,0 +1,53 @@
+{% set chartData = [] %}
+{% for promise in promiseStatistics %}
+    {% set chartData = chartData|merge([{
+        count: promise.count,
+        name: promise.count ~ ' ' ~ (promise.count == 1 ? promise.status.name : promise.status.namePlural)
+    }]) %}
+{% endfor %}
+
+<div class="container mb-5">
+    <div class="row">
+        <div class="col text-center pb-3">
+            <h2>{{ mandate.institutionTitle.title.name }}</h2>
+        </div>
+    </div>
+    <div class="row align-items-md-center">
+        <div class="col-sm-6 offset-sm-3 offset-md-0 col-md-4 mb-4 mb-md-0">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h5 class="card-title mb-0">
+                        <a href="#">
+                            {{ mandate.politician.firstName }} {{ mandate.politician.lastName }}
+                        </a>
+                    </h5>
+                </div>
+                <img class="card-img-top"
+                     src="{{ mandate.politician.photo ? asset('uploads/politicians/' ~ mandate.politician.photo.filename) : 'about:blank' }}"
+                     alt="Politician"
+                     style="background-color: bisque">
+            </div>
+        </div>
+        <div class="w-100 d-md-none"></div>
+        <div class="col-sm-6 col-md-4 order-md-first text-sm-right mb-4 mb-sm-0">
+            <div class="text-center">
+                <h2>Promisiuni <sup class="text-muted">{{ promiseStatistics|length }}</sup></h2>
+                {% if chartData %}
+                    <div
+                        class="chart"
+                        data-chart-type="promises-pie"
+                        data-chart-data="{{ {promises: chartData}|json_encode }}"
+                    ></div>
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-4">
+            <div>
+                <h5><span class="fa fa-users"></span> {{ mandate.votesCount }} voturi obținute</h5>
+                <div class="progress votes">
+                    <div class="progress-bar bg-success" style="width: {{ mandate.votesPercent }}%;">{{ mandate.votesPercent }}%</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

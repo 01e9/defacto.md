@@ -1,0 +1,7 @@
+<div class="list-group list-group-flush">
+    {% for politician in politicians %}
+        <a href="{{ path('admin_politician_edit', {id: politician.id}) }}" class="list-group-item list-group-item-action">
+            {{ politician.firstName }} {{ politician.lastName }}
+        </a>
+    {% endfor %}
+</div>

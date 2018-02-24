@@ -1,0 +1,13 @@
+<div class="list-group list-group-flush">
+    {% for action in actions %}
+        <a class="list-group-item list-group-item-action" href="{{ path('admin_action_edit', {id: action.id}) }}">
+            <h5 {% if not action.published %}class="text-muted font-italic"{% endif %}>
+                {{ action.name }}
+            </h5>
+            <p class="mb-1">
+                {{ action.mandate.politician.firstName }} {{ action.mandate.politician.lastName }}
+                <sup>{{ action.occurredTime|date }}</sup>
+            </p>
+        </a>
+    {% endfor %}
+</div>

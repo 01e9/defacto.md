@@ -1,0 +1,10 @@
+<div class="list-group">
+    {% for id, setting in settings %}
+        <a href="{{ path('admin_setting_edit', {id: id}) }}" class="list-group-item">
+            {{ setting.name }}
+            {% if setting.value is null %}
+                    <span class="badge badge-pill badge-danger"><span class="fa fa-exclamation"></span></span>
+            {% endif %}
+        </a>
+    {% endfor %}
+</div>

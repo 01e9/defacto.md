@@ -1,0 +1,27 @@
+security:
+    role_hierarchy:
+        ROLE_ADMIN: [ROLE_USER]
+    encoders:
+        App\Entity\User:
+            algorithm:            pbkdf2
+            hash_algorithm:       sha512
+            encode_as_base64:     true
+            iterations:           1000
+            key_length:           40
+    providers:
+        db:
+            entity:
+                class: App\Entity\User
+                property: email
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        main:
+            anonymous: ~
+            form_login:
+                login_path: login
+                check_path: login
+            logout:
+                path:   /logout
+                target: /

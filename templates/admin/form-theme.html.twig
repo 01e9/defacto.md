@@ -1,0 +1,58 @@
+{% extends 'bootstrap_4_layout.html.twig' %}
+
+{% block collection_widget %}
+    <div class="collection-widget">
+        {{ parent() }}
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <button
+                type="button"
+                class="btn btn-sm btn-light"
+                onclick="(function(wrap){
+                    var newEl = document.createElement('div'),
+                        html = wrap.attributes['data-prototype'].value,
+                        counterAttrName = 'data-prototype-counter',
+                        counter = 0;
+
+                    wrap.attributes[counterAttrName] || (function(){
+                            var attr = document.createAttribute(counterAttrName);
+                            attr.value = String(counter);
+                            wrap.setAttributeNode(attr);
+                        })();
+                    wrap.attributes[counterAttrName].value = String(parseInt(wrap.attributes[counterAttrName].value) + 1);
+
+                    newEl.innerHTML = html.replace(/__name__/g, 'new_' + wrap.attributes[counterAttrName].value);
+                    newEl.querySelector('legend').remove();
+                    wrap.appendChild(newEl.firstChild);
+                    })(document.getElementById('{{ form.vars.id }}'))"
+            >{{ 'action.add_status_update'|trans }}</button>
+        </div>
+    </div>
+{% endblock %}
+
+{% block status_update_widget %}
+    <div class="d-none">
+        {{ form_row(form.action) }}
+    </div>
+    <div class="row">
+        <div class="col">
+            {{ form_row(form.promise) }}
+        </div>
+        <div class="col">
+            {{ form_row(form.status) }}
+        </div>
+        {% if form.parent.vars.allow_delete %}
+            <div class="col-lg-auto">
+                <label class="form-control-label">&nbsp;</label>
+                <div>
+                    <button type="button" class="btn btn-light"
+                            aria-label="Delete" onclick="this.closest('.form-group').remove();">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block main %}
+    <div class="container">
+        {% include 'admin/component/breadcrumb.html.twig' with {
+            items: [
+                {title: 'title.actions'|trans, link: path('admin_actions')}
+            ],
+            current: {title: 'title.action'|trans}
+        } only %}
+
+        {% include 'admin/component/form/action.html.twig' with {
+            form: form,
+            submitText: 'action.edit_action'|trans
+        } only %}
+    </div>
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends 'app/base.html.twig' %}
+
+{% block main %}
+    <div class="container">
+        <div class="row justify-content-sm-center">
+            <div class="col-md-6 col-xl-4">
+                <div class="jumbotron mt-5">
+                    {% if error %}
+                        <div class="alert alert-dark" role="alert">
+                            {{ error.messageKey|trans(error.messageData, 'security') }}
+                        </div>
+                    {% endif %}
+
+                    {{ form_start(form, {action: path('login'), method: 'post'}) }}
+
+                    {{ form_row(form._username, {
+                        value: last_username,
+                        label: false,
+                        attr: {
+                            class: 'form-control form-control-lg mb-3',
+                            placeholder: form._username.vars.label,
+                        }
+                    }) }}
+
+                    {{ form_row(form._password, {
+                        label: false,
+                        attr: {
+                            class: 'form-control form-control-lg mb-3',
+                            placeholder: form._password.vars.label
+                        }
+                    }) }}
+
+                    {{ form_rest(form) }}
+
+                    <button type="submit" class="btn btn-primary btn-lg btn-block">{{ 'action.login'|trans }}</button>
+
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

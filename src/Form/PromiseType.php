@@ -1,0 +1,83 @@
+<?php
+
+namespace App\Form;
+
+use App\Entity\Promise;
+use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\CallbackTransformer;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+
+class PromiseType extends AbstractType
+{
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder
+            ->add('title', TextType::class, [
+                'label' => 'label.title',
+            ])
+            ->add('slug', TextType::class, [
+                'label' => 'label.slug',
+            ])
+            ->add('description', TextareaType::class, [
+                'label' => 'label.description',
+                'attr' => ['class' => 'wysiwyg'],
+            ])
+            ->add('madeTime', DateType::class, [
+                'label' => 'label.made_date',
+                'widget' => 'single_text',
+            ])
+            ->add('status', ChoiceType::class, [
+                'label' => 'label.status',
+                'placeholder' => 'placeholder.choose_option',
+                'choices' => $options['statuses'],
+                'choice_value' => 'id',
+            ])
+            ->add('mandate', ChoiceType::class, [
+                'label' => 'label.mandate',
+                'placeholder' => 'placeholder.choose_option',
+                'choices' => $options['mandates'],
+                'choice_value' => 'id',
+            ])
+            ->add('categories', ChoiceType::class, [
+                'multiple' => true,
+                'expanded' => true,
+                'label' => 'label.categories',
+                'placeholder' => 'placeholder.choose_option',
+                'choices' => $options['categories'],
+                'choice_value' => 'id',
+            ])
+            ->add('published', CheckboxType::class, [
+                'label' => 'label.published',
+                'required' => false,
+            ])
+        ;
+
+        $builder->get('categories')
+            ->addModelTransformer(new CallbackTransformer(
+                function ($categories) {
+                    return ($categories instanceof Collection) ? $categories->toArray() : $categories;
+                },
+                function ($categories) {
+                    return $categories;
+                }
+            ))
+        ;
+    }
+
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'data_class' => Promise::class,
+            'statuses' => [],
+            'mandates' => [],
+            'categories' => [],
+        ]);
+    }
+}

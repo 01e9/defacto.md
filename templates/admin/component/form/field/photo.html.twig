@@ -1,0 +1,20 @@
+{% if field.vars.valid and field.vars.data %}
+    <img class="card-img-top"
+         src="{{ asset(imageDir ~ field.vars.data.fileName) }}"
+         alt="Photo">
+{% endif %}
+<div class="card-body">
+    {% if field.vars.data %}
+        {% set id = "photo-field-" ~ random() %}
+        <button class="btn btn-sm btn-light" type="button"
+                data-toggle="collapse" data-target="#{{ id }}"
+                aria-expanded="false" aria-controls="{{ id }}"
+        >{{ 'action.change_photo'|trans }}</button>
+        <div class="collapse multi-collapse pt-3 {% if not field.vars.valid %}show{% endif %}"
+             id="{{ id }}">
+            {{ form_row(field) }}
+        </div>
+    {% else %}
+        {{ form_row(field) }}
+    {% endif %}
+</div>

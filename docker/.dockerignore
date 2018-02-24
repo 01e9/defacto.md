@@ -1,0 +1,4 @@
+/.volumes/
+/exec.sh
+/watch.sh
+/docker-compose.yml

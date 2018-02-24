@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('build/google-fonts.css') }}">
+    <link rel="stylesheet" href="{{ asset('build/app/styles.css') }}">
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('build/app/scripts.js') }}"></script>
+{% endblock %}
+
+{% block body %}
+    {% block navbar %}
+        {% include 'app/component/navbar.html.twig' %}
+    {% endblock %}
+
+    {% block main %}{% endblock %}
+
+    {% block body_end %}
+        {% include 'app/component/flash-messages.html.twig' %}
+    {% endblock %}
+{% endblock %}

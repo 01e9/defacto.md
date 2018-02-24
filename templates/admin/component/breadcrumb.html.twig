@@ -1,0 +1,13 @@
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ path('admin_index') }}">{{ 'title.dashboard'|trans }}</a></li>
+        {% if items is defined %}
+            {% for item in items %}
+                <li class="breadcrumb-item"><a href="{{ item.link }}">{{ item.title }}</a></li>
+            {% endfor %}
+        {% endif %}
+        {% if current is defined %}
+            <li class="breadcrumb-item active" aria-current="page">{{ current.title }}</li>
+        {% endif %}
+    </ol>
+</nav>

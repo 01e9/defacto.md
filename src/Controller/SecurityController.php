@@ -1,0 +1,40 @@
+<?php
+
+namespace App\Controller;
+
+use App\Form\LoginType;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
+
+class SecurityController extends Controller
+{
+    /**
+     * @Route("/login", name="login")
+     * @Method({"GET","POST"})
+     */
+    public function login(Request $request, AuthenticationUtils $authUtils)
+    {
+        if ($this->isGranted('ROLE_USER')) {
+            $this->addFlash(
+                'warning',
+                $this->get('translator')->trans('flash.already_logged_in')
+            );
+
+            return $this->redirectToRoute('home');
+        }
+
+        $form = $this->createForm(LoginType::class, [
+            '_target_path' => $this->generateUrl('home')
+        ]);
+        $form->handleRequest($request);
+
+        return $this->render('app/page/login.html.twig', [
+            'form' => $form->createView(),
+            'error' => $authUtils->getLastAuthenticationError(),
+            'last_username' => $authUtils->getLastUsername(),
+        ]);
+    }
+}

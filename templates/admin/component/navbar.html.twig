@@ -1,0 +1,36 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <a href="{{ path('home') }}" class="navbar-brand"><span class="fa fa-home"></span></a>
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse"
+                data-target="#navbarMenu" aria-controls="navbarMenu"
+                aria-expanded="false" aria-label="Toggle navigation"
+        >
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarMenu">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item {{ app.request.attributes.get('_route') starts with 'admin_action' ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ path('admin_actions') }}">{{ 'title.actions'|trans }}</a>
+                </li>
+                <li class="nav-item {{ app.request.attributes.get('_route') starts with 'admin_promise' ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ path('admin_promises') }}">{{ 'title.promises'|trans }}</a>
+                </li>
+                <li class="nav-item {{ app.request.attributes.get('_route') starts with 'admin_politician' ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ path('admin_politicians') }}">{{ 'title.politicians'|trans }}</a>
+                </li>
+                <li class="nav-item {{ app.request.attributes.get('_route') starts with 'admin_setting' ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ path('admin_settings') }}"><span class="fa fa-cog"></span></a>
+                </li>
+            </ul>
+
+            <span class="navbar-text">
+            {% if is_granted("ROLE_ADMIN") %}
+                <span class="pr-3">{{ app.user.username }}</span>
+                <a href="{{ path('logout') }}">{{ 'action.logout'|trans }} <span class="fa fa-sign-out-alt"></span></a>
+            {% endif %}
+            </span>
+        </div>
+    </div>
+</nav>

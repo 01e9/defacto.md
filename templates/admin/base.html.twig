@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% if form is defined %}
+    {% form_theme form 'admin/form-theme.html.twig' %}
+{% endif %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('build/admin/styles.css') }}">
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('build/admin/scripts.js') }}"></script>
+{% endblock %}
+
+{% block body %}
+    {% block navbar %}
+        {% include 'admin/component/navbar.html.twig' %}
+    {% endblock %}
+
+    {% block main %}{% endblock %}
+
+    {% block body_end %}
+        {% include 'admin/component/flash-messages.html.twig' %}
+    {% endblock %}
+{% endblock %}

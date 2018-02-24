@@ -19,14 +19,14 @@ class AppFixtures extends Fixture
     {
         $institution = new Institution();
         $institution
-            ->setName('Test Institution')
-            ->setSlug('test-institution');
+            ->setName('Președinția Republicii Moldova')
+            ->setSlug('președinția-republicii-moldova');
         $manager->persist($institution);
 
         $title = new Title();
         $title
-            ->setName('Test Title')
-            ->setSlug('test-title');
+            ->setName('Președintele Republicii Moldova')
+            ->setSlug('președintele-republicii-moldova');
         $manager->persist($title);
 
         $institutionTitle = new InstitutionTitle();

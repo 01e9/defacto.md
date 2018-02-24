@@ -1,6 +1,8 @@
 {
     "type": "project",
-    "license": "proprietary",
+    "name": "arteniioleg/defacto.md",
+    "description": "Monitor promises made by directly elected politicians",
+    "license": "GPL-3.0-or-later",
     "require": {
         "php": "^7.1.3",
         "ext-iconv": "*",

@@ -1,1 +1,1 @@
-# ⚒
+# ⚒ [![Build Status](https://travis-ci.org/arteniioleg/defacto.md.svg?branch=dev)](https://travis-ci.org/arteniioleg/defacto.md)

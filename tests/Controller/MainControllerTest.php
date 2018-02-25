@@ -3,11 +3,11 @@
 namespace App\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use App\Tests\AppTrait;
+use App\Tests\TestCaseTrait;
 
 class MainControllerTest extends WebTestCase
 {
-    use AppTrait;
+    use TestCaseTrait;
 
     public function testHomeAction()
     {

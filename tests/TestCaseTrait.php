@@ -12,14 +12,14 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
-trait AppTrait
+trait TestCaseTrait
 {
-    protected static function getLangs()
+    protected static function getLangs() : array
     {
         return ['ro'];
     }
 
-    protected static function getFirewallContext()
+    protected static function getFirewallContext() : string
     {
         return 'main';
     }
@@ -64,5 +64,43 @@ trait AppTrait
         $objectManager->flush();
 
         return $user;
+    }
+
+    protected static function canBeAccessedOnlyAdmin(string $pathWithoutLang, Client $client) : bool
+    {
+        $rolesExpectations = [
+            '' => false,
+            'ROLE_USER' => false,
+            'ROLE_ADMIN' => true,
+        ];
+        foreach ($rolesExpectations as $role => $expectSuccess) {
+            foreach (self::getLangs() as $lang) {
+                $client->restart();
+                if ($role) {
+                    self::logInClientAsRole($client, $role);
+                }
+
+                $client->request('GET', '/'. $lang . $pathWithoutLang);
+                $response = $client->getResponse();
+
+                if ($expectSuccess) {
+                    if (200 !== $response->getStatusCode()) {
+                        return false;
+                    }
+                } elseif ($role) {
+                    if (403 !== $response->getStatusCode()) {
+                        return false;
+                    }
+                } else {
+                    $redirectPath = parse_url($response->headers->get('location'), PHP_URL_PATH);
+
+                    if (302 !== $response->getStatusCode() || '/' . $lang . '/login' !== $redirectPath) {
+                        return false;
+                    }
+                }
+            }
+        }
+
+        return true;
     }
 }

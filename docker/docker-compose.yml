@@ -1,20 +1,16 @@
 version: '3.4'
 
-x-custom:
-    cmd: &user-create-cmd >-
-        bash -c '(
-        adduser --gecos 0 --disabled-password
-        --home ${HOME} --uid ${UID:-1000} ${USER}
-        || true
-        )
-        &&
-        tail -f /dev/null'
-
 services:
     defacto:
         container_name: defacto
         image: defacto
-        build: .
+        build:
+            context: .
+            args:
+                USER: ${USER}
+                GROUP: ${USER}
+                UID: ${UID:-1000}
+                GID: ${GID:-1000}
         volumes:
             - ${HOME}:${HOME}
             - /tmp/.X11-unix:/tmp/.X11-unix
@@ -25,22 +21,14 @@ services:
         working_dir: ${PWD}/..
         ports:
             - 80:8080
-        entrypoint: []
-        command: *user-create-cmd
-    defacto_js:
-        container_name: defacto_js
-        image: node:9.3
-        volumes:
-            - ..:/app
-        working_dir: /app
-        entrypoint: []
-        command: *user-create-cmd
+        depends_on:
+            - defacto_pg
     defacto_pg:
         container_name: defacto_pg
-        image: postgres:10.1
+        image: postgres:9
         restart: always
         volumes:
-            - ./.volumes/pg:/var/lib/postgresql/data
+            - ./.volumes/postgres:/var/lib/postgresql/data
         environment:
             POSTGRES_USER: "defacto"
             POSTGRES_PASSWORD: "defacto"

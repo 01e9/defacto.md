@@ -91,7 +91,7 @@ class ExceptionSubscriber implements EventSubscriberInterface
 
         // path must start with locale
         if (!preg_match(
-            '/^\/('. $this->appLocales .')\//',
+            '/^\/('. $this->appLocales .')\/?/',
             $request->getPathInfo()
         )) {
             // '/app_dev.php' . '/en' . '/article/3'

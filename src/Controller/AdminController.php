@@ -9,13 +9,12 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route(path="/admin")
  * @IsGranted("ROLE_ADMIN")
  */
 class AdminController extends Controller
 {
     /**
-     * @Route(path="/", name="admin_index")
+     * @Route(path="/admin", name="admin_index")
      * @return Response
      */
     public function indexAction()

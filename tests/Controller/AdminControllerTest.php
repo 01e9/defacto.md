@@ -12,6 +12,6 @@ class AdminControllerTest extends WebTestCase
     public function testIndexAction()
     {
         $client = static::createClient();
-        $this->assertTrue(self::canBeAccessedOnlyAdmin('/admin/', $client));
+        $this->assertTrue(self::onlyAdminCanAccess('/admin', $client));
     }
 }

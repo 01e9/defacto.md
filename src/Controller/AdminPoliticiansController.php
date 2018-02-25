@@ -13,13 +13,13 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route(path="/admin")
+ * @Route(path="/admin/politicians")
  * @IsGranted("ROLE_ADMIN")
  */
 class AdminPoliticiansController extends Controller
 {
     /**
-     * @Route(path="/politicians", name="admin_politicians")
+     * @Route(path="", name="admin_politicians")
      * @return Response
      */
     public function indexAction(Request $request)
@@ -34,7 +34,7 @@ class AdminPoliticiansController extends Controller
     }
 
     /**
-     * @Route(path="/politician/add", name="admin_politician_add")
+     * @Route(path="/add", name="admin_politician_add")
      * @return Response
      */
     public function addAction(Request $request)
@@ -64,7 +64,7 @@ class AdminPoliticiansController extends Controller
     }
 
     /**
-     * @Route(path="/politician/{id}", name="admin_politician_edit")
+     * @Route(path="/{id}", name="admin_politician_edit")
      * @return Response
      */
     public function editAction(Request $request, string $id)

@@ -12,13 +12,13 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @Route(path="/admin")
+ * @Route(path="/admin/actions")
  * @IsGranted("ROLE_ADMIN")
  */
 class AdminActionsController extends Controller
 {
     /**
-     * @Route(path="/actions", name="admin_actions")
+     * @Route(path="", name="admin_actions")
      * @return Response
      */
     public function indexAction(Request $request)
@@ -31,7 +31,7 @@ class AdminActionsController extends Controller
     }
 
     /**
-     * @Route(path="/action/add", name="admin_action_add")
+     * @Route(path="/add", name="admin_action_add")
      * @return Response
      */
     public function addAction(Request $request)
@@ -68,7 +68,7 @@ class AdminActionsController extends Controller
     }
 
     /**
-     * @Route(path="/action/{id}", name="admin_action_edit")
+     * @Route(path="/{id}", name="admin_action_edit")
      * @return Response
      */
     public function editAction(Request $request, string $id)

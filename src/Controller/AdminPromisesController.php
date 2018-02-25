@@ -12,13 +12,13 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route(path="/admin")
+ * @Route(path="/admin/promises")
  * @IsGranted("ROLE_ADMIN")
  */
 class AdminPromisesController extends Controller
 {
     /**
-     * @Route(path="/promises", name="admin_promises")
+     * @Route(path="", name="admin_promises")
      * @return Response
      */
     public function indexAction(Request $request)
@@ -33,7 +33,7 @@ class AdminPromisesController extends Controller
     }
 
     /**
-     * @Route(path="/promise/add", name="admin_promise_add")
+     * @Route(path="/add", name="admin_promise_add")
      * @return Response
      */
     public function addAction(Request $request)
@@ -67,7 +67,7 @@ class AdminPromisesController extends Controller
     }
 
     /**
-     * @Route(path="/promise/{id}", name="admin_promise_edit")
+     * @Route(path="/{id}", name="admin_promise_edit")
      * @return Response
      */
     public function editAction(Request $request, string $id)

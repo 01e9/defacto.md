@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class MainController extends AbstractController
 {
     /**
-     * @Route("/", name="home")
+     * @Route(path="", name="home")
      * @Method("GET")
      */
     public function homeAction(Request $request)

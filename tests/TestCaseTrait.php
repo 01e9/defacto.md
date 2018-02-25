@@ -66,7 +66,7 @@ trait TestCaseTrait
         return $user;
     }
 
-    protected static function canBeAccessedOnlyAdmin(string $pathWithoutLang, Client $client) : bool
+    protected static function onlyAdminCanAccess(string $pathWithoutLang, Client $client) : bool
     {
         $rolesExpectations = [
             '' => false,

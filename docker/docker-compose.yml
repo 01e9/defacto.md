@@ -3,7 +3,7 @@ version: '3.4'
 services:
     defacto:
         container_name: defacto
-        image: defacto
+        image: defacto:1.0
         build:
             context: .
             args:

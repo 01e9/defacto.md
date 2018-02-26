@@ -1,9 +1,6 @@
-{% set chartData = [] %}
+{% set maxCount = 0 %}
 {% for promise in promiseStatistics %}
-    {% set chartData = chartData|merge([{
-        count: promise.count,
-        name: promise.count ~ ' ' ~ (promise.count == 1 ? promise.status.name : promise.status.namePlural)
-    }]) %}
+    {% set maxCount = max(maxCount, promise.count) %}
 {% endfor %}
 
 <div class="container mb-5">
@@ -32,12 +29,16 @@
         <div class="col-sm-6 col-md-4 order-md-first text-sm-right mb-4 mb-sm-0">
             <div class="text-center">
                 <h2>Promisiuni <sup class="text-muted">{{ promiseStatistics|length }}</sup></h2>
-                {% if chartData %}
-                    <div
-                        class="chart"
-                        data-chart-type="promises-pie"
-                        data-chart-data="{{ {promises: chartData}|json_encode }}"
-                    ></div>
+                {% if maxCount %}
+                    {% for promise in promiseStatistics %}
+                        <p>
+                            <div class="progress">
+                                <div class="progress-bar bg-primary"
+                                     style="width: {{ promise.count * 100 / maxCount }}%;"
+                                >{{ promise.count ~ ' ' ~ (promise.count == 1 ? promise.status.name : promise.status.namePlural) }}</div>
+                            </div>
+                        </p>
+                    {% endfor %}
                 {% endif %}
             </div>
         </div>

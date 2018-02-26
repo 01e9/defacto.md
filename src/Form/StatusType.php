@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Status;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -23,8 +24,9 @@ class StatusType extends AbstractType
             ->add('slug', TextType::class, [
                 'label' => 'label.slug',
             ])
-            ->add('effect', NumberType::class, [
+            ->add('effect', IntegerType::class, [
                 'label' => 'label.effect',
+                'scale' => 0,
             ])
         ;
     }

@@ -56,7 +56,7 @@ class Category
         return $this->slug;
     }
 
-    public function setSlug(string $slug) : Action
+    public function setSlug(string $slug) : Category
     {
         $this->slug = $slug;
 
@@ -68,7 +68,7 @@ class Category
         return $this->name;
     }
 
-    public function setName(string $name) : Action
+    public function setName(string $name) : Category
     {
         $this->name = $name;
 

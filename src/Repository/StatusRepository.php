@@ -18,7 +18,7 @@ class StatusRepository extends ServiceEntityRepository
     {
         $choices = [];
 
-        foreach ($this->findAll() as $status) { /** @var Status $status */
+        foreach ($this->findBy([], ['effect' => 'DESC']) as $status) { /** @var Status $status */
             $choices[ $status->getName() ] = $status;
         }
 
@@ -27,6 +27,6 @@ class StatusRepository extends ServiceEntityRepository
 
     public function getAdminList(Request $request)
     {
-        return $this->findAll();
+        return $this->findBy([], ['effect' => 'DESC']);
     }
 }

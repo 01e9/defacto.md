@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Action;
+use App\Entity\Category;
 use App\Entity\Institution;
 use App\Entity\InstitutionTitle;
 use App\Entity\Mandate;
@@ -38,13 +39,8 @@ class AppFixtures extends Fixture
             ->setTitle($title);
         $manager->persist($institutionTitle);
 
-        $status = new Status();
-        $status
-            ->setName('Demo statut')
-            ->setNamePlural('Demo statuturi')
-            ->setSlug('demo-statut')
-            ->setEffect(0);
-        $manager->persist($status);
+        $categories = $this->createCategories($manager);
+        $statuses = $this->createStatuses($manager);
 
         $politician = new Politician();
         $politician
@@ -66,7 +62,7 @@ class AppFixtures extends Fixture
         $promise = new Promise();
         $promise
             ->setMandate($mandate)
-            ->setStatus($status)
+            ->setStatus(current($statuses))
             ->setTitle('Demo promisiune')
             ->setSlug('demo-promisiune')
             ->setDescription('Demo descriere')
@@ -92,5 +88,78 @@ class AppFixtures extends Fixture
         $manager->persist($setting);
 
         $manager->flush();
+    }
+
+    private function createCategories(ObjectManager $manager) : array
+    {
+        $categories = [];
+
+        foreach ([
+            'economie' => 'Economie',
+            'educație' => 'Educație',
+            'politică-externă' => 'Politică externă',
+            'politică-internă' => 'Politică internă',
+            'social' => 'Social',
+        ] as $slug => $name) {
+            $category = new Category();
+            $category
+                ->setSlug($slug)
+                ->setName($name);
+            $manager->persist($category);
+
+            $categories[$slug] = $category;
+        }
+
+        return $categories;
+    }
+
+    private function createStatuses(ObjectManager $manager) : array
+    {
+        $statuses = [];
+
+        foreach ([
+            'declarații' => [
+                'name' => 'Declarație',
+                'name_plural' => 'Declarații',
+                'effect' => 0,
+            ],
+            'în-proces' => [
+                'name' => 'În proces',
+                'name_plural' => 'În proces',
+                'effect' => 1,
+            ],
+            'îndeplinite' => [
+                'name' => 'Îndeplinită',
+                'name_plural' => 'Îndeplinite',
+                'effect' => 2,
+            ],
+            'compromise' => [
+                'name' => 'Compromisă',
+                'name_plural' => 'Compromise',
+                'effect' => -2,
+            ],
+            'nemăsurabile' => [
+                'name' => 'Nemăsurabilă',
+                'name_plural' => 'Nemăsurabile',
+                'effect' => -1,
+            ],
+            'nerealizate' => [
+                'name' => 'Nerealizată',
+                'name_plural' => 'Nerealizate',
+                'effect' => -3,
+            ],
+        ] as $slug => $info) {
+            $status = new Status();
+            $status
+                ->setSlug($slug)
+                ->setName($info['name'])
+                ->setNamePlural($info['name_plural'])
+                ->setEffect($info['effect']);
+            $manager->persist($status);
+
+            $statuses[$slug] = $status;
+        }
+
+        return $statuses;
     }
 }

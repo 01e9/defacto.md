@@ -1,3 +1,4 @@
+import 'mdbootstrap/js/mdb'
 import Chartist from 'chartist/dist/chartist.min'
 
 jQuery(($) => {

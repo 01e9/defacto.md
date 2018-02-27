@@ -22,6 +22,10 @@ Encore
     ])
 
     .autoProvidejQuery()
+
+    .autoProvideVariables({
+        'Waves': 'node-waves/src/js/waves'
+    })
 ;
 
 module.exports = Encore.getWebpackConfig();

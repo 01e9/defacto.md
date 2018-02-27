@@ -1,12 +1,14 @@
 @import "variables";
+@import "~node-waves/src/sass/waves";
 @import '~bootstrap/scss/bootstrap';
+@import "~mdbootstrap/scss/mdb";
 @import "~@fortawesome/fontawesome-free-webfonts/css/fa-solid.css";
 @import "~@fortawesome/fontawesome-free-webfonts/css/fontawesome.css";
 @import "~chartist/dist/scss/chartist";
 
 .navbar {
     &.sticky-top {
-        border-bottom: 1em solid #fff;
+        margin-bottom: 1em;
     }
 
     .navbar-brand.logo-effect {

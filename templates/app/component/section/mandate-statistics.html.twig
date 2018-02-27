@@ -11,18 +11,12 @@
     </div>
     <div class="row align-items-md-center">
         <div class="col-sm-6 offset-sm-3 offset-md-0 col-md-4 mb-4 mb-md-0">
-            <div class="card">
-                <div class="card-body text-center">
-                    <h5 class="card-title mb-0">
-                        <a href="#">
-                            {{ mandate.politician.firstName }} {{ mandate.politician.lastName }}
-                        </a>
-                    </h5>
-                </div>
-                <img class="card-img-top"
-                     src="{{ mandate.politician.photo ? asset('uploads/politicians/' ~ mandate.politician.photo.filename) : 'about:blank' }}"
-                     alt="Politician"
-                     style="background-color: bisque">
+            <div class="card card-body">
+                <img src="{{ mandate.politician.photo ? asset('uploads/politicians/' ~ mandate.politician.photo.filename) : 'about:blank' }}"
+                     class="rounded-circle img-fluid mb-3" alt="Politician">
+                <h5 class="font-weight-bold text-center">
+                    <strong>{{ mandate.politician.firstName }} {{ mandate.politician.lastName }}</strong>
+                </h5>
             </div>
         </div>
         <div class="w-100 d-md-none"></div>

@@ -18,9 +18,9 @@
                     <div class="card-body">
                         <img src="{{ mandate.politician.photo ? asset('uploads/politicians/' ~ mandate.politician.photo.filename) : 'about:blank' }}"
                              class="rounded-circle img-fluid mb-3" alt="Politician">
-                        <h4 class="text-center">
+                        <h3 class="text-center">
                             {{ mandate.politician.firstName }} {{ mandate.politician.lastName }}
-                        </h4>
+                        </h3>
                     </div>
                 </div>
             </div>
@@ -34,7 +34,7 @@
                                 <div class="h5">
                                     <div>
                                         {{ promise.count == 1 ? promise.status.name : promise.status.namePlural }}
-                                        <sup class="text-muted">{{ promise.count }}</sup>
+                                        <sup class="text-primary">{{ promise.count }}</sup>
                                     </div>
                                     <div class="mt-1 progress{% if not loop.last %} mb-4{% endif %}">
                                         <div class="progress-bar bg-primary"
@@ -54,7 +54,9 @@
                         <div class="h5">
                             <div>
                                 Voturi
-                                <sup class="text-muted">{{ mandate.votesCount }}&nbsp;&middot;&nbsp;{{ mandate.votesPercent }}%</sup>
+                                <sup class="text-muted">
+                                    <span class="text-primary">{{ mandate.votesCount }}</span>&nbsp;&middot;&nbsp;<span class="text-primary">{{ mandate.votesPercent }}%</span>
+                                </sup>
                             </div>
                             <div class="mt-1 progress mb-4">
                                 <div class="progress-bar bg-primary"
@@ -65,7 +67,9 @@
                         <div class="h5">
                             <div>
                                 Durata
-                                <sup class="text-muted">{{ mandate.beginDate|date('m.Y') }}&nbsp;&middot;&nbsp;{{ mandate.endDate|date('m.Y') }}</sup>
+                                <sup class="text-muted">
+                                    <span class="text-primary">{{ mandate.beginDate|date('m.Y') }}</span>&nbsp;&middot;&nbsp;<span class="text-primary">{{ mandate.endDate|date('m.Y') }}</span>
+                                </sup>
                             </div>
                             <div class="mt-1 progress">
                                 <div class="progress-bar bg-primary"

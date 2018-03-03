@@ -11,7 +11,7 @@
                         </div>
                     {% endif %}
 
-                    {{ form_start(form, {action: path('login'), method: 'post'}) }}
+                    {{ form_start(form, {action: path('login'), method: 'post', attr: {class: 'mb-0'}}) }}
 
                     {{ form_row(form._username, {
                         value: last_username,

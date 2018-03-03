@@ -1,14 +1,5 @@
-{% set currentDate = date() %}
-{% if beginDate < currentDate and currentDate < endDate %}
-    {% set percent = 100 - 100
-        * (endDate.getTimestamp() - currentDate.getTimestamp())
-        / (endDate.getTimestamp() - beginDate.getTimestamp())
-    %}
-{% elseif endDate <= currentDate %}
-    {% set percent = 100 %}
-{% else %}
-    {% set percent = 0 %}
-{% endif %}
+{% import 'macros.html.twig' as macros %}
+{% set percent = '' ~ macros.getDateIntervalProgress(beginDate, endDate) %}
 
 <div class="d-flex align-items-center justify-content-between">
     <div class="pr-3">{{ beginDate|date() }}</div>

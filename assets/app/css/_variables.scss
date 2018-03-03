@@ -1,5 +1,5 @@
 $app-brand-font: "Stardos Stencil"; // original: Butler Stencil
-$app-accent-color: #af2227;
+$app-color-primary: #af2227;
 
 //region Inline images
 
@@ -16,7 +16,10 @@ $ct-text-color: #fff;
 
 //region Bootstrap Material
 
-// Shadows (originally from mdl http://www.getmdl.io/)
+$theme-colors: (
+    primary: $app-color-primary
+);
+
 $bmd-shadow-umbra-opacity: 0 !default;
 $bmd-shadow-penumbra-opacity: 0.14 !default;
 $bmd-shadow-ambient-opacity: 0.12 !default;

@@ -1,0 +1,16 @@
+{% macro getDateIntervalProgress(beginDate, endDate) %}
+{%- spaceless %}
+    {% set currentDate = date() %}
+    {% if beginDate < currentDate and currentDate < endDate %}
+        {% set percent = 100 - 100
+            * (endDate.getTimestamp() - currentDate.getTimestamp())
+            / (endDate.getTimestamp() - beginDate.getTimestamp())
+        %}
+    {% elseif endDate <= currentDate %}
+        {% set percent = 100 %}
+    {% else %}
+        {% set percent = 0 %}
+    {% endif %}
+{% endspaceless -%}
+    {{- percent -}}
+{% endmacro %}

@@ -1,3 +1,4 @@
+import 'bootstrap-material-design'
 import Chartist from 'chartist/dist/chartist.min'
 
 jQuery(($) => {

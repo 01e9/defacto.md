@@ -1,5 +1,4 @@
 const GoogleFontsPlugin = require("google-fonts-webpack-plugin");
-
 var Encore = require('@symfony/webpack-encore');
 
 Encore
@@ -16,22 +15,13 @@ Encore
 
     .enableSassLoader()
 
-    .createSharedEntry('common', [
-        'jquery',
-        'bootstrap'
-    ])
-
     .autoProvidejQuery()
 
     .autoProvideVariables({
-        //'Waves': 'node-waves/src/js/waves'
+        'Popper': 'popper.js/dist/umd/popper'
     })
-;
 
-module.exports = Encore.getWebpackConfig();
-
-module.exports.plugins.push(
-    new GoogleFontsPlugin({
+    .addPlugin(new GoogleFontsPlugin({
         fonts: [
             { family: "Stardos Stencil", variants: [ "400", "700" ] },
             { family: "Roboto", variants: [ "400", "700" ] },
@@ -39,5 +29,18 @@ module.exports.plugins.push(
         name: 'google-fonts',
         path: 'google-fonts/',
         filename: 'google-fonts.css'
+    }))
+
+    .configureBabel(function(babelConfig) {
+        babelConfig.presets.push(
+            "@babel/preset-es2015",
+            "@babel/preset-env"
+        );
+        babelConfig.plugins.push(
+            "@babel/plugin-proposal-object-rest-spread",
+            "@babel/plugin-proposal-class-properties"
+        );
     })
-);
+;
+
+module.exports = Encore.getWebpackConfig();

@@ -9,10 +9,7 @@
 <body>
 {% block body %}{% endblock %}
 
-{% block javascripts %}
-    <script src="{{ asset('build/manifest.js') }}"></script>
-    <script src="{{ asset('build/common.js') }}"></script>
-{% endblock %}
+{% block javascripts %}{% endblock %}
 
 {# it's not mandatory to set the timezone in localizeddate(). This is done to
    avoid errors when the 'intl' PHP extension is not available and the application

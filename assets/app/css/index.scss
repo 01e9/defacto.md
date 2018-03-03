@@ -4,6 +4,8 @@
 @import "~@fortawesome/fontawesome-free-webfonts/css/fontawesome.css";
 @import "~chartist/dist/scss/chartist";
 
+//region Navbar
+
 .navbar {
     .navbar-brand.logo-effect {
         padding-bottom: 0;
@@ -17,7 +19,7 @@
         .text {
             &:before {
                 content: 'de';
-                color: $app-accent-color;
+                color: $app-color-primary;
             }
             &:after {
                 content: 'FACTO';
@@ -37,14 +39,13 @@
     }
 }
 
+//endregion
+
+//region Mandate Statistics
+
 .mandate-statistics {
     background-image: url($app-bg-img-section-politician);
     background-size: cover;
-
-    .progress {
-        font-size: $font-size-lg;
-        height: $font-size-lg * 2;
-    }
 
     @include media-breakpoint-down(sm) {
         .photo-col {
@@ -53,16 +54,10 @@
             margin-right: auto;
         }
     }
-
-    h2 {
-        text-shadow: -1px 0 1px #fff, 0 1px 1px #fff, 1px 0 1px #fff;
-    }
-
-    .card .card-title.text-center > .fa.rounded-circle {
-        margin-bottom: -50%;
-    }
 }
 .navbar.sticky-top + .mandate-statistics {
     padding-top: 1em;
 }
+
+//endregion
 

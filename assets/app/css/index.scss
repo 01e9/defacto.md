@@ -1,7 +1,5 @@
 @import "variables";
-@import "~node-waves/src/sass/waves";
-@import '~bootstrap/scss/bootstrap';
-@import "~mdbootstrap/scss/mdb";
+@import '~bootstrap-material-design/scss/bootstrap-material-design';
 @import "~@fortawesome/fontawesome-free-webfonts/css/fa-solid.css";
 @import "~@fortawesome/fontawesome-free-webfonts/css/fontawesome.css";
 @import "~chartist/dist/scss/chartist";
@@ -40,7 +38,7 @@
 }
 
 .mandate-statistics {
-    background-image: url($app-section-background-politician);
+    background-image: url($app-bg-img-section-politician);
     background-size: cover;
 
     .progress {

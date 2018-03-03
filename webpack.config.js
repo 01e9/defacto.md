@@ -24,7 +24,7 @@ Encore
     .autoProvidejQuery()
 
     .autoProvideVariables({
-        'Waves': 'node-waves/src/js/waves'
+        //'Waves': 'node-waves/src/js/waves'
     })
 ;
 
@@ -33,7 +33,8 @@ module.exports = Encore.getWebpackConfig();
 module.exports.plugins.push(
     new GoogleFontsPlugin({
         fonts: [
-            { family: "Stardos Stencil", variants: [ "400", "700" ] }
+            { family: "Stardos Stencil", variants: [ "400", "700" ] },
+            { family: "Roboto", variants: [ "400", "700" ] },
         ],
         name: 'google-fonts',
         path: 'google-fonts/',

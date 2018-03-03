@@ -12,34 +12,45 @@
         </div>
         <div class="row align-items-lg-center">
             <div class="photo-col col-md-6 offset-md-3 offset-lg-0 col-lg-4 mb-4 mb-lg-0">
-                <div class="card card-body">
-                    <img src="{{ mandate.politician.photo ? asset('uploads/politicians/' ~ mandate.politician.photo.filename) : 'about:blank' }}"
-                         class="rounded-circle img-fluid mb-3" alt="Politician">
-                    <h5 class="font-weight-bold text-center">
-                        <strong>{{ mandate.politician.firstName }} {{ mandate.politician.lastName }}</strong>
-                    </h5>
+                <div class="card">
+                    <div class="card-body">
+                        <img src="{{ mandate.politician.photo ? asset('uploads/politicians/' ~ mandate.politician.photo.filename) : 'about:blank' }}"
+                             class="rounded-circle img-fluid mb-3" alt="Politician">
+                        <h5 class="font-weight-bold text-center">
+                            <strong>{{ mandate.politician.firstName }} {{ mandate.politician.lastName }}</strong>
+                        </h5>
+                    </div>
                 </div>
             </div>
             <div class="w-100 d-lg-none"></div>
             <div class="col-md-6 col-lg-4 order-lg-first mb-4 mb-md-0">
-                <div class="card card-body">
-                    <h4 class="mb-3"><span class="fa fa-bullhorn"></span> {{ promiseStatistics|length }} Promisiuni</h4>
-                    {% if maxCount %}
-                        {% for promise in promiseStatistics %}
-                            <div class="progress{% if not loop.last %} mb-3{% endif %}">
-                                <div class="progress-bar bg-primary"
-                                     style="width: {{ promise.count * 100 / maxCount }}%;"
-                                >{{ promise.count ~ ' ' ~ (promise.count == 1 ? promise.status.name : promise.status.namePlural) }}</div>
-                            </div>
-                        {% endfor %}
-                    {% endif %}
+                <div class="card">
+                    <div class="card-body">
+                        <div class="card-title text-center">
+                            <span class="fa fa-bullhorn rounded-circle"></span>
+                            <h4 class="mb-0">
+                                {{ promiseStatistics|length }} Promisiuni
+                            </h4>
+                        </div>
+                        {% if maxCount %}
+                            {% for promise in promiseStatistics %}
+                                <div class="progress{% if not loop.last %} mb-3{% endif %}">
+                                    <div class="progress-bar bg-primary"
+                                         style="width: {{ promise.count * 100 / maxCount }}%;"
+                                    >{{ promise.count ~ ' ' ~ (promise.count == 1 ? promise.status.name : promise.status.namePlural) }}</div>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
                 </div>
             </div>
             <div class="col-md-6 col-lg-4">
-                <div class="card card-body">
-                    <h4 class="mb-3"><span class="fa fa-users"></span> {{ mandate.votesCount }} voturi</h4>
-                    <div class="progress">
-                        <div class="progress-bar bg-success" style="width: {{ mandate.votesPercent }}%;">{{ mandate.votesPercent }}%</div>
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="mb-3"><span class="fa fa-users"></span> {{ mandate.votesCount }} voturi</h4>
+                        <div class="progress">
+                            <div class="progress-bar bg-success" style="width: {{ mandate.votesPercent }}%;">{{ mandate.votesPercent }}%</div>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -72,12 +72,19 @@ title:
     action: Acțiune
     dashboard: Dashboard
     mandates: Mandate
+    mandate: Mandat
     settings: Setări
     setting: Setare
+    votes: Voturi
+    the_duration: Durata
+    blog: Blog
+    prerogatives: Prerogative
+    about_us: Despre noi
 
 placeholder:
     choose_option: Alegeți o opțiune
     search: Căutare
+    keywords: Cuvinte cheie
 
 text:
     at: la

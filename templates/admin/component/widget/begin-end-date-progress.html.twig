@@ -1,5 +1,5 @@
 {% import 'macros.html.twig' as macros %}
-{% set percent = '' ~ macros.getDateIntervalProgress(beginDate, endDate) %}
+{% set percent = '' ~ macros.get_date_interval_progress(beginDate, endDate) %}
 
 <div class="d-flex align-items-center justify-content-between">
     <div class="pr-3">{{ beginDate|date() }}</div>

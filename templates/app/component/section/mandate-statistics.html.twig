@@ -28,7 +28,7 @@
             <div class="col-md-6 col-lg-4 order-lg-first mb-4 mb-md-0">
                 <div class="card">
                     <div class="card-body">
-                        <h2 class="mb-4">Promisiuni</h2>
+                        <h2 class="mb-4">{{ 'title.promises'|trans }}</h2>
                         {% if maxCount %}
                             {% for promise in promiseStatistics %}
                                 <div class="h5">
@@ -50,10 +50,10 @@
             <div class="col-md-6 col-lg-4">
                 <div class="card">
                     <div class="card-body">
-                        <h2 class="mb-4">Mandat</h2>
+                        <h2 class="mb-4">{{ 'title.mandate'|trans }}</h2>
                         <div class="h5">
                             <div>
-                                Voturi
+                                {{ 'title.votes'|trans }}
                                 <sup class="text-muted">
                                     <span class="text-primary">{{ mandate.votesCount }}</span>&nbsp;&middot;&nbsp;<span class="text-primary">{{ mandate.votesPercent }}%</span>
                                 </sup>
@@ -66,14 +66,14 @@
                         </div>
                         <div class="h5">
                             <div>
-                                Durata
+                                {{ 'title.the_duration'|trans }}
                                 <sup class="text-muted">
                                     <span class="text-primary">{{ mandate.beginDate|date('m.Y') }}</span>&nbsp;&middot;&nbsp;<span class="text-primary">{{ mandate.endDate|date('m.Y') }}</span>
                                 </sup>
                             </div>
                             <div class="mt-1 progress">
                                 <div class="progress-bar bg-primary"
-                                     style="width: {{ '' ~ macros.getDateIntervalProgress(mandate.beginDate, mandate.endDate) }}%;"
+                                     style="width: {{ '' ~ macros.get_date_interval_progress(mandate.beginDate, mandate.endDate) }}%;"
                                 ></div>
                             </div>
                         </div>

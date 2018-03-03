@@ -62,6 +62,7 @@ class MandateRepository extends ServiceEntityRepository
             ->innerJoin('App:Promise', 'p', Expr\Join::WITH, 'p.published = true AND p.mandate = m.id')
             ->innerJoin('App:Status', 's', Expr\Join::WITH,'s.id = p.status')
             ->where('m.id = :mandate')
+            ->orderBy('s.effect','desc')
             ->groupBy('s.id')
             ->setParameter('mandate', $mandate)
             ->getQuery()

@@ -29,4 +29,9 @@ class StatusRepository extends ServiceEntityRepository
     {
         return $this->findBy([], ['effect' => 'DESC']);
     }
+
+    public function getList()
+    {
+        return $this->findBy([], ['effect' => 'DESC']);
+    }
 }

@@ -23,27 +23,24 @@
                         {{ 'title.promises'|trans }}
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarPromisesDropdown">
-                        <a class="dropdown-item" href="#">Compromise</a>
-                        <a class="dropdown-item" href="#">Declarații</a>
-                        <a class="dropdown-item" href="#">În Proces</a>
-                        <a class="dropdown-item" href="#">Nemăsurabil</a>
-                        <a class="dropdown-item" href="#">Nerealizate</a>
-                        <a class="dropdown-item" href="#">Realizate</a>
+                        {% for status in app_repo_status.list %}
+                            <a class="dropdown-item" href="javascript:void(0)">{{ status.namePlural }}</a>
+                        {% endfor %}
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Prerogative</a>
+                    <a class="nav-link disabled" href="javascript:void(0)">{{ 'title.prerogatives'|trans }}</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Blog</a>
+                    <a class="nav-link disabled" href="javascript:void(0)">{{ 'title.blog'|trans }}</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Despre noi</a>
+                    <a class="nav-link disabled" href="javascript:void(0)">{{ 'title.about_us'|trans }}</a>
                 </li>
             </ul>
             <form class="form-inline my-2 my-lg-0" onsubmit="return false">
-                <input class="form-control mr-sm-2" type="text" placeholder="{{ 'placeholder.search'|trans }}" aria-label="Search">
-                <button class="btn btn-sm btn-primary my-2 my-sm-0" type="submit">{{ 'action.search'|trans }}</button>
+                <input class="form-control mr-sm-2" type="text" placeholder="{{ 'placeholder.keywords'|trans }}" aria-label="Search">
+                <button class="btn btn-sm btn-outline-primary my-2 my-sm-0" type="submit">{{ 'action.search'|trans }}</button>
             </form>
         </div>
     </div>

@@ -5,3 +5,5 @@ twig:
     date:
         format: d.m.Y
         timezone: Europe/Chisinau
+    globals:
+        app_repo_status: '@App\Repository\StatusRepository'

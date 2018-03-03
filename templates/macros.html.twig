@@ -1,4 +1,4 @@
-{% macro getDateIntervalProgress(beginDate, endDate) %}
+{% macro get_date_interval_progress(beginDate, endDate) %}
 {%- spaceless %}
     {% set currentDate = date() %}
     {% if beginDate < currentDate and currentDate < endDate %}

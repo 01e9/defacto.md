@@ -21,10 +21,12 @@ Encore
         'Popper': 'popper.js/dist/umd/popper'
     })
 
+    .enableVersioning()
+
     .addPlugin(new GoogleFontsPlugin({
         fonts: [
-            { family: "Stardos Stencil", variants: [ "400", "700" ] },
-            { family: "Roboto", variants: [ "400", "700" ] },
+            { family: "Stardos Stencil", variants: [ "700" ] },
+            { family: "Roboto", variants: [ "400", "700" ] }
         ],
         name: 'google-fonts',
         path: 'google-fonts/',

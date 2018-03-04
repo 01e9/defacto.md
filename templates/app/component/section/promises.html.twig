@@ -27,12 +27,13 @@
             {% for promise in promises %}
                 {% set counter = counter + 1 %}
                 <div class="col-md-6 col-lg-4{{ counter > per_page ? ' d-hide' : '' }}">
-                    <div class="card p-3">
+                    <div class="card p-3 promise-item">
                         <blockquote class="blockquote mb-0 card-body">
                             <p>{{ promise.title }}</p>
                             <footer class="blockquote-footer">
                                 <small class="text-muted">{{ promise.madeTime|ago }}</small>
                             </footer>
+                            <div class="status">{{ promise.status.name }}</div>
                         </blockquote>
                     </div>
                 </div>

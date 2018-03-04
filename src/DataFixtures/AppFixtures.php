@@ -122,31 +122,37 @@ class AppFixtures extends Fixture
                 'name' => 'Declarație',
                 'name_plural' => 'Declarații',
                 'effect' => 0,
+                'color' => '#4f2baa',
             ],
             'în-proces' => [
                 'name' => 'În proces',
                 'name_plural' => 'În proces',
                 'effect' => 1,
+                'color' => '#f48414',
             ],
             'îndeplinite' => [
                 'name' => 'Îndeplinită',
                 'name_plural' => 'Îndeplinite',
                 'effect' => 2,
+                'color' => '#159b4d',
             ],
             'compromise' => [
                 'name' => 'Compromisă',
                 'name_plural' => 'Compromise',
                 'effect' => -2,
+                'color' => '#d33',
             ],
             'nemăsurabile' => [
                 'name' => 'Nemăsurabilă',
                 'name_plural' => 'Nemăsurabile',
                 'effect' => -1,
+                'color' => '#f4cf28',
             ],
             'nerealizate' => [
                 'name' => 'Nerealizată',
                 'name_plural' => 'Nerealizate',
                 'effect' => -3,
+                'color' => '#7c7c7c',
             ],
         ] as $slug => $info) {
             $status = new Status();
@@ -154,7 +160,8 @@ class AppFixtures extends Fixture
                 ->setSlug($slug)
                 ->setName($info['name'])
                 ->setNamePlural($info['name_plural'])
-                ->setEffect($info['effect']);
+                ->setEffect($info['effect'])
+                ->setColor($info['color']);
             $manager->persist($status);
 
             $statuses[$slug] = $status;

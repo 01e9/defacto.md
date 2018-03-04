@@ -61,6 +61,16 @@ class Status
      */
     private $effect;
 
+    /**
+     * @ORM\Column(type="string", length=7, nullable=true)
+     *
+     * @Assert\Regex(
+     *     pattern="/^#([a-f0-9]{3}){1,2}$/i",
+     *     message="invalid.color"
+     * )
+     */
+    private $color;
+
     public function getId() : ?string
     {
         return $this->id;
@@ -110,6 +120,18 @@ class Status
     public function setEffect(int $effect) : Status
     {
         $this->effect = $effect;
+
+        return $this;
+    }
+
+    public function getColor() : ?string
+    {
+        return $this->color;
+    }
+
+    public function setColor(string $color) : Status
+    {
+        $this->color = $color;
 
         return $this;
     }

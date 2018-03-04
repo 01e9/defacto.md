@@ -40,6 +40,7 @@ label:
     action: Acțiune
     votes_count: Numărul de voturi obținute
     votes_percent: Procentul de voturi obținute
+    color: Culoarea
 
 action:
     login: Autentificare

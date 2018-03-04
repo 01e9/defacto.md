@@ -10,6 +10,8 @@
     padding-top: $spacer;
 }
 
+//region Forms
+
 .form-group label,
 .form-group legend {
     font-size: 1rem;
@@ -17,4 +19,8 @@
 .form-group .collection-widget fieldset.form-group {
     margin-bottom: 0;
 }
+input.form-control[type="color"] {
+    height: 2.3em;
+}
 
+//endregion

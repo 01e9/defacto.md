@@ -1,33 +1,14 @@
-{% set per_page = 6 %}
-{% set is_one_page = promises|length <= per_page %}
-<div class="jumbotron jumbotron-fluid">
+<div class="jumbotron jumbotron-fluid bg-dark">
     <div class="container-fluid">
-        {% if is_one_page %}
-            <div class="row">
-                <div class="col text-center">
-                    <h3 class="mb-4">{{ 'title.promises'|trans }}</h3>
-                </div>
-            </div>
-        {% else %}
-        <div class="row justify-content-center">
-            <div class="col-md-6 col-lg-4">
-                <div class="form-group mb-4">
-                    <select class="form-control">
-                        <option>Toate promisiunile</option>
-                        <option>În proces</option>
-                        <option>Declarații</option>
-                        <option>Realizate</option>
-                    </select>
-                </div>
+        <div class="row">
+            <div class="col">
+                <h3 class="mb-4 text-center text-white">{{ 'title.promises'|trans }}</h3>
             </div>
         </div>
-        {% endif %}
         <div class="row justify-content-md-center">
-            {% set counter = 0 %}
             {% for promise in promises %}
-                {% set counter = counter + 1 %}
-                <div class="col-md-6 col-lg-4{{ counter > per_page ? ' d-hide' : '' }}">
-                    <div class="card p-3 promise-item">
+                <div class="col-md-6 col-lg-4">
+                    <div class="card p-3 promise-item bg-light">
                         <blockquote class="blockquote mb-0 card-body">
                             <p>{{ promise.title }}</p>
                             <footer class="blockquote-footer">
@@ -39,24 +20,5 @@
                 </div>
             {% endfor %}
         </div>
-        {% if not is_one_page %}
-        <div class="row">
-            <div class="col">
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination justify-content-center mb-0">
-                        <li class="page-item disabled">
-                            <a class="page-link" href="#" tabindex="-1">Previous</a>
-                        </li>
-                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item">
-                            <a class="page-link" href="#">Next</a>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
-        </div>
-        {% endif %}
     </div>
 </div>

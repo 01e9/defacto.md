@@ -33,6 +33,7 @@ install:
   - ./vendor/bin/simple-phpunit install
 
 script:
+  - mkdir -p public/build && echo '{}' > public/build/manifest.json
   - ./vendor/bin/simple-phpunit
   # this checks that the composer.json and composer.lock files are valid
   - composer validate --strict

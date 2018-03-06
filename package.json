@@ -12,7 +12,6 @@
         "babel-loader": "^8.0.0-beta.2",
         "bootstrap": "^4.0.0",
         "bootstrap-material-design": "^4.1.1",
-        "chartist": "^0.11.0",
         "exports-loader": "^0.7.0",
         "froala-editor": "^2.7.5",
         "google-fonts-webpack-plugin": "^0.4.4",

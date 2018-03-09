@@ -9,8 +9,6 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class FileUploaderTest extends TestCase
 {
-    //region Properties
-
     private static $targetDir = '/tmp/file-uploader-test';
 
     /** @var FileUploader */
@@ -18,10 +16,6 @@ class FileUploaderTest extends TestCase
 
     /** @var Filesystem */
     private $fs;
-
-    //endregion
-
-    //region Lifecycle
 
     protected function setUp()
     {
@@ -35,10 +29,6 @@ class FileUploaderTest extends TestCase
     {
         $this->fs->remove(self::$targetDir);
     }
-
-    //endregion
-
-    //region Tests
 
     public function testGetTargetDir()
     {
@@ -61,6 +51,4 @@ class FileUploaderTest extends TestCase
         $this->assertTrue($this->fs->exists($filePath), 'Uploaded file exists');
         $this->assertEquals($fileContents, file_get_contents($filePath), 'Uploaded file content is good');
     }
-
-    //endregion
 }

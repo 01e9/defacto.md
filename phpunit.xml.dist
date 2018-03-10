@@ -14,6 +14,13 @@
         <env name="APP_DEBUG" value="1" />
         <env name="APP_SECRET" value="s$cretf0rt3st" />
         <env name="SHELL_VERBOSITY" value="-1" />
+
+        <!-- ###+ algolia/search-bundle ### -->
+        <!-- Create a free account on www.algolia.com -->
+        <!-- and get your credentials from the API Keys tab. -->
+        <env name="ALGOLIA_APP_ID" value="..."/>
+        <env name="ALGOLIA_API_KEY" value="..."/>
+        <!-- ###- algolia/search-bundle ### -->
     </php>
 
     <testsuites>

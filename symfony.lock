@@ -1,4 +1,16 @@
 {
+    "algolia/algoliasearch-client-php": {
+        "version": "1.25.1"
+    },
+    "algolia/search-bundle": {
+        "version": "3.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "3.0",
+            "ref": "e4763dc0b1cb323ae78d414ded0cd1ae914fe205"
+        }
+    },
     "doctrine/annotations": {
         "version": "1.0",
         "recipe": {
@@ -250,6 +262,9 @@
             "version": "3.3",
             "ref": "85834af1496735f28d831489d12ab1921a875e0d"
         }
+    },
+    "symfony/serializer": {
+        "version": "v4.0.6"
     },
     "symfony/stopwatch": {
         "version": "v4.0.2"

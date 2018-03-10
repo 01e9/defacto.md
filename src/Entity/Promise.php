@@ -68,6 +68,7 @@ class Promise
     public function __construct()
     {
         $this->categories = new ArrayCollection();
+        $this->published = false;
     }
 
     public function getId() : ?string

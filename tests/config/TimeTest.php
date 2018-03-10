@@ -2,9 +2,9 @@
 
 namespace App\Tests\config;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-class TimeTest extends WebTestCase
+class TimeTest extends KernelTestCase
 {
     public function testTimezone()
     {

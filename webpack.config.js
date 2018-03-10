@@ -33,15 +33,20 @@ Encore
         filename: 'google-fonts.css'
     }))
 
-    .configureBabel(function(babelConfig) {
-        babelConfig.presets.push(
-            "@babel/preset-es2015",
-            "@babel/preset-env"
-        );
-        babelConfig.plugins.push(
+    .configureBabel(function(config) {
+        config.presets = [
+            "@babel/preset-env",
+            "@babel/preset-es2015"
+        ];
+        config.plugins = [
+            "@babel/plugin-proposal-class-properties",
             "@babel/plugin-proposal-object-rest-spread",
-            "@babel/plugin-proposal-class-properties"
-        );
+            "@babel/plugin-transform-modules-commonjs",
+            "@babel/plugin-transform-destructuring",
+            "@babel/plugin-syntax-dynamic-import",
+            "@babel/plugin-syntax-export-default-from",
+            "@babel/plugin-syntax-export-namespace-from"
+        ];
     })
 ;
 

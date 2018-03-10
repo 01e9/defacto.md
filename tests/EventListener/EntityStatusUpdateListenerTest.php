@@ -15,7 +15,7 @@ class EntityStatusUpdateListenerTest extends KernelTestCase
 
         $promise = new Promise();
         $promise
-            ->setTitle('Test')
+            ->setName('Test')
             ->setSlug('test')
             ->setDescription('Test')
             ->setMadeTime(new \DateTime())

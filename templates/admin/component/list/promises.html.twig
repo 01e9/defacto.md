@@ -2,7 +2,7 @@
     {% for promise in promises %}
         <a class="list-group-item list-group-item-action" href="{{ path('admin_promise_edit', {id: promise.id}) }}">
             <h5 {% if not promise.published %}class="text-muted font-italic"{% endif %}>
-                {{ promise.title }}
+                {{ promise.name }}
             </h5>
             <p class="mb-1">
                 {{ promise.mandate.politician.firstName }} {{ promise.mandate.politician.lastName }}

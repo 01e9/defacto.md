@@ -53,7 +53,7 @@ class Promise
     /**
      * @ORM\Column(type="string")
      */
-    private $title;
+    private $name;
 
     /**
      * @ORM\Column(type="text")
@@ -124,14 +124,14 @@ class Promise
         return $this;
     }
 
-    public function getTitle() : ?string
+    public function getName() : ?string
     {
-        return $this->title;
+        return $this->name;
     }
 
-    public function setTitle(string $title) : Promise
+    public function setName(string $name) : Promise
     {
-        $this->title = $title;
+        $this->name = $name;
 
         return $this;
     }

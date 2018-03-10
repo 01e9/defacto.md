@@ -63,7 +63,7 @@ class AppFixtures extends Fixture
         $promise
             ->setMandate($mandate)
             ->setStatus(current($statuses))
-            ->setTitle('Demo promisiune')
+            ->setName('Demo promisiune')
             ->setSlug('demo-promisiune')
             ->setDescription('Demo descriere')
             ->setMadeTime(new \DateTime())
@@ -74,7 +74,7 @@ class AppFixtures extends Fixture
         $promiseNoStatus
             ->setMandate($mandate)
             ->setStatus(null)
-            ->setTitle('Demo promisiune fără statut')
+            ->setName('Demo promisiune fără statut')
             ->setSlug('demo-promisiune-fără-statut')
             ->setDescription('Demo descriere')
             ->setMadeTime(new \DateTime('-10 days'))

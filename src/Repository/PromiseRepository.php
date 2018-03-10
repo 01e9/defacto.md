@@ -19,7 +19,7 @@ class PromiseRepository extends ServiceEntityRepository
         $choices = [];
 
         foreach ($this->findAll() as $promise) { /** @var Promise $promise */
-            $choices[ $promise->getTitle() ] = $promise;
+            $choices[ $promise->getName() ] = $promise;
         }
 
         return $choices;

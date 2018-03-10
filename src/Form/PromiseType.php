@@ -35,9 +35,10 @@ class PromiseType extends AbstractType
             ])
             ->add('status', ChoiceType::class, [
                 'label' => 'label.status',
-                'placeholder' => 'placeholder.choose_option',
+                'placeholder' => 'placeholder.no_status',
                 'choices' => $options['statuses'],
                 'choice_value' => 'id',
+                'required' => false,
             ])
             ->add('mandate', ChoiceType::class, [
                 'label' => 'label.mandate',

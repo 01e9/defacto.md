@@ -14,7 +14,9 @@
                             <footer class="blockquote-footer">
                                 <small class="text-muted">{{ promise.madeTime|ago }}</small>
                             </footer>
-                            <div class="status" style="color: {{ promise.status.color }}">{{ promise.status.name }}</div>
+                            {% if promise.status %}
+                                <div class="status" style="color: {{ promise.status.color }}">{{ promise.status.name }}</div>
+                            {% endif %}
                         </blockquote>
                     </div>
                 </div>

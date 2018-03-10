@@ -36,7 +36,7 @@ class Promise
 
     /**
      * @ORM\ManyToOne(targetEntity="Status", fetch="EAGER")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $status;
 
@@ -104,7 +104,7 @@ class Promise
         return $this->status;
     }
 
-    public function setStatus(Status $status) : Promise
+    public function setStatus(?Status $status) : Promise
     {
         $this->status = $status;
 

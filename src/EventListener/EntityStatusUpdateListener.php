@@ -44,9 +44,7 @@ class EntityStatusUpdateListener
             ->getQuery()
             ->getOneOrNullResult();
 
-        if ($latestStatusUpdate) {
-            $promise->setStatus($latestStatusUpdate->getStatus());
-            $objectManager->flush();
-        }
+        $promise->setStatus($latestStatusUpdate ? $latestStatusUpdate->getStatus() : null);
+        $objectManager->flush();
     }
 }

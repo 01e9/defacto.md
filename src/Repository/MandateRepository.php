@@ -57,7 +57,7 @@ class MandateRepository extends ServiceEntityRepository
 
     public function getPromiseStatistics(Mandate $mandate)
     {
-        return $this->createQueryBuilder('m')
+        $statisticsWithStatus = $this->createQueryBuilder('m')
             ->select('COUNT(s.id) AS count', 's AS status')
             ->innerJoin('App:Promise', 'p', Expr\Join::WITH, 'p.published = true AND p.mandate = m.id')
             ->innerJoin('App:Status', 's', Expr\Join::WITH,'s.id = p.status')
@@ -67,5 +67,18 @@ class MandateRepository extends ServiceEntityRepository
             ->setParameter('mandate', $mandate)
             ->getQuery()
             ->getArrayResult();
+
+        $statisticsWithoutStatus = $this->createQueryBuilder('m')
+            ->select('COUNT(p.id) AS count')
+            ->innerJoin(
+                'App:Promise', 'p', Expr\Join::WITH,
+                'p.published = true AND p.status IS NULL AND p.mandate = m.id'
+            )
+            ->where('m.id = :mandate')
+            ->setParameter('mandate', $mandate)
+            ->getQuery()
+            ->getArrayResult();
+
+        return array_merge($statisticsWithStatus, $statisticsWithoutStatus);
     }
 }

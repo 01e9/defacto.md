@@ -3,8 +3,7 @@
 @import '~bootstrap-material-design/scss/bootstrap-material-design';
 @import "~@fortawesome/fontawesome-free-webfonts/css/fa-solid.css";
 @import "~@fortawesome/fontawesome-free-webfonts/css/fontawesome.css";
-
-//region Navbar
+@import "~instantsearch.js/dist/instantsearch.css";
 
 .navbar {
     .navbar-brand.logo-effect {
@@ -37,11 +36,44 @@
             right: -0.4em;
         }
     }
+
+    .instant-search-form {
+        position: relative;
+
+        .instant-search-results {
+            position: absolute;
+            top: 100%;
+            width: 100%;
+            left: 0;
+
+            .result-item {
+                padding: $spacer;
+
+                & + .result-item {
+                    padding-top: 0;
+                }
+
+                em {
+                    color: map-get($theme-colors, 'info');
+                    font-style: normal;
+                }
+            }
+
+            .card:after {
+                content: '';
+                display: block;
+                background: transparent url(https://www.algolia.com/static_assets/images/press/downloads/search-by-algolia.svg) no-repeat scroll center center;
+                background-size: contain;
+                height: 1.3em;
+                margin: 0 1em 1em;
+            }
+        }
+    }
+
+    &.sticky-top + .mandate-statistics {
+        padding-top: 1em;
+    }
 }
-
-//endregion
-
-//region Mandate Statistics
 
 .mandate-statistics {
     background-color: #f1f1f1;
@@ -56,11 +88,6 @@
         }
     }
 }
-.navbar.sticky-top + .mandate-statistics {
-    padding-top: 1em;
-}
-
-//endregion
 
 .promise-item {
     position: relative;

@@ -38,9 +38,14 @@
                     <a class="nav-link disabled" href="javascript:void(0)">{{ 'title.about_us'|trans }}</a>
                 </li>
             </ul>
-            <form class="form-inline my-2 my-lg-0" onsubmit="return false">
-                <input class="form-control mr-sm-2" type="text" placeholder="{{ 'placeholder.keywords'|trans }}" aria-label="Search">
+            <form class="form-inline my-2 my-lg-0 instant-search-form" onsubmit="return false">
+                <input class="form-control mr-sm-2"
+                       type="text"
+                       placeholder="{{ 'placeholder.keywords'|trans }}"
+                       aria-label="Search"
+                >
                 <button class="btn btn-sm btn-outline-primary my-2 my-sm-0" type="submit">{{ 'action.search'|trans }}</button>
+                <div class="instant-search-results card"></div>
             </form>
         </div>
     </div>

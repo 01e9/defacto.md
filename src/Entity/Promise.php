@@ -59,7 +59,6 @@ class Promise
 
     /**
      * @ORM\Column(type="text")
-     * @Groups({"searchable"})
      */
     private $description;
 

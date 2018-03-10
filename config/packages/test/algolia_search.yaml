@@ -1,0 +1,3 @@
+algolia_search:
+    doctrineSubscribedEvents: []  # disable doctrine events (turn off realtime sync)
+    indices: []

@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\PromiseRepository")
@@ -52,11 +53,13 @@ class Promise
 
     /**
      * @ORM\Column(type="string")
+     * @Groups({"searchable"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="text")
+     * @Groups({"searchable"})
      */
     private $description;
 

@@ -105,7 +105,7 @@ class Mandate
         return $this->beginDate;
     }
 
-    public function setBeginDate(\DateTime $date) : Mandate
+    public function setBeginDate(?\DateTime $date) : Mandate
     {
         $this->beginDate = $date;
 
@@ -117,7 +117,7 @@ class Mandate
         return $this->endDate;
     }
 
-    public function setEndDate(\DateTime $date) : Mandate
+    public function setEndDate(?\DateTime $date) : Mandate
     {
         $this->endDate = $date;
 
@@ -129,7 +129,7 @@ class Mandate
         return $this->politician;
     }
 
-    public function setPolitician(Politician $politician) : Mandate
+    public function setPolitician(?Politician $politician) : Mandate
     {
         $this->politician = $politician;
 
@@ -141,7 +141,7 @@ class Mandate
         return $this->institutionTitle;
     }
 
-    public function setInstitutionTitle(InstitutionTitle $institutionTitle) : Mandate
+    public function setInstitutionTitle(?InstitutionTitle $institutionTitle) : Mandate
     {
         $this->institutionTitle = $institutionTitle;
 
@@ -153,7 +153,7 @@ class Mandate
         return $this->votesCount;
     }
 
-    public function setVotesCount(int $count) : Mandate
+    public function setVotesCount(?int $count) : Mandate
     {
         $this->votesCount = $count;
 
@@ -165,7 +165,7 @@ class Mandate
         return $this->votesPercent;
     }
 
-    public function setVotesPercent(float $percent) : Mandate
+    public function setVotesPercent(?float $percent) : Mandate
     {
         $this->votesPercent = $percent;
 

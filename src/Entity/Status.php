@@ -81,7 +81,7 @@ class Status
         return $this->slug;
     }
 
-    public function setSlug(string $slug) : Status
+    public function setSlug(?string $slug) : Status
     {
         $this->slug = $slug;
 
@@ -93,7 +93,7 @@ class Status
         return $this->name;
     }
 
-    public function setName(string $name) : Status
+    public function setName(?string $name) : Status
     {
         $this->name = $name;
 
@@ -105,7 +105,7 @@ class Status
         return $this->namePlural;
     }
 
-    public function setNamePlural(string $namePlural) : Status
+    public function setNamePlural(?string $namePlural) : Status
     {
         $this->namePlural = $namePlural;
 
@@ -117,7 +117,7 @@ class Status
         return $this->effect;
     }
 
-    public function setEffect(int $effect) : Status
+    public function setEffect(?int $effect) : Status
     {
         $this->effect = $effect;
 
@@ -129,7 +129,7 @@ class Status
         return $this->color;
     }
 
-    public function setColor(string $color) : Status
+    public function setColor(?string $color) : Status
     {
         $this->color = $color;
 

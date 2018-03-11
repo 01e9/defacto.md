@@ -88,7 +88,7 @@ class Action
         return $this->slug;
     }
 
-    public function setSlug(string $slug) : Action
+    public function setSlug(?string $slug) : Action
     {
         $this->slug = $slug;
 
@@ -100,7 +100,7 @@ class Action
         return $this->occurredTime;
     }
 
-    public function setOccurredTime(\DateTime $date) : Action
+    public function setOccurredTime(?\DateTime $date) : Action
     {
         $this->occurredTime = $date;
 
@@ -112,7 +112,7 @@ class Action
         return $this->name;
     }
 
-    public function setName(string $name) : Action
+    public function setName(?string $name) : Action
     {
         $this->name = $name;
 
@@ -124,7 +124,7 @@ class Action
         return $this->description;
     }
 
-    public function setDescription(string $description) : Action
+    public function setDescription(?string $description) : Action
     {
         $this->description = $description;
 
@@ -136,7 +136,7 @@ class Action
         return $this->mandate;
     }
 
-    public function setMandate(Mandate $mandate) : Action
+    public function setMandate(?Mandate $mandate) : Action
     {
         $this->mandate = $mandate;
 
@@ -148,7 +148,7 @@ class Action
         return $this->published;
     }
 
-    public function setPublished(bool $published) : Action
+    public function setPublished(?bool $published) : Action
     {
         $this->published = $published;
 

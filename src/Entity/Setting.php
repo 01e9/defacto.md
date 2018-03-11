@@ -26,7 +26,7 @@ class Setting
         return $this->id;
     }
 
-    public function setId(string $id) : Setting
+    public function setId(?string $id) : Setting
     {
         $this->id = $id;
 
@@ -38,7 +38,7 @@ class Setting
         return $this->value;
     }
 
-    public function setValue(string $value) : Setting
+    public function setValue(?string $value) : Setting
     {
         $this->value = $value;
 

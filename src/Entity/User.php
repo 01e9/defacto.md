@@ -53,7 +53,7 @@ class User implements AdvancedUserInterface, \Serializable
         return $this->id;
     }
 
-    public function setId(string $id)
+    public function setId(?string $id)
     {
         $this->id = $id;
 
@@ -65,7 +65,7 @@ class User implements AdvancedUserInterface, \Serializable
         return $this->email;
     }
 
-    public function setEmail(string $email)
+    public function setEmail(?string $email)
     {
         $this->email = $email;
 
@@ -77,7 +77,7 @@ class User implements AdvancedUserInterface, \Serializable
         return $this->isActive;
     }
 
-    public function setIsActive(bool $isActive)
+    public function setIsActive(?bool $isActive)
     {
         $this->isActive = $isActive;
 
@@ -89,7 +89,7 @@ class User implements AdvancedUserInterface, \Serializable
         return $this->password;
     }
 
-    public function setPassword(string $password)
+    public function setPassword(?string $password)
     {
         $this->password = $password;
 
@@ -101,7 +101,7 @@ class User implements AdvancedUserInterface, \Serializable
         return $this->salt;
     }
 
-    public function setSalt(string $salt)
+    public function setSalt(?string $salt)
     {
         $this->salt = $salt;
 
@@ -122,7 +122,7 @@ class User implements AdvancedUserInterface, \Serializable
         return $this->roles;
     }
 
-    public function setRoles(array $roles)
+    public function setRoles(?array $roles)
     {
         $this->roles = $roles;
     }

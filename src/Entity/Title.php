@@ -56,7 +56,7 @@ class Title
         return $this->slug;
     }
 
-    public function setSlug(string $slug) : Title
+    public function setSlug(?string $slug) : Title
     {
         $this->slug = $slug;
 
@@ -68,7 +68,7 @@ class Title
         return $this->name;
     }
 
-    public function setName(string $name) : Title
+    public function setName(?string $name) : Title
     {
         $this->name = $name;
 

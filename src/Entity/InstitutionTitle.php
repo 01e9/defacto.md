@@ -53,7 +53,7 @@ class InstitutionTitle
         return $this->institution;
     }
 
-    public function setInstitution(Institution $institution) : InstitutionTitle
+    public function setInstitution(?Institution $institution) : InstitutionTitle
     {
         $this->institution = $institution;
 
@@ -65,7 +65,7 @@ class InstitutionTitle
         return $this->title;
     }
 
-    public function setTitle(Title $title) : InstitutionTitle
+    public function setTitle(?Title $title) : InstitutionTitle
     {
         $this->title = $title;
 

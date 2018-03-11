@@ -70,7 +70,7 @@ class Institution
         return $this->slug;
     }
 
-    public function setSlug(string $slug) : Institution
+    public function setSlug(?string $slug) : Institution
     {
         $this->slug = $slug;
 
@@ -82,7 +82,7 @@ class Institution
         return $this->name;
     }
 
-    public function setName(string $name) : Institution
+    public function setName(?string $name) : Institution
     {
         $this->name = $name;
 

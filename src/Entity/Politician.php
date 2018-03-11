@@ -33,7 +33,7 @@ class Politician
      * @ORM\Column(type="string", length=50)
      *
      * @Assert\NotBlank()
-     * @Assert\Length(min=3, max=30)
+     * @Assert\Length(min=3, max=50)
      * @Assert\Regex(
      *     pattern="/^\p{L}+(\-\p{L}+)*$/u",
      *     message="invalid.slug"
@@ -45,7 +45,7 @@ class Politician
      * @ORM\Column(type="string", length=20)
      *
      * @Assert\NotBlank()
-     * @Assert\Length(min=3, max=30)
+     * @Assert\Length(min=3, max=20)
      */
     private $firstName;
 
@@ -53,7 +53,7 @@ class Politician
      * @ORM\Column(type="string", length=20)
      *
      * @Assert\NotBlank()
-     * @Assert\Length(min=3, max=30)
+     * @Assert\Length(min=3, max=20)
      */
     private $lastName;
 
@@ -74,7 +74,7 @@ class Politician
         return $this->slug;
     }
 
-    public function setSlug(string $slug) : Politician
+    public function setSlug(?string $slug) : Politician
     {
         $this->slug = $slug;
 
@@ -86,7 +86,7 @@ class Politician
         return $this->firstName;
     }
 
-    public function setFirstName(string $firstName) : Politician
+    public function setFirstName(?string $firstName) : Politician
     {
         $this->firstName = $firstName;
 
@@ -98,7 +98,7 @@ class Politician
         return $this->lastName;
     }
 
-    public function setLastName(string $lastName) : Politician
+    public function setLastName(?string $lastName) : Politician
     {
         $this->lastName = $lastName;
 

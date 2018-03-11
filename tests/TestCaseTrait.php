@@ -24,6 +24,11 @@ trait TestCaseTrait
         return 'main';
     }
 
+    protected static function getTestsRootDir() : string
+    {
+        return __DIR__;
+    }
+
     protected static function logInClientAsRole(Client $client, string $role) : void
     {
         $user = self::createUserWithRole(

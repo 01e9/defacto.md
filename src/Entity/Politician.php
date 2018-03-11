@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\HttpFoundation\File\File;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\PoliticianRepository")
@@ -104,6 +105,9 @@ class Politician
         return $this;
     }
 
+    /**
+     * @return File
+     */
     public function getPhoto()
     {
         return $this->photo;

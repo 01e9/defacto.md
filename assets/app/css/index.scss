@@ -37,39 +37,6 @@
         }
     }
 
-    .instant-search-form {
-        position: relative;
-
-        .instant-search-results {
-            position: absolute;
-            top: 100%;
-            width: 100%;
-            left: 0;
-
-            .result-item {
-                padding: $spacer;
-
-                & + .result-item {
-                    padding-top: 0;
-                }
-
-                em {
-                    color: map-get($theme-colors, 'info');
-                    font-style: normal;
-                }
-            }
-
-            .card:after {
-                content: '';
-                display: block;
-                background: transparent url(https://www.algolia.com/static_assets/images/press/downloads/search-by-algolia.svg) no-repeat scroll center center;
-                background-size: contain;
-                height: 1.3em;
-                margin: 0 1em 1em;
-            }
-        }
-    }
-
     &.sticky-top + .mandate-statistics {
         padding-top: 1em;
     }
@@ -104,5 +71,27 @@
         border-radius: $border-radius;
         padding: .3em .3em 0;
         opacity: .5;
+    }
+}
+
+#instant-search-modal {
+    .list-group {
+        padding: 0;
+
+        .list-group-item {
+            &:last-child {
+                padding-bottom: 0;
+            }
+
+            :first-child {
+                margin-right: 0;
+            }
+
+            em {
+                color: darken(map-get($theme-colors, 'success'), 10%);
+                font-style: normal;
+                font-weight: bold;
+            }
+        }
     }
 }

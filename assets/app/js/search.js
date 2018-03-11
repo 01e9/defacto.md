@@ -4,15 +4,20 @@ import SearchBox from 'instantsearch.js/es/widgets/search-box/search-box'
 import { IS_PRODUCTION, ALGOLIA_APP_ID, ALGOLIA_API_KEY } from "../../config";
 
 jQuery(function ($) {
-    let $form = $('.instant-search-form').first();
+    let $modal = $('#instant-search-modal'),
+        $input = $modal.find('.modal-header input[type="text"]'),
+        $results = $modal.find('.modal-body');
 
-    if (!$form.length) {
-        return;
+    if (!$modal.length) {
+        return console.log('Skipped search modal init');
     }
 
-    let $input = $form.find('input[type="text"]'),
-        $result = $form.find('.instant-search-results');
+    $modal
+        .on('shown.bs.modal', () => $input.focus())
+        .one('show.bs.modal', () => init($input, $results));
+});
 
+function init($input, $results) {
     let search = new InstantSearch({
         appId: ALGOLIA_APP_ID,
         apiKey: ALGOLIA_API_KEY,
@@ -28,34 +33,24 @@ jQuery(function ($) {
             autofocus: false,
             magnifier: false,
             reset: false,
-            wrapInput: false,
-            queryHook(query, search) {
-                if (query === '') {
-                    $result.addClass('d-none');
-                } else {
-                    $result.removeClass('d-none');
-                    search(query);
-                }
-            }
+            wrapInput: false
         })
     );
 
     search.addWidget(
         Hits({
-            container: $result.get(0),
+            container: $results.get(0),
             templates: {
-                item: '<div>{{{_highlightResult.name.value}}}</div>'
+                item: '<div>{{{_highlightResult.name.value}}}</div>',
+                empty: '<span class="fa fa-minus-circle"></span>'
             },
             cssClasses: {
-                empty: 'd-none',
-                root: 'card',
-                item: 'result-item'
+                empty: 'text-muted pt-3',
+                root: 'list-group',
+                item: 'list-group-item px-0'
             }
         })
     );
 
-    $input.one('keyup', () => {
-        search.start();
-        $input.focus();
-    });
-});
+    search.start();
+}

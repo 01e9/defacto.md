@@ -60,6 +60,7 @@ action:
     edit_action: Modifică acțiune
     add_status_update: Adaugă modificare statut promisiune
     search: Caută
+    searching: Căutare
     edit_setting: Modifică setare
 
 title:

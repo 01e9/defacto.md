@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\PromiseRepository")
@@ -26,12 +27,21 @@ class Promise
 
     /**
      * @ORM\Column(name="slug", type="string", length=50)
+     *
+     * @Assert\NotBlank()
+     * @Assert\Length(min=3, max=50)
+     * @Assert\Regex(
+     *     pattern="/^\p{L}+(\-\p{L}+)*$/u",
+     *     message="invalid.slug"
+     * )
      */
     private $slug;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Mandate")
      * @ORM\JoinColumn(nullable=false)
+     *
+     * @Assert\NotBlank()
      */
     private $mandate;
 
@@ -48,17 +58,25 @@ class Promise
 
     /**
      * @ORM\Column(type="date")
+     *
+     * @Assert\Date()
      */
     private $madeTime;
 
     /**
      * @ORM\Column(type="string")
      * @Groups({"searchable"})
+     *
+     * @Assert\NotBlank()
+     * @Assert\Length(min=3, max=255)
      */
     private $name;
 
     /**
      * @ORM\Column(type="text")
+     *
+     * @Assert\NotBlank()
+     * @Assert\Length(min=3)
      */
     private $description;
 
@@ -83,7 +101,7 @@ class Promise
         return $this->slug;
     }
 
-    public function setSlug(string $slug) : Promise
+    public function setSlug(?string $slug) : Promise
     {
         $this->slug = $slug;
 
@@ -95,7 +113,7 @@ class Promise
         return $this->mandate;
     }
 
-    public function setMandate(Mandate $mandate) : Promise
+    public function setMandate(?Mandate $mandate) : Promise
     {
         $this->mandate = $mandate;
 
@@ -119,7 +137,7 @@ class Promise
         return $this->published;
     }
 
-    public function setPublished(bool $published) : Promise
+    public function setPublished(?bool $published) : Promise
     {
         $this->published = $published;
 
@@ -131,7 +149,7 @@ class Promise
         return $this->name;
     }
 
-    public function setName(string $name) : Promise
+    public function setName(?string $name) : Promise
     {
         $this->name = $name;
 
@@ -143,7 +161,7 @@ class Promise
         return $this->description;
     }
 
-    public function setDescription(string $description)
+    public function setDescription(?string $description)
     {
         $this->description = $description;
 
@@ -155,7 +173,7 @@ class Promise
         return $this->madeTime;
     }
 
-    public function setMadeTime(\DateTime $date) : Promise
+    public function setMadeTime(?\DateTime $date) : Promise
     {
         $this->madeTime = $date;
 

@@ -58,7 +58,7 @@ class AdminPromisesController extends Controller
                 $this->get('translator')->trans('flash.promise_created')
             );
 
-            return $this->redirectToRoute('admin_promises');
+            return $this->redirectToRoute('admin_promise_edit', ['id' => $promise->getId()]);
         }
 
         return $this->render('admin/page/promise/add.html.twig', [

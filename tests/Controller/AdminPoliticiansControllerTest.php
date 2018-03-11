@@ -27,10 +27,8 @@ class AdminPoliticiansControllerTest extends WebTestCase
     public function testAddActionSubmit()
     {
         $client = static::createClient();
-
-        self::logInClientAsRole($client, 'ROLE_ADMIN');
-
         $client->followRedirects(false);
+        self::logInClientAsRole($client, 'ROLE_ADMIN');
 
         $em = $client->getContainer()->get('doctrine.orm.default_entity_manager');
         $router = $client->getContainer()->get('router');
@@ -50,7 +48,7 @@ class AdminPoliticiansControllerTest extends WebTestCase
                 $client->submit($form, []);
                 $response = $client->getResponse();
                 $this->assertEquals(200, $response->getStatusCode());
-                $this->assertContains('is-invalid', $response->getContent(), 'Validation errors');
+                $this->assertContains('is-invalid', $response->getContent());
             }
 
             {
@@ -105,10 +103,8 @@ class AdminPoliticiansControllerTest extends WebTestCase
     public function testEditActionSubmit()
     {
         $client = static::createClient();
-
-        self::logInClientAsRole($client, 'ROLE_ADMIN');
-
         $client->followRedirects(false);
+        self::logInClientAsRole($client, 'ROLE_ADMIN');
 
         $em = $client->getContainer()->get('doctrine.orm.default_entity_manager');
         $router = $client->getContainer()->get('router');
@@ -138,7 +134,7 @@ class AdminPoliticiansControllerTest extends WebTestCase
                 ]);
                 $response = $client->getResponse();
                 $this->assertEquals(200, $response->getStatusCode());
-                $this->assertContains('is-invalid', $response->getContent(), 'Validation errors');
+                $this->assertContains('is-invalid', $response->getContent());
             }
 
             {
@@ -165,6 +161,7 @@ class AdminPoliticiansControllerTest extends WebTestCase
                 $this->assertEquals($lang, $route['_locale']);
 
                 $politician = $em->getRepository('App:Politician')->find($politician->getId());
+                $em->refresh($politician);
 
                 $this->assertEquals($photo->getMimeType(), $politician->getPhoto()->getMimeType());
             }

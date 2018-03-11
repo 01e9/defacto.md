@@ -88,10 +88,19 @@
             }
 
             em {
-                color: darken(map-get($theme-colors, 'success'), 10%);
+                color: #000;
                 font-style: normal;
                 font-weight: bold;
             }
         }
+    }
+
+    .modal-body:after {
+        content: '';
+        display: block;
+        background: transparent url(https://www.algolia.com/static_assets/images/press/downloads/search-by-algolia.svg) no-repeat scroll left center;
+        background-size: contain;
+        height: 1em;
+        margin-top: 2em;
     }
 }

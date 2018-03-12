@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -71,12 +72,17 @@ class Action
     private $published;
 
     /**
-     * @ORM\OneToMany(targetEntity="StatusUpdate", mappedBy="action", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="StatusUpdate", mappedBy="action", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      *
      * @Assert\Valid()
      */
     private $statusUpdates;
+
+    public function __construct()
+    {
+        $this->statusUpdates = new ArrayCollection();
+    }
 
     public function getId() : ?string
     {

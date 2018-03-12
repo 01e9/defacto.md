@@ -87,6 +87,10 @@ class AdminPoliticiansControllerTest extends WebTestCase
                 $em->flush();
             }
         }
+
+        $em->close();
+        $em = null;
+        static::$kernel->shutdown();
     }
 
     public function testEditActionAccess()
@@ -169,5 +173,9 @@ class AdminPoliticiansControllerTest extends WebTestCase
 
         $em->remove($politician);
         $em->flush();
+
+        $em->close();
+        $em = null;
+        static::$kernel->shutdown();
     }
 }

@@ -96,6 +96,10 @@ class AdminPromisesControllerTest extends WebTestCase
                 $em->flush();
             }
         }
+
+        $em->close();
+        $em = null;
+        static::$kernel->shutdown();
     }
 
     public function testEditActionAccess()
@@ -136,7 +140,7 @@ class AdminPromisesControllerTest extends WebTestCase
             'promise[description]' => 'Test',
             'promise[madeTime]' => (new \DateTime())->format('Y-m-d'),
             'promise[status]' => $em->getRepository('App:Status')->findOneBy([])->getId(),
-            'promise[mandate]' => $em->getRepository('App:Mandate')->findOneBy([])->getId(),
+            'promise[mandate]' => $promise->getMandate()->getId(),
             'promise[categories]' => [
                 $em->getRepository('App:Category')->findOneBy([])->getId()
             ],
@@ -196,5 +200,9 @@ class AdminPromisesControllerTest extends WebTestCase
 
         $em->remove($promise);
         $em->flush();
+
+        $em->close();
+        $em = null;
+        static::$kernel->shutdown();
     }
 }

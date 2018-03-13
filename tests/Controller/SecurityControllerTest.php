@@ -13,6 +13,7 @@ class SecurityControllerTest extends WebTestCase
     {
         $path = '/login';
         $client = static::createClient();
+        $client->insulate();
 
         // without lang
         {

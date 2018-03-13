@@ -13,6 +13,7 @@ class AdminSettingsControllerTest extends WebTestCase
     public function testIndexAction()
     {
         $client = static::createClient();
+        $client->insulate();
         $this->assertTrue(self::onlyAdminCanAccess('/admin/settings', $client));
     }
 

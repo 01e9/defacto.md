@@ -15,18 +15,21 @@ class AdminPoliticiansControllerTest extends WebTestCase
     public function testIndexAction()
     {
         $client = static::createClient();
+        $client->insulate();
         $this->assertTrue(self::onlyAdminCanAccess('/admin/politicians', $client));
     }
 
     public function testAddActionAccess()
     {
         $client = static::createClient();
+        $client->insulate();
         $this->assertTrue(self::onlyAdminCanAccess('/admin/politicians/add', $client));
     }
 
     public function testAddActionSubmit()
     {
         $client = static::createClient();
+        $client->insulate();
         $client->followRedirects(false);
         self::logInClientAsRole($client, 'ROLE_ADMIN');
 
@@ -61,6 +64,9 @@ class AdminPoliticiansControllerTest extends WebTestCase
                 $this->assertEquals($lang, $route['_locale']);
 
                 $politician = $em->getRepository('App:Politician')->find($route['id']);
+
+                $this->assertNotNull($politician);
+
                 $em->remove($politician);
                 $em->flush();
             }
@@ -68,9 +74,11 @@ class AdminPoliticiansControllerTest extends WebTestCase
             {
                 $photo = new UploadedFile(self::getTestsRootDir() . '/files/test.jpg', 'test.jpg');
 
+                $client->insulate(false);
                 $client->submit($form, array_merge($formData, [
                     'politician[photo]' => $photo,
                 ]));
+                $client->insulate(true);
                 $response = $client->getResponse();
                 $this->assertEquals(302, $response->getStatusCode());
 
@@ -80,7 +88,9 @@ class AdminPoliticiansControllerTest extends WebTestCase
 
                 /** @var Politician $politician */
                 $politician = $em->getRepository('App:Politician')->find($route['id']);
+                $em->refresh($politician); // fix lifecycle callbacks call
 
+                $this->assertNotNull($politician);
                 $this->assertEquals($photo->getMimeType(), $politician->getPhoto()->getMimeType());
 
                 $em->remove($politician);
@@ -96,6 +106,7 @@ class AdminPoliticiansControllerTest extends WebTestCase
     public function testEditActionAccess()
     {
         $client = static::createClient();
+        $client->insulate();
 
         /** @var ObjectManager $manager */
         $manager = $client->getContainer()->get('doctrine')->getManager();
@@ -107,6 +118,7 @@ class AdminPoliticiansControllerTest extends WebTestCase
     public function testEditActionSubmit()
     {
         $client = static::createClient();
+        $client->insulate();
         $client->followRedirects(false);
         self::logInClientAsRole($client, 'ROLE_ADMIN');
 
@@ -154,9 +166,11 @@ class AdminPoliticiansControllerTest extends WebTestCase
             {
                 $photo = new UploadedFile(self::getTestsRootDir() . '/files/test.gif', 'test.gif');
 
+                $client->insulate(false);
                 $client->submit($form, array_merge($formData, [
                     'politician[photo]' => $photo,
                 ]));
+                $client->insulate(true);
                 $response = $client->getResponse();
                 $this->assertEquals(302, $response->getStatusCode());
 
@@ -165,6 +179,9 @@ class AdminPoliticiansControllerTest extends WebTestCase
                 $this->assertEquals($lang, $route['_locale']);
 
                 $politician = $em->getRepository('App:Politician')->find($politician->getId());
+
+                $this->assertNotNull($politician);
+
                 $em->refresh($politician);
 
                 $this->assertEquals($photo->getMimeType(), $politician->getPhoto()->getMimeType());

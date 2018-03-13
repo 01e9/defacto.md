@@ -14,18 +14,21 @@ class AdminActionsControllerTest extends WebTestCase
     public function testIndexAction()
     {
         $client = static::createClient();
+        $client->insulate();
         $this->assertTrue(self::onlyAdminCanAccess('/admin/actions', $client));
     }
 
     public function testAddActionAccess()
     {
         $client = static::createClient();
+        $client->insulate();
         $this->assertTrue(self::onlyAdminCanAccess('/admin/actions/add', $client));
     }
 
     public function testAddActionSubmit()
     {
         $client = static::createClient();
+        $client->insulate();
         $client->followRedirects(false);
         self::logInClientAsRole($client, 'ROLE_ADMIN');
 
@@ -63,6 +66,9 @@ class AdminActionsControllerTest extends WebTestCase
                 $this->assertEquals($lang, $route['_locale']);
 
                 $action = $em->getRepository('App:Action')->find($route['id']);
+
+                $this->assertNotNull($action);
+
                 $em->remove($action);
                 $em->flush();
             }
@@ -76,6 +82,7 @@ class AdminActionsControllerTest extends WebTestCase
     public function testEditActionAccess()
     {
         $client = static::createClient();
+        $client->insulate();
 
         /** @var ObjectManager $manager */
         $manager = $client->getContainer()->get('doctrine')->getManager();
@@ -87,6 +94,7 @@ class AdminActionsControllerTest extends WebTestCase
     public function testEditActionSubmit()
     {
         $client = static::createClient();
+        $client->insulate();
         $client->followRedirects(false);
         self::logInClientAsRole($client, 'ROLE_ADMIN');
 
@@ -146,6 +154,9 @@ class AdminActionsControllerTest extends WebTestCase
                 $this->assertEquals($lang, $route['_locale']);
 
                 $action = $em->getRepository('App:Action')->find($action->getId());
+
+                $this->assertNotNull($action);
+
                 $em->refresh($action);
 
                 $this->assertEquals('Updated', $action->getName());
@@ -166,6 +177,9 @@ class AdminActionsControllerTest extends WebTestCase
                 $this->assertEquals($lang, $route['_locale']);
 
                 $action = $em->getRepository('App:Action')->find($action->getId());
+
+                $this->assertNotNull($action);
+
                 $em->refresh($action);
 
                 $this->assertCount(count($formData['action[statusUpdates]']), $action->getStatusUpdates());

@@ -12,6 +12,7 @@ class MainControllerTest extends WebTestCase
     public function testHomeAction()
     {
         $client = static::createClient();
+        $client->insulate();
 
         // without lang
         {

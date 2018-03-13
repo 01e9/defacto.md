@@ -14,18 +14,21 @@ class AdminPromisesControllerTest extends WebTestCase
     public function testIndexAction()
     {
         $client = static::createClient();
+        $client->insulate();
         $this->assertTrue(self::onlyAdminCanAccess('/admin/promises', $client));
     }
 
     public function testAddActionAccess()
     {
         $client = static::createClient();
+        $client->insulate();
         $this->assertTrue(self::onlyAdminCanAccess('/admin/promises/add', $client));
     }
 
     public function testAddActionSubmit()
     {
         $client = static::createClient();
+        $client->insulate();
         $client->followRedirects(false);
         self::logInClientAsRole($client, 'ROLE_ADMIN');
 
@@ -69,6 +72,7 @@ class AdminPromisesControllerTest extends WebTestCase
                 /** @var Promise $promise */
                 $promise = $em->getRepository('App:Promise')->find($route['id']);
 
+                $this->assertNotNull($promise);
                 $this->assertEquals(1, $promise->getCategories()->count());
                 $this->assertEquals($formData['promise[categories]'][0], $promise->getCategories()->first()->getId());
                 $this->assertEquals($formData['promise[status]'], $promise->getStatus()->getId());
@@ -90,6 +94,7 @@ class AdminPromisesControllerTest extends WebTestCase
 
                 $promise = $em->getRepository('App:Promise')->find($route['id']);
 
+                $this->assertNotNull($promise);
                 $this->assertEquals(null, $promise->getStatus());
 
                 $em->remove($promise);
@@ -105,6 +110,7 @@ class AdminPromisesControllerTest extends WebTestCase
     public function testEditActionAccess()
     {
         $client = static::createClient();
+        $client->insulate();
 
         /** @var ObjectManager $manager */
         $manager = $client->getContainer()->get('doctrine')->getManager();
@@ -116,6 +122,7 @@ class AdminPromisesControllerTest extends WebTestCase
     public function testEditActionSubmit()
     {
         $client = static::createClient();
+        $client->insulate();
         $client->followRedirects(false);
         self::logInClientAsRole($client, 'ROLE_ADMIN');
 
@@ -172,6 +179,9 @@ class AdminPromisesControllerTest extends WebTestCase
 
                 /** @var Promise $promise */
                 $promise = $em->getRepository('App:Promise')->find($promise->getId());
+
+                $this->assertNotNull($promise);
+
                 $em->refresh($promise);
 
                 $this->assertEquals(1, $promise->getCategories()->count());
@@ -192,6 +202,9 @@ class AdminPromisesControllerTest extends WebTestCase
 
                 /** @var Promise $promise */
                 $promise = $em->getRepository('App:Promise')->find($promise->getId());
+
+                $this->assertNotNull($promise);
+
                 $em->refresh($promise);
 
                 $this->assertEquals(null, $promise->getStatus());

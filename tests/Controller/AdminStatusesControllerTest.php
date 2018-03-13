@@ -13,12 +13,14 @@ class AdminStatusesControllerTest extends WebTestCase
     public function testAddAction()
     {
         $client = static::createClient();
+        $client->insulate();
         $this->assertTrue(self::onlyAdminCanAccess('/admin/statuses/add', $client));
     }
 
     public function testEditAction()
     {
         $client = static::createClient();
+        $client->insulate();
 
         /** @var ObjectManager $manager */
         $manager = $client->getContainer()->get('doctrine')->getManager();

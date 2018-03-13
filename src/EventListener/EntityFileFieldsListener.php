@@ -38,6 +38,11 @@ class EntityFileFieldsListener
         $this->uploadFiles($args->getEntity());
     }
 
+    public function postUpdate(LifecycleEventArgs $args)
+    {
+        $this->loadFiles($args->getEntity());
+    }
+
     public function postLoad(LifecycleEventArgs $args)
     {
         $this->loadFiles($args->getEntity());

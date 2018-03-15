@@ -65,7 +65,7 @@ class Status
      * @ORM\Column(type="string", length=7, nullable=true)
      *
      * @Assert\Regex(
-     *     pattern="/^#([a-f0-9]{3}){1,2}$/i",
+     *     pattern="/^#([a-f0-9]{3}){2}$/i",
      *     message="invalid.color"
      * )
      */

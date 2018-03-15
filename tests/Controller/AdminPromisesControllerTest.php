@@ -49,20 +49,24 @@ class AdminPromisesControllerTest extends WebTestCase
         ];
 
         foreach (self::getLangs() as $lang) {
-            $form = $client
-                ->request('GET', '/'. $lang .'/admin/promises/add')
-                ->filter('form')->form();
-
-            {
+            (function () use (&$client, &$lang) {
+                $form = $client
+                    ->request('GET', '/'. $lang .'/admin/promises/add')
+                    ->filter('form')->form();
                 $client->submit($form, []);
                 $response = $client->getResponse();
+
                 $this->assertEquals(200, $response->getStatusCode());
                 $this->assertContains('is-invalid', $response->getContent());
-            }
+            })();
 
-            {
+            (function () use (&$client, &$lang, &$formData, &$router, &$em) {
+                $form = $client
+                    ->request('GET', '/'. $lang .'/admin/promises/add')
+                    ->filter('form')->form();
                 $client->submit($form, $formData);
                 $response = $client->getResponse();
+
                 $this->assertEquals(302, $response->getStatusCode());
 
                 $route = $router->match($response->getTargetUrl());
@@ -79,9 +83,12 @@ class AdminPromisesControllerTest extends WebTestCase
 
                 $em->remove($promise);
                 $em->flush();
-            }
+            })();
 
-            {
+            (function () use (&$client, &$lang, &$formData, &$router, &$em) {
+                $form = $client
+                    ->request('GET', '/'. $lang .'/admin/promises/add')
+                    ->filter('form')->form();
                 $client->submit($form, array_merge($formData, [
                     'promise[status]' => '',
                 ]));
@@ -99,7 +106,7 @@ class AdminPromisesControllerTest extends WebTestCase
 
                 $em->remove($promise);
                 $em->flush();
-            }
+            })();
         }
 
         $em->close();
@@ -129,17 +136,21 @@ class AdminPromisesControllerTest extends WebTestCase
         $em = $client->getContainer()->get('doctrine.orm.default_entity_manager');
         $router = $client->getContainer()->get('router');
 
-        $promise = new Promise();
-        $promise
-            ->setName('Test')
-            ->setSlug('test')
-            ->setDescription('Test')
-            ->setMadeTime(new \DateTime())
-            ->setStatus(null)
-            ->setMandate($em->getRepository('App:Mandate')->findOneBy([]))
-            ->setPublished(true);
-        $em->persist($promise);
-        $em->flush();
+        $createPromise = function () use (&$em, &$initialMandate) : Promise {
+            $promise = new Promise();
+            $promise
+                ->setName('Test')
+                ->setSlug('test')
+                ->setDescription('Test')
+                ->setMadeTime(new \DateTime())
+                ->setStatus(null)
+                ->setMandate($em->getRepository('App:Mandate')->findOneBy([]))
+                ->setPublished(true);
+            $em->persist($promise);
+            $em->flush();
+
+            return $promise;
+        };
 
         $formData = [
             'promise[name]' => 'Test',
@@ -147,7 +158,7 @@ class AdminPromisesControllerTest extends WebTestCase
             'promise[description]' => 'Test',
             'promise[madeTime]' => (new \DateTime())->format('Y-m-d'),
             'promise[status]' => $em->getRepository('App:Status')->findOneBy([])->getId(),
-            'promise[mandate]' => $promise->getMandate()->getId(),
+            'promise[mandate]' => $em->getRepository('App:Mandate')->findOneBy([])->getId(),
             'promise[categories]' => [
                 $em->getRepository('App:Category')->findOneBy([])->getId()
             ],
@@ -155,22 +166,31 @@ class AdminPromisesControllerTest extends WebTestCase
         ];
 
         foreach (self::getLangs() as $lang) {
-            $form = $client
-                ->request('GET', '/'. $lang .'/admin/promises/'. $promise->getId())
-                ->filter('form')->form();
-
-            {
+            (function () use (&$client, &$lang, &$createPromise, &$em) {
+                $promise = $createPromise();
+                $form = $client
+                    ->request('GET', '/'. $lang .'/admin/promises/'. $promise->getId())
+                    ->filter('form')->form();
                 $client->submit($form, [
                     'promise[name]' => '',
                 ]);
                 $response = $client->getResponse();
+
                 $this->assertEquals(200, $response->getStatusCode());
                 $this->assertContains('is-invalid', $response->getContent());
-            }
 
-            {
+                $em->remove($promise);
+                $em->flush();
+            })();
+
+            (function () use (&$client, &$lang, &$createPromise, &$formData, &$router, &$em) {
+                $promise = $createPromise();
+                $form = $client
+                    ->request('GET', '/'. $lang .'/admin/promises/'. $promise->getId())
+                    ->filter('form')->form();
                 $client->submit($form, $formData);
                 $response = $client->getResponse();
+
                 $this->assertEquals(302, $response->getStatusCode());
 
                 $route = $router->match($response->getTargetUrl());
@@ -187,9 +207,16 @@ class AdminPromisesControllerTest extends WebTestCase
                 $this->assertEquals(1, $promise->getCategories()->count());
                 $this->assertEquals($formData['promise[categories]'][0], $promise->getCategories()->first()->getId());
                 $this->assertEquals($formData['promise[status]'], $promise->getStatus()->getId());
-            }
 
-            {
+                $em->remove($promise);
+                $em->flush();
+            })();
+
+            (function () use (&$client, &$lang, &$createPromise, &$formData, &$router, &$em) {
+                $promise = $createPromise();
+                $form = $client
+                    ->request('GET', '/'. $lang .'/admin/promises/'. $promise->getId())
+                    ->filter('form')->form();
                 $client->submit($form, array_merge($formData, [
                     'promise[status]' => '',
                 ]));
@@ -208,11 +235,11 @@ class AdminPromisesControllerTest extends WebTestCase
                 $em->refresh($promise);
 
                 $this->assertEquals(null, $promise->getStatus());
-            }
-        }
 
-        $em->remove($promise);
-        $em->flush();
+                $em->remove($promise);
+                $em->flush();
+            })();
+        }
 
         $em->close();
         $em = null;

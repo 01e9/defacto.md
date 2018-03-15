@@ -37,18 +37,20 @@ class AdminStatusesControllerTest extends WebTestCase
         ];
 
         foreach (self::getLangs() as $lang) {
-            $form = $client
-                ->request('GET', '/'. $lang .'/admin/statuses/add')
-                ->filter('form')->form();
-
-            {
+            (function () use (&$client, &$lang) {
+                $form = $client
+                    ->request('GET', '/'. $lang .'/admin/statuses/add')
+                    ->filter('form')->form();
                 $client->submit($form, []);
                 $response = $client->getResponse();
                 $this->assertEquals(200, $response->getStatusCode());
                 $this->assertContains('is-invalid', $response->getContent());
-            }
+            })();
 
-            {
+            (function () use (&$client, &$lang, &$formData, &$router, &$em) {
+                $form = $client
+                    ->request('GET', '/'. $lang .'/admin/statuses/add')
+                    ->filter('form')->form();
                 $client->submit($form, $formData);
                 $response = $client->getResponse();
                 $this->assertEquals(302, $response->getStatusCode());
@@ -66,7 +68,7 @@ class AdminStatusesControllerTest extends WebTestCase
 
                 $em->remove($status);
                 $em->flush();
-            }
+            })();
         }
 
         $em->close();
@@ -96,15 +98,7 @@ class AdminStatusesControllerTest extends WebTestCase
         $em = $client->getContainer()->get('doctrine.orm.default_entity_manager');
         $router = $client->getContainer()->get('router');
 
-        $formData = [
-            'status[name]' => 'Test update',
-            'status[namePlural]' => 'Test updates',
-            'status[slug]' => 'test-updates',
-            'status[color]' => '#00FF00',
-            'status[effect]' => '33',
-        ];
-
-        foreach (self::getLangs() as $lang) {
+        $createStatus = function () use (&$em) : Status {
             $status = new Status();
             $status
                 ->setName('Test')
@@ -115,20 +109,40 @@ class AdminStatusesControllerTest extends WebTestCase
             $em->persist($status);
             $em->flush();
 
-            $form = $client
-                ->request('GET', '/'. $lang .'/admin/statuses/'. $status->getId())
-                ->filter('form')->form();
+            return $status;
+        };
 
-            {
+        $formData = [
+            'status[name]' => 'Test update',
+            'status[namePlural]' => 'Test updates',
+            'status[slug]' => 'test-updates',
+            'status[color]' => '#00FF00',
+            'status[effect]' => '33',
+        ];
+
+        foreach (self::getLangs() as $lang) {
+            (function () use (&$client, &$lang, &$createStatus, &$em) {
+                $status = $createStatus();
+                $form = $client
+                    ->request('GET', '/'. $lang .'/admin/statuses/'. $status->getId())
+                    ->filter('form')->form();
                 $client->submit($form, [
                     'status[name]' => '?',
                 ]);
                 $response = $client->getResponse();
+
                 $this->assertEquals(200, $response->getStatusCode());
                 $this->assertContains('is-invalid', $response->getContent());
-            }
 
-            {
+                $em->remove($status);
+                $em->flush();
+            })();
+
+            (function () use (&$client, &$lang, &$createStatus, &$formData, &$em, &$router) {
+                $status = $createStatus();
+                $form = $client
+                    ->request('GET', '/'. $lang .'/admin/statuses/'. $status->getId())
+                    ->filter('form')->form();
                 $client->submit($form, $formData);
                 $response = $client->getResponse();
                 $this->assertEquals(302, $response->getStatusCode());
@@ -146,10 +160,10 @@ class AdminStatusesControllerTest extends WebTestCase
 
                 $this->assertEquals($formData['status[name]'], $status->getName());
                 $this->assertEquals($formData['status[color]'], $status->getColor());
-            }
 
-            $em->remove($status);
-            $em->flush();
+                $em->remove($status);
+                $em->flush();
+            })();
         }
 
         $em->close();

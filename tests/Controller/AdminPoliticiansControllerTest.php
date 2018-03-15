@@ -43,43 +43,53 @@ class AdminPoliticiansControllerTest extends WebTestCase
         ];
 
         foreach (self::getLangs() as $lang) {
-            $form = $client
-                ->request('GET', '/'. $lang .'/admin/politicians/add')
-                ->filter('form')->form();
-
-            {
+            (function () use (&$client, &$lang) {
+                $form = $client
+                    ->request('GET', '/'. $lang .'/admin/politicians/add')
+                    ->filter('form')->form();
                 $client->submit($form, []);
                 $response = $client->getResponse();
+
                 $this->assertEquals(200, $response->getStatusCode());
                 $this->assertContains('is-invalid', $response->getContent());
-            }
+            })();
 
-            {
+            (function () use (&$client, &$lang, &$em, &$router, &$formData) {
+                $form = $client
+                    ->request('GET', '/'. $lang .'/admin/politicians/add')
+                    ->filter('form')->form();
                 $client->submit($form, $formData);
                 $response = $client->getResponse();
+
                 $this->assertEquals(302, $response->getStatusCode());
 
                 $route = $router->match($response->getTargetUrl());
                 $this->assertEquals('admin_politician_edit', $route['_route']);
                 $this->assertEquals($lang, $route['_locale']);
 
+                /** @var Politician $politician */
                 $politician = $em->getRepository('App:Politician')->find($route['id']);
 
                 $this->assertNotNull($politician);
+                $this->assertEquals($formData['politician[firstName]'], $politician->getFirstName());
 
                 $em->remove($politician);
                 $em->flush();
-            }
+            })();
 
-            {
+            (function () use (&$client, &$lang, &$em, &$router, &$formData) {
                 $photo = new UploadedFile(self::getTestsRootDir() . '/files/test.jpg', 'test.jpg');
 
+                $form = $client
+                    ->request('GET', '/'. $lang .'/admin/politicians/add')
+                    ->filter('form')->form();
                 $client->insulate(false);
                 $client->submit($form, array_merge($formData, [
                     'politician[photo]' => $photo,
                 ]));
                 $client->insulate(true);
                 $response = $client->getResponse();
+
                 $this->assertEquals(302, $response->getStatusCode());
 
                 $route = $router->match($response->getTargetUrl());
@@ -95,7 +105,7 @@ class AdminPoliticiansControllerTest extends WebTestCase
 
                 $em->remove($politician);
                 $em->flush();
-            }
+            })();
         }
 
         $em->close();
@@ -125,13 +135,17 @@ class AdminPoliticiansControllerTest extends WebTestCase
         $em = $client->getContainer()->get('doctrine.orm.default_entity_manager');
         $router = $client->getContainer()->get('router');
 
-        $politician = new Politician();
-        $politician
-            ->setFirstName('Test')
-            ->setLastName('Test')
-            ->setSlug('test');
-        $em->persist($politician);
-        $em->flush();
+        $createPolitician = function() use (&$em) : Politician {
+            $politician = new Politician();
+            $politician
+                ->setFirstName('Test')
+                ->setLastName('Test')
+                ->setSlug('test');
+            $em->persist($politician);
+            $em->flush();
+
+            return $politician;
+        };
 
         $formData = [
             'politician[firstName]' => 'Test',
@@ -140,32 +154,48 @@ class AdminPoliticiansControllerTest extends WebTestCase
         ];
 
         foreach (self::getLangs() as $lang) {
-            $form = $client
-                ->request('GET', '/'. $lang .'/admin/politicians/'. $politician->getId())
-                ->filter('form')->form();
-
-            {
+            (function () use (&$lang, &$client, &$createPolitician, &$em) {
+                $politician = $createPolitician();
+                $form = $client
+                    ->request('GET', '/'. $lang .'/admin/politicians/'. $politician->getId())
+                    ->filter('form')->form();
                 $client->submit($form, [
                     'politician[firstName]' => '?',
                 ]);
                 $response = $client->getResponse();
+
                 $this->assertEquals(200, $response->getStatusCode());
                 $this->assertContains('is-invalid', $response->getContent());
-            }
 
-            {
+                $em->remove($politician);
+                $em->flush();
+            })();
+
+            (function () use (&$lang, &$client, &$createPolitician, &$em, &$formData, &$router) {
+                $politician = $createPolitician();
+                $form = $client
+                    ->request('GET', '/'. $lang .'/admin/politicians/'. $politician->getId())
+                    ->filter('form')->form();
                 $client->submit($form, $formData);
                 $response = $client->getResponse();
+
                 $this->assertEquals(302, $response->getStatusCode());
 
                 $route = $router->match($response->getTargetUrl());
                 $this->assertEquals('admin_politicians', $route['_route']);
                 $this->assertEquals($lang, $route['_locale']);
-            }
 
-            {
+                $em->remove($politician);
+                $em->flush();
+            })();
+
+            (function () use (&$lang, &$client, &$createPolitician, &$em, &$formData, &$router) {
                 $photo = new UploadedFile(self::getTestsRootDir() . '/files/test.gif', 'test.gif');
 
+                $politician = $createPolitician();
+                $form = $client
+                    ->request('GET', '/'. $lang .'/admin/politicians/'. $politician->getId())
+                    ->filter('form')->form();
                 $client->insulate(false);
                 $client->submit($form, array_merge($formData, [
                     'politician[photo]' => $photo,
@@ -185,11 +215,11 @@ class AdminPoliticiansControllerTest extends WebTestCase
                 $em->refresh($politician);
 
                 $this->assertEquals($photo->getMimeType(), $politician->getPhoto()->getMimeType());
-            }
-        }
 
-        $em->remove($politician);
-        $em->flush();
+                $em->remove($politician);
+                $em->flush();
+            })();
+        }
 
         $em->close();
         $em = null;

@@ -38,20 +38,24 @@ class AdminMandatesControllerTest extends WebTestCase
         ];
 
         foreach (self::getLangs() as $lang) {
-            $form = $client
-                ->request('GET', '/'. $lang .'/admin/mandates/add')
-                ->filter('form')->form();
-
-            {
+            (function () use (&$client, &$lang) {
+                $form = $client
+                    ->request('GET', '/'. $lang .'/admin/mandates/add')
+                    ->filter('form')->form();
                 $client->submit($form, []);
                 $response = $client->getResponse();
+
                 $this->assertEquals(200, $response->getStatusCode());
                 $this->assertContains('is-invalid', $response->getContent());
-            }
+            })();
 
-            {
+            (function () use (&$client, &$lang, &$formData, &$em, &$router) {
+                $form = $client
+                    ->request('GET', '/'. $lang .'/admin/mandates/add')
+                    ->filter('form')->form();
                 $client->submit($form, $formData);
                 $response = $client->getResponse();
+
                 $this->assertEquals(302, $response->getStatusCode());
 
                 $route = $router->match($response->getTargetUrl());
@@ -66,7 +70,7 @@ class AdminMandatesControllerTest extends WebTestCase
 
                 $em->remove($mandate);
                 $em->flush();
-            }
+            })();
         }
 
         $em->close();
@@ -96,16 +100,20 @@ class AdminMandatesControllerTest extends WebTestCase
         $em = $client->getContainer()->get('doctrine.orm.default_entity_manager');
         $router = $client->getContainer()->get('router');
 
-        $mandate = new Mandate();
-        $mandate
-            ->setVotesCount(1000000)
-            ->setVotesPercent(51)
-            ->setBeginDate(new \DateTime('-2 years'))
-            ->setEndDate(new \DateTime('+2 years'))
-            ->setPolitician($em->getRepository('App:Politician')->findOneBy([]))
-            ->setInstitutionTitle($em->getRepository('App:InstitutionTitle')->findOneBy([]));
-        $em->persist($mandate);
-        $em->flush();
+        $createMandate = function() use (&$em) : Mandate {
+            $mandate = new Mandate();
+            $mandate
+                ->setVotesCount(1000000)
+                ->setVotesPercent(51)
+                ->setBeginDate(new \DateTime('-2 years'))
+                ->setEndDate(new \DateTime('+2 years'))
+                ->setPolitician($em->getRepository('App:Politician')->findOneBy([]))
+                ->setInstitutionTitle($em->getRepository('App:InstitutionTitle')->findOneBy([]));
+            $em->persist($mandate);
+            $em->flush();
+
+            return $mandate;
+        };
 
         $formData = [
             'mandate[votesCount]' => 1000001,
@@ -117,22 +125,29 @@ class AdminMandatesControllerTest extends WebTestCase
         ];
 
         foreach (self::getLangs() as $lang) {
-            $form = $client
-                ->request('GET', '/'. $lang .'/admin/mandates/'. $mandate->getId())
-                ->filter('form')->form();
-
-            {
-                $client->submit($form, [
-                    'mandate[votesCount]' => '?',
-                ]);
+            (function () use (&$createMandate, &$lang, &$client, &$em) {
+                $mandate = $createMandate();
+                $form = $client
+                    ->request('GET', '/'. $lang .'/admin/mandates/'. $mandate->getId())
+                    ->filter('form')->form();
+                $client->submit($form, ['mandate[votesCount]' => '?']);
                 $response = $client->getResponse();
+
                 $this->assertEquals(200, $response->getStatusCode());
                 $this->assertContains('is-invalid', $response->getContent());
-            }
 
-            {
+                $em->remove($mandate);
+                $em->flush();
+            })();
+
+            (function () use (&$createMandate, &$lang, &$client, &$em, &$formData, &$router) {
+                $mandate = $createMandate();
+                $form = $client
+                    ->request('GET', '/'. $lang .'/admin/mandates/'. $mandate->getId())
+                    ->filter('form')->form();
                 $client->submit($form, $formData);
                 $response = $client->getResponse();
+
                 $this->assertEquals(302, $response->getStatusCode());
 
                 $route = $router->match($response->getTargetUrl());
@@ -146,11 +161,11 @@ class AdminMandatesControllerTest extends WebTestCase
                 $em->refresh($mandate);
 
                 $this->assertEquals($formData['mandate[votesCount]'], $mandate->getVotesCount());
-            }
-        }
 
-        $em->remove($mandate);
-        $em->flush();
+                $em->remove($mandate);
+                $em->flush();
+            })();
+        }
 
         $em->close();
         $em = null;

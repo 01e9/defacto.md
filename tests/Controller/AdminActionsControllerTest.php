@@ -45,18 +45,21 @@ class AdminActionsControllerTest extends WebTestCase
         ];
 
         foreach (self::getLangs() as $lang) {
-            $form = $client
-                ->request('GET', '/'. $lang .'/admin/actions/add')
-                ->filter('form')->form();
-
-            {
+            (function () use (&$em, &$client, &$lang) {
+                $form = $client
+                    ->request('GET', '/'. $lang .'/admin/actions/add')
+                    ->filter('form')->form();
                 $client->submit($form, []);
                 $response = $client->getResponse();
+
                 $this->assertEquals(200, $response->getStatusCode());
                 $this->assertContains('is-invalid', $response->getContent());
-            }
+            })();
 
-            {
+            (function () use (&$em, &$client, &$lang, &$formData, &$router) {
+                $form = $client
+                    ->request('GET', '/'. $lang .'/admin/actions/add')
+                    ->filter('form')->form();
                 $client->submit($form, $formData);
                 $response = $client->getResponse();
                 $this->assertEquals(302, $response->getStatusCode());
@@ -71,7 +74,7 @@ class AdminActionsControllerTest extends WebTestCase
 
                 $em->remove($action);
                 $em->flush();
-            }
+            })();
         }
 
         $em->close();
@@ -101,52 +104,66 @@ class AdminActionsControllerTest extends WebTestCase
         $em = $client->getContainer()->get('doctrine.orm.default_entity_manager');
         $router = $client->getContainer()->get('router');
 
-        $action = new Action();
-        $action
-            ->setName('Test')
-            ->setSlug('test')
-            ->setDescription('Test')
-            ->setOccurredTime(new \DateTime())
-            ->setPublished(true)
-            ->setMandate($em->getRepository('App:Mandate')->findOneBy([]));
-        $em->persist($action);
-        $em->flush();
+        $createAction = function () use (&$em) : Action {
+            $action = new Action();
+            $action
+                ->setName('Test')
+                ->setSlug('test')
+                ->setDescription('Test')
+                ->setOccurredTime(new \DateTime())
+                ->setPublished(true)
+                ->setMandate($em->getRepository('App:Mandate')->findOneBy([]));
+            $em->persist($action);
+            $em->flush();
 
-        $formData = [
-            'action[name]' => 'Updated',
-            'action[slug]' => 'updated',
-            'action[description]' => 'Updated',
-            'action[occurredTime]' => (new \DateTime())->format('Y-m-d'),
-            'action[published]' => true,
-            'action[mandate]' => $action->getMandate()->getId(),
-            'action[statusUpdates]' => [
-                [
-                    'action' => $action->getId(),
-                    'promise' => $em->getRepository('App:Promise')->findOneBy([
-                        'mandate' => $action->getMandate()->getId(),
-                    ])->getId(),
-                    'status' => $em->getRepository('App:Status')->findOneBy([])->getId(),
-                ]
-            ],
-        ];
+            return $action;
+        };
+
+        $createFormData = function (Action $action) use (&$em) {
+            return [
+                'action[name]' => 'Updated',
+                'action[slug]' => 'updated',
+                'action[description]' => 'Updated',
+                'action[occurredTime]' => (new \DateTime())->format('Y-m-d'),
+                'action[published]' => true,
+                'action[mandate]' => $action->getMandate()->getId(),
+                'action[statusUpdates]' => [
+                    [
+                        'action' => $action->getId(),
+                        'promise' => $em->getRepository('App:Promise')->findOneBy([
+                            'mandate' => $action->getMandate()->getId(),
+                        ])->getId(),
+                        'status' => $em->getRepository('App:Status')->findOneBy([])->getId(),
+                    ]
+                ],
+            ];
+        };
 
         foreach (self::getLangs() as $lang) {
-            $form = $client
-                ->request('GET', '/'. $lang .'/admin/actions/'. $action->getId())
-                ->filter('form')->form();
-
-            {
-                $client->submit($form, [
-                    'action[name]' => '',
-                ]);
+            (function () use (&$em, &$client, &$lang, &$createAction) {
+                $action = $createAction();
+                $form = $client
+                    ->request('GET', '/'. $lang .'/admin/actions/'. $action->getId())
+                    ->filter('form')->form();
+                $client->submit($form, ['action[name]' => '']);
                 $response = $client->getResponse();
+
                 $this->assertEquals(200, $response->getStatusCode());
                 $this->assertContains('is-invalid', $response->getContent());
-            }
 
-            {
+                $em->remove($action);
+                $em->flush();
+            })();
+
+            (function () use (&$em, &$client, &$lang, &$createAction, &$createFormData, &$router) {
+                $action = $createAction();
+                $formData = $createFormData($action);
+                $form = $client
+                    ->request('GET', '/'. $lang .'/admin/actions/'. $action->getId())
+                    ->filter('form')->form();
                 $client->submit($form, array_diff_key($formData, ['action[statusUpdates]' => false]));
                 $response = $client->getResponse();
+
                 $this->assertEquals(302, $response->getStatusCode());
 
                 $route = $router->match($response->getTargetUrl());
@@ -161,15 +178,23 @@ class AdminActionsControllerTest extends WebTestCase
 
                 $this->assertEquals('Updated', $action->getName());
                 $this->assertCount(0, $action->getStatusUpdates());
-            }
 
-            {
+                $em->remove($action);
+                $em->flush();
+            })();
+
+            (function () use (&$em, &$client, &$lang, &$createAction, &$createFormData, &$router) {
+                $action = $createAction();
+                $formData = $createFormData($action);
+                $form = $client
+                    ->request('GET', '/'. $lang .'/admin/actions/'. $action->getId())
+                    ->filter('form')->form();
                 $formPhpValues = $form->getPhpValues();
                 $formPhpValues['action']['statusUpdates'] = $formData['action[statusUpdates]'];
 
                 $client->request($form->getMethod(), $form->getUri(), $formPhpValues);
-
                 $response = $client->getResponse();
+
                 $this->assertEquals(302, $response->getStatusCode());
 
                 $route = $router->match($response->getTargetUrl());
@@ -183,11 +208,11 @@ class AdminActionsControllerTest extends WebTestCase
                 $em->refresh($action);
 
                 $this->assertCount(count($formData['action[statusUpdates]']), $action->getStatusUpdates());
-            }
-        }
 
-        $em->remove($action);
-        $em->flush();
+                $em->remove($action);
+                $em->flush();
+            })();
+        }
 
         $em->close();
         $em = null;

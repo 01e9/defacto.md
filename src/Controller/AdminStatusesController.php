@@ -39,7 +39,7 @@ class AdminStatusesController extends Controller
                 $this->get('translator')->trans('flash.status_created')
             );
 
-            return $this->redirectToRoute('admin_promises');
+            return $this->redirectToRoute('admin_status_edit', ['id' => $status->getId()]);
         }
 
         return $this->render('admin/page/status/add.html.twig', [

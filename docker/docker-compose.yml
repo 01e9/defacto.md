@@ -3,14 +3,9 @@ version: '3.4'
 services:
     defacto:
         container_name: defacto
-        image: defacto:1.0
+        image: defacto:1.1
         build:
             context: .
-            args:
-                USER: ${USER}
-                GROUP: ${USER}
-                UID: ${UID:-1000}
-                GID: ${GID:-1000}
         volumes:
             - ${HOME}:${HOME}
             - /tmp/.X11-unix:/tmp/.X11-unix

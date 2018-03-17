@@ -1,0 +1,6 @@
+version: '3.4'
+
+services:
+    defacto:
+        build:
+            args: { USER: YOUR_USER_NAME, UID: YOUR_USER_ID }

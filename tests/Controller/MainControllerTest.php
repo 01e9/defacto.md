@@ -15,7 +15,7 @@ class MainControllerTest extends WebTestCase
         $client->insulate();
 
         // without lang
-        {
+        (function () use (&$client) {
             $client->restart();
             $client->request('GET', '/');
             $response = $client->getResponse();
@@ -24,15 +24,17 @@ class MainControllerTest extends WebTestCase
 
             $redirectPath = parse_url($response->headers->get('location'), PHP_URL_PATH);
             $this->assertEquals('/'. current(self::getLangs()) .'/', $redirectPath);
-        }
+        })();
 
         foreach (self::getLangs() as $lang) {
-            $client->restart();
-            $crawler = $client->request('GET', '/'. $lang .'/');
-            $response = $client->getResponse();
+            (function () use (&$client, &$lang) {
+                $client->restart();
+                $crawler = $client->request('GET', '/'. $lang .'/');
+                $response = $client->getResponse();
 
-            $this->assertEquals(200, $response->getStatusCode());
-            $this->assertEquals(1, $crawler->filter('body')->count());
+                $this->assertEquals(200, $response->getStatusCode());
+                $this->assertEquals(1, $crawler->filter('body')->count());
+            })();
         }
     }
 }

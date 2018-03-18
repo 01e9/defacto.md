@@ -81,6 +81,17 @@ class AppFixtures extends Fixture
             ->setPublished(true);
         $manager->persist($promiseNoStatus);
 
+        $promiseUnpublished = new Promise();
+        $promiseUnpublished
+            ->setMandate($mandate)
+            ->setStatus(null)
+            ->setName('Demo promisiune nepublicată')
+            ->setSlug('demo-promisiune-nepublicată')
+            ->setDescription('Demo descriere')
+            ->setMadeTime(new \DateTime('-10 days'))
+            ->setPublished(false);
+        $manager->persist($promiseUnpublished);
+
         $action = new Action();
         $action
             ->setMandate($mandate)

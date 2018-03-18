@@ -5,7 +5,8 @@
     {% set maxCount = max(maxCount, promise.count) %}
 {% endfor %}
 
-<div class="mandate-statistics pb-5">
+<div class="mandate-statistics bg-gray-pattern pb-5">
+    {% include 'app/component/after-header-space.html.twig' %}
     <div class="container">
         <div class="row">
             <div class="col text-center pb-3">
@@ -13,16 +14,15 @@
             </div>
         </div>
         <div class="row align-items-lg-center">
-            <div class="photo-col col-md-6 offset-md-3 offset-lg-0 col-lg-4 mb-4 mb-lg-0">
-                <div class="card">
-                    <div class="card-body">
-                        <img src="{{ mandate.politician.photo ? asset('uploads/politicians/' ~ mandate.politician.photo.filename) : 'about:blank' }}"
-                             class="rounded-circle img-fluid mb-3" alt="Politician">
-                        <h3 class="text-center">
-                            {{ mandate.politician.firstName }} {{ mandate.politician.lastName }}
-                        </h3>
-                    </div>
-                </div>
+            <div class="photo-col col-lg-4 mb-4 mb-lg-0">
+                <img src="{{ mandate.politician.photo ? asset('uploads/politicians/' ~ mandate.politician.photo.filename) : 'about:blank' }}"
+                     class="rounded-circle img-fluid mb-3" alt="Politician">
+                <h3 class="text-center">
+                    <a href="javascript:void(0)">
+                        {{- mandate.politician.firstName }}
+                        {{ mandate.politician.lastName -}}
+                    </a>
+                </h3>
             </div>
             <div class="w-100 d-lg-none"></div>
             <div class="col-md-6 col-lg-4 order-lg-first mb-4 mb-md-0">
@@ -57,15 +57,18 @@
                 <div class="card">
                     <div class="card-body">
                         <h2 class="mb-4">{{ 'title.mandate'|trans }}</h2>
+                        {% set statistics_color = 'primary' %}
                         <div class="h5">
                             <div>
                                 {{ 'title.votes'|trans }}
                                 <sup class="text-muted">
-                                    <span class="text-primary">{{ mandate.votesCount }}</span>&nbsp;&middot;&nbsp;<span class="text-primary">{{ mandate.votesPercent }}%</span>
+                                    <span class="text-{{ statistics_color }}">{{ mandate.votesCount }}</span>
+                                    &nbsp;&middot;&nbsp;
+                                    <span class="text-{{ statistics_color }}">{{ mandate.votesPercent }}%</span>
                                 </sup>
                             </div>
                             <div class="progress mt-1 mb-4">
-                                <div class="progress-bar"
+                                <div class="progress-bar bg-{{ statistics_color }}"
                                      style="width: {{ mandate.votesPercent }}%;"
                                 ></div>
                             </div>
@@ -74,11 +77,13 @@
                             <div>
                                 {{ 'title.the_duration'|trans }}
                                 <sup class="text-muted">
-                                    <span class="text-primary">{{ mandate.beginDate|date('m.Y') }}</span>&nbsp;&middot;&nbsp;<span class="text-primary">{{ mandate.endDate|date('m.Y') }}</span>
+                                    <span class="text-{{ statistics_color }}">{{ mandate.beginDate|date('m.Y') }}</span>
+                                    &nbsp;&middot;&nbsp;
+                                    <span class="text-{{ statistics_color }}">{{ mandate.endDate|date('m.Y') }}</span>
                                 </sup>
                             </div>
                             <div class="progress mt-1">
-                                <div class="progress-bar"
+                                <div class="progress-bar bg-{{ statistics_color }}"
                                      style="width: {{ '' ~ macros.get_date_interval_progress(mandate.beginDate, mandate.endDate) }}%;"
                                 ></div>
                             </div>

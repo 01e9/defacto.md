@@ -1,0 +1,39 @@
+{% extends 'app/base.html.twig' %}
+
+{% set politician_photo = promise.mandate.politician.photo
+    ? asset('uploads/politicians/' ~ promise.mandate.politician.photo.filename)
+    : 'about:blank'
+%}
+
+{% block main %}
+    <div class="container-fluid bg-gray-pattern">
+        {% include 'app/component/after-header-space.html.twig' %}
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-5 col-xl-4 mb-3 mb-lg-0">
+                    <div class="row promise-made-by">
+                        <div class="col">
+                            <div class="d-lg-flex align-items-center text-center">
+                                <img class="rounded-circle img-fluid mr-0 mr-lg-3 mb-3 mb-lg-0"
+                                     src="{{ politician_photo }}"
+                                     alt="Politician">
+                                <h4>
+                                    <a href="javascript:void(0)">
+                                        {{- promise.mandate.politician.firstName }}
+                                        {{ promise.mandate.politician.lastName -}}
+                                    </a>
+                                    <br>
+                                    {{ 'title._promised'|trans }}
+                                </h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-7 col-xl-8">
+                    {% include 'app/component/item/promise.html.twig' with {promise: promise, no_link: true} only %}
+                </div>
+            </div>
+        </div>
+        {% include 'app/component/after-header-space.html.twig' %}
+    </div>
+{% endblock %}

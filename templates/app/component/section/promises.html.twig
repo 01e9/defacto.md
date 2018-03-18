@@ -8,17 +8,7 @@
         <div class="row justify-content-md-center">
             {% for promise in promises %}
                 <div class="col-md-6 col-lg-4">
-                    <div class="card p-3 promise-item bg-light">
-                        <blockquote class="blockquote mb-0 card-body">
-                            <p>{{ promise.name }}</p>
-                            <footer class="blockquote-footer">
-                                <small class="text-muted">{{ promise.madeTime|ago }}</small>
-                            </footer>
-                            {% if promise.status %}
-                                <div class="status" style="color: {{ promise.status.color }}">{{ promise.status.name }}</div>
-                            {% endif %}
-                        </blockquote>
-                    </div>
+                    {% include 'app/component/item/promise.html.twig' with {promise: promise} only %}
                 </div>
             {% endfor %}
         </div>

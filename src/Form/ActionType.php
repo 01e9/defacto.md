@@ -25,6 +25,7 @@ class ActionType extends AbstractType
             ])
             ->add('slug', TextType::class, [
                 'label' => 'label.slug',
+                'attr' => ['data-slug-from' => 'action[name]'],
             ])
             ->add('description', TextareaType::class, [
                 'label' => 'label.description',

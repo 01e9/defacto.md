@@ -24,6 +24,7 @@ class PromiseType extends AbstractType
             ])
             ->add('slug', TextType::class, [
                 'label' => 'label.slug',
+                'attr' => ['data-slug-from' => 'promise[name]'],
             ])
             ->add('description', TextareaType::class, [
                 'label' => 'label.description',

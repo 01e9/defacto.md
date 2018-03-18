@@ -22,6 +22,7 @@ class PoliticianType extends AbstractType
             ])
             ->add('slug', TextType::class, [
                 'label' => 'label.slug',
+                'attr' => ['data-slug-from' => 'politician[firstName],politician[lastName]'],
             ])
             ->add('photo', FileType::class, [
                 'label' => 'label.photo',

@@ -9,6 +9,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class SettingType extends AbstractType
 {
@@ -24,7 +25,11 @@ class SettingType extends AbstractType
         switch ($options['type']) {
             case 'string':
                 $builder->add('value', TextType::class, [
-                    'label' => $options['label']
+                    'label' => $options['label'],
+                    'required' => !$options['has_default'],
+                    'constraints' => $options['has_default'] ? [] : [
+                        new NotBlank()
+                    ],
                 ]);
                 break;
             case 'App:InstitutionTitle':
@@ -32,10 +37,15 @@ class SettingType extends AbstractType
                     'label' => $options['label'],
                     'placeholder' => 'placeholder.choose_option',
                     'choices' => $this->entityManager->getRepository($options['type'])->getAdminChoices(),
+                    'choice_value' => 'id',
+                    'required' => !$options['has_default'],
+                    'constraints' => $options['has_default'] ? [] : [
+                        new NotBlank()
+                    ],
                 ]);
                 $builder->get('value')->addModelTransformer(new CallbackTransformer(
                     function ($value) { return $value; },
-                    function ($value) { return $value->getId(); }
+                    function ($value) { return $value ? $value->getId() : $value; }
                 ));
                 break;
         }
@@ -46,6 +56,7 @@ class SettingType extends AbstractType
         $resolver->setDefaults([
             'label' => '?',
             'type' => null,
+            'has_default' => false,
         ]);
     }
 }

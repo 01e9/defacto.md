@@ -48,6 +48,7 @@ class AdminSettingsController extends Controller
         ], [
             'label' => $config['name'],
             'type' => $config['type'],
+            'has_default' => !is_null($config['default'])
         ]);
         $form->handleRequest($request);
 

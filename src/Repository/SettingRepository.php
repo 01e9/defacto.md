@@ -19,6 +19,11 @@ class SettingRepository extends ServiceEntityRepository
         ]
     ];
 
+    public static function getWhiteList() : array
+    {
+        return self::$whitelist;
+    }
+
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, Setting::class);

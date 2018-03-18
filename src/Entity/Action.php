@@ -30,6 +30,7 @@ class Action
 
     /**
      * @ORM\Column(type="string", length=50)
+     * @Groups({"searchable"})
      *
      * @Assert\NotBlank()
      * @Assert\Length(min=3, max=30)

@@ -27,6 +27,7 @@ class Promise
 
     /**
      * @ORM\Column(name="slug", type="string", length=50)
+     * @Groups({"searchable"})
      *
      * @Assert\NotBlank()
      * @Assert\Length(min=3, max=50)

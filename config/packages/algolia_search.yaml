@@ -4,5 +4,19 @@ algolia_search:
     prefix: '%env(APP_ENV)%_'
     indices:
         promises:
-          class: App\Entity\Promise
-          enable_serializer_groups: true
+            class: App\Entity\Promise
+            enable_serializer_groups: true
+            index_if: published
+        actions:
+            class: App\Entity\Action
+            enable_serializer_groups: true
+            index_if: published
+        categories:
+            class: App\Entity\Category
+            enable_serializer_groups: true
+        politicians:
+            class: App\Entity\Politician
+            enable_serializer_groups: true
+        statuses:
+            class: App\Entity\Status
+            enable_serializer_groups: true

@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\PoliticianRepository")
@@ -43,6 +44,7 @@ class Politician
 
     /**
      * @ORM\Column(type="string", length=20)
+     * @Groups({"searchable"})
      *
      * @Assert\NotBlank()
      * @Assert\Length(min=3, max=20)
@@ -51,6 +53,7 @@ class Politician
 
     /**
      * @ORM\Column(type="string", length=20)
+     * @Groups({"searchable"})
      *
      * @Assert\NotBlank()
      * @Assert\Length(min=3, max=20)

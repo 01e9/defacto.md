@@ -86,10 +86,19 @@ class Promise
      */
     private $published;
 
+    /**
+     * @ORM\OneToMany(targetEntity="StatusUpdate", mappedBy="promise")
+     * @ORM\JoinColumn(nullable=false)
+     *
+     * @Assert\Valid()
+     */
+    private $statusUpdates;
+
     public function __construct()
     {
-        $this->categories = new ArrayCollection();
         $this->published = false;
+        $this->categories = new ArrayCollection();
+        $this->statusUpdates = new ArrayCollection();
     }
 
     public function getId() : ?string
@@ -191,5 +200,10 @@ class Promise
         $this->categories = $categories;
 
         return $this;
+    }
+
+    public function getStatusUpdates()
+    {
+        return $this->statusUpdates;
     }
 }

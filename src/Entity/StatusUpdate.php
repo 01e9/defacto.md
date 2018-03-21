@@ -35,7 +35,7 @@ class StatusUpdate
     private $action;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Promise")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Promise", inversedBy="statusUpdates")
      * @ORM\JoinColumn(nullable=false)
      */
     private $promise;

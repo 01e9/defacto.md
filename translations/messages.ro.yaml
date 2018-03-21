@@ -83,6 +83,8 @@ title:
     prerogatives: Prerogative
     about_us: Despre noi
     _promised: a promis
+    promise_actions: Acțiuni întreprinse
+    promise_no_actions: Nici o acțiune întreprinsă
 
 placeholder:
     choose_option: Alegeți o opțiune
@@ -92,3 +94,4 @@ placeholder:
 
 text:
     at: la
+    promise_is_monitored: Promisiunea se monitorizează

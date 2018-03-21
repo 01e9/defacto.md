@@ -1,11 +1,15 @@
 {% extends 'app/base.html.twig' %}
 
+{% block html_class %}bg-dark-pattern{% endblock %}
+{% block body_class %}bg-transparent{% endblock %}
+
 {% block main %}
     {% include 'app/component/section/mandate-statistics.html.twig' with {
         mandate: president_mandate,
         promiseStatistics: president_mandate_promise_statistics
     } only %}
     {% include 'app/component/section/promises.html.twig' with {
-        promises: president_mandate_promises
+        promises: president_mandate_promises,
+        container_class: 'bg-transparent'
     } only %}
 {% endblock %}

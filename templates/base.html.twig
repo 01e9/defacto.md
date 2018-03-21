@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="{{ app.request.locale }}">
+<html lang="{{ app.request.locale }}" class="{% block html_class %}{% endblock %}">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>{% block title %}DeFacto{% endblock %}</title>
     {% block stylesheets %}{% endblock %}
 </head>
-<body>
+<body class="{% block body_class %}{% endblock %}">
 {% block body %}{% endblock %}
 
 {% block javascripts %}{% endblock %}

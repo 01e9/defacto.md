@@ -32,7 +32,7 @@ class AdminStatusesControllerTest extends WebTestCase
             'status[name]' => 'Test',
             'status[namePlural]' => 'Tests',
             'status[slug]' => 'tests',
-            'status[color]' => 'green',
+            'status[color]' => 'blue',
             'status[effect]' => '33',
         ];
 
@@ -105,7 +105,7 @@ class AdminStatusesControllerTest extends WebTestCase
                 ->setNamePlural('Tests')
                 ->setSlug('test')
                 ->setEffect(30)
-                ->setColor('red');
+                ->setColor(null);
             $em->persist($status);
             $em->flush();
 
@@ -116,7 +116,7 @@ class AdminStatusesControllerTest extends WebTestCase
             'status[name]' => 'Test update',
             'status[namePlural]' => 'Test updates',
             'status[slug]' => 'test-updates',
-            'status[color]' => 'green',
+            'status[color]' => 'blue',
             'status[effect]' => '33',
         ];
 

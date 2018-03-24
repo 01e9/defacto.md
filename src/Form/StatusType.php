@@ -16,7 +16,7 @@ class StatusType extends AbstractType
 {
     public static function getColors()
     {
-        return ['red', 'orange', 'yellow', 'green', 'violet', 'grey'];
+        return ['red', 'orange', 'yellow', 'green', 'blue', 'violet', 'grey'];
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)

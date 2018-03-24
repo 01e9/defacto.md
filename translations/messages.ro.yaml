@@ -93,6 +93,9 @@ title:
     promise_actions: Acțiuni întreprinse
     promise_no_actions: Nici o acțiune întreprinsă
     no_primises_by_status: Nu sunt promisiuni cu acest statut
+    error: Eroare
+    errors:
+        not_found: Pagina nu există
 
 placeholder:
     choose_option: Alegeți o opțiune

@@ -1,7 +1,7 @@
 import InstantSearch from 'instantsearch.js/es/lib/InstantSearch'
 import Hits from 'instantsearch.js/es/widgets/hits/hits'
 import SearchBox from 'instantsearch.js/es/widgets/search-box/search-box'
-import { IS_PRODUCTION, ALGOLIA_APP_ID, ALGOLIA_API_KEY } from "../../config";
+import { IS_PRODUCTION, ALGOLIA_APP_ID, ALGOLIA_API_KEY, LANG } from "../../config";
 
 jQuery(function ($) {
     let $modal = $('#instant-search-modal'),
@@ -41,7 +41,7 @@ function init($input, $results) {
         Hits({
             container: $results.get(0),
             templates: {
-                item: '<div>{{{_highlightResult.name.value}}}</div>',
+                item: '<a href="/'+ LANG +'/p/{{slug}}">{{{_highlightResult.name.value}}}</a>',
                 empty: '<span class="fa fa-minus-circle"></span>'
             },
             cssClasses: {

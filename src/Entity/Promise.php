@@ -206,4 +206,20 @@ class Promise
     {
         return $this->statusUpdates;
     }
+
+    public function getPublishedStatusUpdatesSortedByActionDate()
+    {
+        $statusUpdates = $this->statusUpdates->toArray();
+
+        if ($statusUpdates) {
+            \uasort($statusUpdates, function(StatusUpdate $a, StatusUpdate $b) : int {
+                if ($a->getAction()->getOccurredTime() == $b->getAction()->getOccurredTime()) {
+                    return 0;
+                }
+                return ($a->getAction()->getOccurredTime() > $b->getAction()->getOccurredTime()) ? -1 : 1;
+            });
+        }
+
+        return $statusUpdates;
+    }
 }

@@ -104,6 +104,7 @@ placeholder:
     inactive_plural: Inactive
     search: Căutare
     keywords: Cuvinte cheie
+    no_status: Fără statut
 
 text:
     at: la

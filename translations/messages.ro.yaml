@@ -48,6 +48,7 @@ label:
         red: Roșu
         yellow: Galben
         grey: Sur
+        blue: Albastru
 
 action:
     login: Autentificare

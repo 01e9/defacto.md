@@ -21,7 +21,7 @@ label:
     slug: Identificatorul pentru linkuri (slug)
     name: Denumirea
     name_plural: Denumirea la plural
-    effect: Efectul (poziția pe verticală în grafice)
+    effect: Efectul/Impactul
     photo: Foto
     begin_date: Date de început
     end_date: Date de sfârșit
@@ -41,6 +41,13 @@ label:
     votes_count: Numărul de voturi obținute
     votes_percent: Procentul de voturi obținute
     color: Culoarea
+    color_name:
+        violet: Violet
+        orange: Oranj
+        green: Verde
+        red: Roșu
+        yellow: Galben
+        grey: Sur
 
 action:
     login: Autentificare

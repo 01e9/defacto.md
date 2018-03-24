@@ -13,12 +13,14 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *     name="statuses",
  *     uniqueConstraints={
  *      @ORM\UniqueConstraint(name="status_unique_slug", columns={"slug"}),
- *      @ORM\UniqueConstraint(name="status_unique_effect", columns={"effect"})
+ *      @ORM\UniqueConstraint(name="status_unique_effect", columns={"effect"}),
+ *      @ORM\UniqueConstraint(name="status_unique_color", columns={"color"})
  *     }
  * )
  *
  * @UniqueEntity(fields={"slug"})
  * @UniqueEntity(fields={"effect"})
+ * @UniqueEntity(fields={"color"})
  */
 class Status
 {
@@ -65,12 +67,9 @@ class Status
     private $effect;
 
     /**
-     * @ORM\Column(type="string", length=7, nullable=true)
+     * @ORM\Column(type="string", length=20, nullable=true)
      *
-     * @Assert\Regex(
-     *     pattern="/^#([a-f0-9]{3}){2}$/i",
-     *     message="invalid.color"
-     * )
+     * @Assert\Regex(pattern="/^[a-z\-]{3,20}$/", message="invalid.color")
      */
     private $color;
 

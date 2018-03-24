@@ -12,7 +12,7 @@
                    title="{{ promise.madeTime|date }}">{{ promise.madeTime|ago }}</small>
         </footer>
         {% if promise.status %}
-            <div class="status" style="color: {{ promise.status.color }}">{{ promise.status.name }}</div>
+            <div class="status status-color-{{ promise.status.color }}">{{ promise.status.name }}</div>
         {% endif %}
     </blockquote>
 </div>

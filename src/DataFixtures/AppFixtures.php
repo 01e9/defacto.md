@@ -144,37 +144,37 @@ class AppFixtures extends Fixture
                 'name' => 'Declarație',
                 'name_plural' => 'Declarații',
                 'effect' => 0,
-                'color' => '#4f2baa',
+                'color' => 'violet',
             ],
             'în-proces' => [
                 'name' => 'În proces',
                 'name_plural' => 'În proces',
                 'effect' => 1,
-                'color' => '#f48414',
+                'color' => 'orange',
             ],
             'îndeplinite' => [
                 'name' => 'Îndeplinită',
                 'name_plural' => 'Îndeplinite',
                 'effect' => 2,
-                'color' => '#159b4d',
+                'color' => 'green',
             ],
             'compromise' => [
                 'name' => 'Compromisă',
                 'name_plural' => 'Compromise',
                 'effect' => -2,
-                'color' => '#d33',
+                'color' => 'red',
             ],
             'nemăsurabile' => [
                 'name' => 'Nemăsurabilă',
                 'name_plural' => 'Nemăsurabile',
                 'effect' => -1,
-                'color' => '#f4cf28',
+                'color' => 'yellow',
             ],
             'nerealizate' => [
                 'name' => 'Nerealizată',
                 'name_plural' => 'Nerealizate',
                 'effect' => -3,
-                'color' => '#7c7c7c',
+                'color' => 'grey',
             ],
         ] as $slug => $info) {
             $status = new Status();

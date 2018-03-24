@@ -1,14 +1,15 @@
 <div class="card p-3 promise-item bg-light">
     <blockquote class="blockquote mb-0 card-body">
-        <p>
-            {% if no_link is defined and no_link %}
-                {{ promise.name }}
-            {% else %}
-                <a href="{{ path('promise', {'slug': promise.slug}) }}" class="promise-name">{{ promise.name }}</a>
-            {% endif %}
-        </p>
+        {% if is_main is defined and is_main %}
+            <h1 class="h5">{{ promise.name }}</h1>
+        {% else %}
+            <p><a href="{{ path('promise', {'slug': promise.slug}) }}"
+                  class="promise-name">{{ promise.name }}</a></p>
+        {% endif %}
         <footer class="blockquote-footer">
-            <small class="text-muted">{{ promise.madeTime|ago }}</small>
+            <small class="text-muted pr-1"
+                   data-toggle="tooltip" data-placement="right"
+                   title="{{ promise.madeTime|date }}">{{ promise.madeTime|ago }}</small>
         </footer>
         {% if promise.status %}
             <div class="status" style="color: {{ promise.status.color }}">{{ promise.status.name }}</div>

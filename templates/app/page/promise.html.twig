@@ -33,7 +33,7 @@
                     </div>
                 </div>
                 <div class="col-lg-7 col-xl-8">
-                    {% include 'app/component/item/promise.html.twig' with {promise: promise, no_link: true} only %}
+                    {% include 'app/component/item/promise.html.twig' with {promise: promise, is_main: true} only %}
                 </div>
             </div>
         </div>
@@ -45,7 +45,32 @@
                 {% if promise.statusUpdates|length %}
                     <div class="col">
                         <h2 class="h3 text-center">{{ 'title.promise_actions'|trans }}</h2>
-                        <p>...</p>
+                        <div class="promise-status-updates mt-5">
+                            {% for statusUpdate in promise.publishedStatusUpdatesSortedByActionDate %}
+                                <div class="row align-items-md-center mb-3">
+                                    <div class="col-6 col-md-3 col-lg-2">
+                                        <span class="h6"
+                                              data-toggle="tooltip" data-placement="top"
+                                              title="{{ statusUpdate.action.occurredTime|date }}"
+                                        >{{ statusUpdate.action.occurredTime|ago }}</span>
+                                    </div>
+                                    <div class="col-12 col-md-6 col-lg-8 order-last order-md-0 text-center">
+                                        <h4>
+                                            <a href="javascript:void(0)"
+                                               class="text-white">{{ statusUpdate.action.name }}</a>
+                                        </h4>
+                                    </div>
+                                    <div class="col-6 col-md-3 col-lg-2 text-right">
+                                        <span class="badge"
+                                              style="border: 1px solid {{ statusUpdate.status.color }}; position: relative;">
+                                            <span class="h6 text-uppercase">{{ statusUpdate.status.name }}</span>
+                                            <span class="fa fa-arrow-up"
+                                                  style="position: absolute; top: -1.6em; right: 1em; color: {{ statusUpdate.status.color }};"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
                     </div>
                 {% else %}
                     <div class="col text-center">

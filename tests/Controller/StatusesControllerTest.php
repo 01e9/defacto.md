@@ -19,7 +19,7 @@ class StatusesControllerTest extends WebTestCase
 
         $this->assertNotNull($status);
 
-        $path = '/status/'. $status->getSlug();
+        $path = '/s/'. $status->getSlug();
 
         // without lang
         (function () use (&$client, &$path) {

@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class PromisesController extends AbstractController
 {
     /**
-     * @Route(path="/promise/{slug}", name="promise")
+     * @Route(path="/p/{slug}", name="promise")
      * @Method("GET")
      */
     public function viewAction(Request $request, string $slug)

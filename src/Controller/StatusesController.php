@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class StatusesController extends AbstractController
 {
     /**
-     * @Route(path="/status/{slug}", name="status")
+     * @Route(path="/s/{slug}", name="status")
      * @Method("GET")
      */
     public function viewAction(Request $request, string $slug)

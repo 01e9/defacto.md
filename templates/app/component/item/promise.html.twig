@@ -11,7 +11,7 @@
                    data-toggle="tooltip" data-placement="right"
                    title="{{ promise.madeTime|date }}">{{ promise.madeTime|ago }}</small>
         </footer>
-        {% if promise.status %}
+        {% if (show_status is not defined or show_status) and promise.status %}
             <div class="status status-color-{{ promise.status.color }}">{{ promise.status.name }}</div>
         {% endif %}
     </blockquote>

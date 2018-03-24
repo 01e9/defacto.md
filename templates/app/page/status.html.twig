@@ -1,0 +1,45 @@
+{% extends 'app/base.html.twig' %}
+
+{% set politiciansPromises = app_repo_promise.getListByStatusGroupByPolitician(status.id) %}
+
+{% block html_class %}bg-dark-pattern{% endblock %}
+{% block body_class %}bg-transparent{% endblock %}
+
+{% block main %}
+    <div class="container-fluid bg-light-pattern">
+        <div class="container">
+            <div class="row">
+                <div class="col text-center">
+                    <h1>
+                        <span class="my-5 status-stamp status-color-{{ status.color }}">
+                            {{ status.namePlural }}
+                        </span>
+                    </h1>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        {% if politiciansPromises is empty %}
+        <div class="row">
+            <div class="col text-center text-light">
+                <h2 class="h3 mt-5">{{ 'title.no_primises_by_status'|trans }}</h2>
+                <p class="h3 mt-4"><span class="fa fa-hourglass-half"></span></p>
+            </div>
+        </div>
+        {% else %}
+            {% for politicianData in politiciansPromises %}
+                <div class="row mt-5 justify-content-md-center">
+                    {% for promise in politicianData.promises %}
+                        <div class="col-md-6 col-lg-4">
+                            {% include 'app/component/item/promise.html.twig' with {
+                                promise: promise,
+                                show_status: false
+                            } only %}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+{% endblock %}

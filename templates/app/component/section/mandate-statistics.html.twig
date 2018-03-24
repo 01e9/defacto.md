@@ -5,7 +5,7 @@
     {% set maxCount = max(maxCount, promise.count) %}
 {% endfor %}
 
-<div class="mandate-statistics bg-gray-pattern pb-5">
+<div class="mandate-statistics bg-light-pattern pb-5">
     {% include 'app/component/after-header-space.html.twig' %}
     <div class="container">
         <div class="row">
@@ -37,7 +37,9 @@
                                             {{ promise.count == 1 ? promise.status.name : promise.status.namePlural }}
                                             <sup class="status-color-{{ promise.status.color }}">{{ promise.count }}</sup>
                                         {% else %}
-                                            <em class="text-muted">{{ 'placeholder.no_status'|trans }}</em>
+                                            <em class="text-muted">
+                                                {{ promise.count == 1 ? 'placeholder.inactive_singular'|trans : 'placeholder.inactive_plural'|trans }}
+                                            </em>
                                             <sup class="text-muted">{{ promise.count }}</sup>
                                         {% endif %}
                                     </div>

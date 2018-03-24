@@ -29,4 +29,30 @@ class PromiseRepository extends ServiceEntityRepository
     {
         return $this->findAll();
     }
+
+    public function getListByStatusGroupByPolitician(string $statusId)
+    {
+        $promises = [];
+
+        foreach (
+            $this->findBy(
+                ['status' => $statusId, 'published' => true],
+                ['madeTime' => 'desc']
+            )
+            as $promise /** @var Promise $promise */
+        ) {
+            $politician = $promise->getMandate()->getPolitician();
+
+            if (empty($promises[$politician->getId()])) {
+                $promises[$politician->getId()] = [
+                    'politician' => $politician,
+                    'promises' => [],
+                ];
+            }
+
+            $promises[$politician->getId()]['promises'][] = $promise;
+        }
+
+        return $promises;
+    }
 }

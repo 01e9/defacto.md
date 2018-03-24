@@ -14,3 +14,11 @@
 {% endspaceless -%}
     {{- percent -}}
 {% endmacro %}
+
+{% macro politician_photo_url(politician) %}
+    {{-
+    politician.photo
+    ? asset('uploads/politicians/' ~ politician.photo.filename)
+    : 'about:blank'
+    -}}
+{% endmacro %}

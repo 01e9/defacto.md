@@ -7,3 +7,4 @@ twig:
         timezone: Europe/Chisinau
     globals:
         app_repo_status: '@App\Repository\StatusRepository'
+        app_repo_promise: '@App\Repository\PromiseRepository'

@@ -47,7 +47,7 @@
                         <h2 class="h3 text-center">{{ 'title.promise_actions'|trans }}</h2>
                         <div class="promise-status-updates mt-5">
                             {% for statusUpdate in promise.publishedStatusUpdatesSortedByActionDate %}
-                                <div class="row align-items-md-center mb-3">
+                                <div class="row align-items-md-center mb-4">
                                     <div class="col-6 col-md-3 col-lg-2">
                                         <span class="h6"
                                               data-toggle="tooltip" data-placement="top"
@@ -61,11 +61,11 @@
                                         </h4>
                                     </div>
                                     <div class="col-6 col-md-3 col-lg-2 text-right">
-                                        <span class="badge status-color-{{ statusUpdate.status.color }}"
-                                              style="position: relative;">
-                                            <span class="h6 text-uppercase">{{ statusUpdate.status.name }}</span>
-                                            <span class="fa fa-arrow-up status-color-{{ statusUpdate.status.color }}"
-                                                  style="position: absolute; top: -1.6em; right: 1em;"></span>
+                                        <span class="badge status-color-{{ statusUpdate.status.color }}-light">
+                                            <span class="h6 text-uppercase">
+                                                {{- statusUpdate.status.name -}}
+                                                <span class="fa fa-arrow-up"></span>
+                                            </span>
                                         </span>
                                     </div>
                                 </div>

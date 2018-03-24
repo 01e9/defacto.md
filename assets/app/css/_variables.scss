@@ -2,6 +2,16 @@ $app-font-brand: "Stardos Stencil"; // original: Butler Stencil
 $app-font-stamp: "Bobbin Cyrillic";
 $app-color-primary: #af2227;
 
+$app-status-colors: (
+    red: #dd3333,
+    orange: #f48414,
+    yellow: #f4cf28,
+    green: #159b4d,
+    blue: #2652aa,
+    violet: #4f2baa,
+    grey: #7c7c7c
+);
+
 //region Chartist
 
 $ct-text-size: 1em;

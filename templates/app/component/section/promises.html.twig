@@ -1,17 +1,19 @@
-<div class="jumbotron jumbotron-fluid
-    {%- if container_class is defined %} {{ container_class }}{% else %} bg-dark{% endif %}">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col">
-                <h3 class="mb-4 text-center text-white">{{ 'title.promises'|trans }}</h3>
+<div class="container-fluid py-5{%
+    if container_class is defined
+%} {{ container_class }}{%
+    else
+%} bg-dark{% endif
+%}">
+    <div class="row">
+        <div class="col">
+            <h3 class="mb-4 text-center text-white">{{ 'title.promises'|trans }}</h3>
+        </div>
+    </div>
+    <div class="row justify-content-md-center">
+        {% for promise in promises %}
+            <div class="col-md-6 col-lg-4">
+                {% include 'app/component/item/promise.html.twig' with {promise: promise} only %}
             </div>
-        </div>
-        <div class="row justify-content-md-center">
-            {% for promise in promises %}
-                <div class="col-md-6 col-lg-4">
-                    {% include 'app/component/item/promise.html.twig' with {promise: promise} only %}
-                </div>
-            {% endfor %}
-        </div>
+        {% endfor %}
     </div>
 </div>

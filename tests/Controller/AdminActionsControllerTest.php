@@ -3,6 +3,7 @@
 namespace App\Tests\Controller;
 
 use App\Entity\Action;
+use App\Entity\StatusUpdate;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use App\Tests\TestCaseTrait;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -120,6 +121,11 @@ class AdminActionsControllerTest extends WebTestCase
         };
 
         $createFormData = function (Action $action) use (&$em) {
+            $promises = $em->getRepository('App:Promise')->findBy([
+                'mandate' => $action->getMandate()->getId(),
+            ], null, 2);
+            $this->assertCount(2, $promises);
+
             return [
                 'action[name]' => 'Updated',
                 'action[slug]' => 'updated',
@@ -130,11 +136,14 @@ class AdminActionsControllerTest extends WebTestCase
                 'action[statusUpdates]' => [
                     [
                         'action' => $action->getId(),
-                        'promise' => $em->getRepository('App:Promise')->findOneBy([
-                            'mandate' => $action->getMandate()->getId(),
-                        ])->getId(),
+                        'promise' => $promises[0]->getId(),
                         'status' => $em->getRepository('App:Status')->findOneBy([])->getId(),
-                    ]
+                    ],
+                    [
+                        'action' => $action->getId(),
+                        'promise' => $promises[1]->getId(),
+                        'status' => '',
+                    ],
                 ],
             ];
         };
@@ -208,6 +217,11 @@ class AdminActionsControllerTest extends WebTestCase
                 $em->refresh($action);
 
                 $this->assertCount(count($formData['action[statusUpdates]']), $action->getStatusUpdates());
+
+                array_map(function (StatusUpdate $statusUpdate) use (&$em) {
+                    $em->remove($statusUpdate);
+                    $em->flush();
+                }, $action->getStatusUpdates()->toArray());
 
                 $em->remove($action);
                 $em->flush();

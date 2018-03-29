@@ -105,7 +105,9 @@ placeholder:
     search: Căutare
     keywords: Cuvinte cheie
     no_status: Fără statut
+    no_status_update: Nu schimbă statutul
 
 text:
     at: la
     promise_is_monitored: Promisiunea se monitorizează
+

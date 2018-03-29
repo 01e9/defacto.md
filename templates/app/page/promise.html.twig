@@ -64,12 +64,14 @@
                                         </h4>
                                     </div>
                                     <div class="col-6 col-md-3 col-lg-2 text-right">
-                                        <span class="badge status-color-{{ statusUpdate.status.color }}-light">
-                                            <span class="h6 text-uppercase">
-                                                {{- statusUpdate.status.name -}}
-                                                <span class="fa fa-arrow-up"></span>
+                                        {% if statusUpdate.status %}
+                                            <span class="badge status-color-{{ statusUpdate.status.color }}-light">
+                                                <span class="h6 text-uppercase">
+                                                    {{- statusUpdate.status.name -}}
+                                                    <span class="fa fa-arrow-up"></span>
+                                                </span>
                                             </span>
-                                        </span>
+                                        {% endif %}
                                     </div>
                                 </div>
                             {% endfor %}

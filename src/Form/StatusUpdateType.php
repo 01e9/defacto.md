@@ -27,9 +27,10 @@ class StatusUpdateType extends AbstractType
             ])
             ->add('status', ChoiceType::class, [
                 'label' => 'label.status',
-                'placeholder' => 'placeholder.choose_option',
+                'placeholder' => 'placeholder.no_status_update',
                 'choices' => $options['statuses'],
                 'choice_value' => 'id',
+                'required' => false,
             ])
         ;
     }

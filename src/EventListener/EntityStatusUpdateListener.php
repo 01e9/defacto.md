@@ -36,7 +36,7 @@ class EntityStatusUpdateListener
         /** @var StatusUpdate $latestStatusUpdate */
         $latestStatusUpdate = $objectManager->getRepository('App:StatusUpdate')
             ->createQueryBuilder('su')
-            ->where('su.promise = :promise')
+            ->where('su.promise = :promise AND su.status IS NOT NULL')
             ->innerJoin('App:Action', 'a', Expr\Join::WITH, 'a.id = su.action')
             ->orderBy('a.occurredTime', 'DESC')
             ->setMaxResults(1)

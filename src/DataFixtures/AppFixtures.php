@@ -102,6 +102,16 @@ class AppFixtures extends Fixture
             ->setPublished(true);
         $manager->persist($action);
 
+        $action2 = new Action();
+        $action2
+            ->setMandate($mandate)
+            ->setName('Demo altă acțiune')
+            ->setSlug('demo-altă-acțiune')
+            ->setDescription('Demo descriere')
+            ->setOccurredTime(new \DateTime())
+            ->setPublished(true);
+        $manager->persist($action2);
+
         $manager->flush(); // generate ids
 
         $setting = new Setting();

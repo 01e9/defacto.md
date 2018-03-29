@@ -42,7 +42,7 @@ class StatusUpdate
 
     /**
      * @ORM\ManyToOne(targetEntity="Status")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $status;
 

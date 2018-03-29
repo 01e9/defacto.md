@@ -18,6 +18,7 @@ services:
             - 80:8080
         depends_on:
             - defacto_pg
+        restart: unless-stopped
     defacto_pg:
         container_name: defacto_pg
         image: postgres:9
@@ -27,8 +28,10 @@ services:
             POSTGRES_USER: "defacto"
             POSTGRES_PASSWORD: "defacto"
             POSTGRES_DB: "defacto"
+        restart: unless-stopped
     defacto_adminer:
         container_name: defacto_adminer
         image: adminer
         ports:
             - 8080:8080
+        restart: unless-stopped

@@ -8,4 +8,4 @@ x11docker --hostdisplay --homedir ${HOME} --clipboard \
     --cap-default --no-entrypoint \
     -- "--cap-add=SYS_PTRACE --publish=80:8080 --network defacto_default" \
     defacto \
-    ${CMD}
+    sh -c "cd ${PROJECT_DIR} && ${CMD}"

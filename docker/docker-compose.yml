@@ -1,7 +1,7 @@
 version: '3.4'
 
 services:
-    defacto: # just to build the image, then run `x11docker ~/path/to/ide.sh`
+    defacto: # just to build the image, then run `./x11docker ~/path/to/ide.sh`
         container_name: defacto
         image: defacto
         build:

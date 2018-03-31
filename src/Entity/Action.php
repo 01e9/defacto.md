@@ -82,9 +82,15 @@ class Action
      */
     private $statusUpdates;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Power", cascade={"persist"})
+     */
+    private $usedPowers;
+
     public function __construct()
     {
         $this->statusUpdates = new ArrayCollection();
+        $this->usedPowers = new ArrayCollection();
     }
 
     public function getId() : ?string
@@ -172,6 +178,18 @@ class Action
     public function setStatusUpdates($statusUpdates) : Action
     {
         $this->statusUpdates = $statusUpdates;
+
+        return $this;
+    }
+
+    public function getUsedPowers()
+    {
+        return $this->usedPowers;
+    }
+
+    public function setUsedPowers($usedPowers) : Action
+    {
+        $this->usedPowers = $usedPowers;
 
         return $this;
     }

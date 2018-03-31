@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -46,6 +47,16 @@ class Title
      */
     private $name;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Power", cascade={"persist"})
+     */
+    private $powers;
+
+    public function __construct()
+    {
+        $this->powers = new ArrayCollection();
+    }
+
     public function getId() : ?string
     {
         return $this->id;
@@ -71,6 +82,18 @@ class Title
     public function setName(?string $name) : Title
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getPowers()
+    {
+        return $this->powers;
+    }
+
+    public function setPowers($powers) : Title
+    {
+        $this->powers = $powers;
 
         return $this;
     }

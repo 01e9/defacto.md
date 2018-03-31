@@ -3,15 +3,15 @@
 namespace App\Tests\Service;
 
 use App\Entity\Promise;
-use App\Entity\StatusUpdate;
+use App\Entity\PromiseUpdate;
 use App\Repository\ActionRepository;
 use App\Repository\PromiseRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-class EntityStatusUpdateListenerTest extends KernelTestCase
+class EntityPromiseUpdateListenerTest extends KernelTestCase
 {
-    public function testStatusUpdates()
+    public function testPromiseUpdates()
     {
         /** @var ObjectManager $em */
         $em = self::bootKernel()->getContainer()->get('doctrine.orm.default_entity_manager');
@@ -37,25 +37,25 @@ class EntityStatusUpdateListenerTest extends KernelTestCase
         $actions = $actionsRepo->findBy([], null, 2);
         $this->assertCount(2, $actions);
 
-        $statusUpdate = new StatusUpdate();
-        $statusUpdate
+        $promiseUpdate = new PromiseUpdate();
+        $promiseUpdate
             ->setPromise($promise)
             ->setAction($actions[0])
             ->setStatus($em->getRepository('App:Status')->findOneBy([]));
-        $em->persist($statusUpdate);
+        $em->persist($promiseUpdate);
 
         $em->flush();
 
         $this->assertEquals(
-            $statusUpdate->getStatus()->getId(),
+            $promiseUpdate->getStatus()->getId(),
             $promiseRepo->find($promise->getId())->getStatus()->getId()
         );
 
-        $statusUpdate->setStatus(
+        $promiseUpdate->setStatus(
             $em->getRepository('App:Status')
                 ->createQueryBuilder('s')
                 ->where('s.id != :status')
-                ->setParameter('status', $statusUpdate->getStatus())
+                ->setParameter('status', $promiseUpdate->getStatus())
                 ->setMaxResults(1)
                 ->getQuery()
                 ->getOneOrNullResult()
@@ -64,28 +64,28 @@ class EntityStatusUpdateListenerTest extends KernelTestCase
         $em->flush();
 
         $this->assertEquals(
-            $statusUpdate->getStatus()->getId(),
+            $promiseUpdate->getStatus()->getId(),
             $promiseRepo->find($promise->getId())->getStatus()->getId()
         );
 
-        $statusUpdate2 = new StatusUpdate();
-        $statusUpdate2
+        $promiseUpdate2 = new PromiseUpdate();
+        $promiseUpdate2
             ->setPromise($promise)
             ->setAction($actions[1])
             ->setStatus(null);
-        $em->persist($statusUpdate2);
+        $em->persist($promiseUpdate2);
 
         $em->flush();
 
         $this->assertEquals(
-            $statusUpdate->getStatus()->getId(),
+            $promiseUpdate->getStatus()->getId(),
             $promiseRepo->find($promise->getId())->getStatus()->getId()
         );
 
-        $em->remove($statusUpdate2);
+        $em->remove($promiseUpdate2);
         $em->flush();
 
-        $em->remove($statusUpdate);
+        $em->remove($promiseUpdate);
         $em->flush();
 
         $this->assertEquals(null, $promiseRepo->find($promise->getId())->getStatus());

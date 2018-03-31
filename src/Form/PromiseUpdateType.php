@@ -2,13 +2,13 @@
 
 namespace App\Form;
 
-use App\Entity\StatusUpdate;
+use App\Entity\PromiseUpdate;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class StatusUpdateType extends AbstractType
+class PromiseUpdateType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -27,7 +27,7 @@ class StatusUpdateType extends AbstractType
             ])
             ->add('status', ChoiceType::class, [
                 'label' => 'label.status',
-                'placeholder' => 'placeholder.no_status_update',
+                'placeholder' => 'placeholder.no_promise_update',
                 'choices' => $options['statuses'],
                 'choice_value' => 'id',
                 'required' => false,
@@ -39,7 +39,7 @@ class StatusUpdateType extends AbstractType
     {
         $resolver->setDefaults([
             'label' => false,
-            'data_class' => StatusUpdate::class,
+            'data_class' => PromiseUpdate::class,
             'actions' => [],
             'promises' => [],
             'statuses' => [],
@@ -48,6 +48,6 @@ class StatusUpdateType extends AbstractType
 
     public function getBlockPrefix()
     {
-        return 'status_update';
+        return 'promise_update';
     }
 }

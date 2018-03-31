@@ -79,9 +79,9 @@ class AdminActionsController extends Controller
             throw $this->createNotFoundException();
         }
 
-        $originalStatusUpdates = new ArrayCollection();
-        foreach ($action->getStatusUpdates() as $statusUpdate) {
-            $originalStatusUpdates->add($statusUpdate);
+        $originalPromiseUpdates = new ArrayCollection();
+        foreach ($action->getPromiseUpdates() as $promiseUpdate) {
+            $originalPromiseUpdates->add($promiseUpdate);
         }
 
         $this->getDoctrine()->getRepository('App:Mandate')->getAdminChoices();
@@ -102,10 +102,10 @@ class AdminActionsController extends Controller
 
             $em = $this->getDoctrine()->getManager();
 
-            foreach ($originalStatusUpdates as $statusUpdate) {
-                if (false === $action->getStatusUpdates()->contains($statusUpdate)) {
-                    $action->getStatusUpdates()->removeElement($statusUpdate);
-                    $em->remove($statusUpdate);
+            foreach ($originalPromiseUpdates as $promiseUpdate) {
+                if (false === $action->getPromiseUpdates()->contains($promiseUpdate)) {
+                    $action->getPromiseUpdates()->removeElement($promiseUpdate);
+                    $em->remove($promiseUpdate);
                 }
             }
 

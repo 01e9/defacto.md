@@ -87,18 +87,18 @@ class Promise
     private $published;
 
     /**
-     * @ORM\OneToMany(targetEntity="StatusUpdate", mappedBy="promise")
+     * @ORM\OneToMany(targetEntity="PromiseUpdate", mappedBy="promise")
      * @ORM\JoinColumn(nullable=false)
      *
      * @Assert\Valid()
      */
-    private $statusUpdates;
+    private $promiseUpdates;
 
     public function __construct()
     {
         $this->published = false;
         $this->categories = new ArrayCollection();
-        $this->statusUpdates = new ArrayCollection();
+        $this->promiseUpdates = new ArrayCollection();
     }
 
     public function getId() : ?string
@@ -202,17 +202,17 @@ class Promise
         return $this;
     }
 
-    public function getStatusUpdates()
+    public function getPromiseUpdates()
     {
-        return $this->statusUpdates;
+        return $this->promiseUpdates;
     }
 
-    public function getPublishedStatusUpdatesSortedByActionDate()
+    public function getPublishedPromiseUpdatesSortedByActionDate()
     {
-        $statusUpdates = $this->statusUpdates->toArray();
+        $promiseUpdates = $this->promiseUpdates->toArray();
 
-        if ($statusUpdates) {
-            \uasort($statusUpdates, function(StatusUpdate $a, StatusUpdate $b) : int {
+        if ($promiseUpdates) {
+            \uasort($promiseUpdates, function(PromiseUpdate $a, PromiseUpdate $b) : int {
                 if ($a->getAction()->getOccurredTime() == $b->getAction()->getOccurredTime()) {
                     return 0;
                 }
@@ -220,6 +220,6 @@ class Promise
             });
         }
 
-        return $statusUpdates;
+        return $promiseUpdates;
     }
 }

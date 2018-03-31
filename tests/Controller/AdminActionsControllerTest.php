@@ -3,7 +3,7 @@
 namespace App\Tests\Controller;
 
 use App\Entity\Action;
-use App\Entity\StatusUpdate;
+use App\Entity\PromiseUpdate;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use App\Tests\TestCaseTrait;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -140,7 +140,7 @@ class AdminActionsControllerTest extends WebTestCase
                     $powers[0]->getId(),
                     $powers[1]->getId(),
                 ],
-                'action[statusUpdates]' => [
+                'action[promiseUpdates]' => [
                     [
                         'action' => $action->getId(),
                         'promise' => $promises[0]->getId(),
@@ -177,7 +177,7 @@ class AdminActionsControllerTest extends WebTestCase
                 $form = $client
                     ->request('GET', '/'. $lang .'/admin/actions/'. $action->getId())
                     ->filter('form')->form();
-                $client->submit($form, array_diff_key($formData, ['action[statusUpdates]' => false]));
+                $client->submit($form, array_diff_key($formData, ['action[promiseUpdates]' => false]));
                 $response = $client->getResponse();
 
                 $this->assertEquals(302, $response->getStatusCode());
@@ -193,7 +193,7 @@ class AdminActionsControllerTest extends WebTestCase
                 $em->refresh($action);
 
                 $this->assertEquals('Updated', $action->getName());
-                $this->assertCount(0, $action->getStatusUpdates());
+                $this->assertCount(0, $action->getPromiseUpdates());
 
                 $em->remove($action);
                 $em->flush();
@@ -206,7 +206,7 @@ class AdminActionsControllerTest extends WebTestCase
                     ->request('GET', '/'. $lang .'/admin/actions/'. $action->getId())
                     ->filter('form')->form();
                 $formPhpValues = $form->getPhpValues();
-                $formPhpValues['action']['statusUpdates'] = $formData['action[statusUpdates]'];
+                $formPhpValues['action']['promiseUpdates'] = $formData['action[promiseUpdates]'];
 
                 $client->request($form->getMethod(), $form->getUri(), $formPhpValues);
                 $response = $client->getResponse();
@@ -223,12 +223,12 @@ class AdminActionsControllerTest extends WebTestCase
 
                 $em->refresh($action);
 
-                $this->assertCount(count($formData['action[statusUpdates]']), $action->getStatusUpdates());
+                $this->assertCount(count($formData['action[promiseUpdates]']), $action->getPromiseUpdates());
 
-                array_map(function (StatusUpdate $statusUpdate) use (&$em) {
-                    $em->remove($statusUpdate);
+                array_map(function (PromiseUpdate $promiseUpdate) use (&$em) {
+                    $em->remove($promiseUpdate);
                     $em->flush();
-                }, $action->getStatusUpdates()->toArray());
+                }, $action->getPromiseUpdates()->toArray());
 
                 $em->remove($action);
                 $em->flush();

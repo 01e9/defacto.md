@@ -42,11 +42,11 @@
         {% if form.vars.value.id %}
             <div class="row">
                 <div class="col pb-3">
-                    {{ form_row(form.statusUpdates) }}
+                    {{ form_row(form.promiseUpdates) }}
                 </div>
             </div>
         {% else %}
-            {% do form.statusUpdates.setRendered() %}
+            {% do form.promiseUpdates.setRendered() %}
         {% endif %}
     </div>
     {% if form.vars.value.id %}

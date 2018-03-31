@@ -6,12 +6,12 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\StatusUpdateRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\PromiseUpdateRepository")
  * @ORM\Table(
- *     name="status_updates",
+ *     name="promise_updates",
  *     uniqueConstraints={
  *      @ORM\UniqueConstraint(
- *          name="status_update_unique_action_promise",
+ *          name="promise_update_unique_action_promise",
  *          columns={"action_id", "promise_id"}
  *      )
  *     }
@@ -19,7 +19,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *
  * @UniqueEntity(fields={"action", "promise"}, errorPath="promise")
  */
-class StatusUpdate
+class PromiseUpdate
 {
     /**
      * @ORM\Id
@@ -29,13 +29,13 @@ class StatusUpdate
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Action", inversedBy="statusUpdates")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Action", inversedBy="promiseUpdates")
      * @ORM\JoinColumn(nullable=false)
      */
     private $action;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Promise", inversedBy="statusUpdates")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Promise", inversedBy="promiseUpdates")
      * @ORM\JoinColumn(nullable=false)
      */
     private $promise;
@@ -56,7 +56,7 @@ class StatusUpdate
         return $this->action;
     }
 
-    public function setAction(?Action $action) : StatusUpdate
+    public function setAction(?Action $action) : PromiseUpdate
     {
         $this->action = $action;
 
@@ -68,7 +68,7 @@ class StatusUpdate
         return $this->promise;
     }
 
-    public function setPromise(?Promise $promise) : StatusUpdate
+    public function setPromise(?Promise $promise) : PromiseUpdate
     {
         $this->promise = $promise;
 
@@ -80,7 +80,7 @@ class StatusUpdate
         return $this->status;
     }
 
-    public function setStatus(?Status $status) : StatusUpdate
+    public function setStatus(?Status $status) : PromiseUpdate
     {
         $this->status = $status;
 

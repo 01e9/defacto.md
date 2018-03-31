@@ -75,12 +75,12 @@ class Action
     private $published;
 
     /**
-     * @ORM\OneToMany(targetEntity="StatusUpdate", mappedBy="action", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="PromiseUpdate", mappedBy="action", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      *
      * @Assert\Valid()
      */
-    private $statusUpdates;
+    private $promiseUpdates;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Power", cascade={"persist"})
@@ -89,7 +89,7 @@ class Action
 
     public function __construct()
     {
-        $this->statusUpdates = new ArrayCollection();
+        $this->promiseUpdates = new ArrayCollection();
         $this->usedPowers = new ArrayCollection();
     }
 
@@ -170,14 +170,14 @@ class Action
         return $this;
     }
 
-    public function getStatusUpdates()
+    public function getPromiseUpdates()
     {
-        return $this->statusUpdates;
+        return $this->promiseUpdates;
     }
 
-    public function setStatusUpdates($statusUpdates) : Action
+    public function setPromiseUpdates($promiseUpdates) : Action
     {
-        $this->statusUpdates = $statusUpdates;
+        $this->promiseUpdates = $promiseUpdates;
 
         return $this;
     }

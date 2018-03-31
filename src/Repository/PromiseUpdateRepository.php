@@ -2,15 +2,15 @@
 
 namespace App\Repository;
 
-use App\Entity\StatusUpdate;
+use App\Entity\PromiseUpdate;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
-class StatusUpdateRepository extends ServiceEntityRepository
+class PromiseUpdateRepository extends ServiceEntityRepository
 {
     public function __construct(RegistryInterface $registry)
     {
-        parent::__construct($registry, StatusUpdate::class);
+        parent::__construct($registry, PromiseUpdate::class);
     }
 
     /*

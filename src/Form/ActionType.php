@@ -48,12 +48,12 @@ class ActionType extends AbstractType
                 'label' => 'label.published',
                 'required' => false,
             ])
-            ->add('statusUpdates', CollectionType::class, [
-                'label' => 'label.status_updates',
+            ->add('promiseUpdates', CollectionType::class, [
+                'label' => 'label.promise_updates',
                 'allow_add' => true,
                 'allow_delete' => true,
                 'prototype' => true,
-                'entry_type' => StatusUpdateType::class,
+                'entry_type' => PromiseUpdateType::class,
                 'entry_options' => [
                     'actions' => $options['actions'],
                     'promises' => $options['promises'],

@@ -37,9 +37,9 @@
                                             {{ promise.count == 1 ? promise.status.name : promise.status.namePlural }}
                                             <sup class="status-color-{{ promise.status.color }}">{{ promise.count }}</sup>
                                         {% else %}
-                                            <em class="text-muted">
+                                            <span class="text-muted">
                                                 {{ promise.count == 1 ? 'placeholder.inactive_singular'|trans : 'placeholder.inactive_plural'|trans }}
-                                            </em>
+                                            </span>
                                             <sup class="text-muted">{{ promise.count }}</sup>
                                         {% endif %}
                                     </div>

@@ -27,12 +27,12 @@
                     newEl.querySelector('legend').remove();
                     wrap.appendChild(newEl.firstChild);
                     })(document.getElementById('{{ form.vars.id }}'))"
-            >{{ 'action.add_status_update'|trans }}</button>
+            >{{ 'action.add_promise_update'|trans }}</button>
         </div>
     </div>
 {% endblock %}
 
-{% block status_update_widget %}
+{% block promise_update_widget %}
     <div class="d-none">
         {{ form_row(form.action) }}
     </div>

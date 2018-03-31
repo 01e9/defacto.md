@@ -8,6 +8,7 @@ use App\Entity\Institution;
 use App\Entity\InstitutionTitle;
 use App\Entity\Mandate;
 use App\Entity\Politician;
+use App\Entity\Power;
 use App\Entity\Product;
 use App\Entity\Promise;
 use App\Entity\Setting;
@@ -15,6 +16,7 @@ use App\Entity\Status;
 use App\Entity\Title;
 use App\Repository\SettingRepository;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
 
 class AppFixtures extends Fixture
@@ -27,10 +29,13 @@ class AppFixtures extends Fixture
             ->setSlug('președinția-republicii-moldova');
         $manager->persist($institution);
 
+        $powers = $this->createPowers($manager);
+
         $title = new Title();
         $title
             ->setName('Președintele Republicii Moldova')
-            ->setSlug('președintele-republicii-moldova');
+            ->setSlug('președintele-republicii-moldova')
+            ->setPowers($powers);
         $manager->persist($title);
 
         $institutionTitle = new InstitutionTitle();
@@ -143,6 +148,27 @@ class AppFixtures extends Fixture
         }
 
         return $categories;
+    }
+
+    private function createPowers(ObjectManager $manager) : ArrayCollection
+    {
+        $powers = new ArrayCollection();
+
+        foreach ([
+            'inițiativă-legislativă' => 'Inițiativă legislativă',
+            'promulgarea-abrogarea-legilor' => 'Promulgarea/Abrogarea legilor',
+            'mesaje-adresate-instituțiilor' => 'Mesaje adresate instituțiilor',
+        ] as $powerSlug => $powerName) {
+            $power = new Power();
+            $power
+                ->setName($powerName)
+                ->setSlug($powerSlug);
+            $manager->persist($power);
+
+            $powers->add($power);
+        }
+
+        return $powers;
     }
 
     private function createStatuses(ObjectManager $manager) : array

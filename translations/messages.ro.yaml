@@ -34,6 +34,7 @@ label:
     status: Statut
     published: Publicat(ă)
     categories: Categorii
+    used_powers: Prerogative aplicate
     occurred_time: Întâmplat(ă) pe data
     promise: Promisiune
     status_updates: Modificări statut primisiuni

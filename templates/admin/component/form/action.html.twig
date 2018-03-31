@@ -33,20 +33,30 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-lg-8">
-        {{ form_row(form.mandate) }}
+    <div class="col-12 col-lg-8">
+        <div class="row">
+            <div class="col">
+                {{ form_row(form.mandate) }}
+            </div>
+        </div>
+        {% if form.vars.value.id %}
+            <div class="row">
+                <div class="col pb-3">
+                    {{ form_row(form.statusUpdates) }}
+                </div>
+            </div>
+        {% else %}
+            {% do form.statusUpdates.setRendered() %}
+        {% endif %}
     </div>
+    {% if form.vars.value.id %}
+        <div class="col-12 col-lg-4">
+            {{ form_row(form.usedPowers) }}
+        </div>
+    {% else %}
+        {% do form.usedPowers.setRendered() %}
+    {% endif %}
 </div>
-
-{% if form.vars.value.id %}
-<div class="row">
-    <div class="col-lg-8">
-        {{ form_row(form.statusUpdates) }}
-    </div>
-</div>
-{% else %}
-    {% do form.statusUpdates.setRendered() %}
-{% endif %}
 
 <div class="row">
     <div class="col">

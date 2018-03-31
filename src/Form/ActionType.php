@@ -19,6 +19,8 @@ class ActionType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $is_edit = !!count($options['powers']);
+
         $builder
             ->add('name', TextType::class, [
                 'label' => 'label.name',
@@ -40,6 +42,7 @@ class ActionType extends AbstractType
                 'placeholder' => 'placeholder.choose_option',
                 'choices' => $options['mandates'],
                 'choice_value' => 'id',
+                'disabled' => $is_edit,
             ])
             ->add('published', CheckboxType::class, [
                 'label' => 'label.published',
@@ -57,6 +60,24 @@ class ActionType extends AbstractType
                     'statuses' => $options['statuses'],
                 ],
             ])
+            ->add('usedPowers', ChoiceType::class, [
+                'multiple' => true,
+                'expanded' => true,
+                'label' => 'label.used_powers',
+                'choices' => $options['powers'],
+                'choice_value' => 'id',
+            ])
+        ;
+
+        $builder->get('usedPowers')
+            ->addModelTransformer(new CallbackTransformer(
+                function ($powers) {
+                    return ($powers instanceof Collection) ? $powers->toArray() : $powers;
+                },
+                function ($powers) {
+                    return $powers;
+                }
+            ))
         ;
     }
 
@@ -68,6 +89,7 @@ class ActionType extends AbstractType
             'actions' => [],
             'promises' => [],
             'statuses' => [],
+            'powers' => [],
         ]);
     }
 }

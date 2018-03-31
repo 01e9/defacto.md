@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Action;
+use App\Entity\Power;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,5 +18,19 @@ class ActionRepository extends ServiceEntityRepository
     public function getAdminList(Request $request)
     {
         return $this->findAll();
+    }
+
+    public function getAdminPowerChoices(Action $action)
+    {
+        $choices = [];
+
+        foreach (
+            $action->getMandate()->getInstitutionTitle()->getTitle()->getPowers()
+            as $power /** @var Power $power */
+        ) {
+            $choices[ $power->getName() ] = $power;
+        }
+
+        return $choices;
     }
 }

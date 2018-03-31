@@ -126,6 +126,9 @@ class AdminActionsControllerTest extends WebTestCase
             ], null, 2);
             $this->assertCount(2, $promises);
 
+            $powers = $action->getMandate()->getInstitutionTitle()->getTitle()->getPowers();
+            $this->assertGreaterThanOrEqual(2, count($powers));
+
             return [
                 'action[name]' => 'Updated',
                 'action[slug]' => 'updated',
@@ -133,6 +136,10 @@ class AdminActionsControllerTest extends WebTestCase
                 'action[occurredTime]' => (new \DateTime())->format('Y-m-d'),
                 'action[published]' => true,
                 'action[mandate]' => $action->getMandate()->getId(),
+                'action[usedPowers]' => [
+                    $powers[0]->getId(),
+                    $powers[1]->getId(),
+                ],
                 'action[statusUpdates]' => [
                     [
                         'action' => $action->getId(),

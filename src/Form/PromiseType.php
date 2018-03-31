@@ -51,7 +51,6 @@ class PromiseType extends AbstractType
                 'multiple' => true,
                 'expanded' => true,
                 'label' => 'label.categories',
-                'placeholder' => 'placeholder.choose_option',
                 'choices' => $options['categories'],
                 'choice_value' => 'id',
             ])

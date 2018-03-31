@@ -171,4 +171,21 @@ class Mandate
 
         return $this;
     }
+
+    public function getChoiceName() : string
+    {
+        $dateFormat = 'd.m.Y';
+
+        return (
+            $this->getPolitician()->getFirstName() . ' ' . $this->getPolitician()->getLastName()
+            . ' / ' .
+            (
+                $this->getBeginDate()->format($dateFormat)
+                . ' - ' .
+                $this->getEndDate()->format($dateFormat)
+            )
+            . ' / ' .
+            $this->getInstitutionTitle()->getTitle()->getName()
+        );
+    }
 }

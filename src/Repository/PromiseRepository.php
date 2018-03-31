@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Promise;
+use App\Entity\Mandate;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,11 +15,11 @@ class PromiseRepository extends ServiceEntityRepository
         parent::__construct($registry, Promise::class);
     }
 
-    public function getAdminChoices() : array
+    public function getAdminChoicesByMandate(Mandate $mandate) : array
     {
         $choices = [];
 
-        foreach ($this->findAll() as $promise) { /** @var Promise $promise */
+        foreach ($this->findBy(['mandate' => $mandate]) as $promise) { /** @var Promise $promise */
             $choices[ $promise->getName() ] = $promise;
         }
 

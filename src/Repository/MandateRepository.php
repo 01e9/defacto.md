@@ -11,8 +11,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 class MandateRepository extends ServiceEntityRepository
 {
-    private $dateFormat = 'd.m.Y';
-
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, Mandate::class);
@@ -23,17 +21,7 @@ class MandateRepository extends ServiceEntityRepository
         $choices = [];
 
         foreach ($this->findAll() as $mandate) { /** @var Mandate $mandate */
-            $choices[
-                $mandate->getPolitician()->getFirstName() . ' ' . $mandate->getPolitician()->getLastName()
-                . ' / ' .
-                (
-                    $mandate->getBeginDate()->format($this->dateFormat)
-                    . ' - ' .
-                    $mandate->getEndDate()->format($this->dateFormat)
-                )
-                . ' / ' .
-                $mandate->getInstitutionTitle()->getTitle()->getName()
-            ] = $mandate;
+            $choices[ $mandate->getChoiceName() ] = $mandate;
         }
 
         return $choices;

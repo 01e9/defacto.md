@@ -40,9 +40,9 @@ class AdminActionsController extends Controller
 
         $form = $this->createForm(ActionType::class, $action, [
             'mandates' => $this->getDoctrine()->getRepository('App:Mandate')->getAdminChoices(),
-            'actions' => [$action->getName() => $action],
-            'promises' => $this->getDoctrine()->getRepository('App:Promise')->getAdminChoices(),
-            'statuses' => $this->getDoctrine()->getRepository('App:Status')->getAdminChoices(),
+            'actions' => [],
+            'promises' => [],
+            'statuses' => [],
         ]);
         $form->handleRequest($request);
 
@@ -73,6 +73,7 @@ class AdminActionsController extends Controller
      */
     public function editAction(Request $request, string $id)
     {
+        /** @var Action $action */
         $action = $this->getDoctrine()->getRepository('App:Action')->find($id);
         if (!$action) {
             throw $this->createNotFoundException();
@@ -83,11 +84,15 @@ class AdminActionsController extends Controller
             $originalStatusUpdates->add($statusUpdate);
         }
 
+        $this->getDoctrine()->getRepository('App:Mandate')->getAdminChoices();
+
         $form = $this->createForm(ActionType::class, $action, [
-            'mandates' => $this->getDoctrine()->getRepository('App:Mandate')->getAdminChoices(),
+            'mandates' => [$action->getMandate()->getChoiceName() => $action->getMandate()],
             'actions' => [$action->getName() => $action],
-            'promises' => $this->getDoctrine()->getRepository('App:Promise')->getAdminChoices(),
+            'promises' => $this->getDoctrine()->getRepository('App:Promise')
+                ->getAdminChoicesByMandate($action->getMandate()),
             'statuses' => $this->getDoctrine()->getRepository('App:Status')->getAdminChoices(),
+            'powers' => $this->getDoctrine()->getRepository('App:Action')->getAdminPowerChoices($action),
         ]);
         $form->handleRequest($request);
 

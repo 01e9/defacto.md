@@ -1,24 +1,11 @@
 version: '3.4'
 
 services:
-    defacto:
+    defacto: # just to build the image, then run `x11docker ~/path/to/ide.sh`
         container_name: defacto
-        image: defacto:1.1
+        image: defacto
         build:
             context: .
-        volumes:
-            - ${HOME}:${HOME}
-            - /tmp/.X11-unix:/tmp/.X11-unix
-        environment:
-            DISPLAY: ${DISPLAY}
-        cap_add:
-            - SYS_PTRACE # for debugger
-        working_dir: ${PWD}/..
-        ports:
-            - 80:8080
-        depends_on:
-            - defacto_pg
-        restart: unless-stopped
     defacto_pg:
         container_name: defacto_pg
         image: postgres:9

@@ -1,7 +1,0 @@
-#!/bin/bash
-
-SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
-PROJECT_DIR=$(dirname ${SCRIPT_DIR})
-CMD=${@}
-
-docker exec -it -u $UID defacto bash -c "cd ${PROJECT_DIR} && ${CMD}"

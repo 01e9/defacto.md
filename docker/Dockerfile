@@ -1,8 +1,5 @@
 FROM php:7.1-cli
 
-ARG USER=defacto
-ARG UID=12345
-
 RUN apt-get update \
     && apt-get install -y \
         libfreetype6-dev libjpeg62-turbo-dev libmcrypt-dev libpng-dev libicu-dev libpq-dev \
@@ -19,14 +16,11 @@ RUN apt-get update \
         && php -r "if (hash_file('SHA384', 'composer-setup.php') === '544e09ee996cdf60ece3804abc52599c22b1f40f4323403c44d44fdfdd586475ca9813a858088ffbc1f233e9b180f061') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;" \
         && php composer-setup.php --install-dir=bin --filename=composer \
         && php -r "unlink('composer-setup.php');" \
-    && useradd -u ${UID} -m ${USER} \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 ENV TINI_VERSION v0.17.0
 ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /tini
 RUN chmod +x /tini
-
-USER ${USER}
 
 EXPOSE 8080
 

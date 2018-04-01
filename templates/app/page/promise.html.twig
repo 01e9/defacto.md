@@ -36,42 +36,50 @@
         </div>
         {% include 'app/component/after-header-space.html.twig' %}
     </div>
-    <div class="container-fluid py-5 text-light">
+    <div class="container-fluid py-5">
         <div class="container">
             <div class="row">
                 {% if promise.promiseUpdates is empty %}
-                    <div class="col text-center">
+                    <div class="col text-center text-white">
                         <h2 class="h3 text-danger-light">{{ 'title.promise_no_actions'|trans }}</h2>
                         <p class="h3 pt-5"><span class="fa fa-search"></span></p>
                         <p>{{ 'text.promise_is_monitored'|trans }}</p>
                     </div>
                 {% else %}
                     <div class="col">
-                        <h2 class="h3 text-info-light text-center">{{ 'title.promise_actions'|trans }}</h2>
-                        <div class="promise-updates mt-5">
+                        <h2 class="h3 text-white text-center">{{ 'title.promise_actions'|trans }}</h2>
+                        <div class="mt-5">
                             {% for promiseUpdate in promise.publishedPromiseUpdatesSortedByActionDate %}
                                 <div class="row align-items-md-center mb-5">
-                                    <div class="col-6 col-md-3 col-lg-2">
-                                        <span class="h6"
-                                              data-toggle="tooltip" data-placement="top"
-                                              title="{{ promiseUpdate.action.occurredTime|date }}"
-                                        >{{ promiseUpdate.action.occurredTime|ago }}</span>
-                                    </div>
-                                    <div class="col-12 col-md-6 col-lg-8 order-last order-md-0 text-center">
-                                        <h4>
-                                            <a href="javascript:void(0)"
-                                               class="text-white">{{ promiseUpdate.action.name }}</a>
-                                        </h4>
-                                    </div>
-                                    <div class="col-6 col-md-3 col-lg-2 text-right">
-                                        {% if promiseUpdate.status %}
-                                            <span class="badge status-color-{{ promiseUpdate.status.color }}-light">
-                                                <span class="h6 text-uppercase">
-                                                    {{- promiseUpdate.status.name -}}
-                                                    <span class="fa fa-arrow-up"></span>
-                                                </span>
-                                            </span>
-                                        {% endif %}
+                                    <div class="col">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="row h6 mb-0">
+                                                    <div class="col-sm-6">
+                                                        <p>
+                                                            <span class="text-muted d-inline-block pr-1"
+                                                                  data-toggle="tooltip" data-placement="right"
+                                                                  title="{{ promiseUpdate.action.occurredTime|date }}"
+                                                            >{{ promiseUpdate.action.occurredTime|ago }}</span>
+                                                        </p>
+                                                    </div>
+                                                    <div class="col-sm-6 text-sm-right">
+                                                        <p>
+                                                            {% if promiseUpdate.status %}
+                                                                <span class="text-muted">promisiune</span>
+                                                                <span class="text-uppercase badge text-white status-bg-{{ promiseUpdate.status.color }}"
+                                                                >{{ promiseUpdate.status.name }}</span>
+                                                            {% else %}
+                                                                <span class="text-muted">statut neschimbat</span>
+                                                            {% endif %}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <h4 class="mb-0">
+                                                    <a href="javascript:void(0)">{{ promiseUpdate.action.name }}</a>
+                                                </h4>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             {% endfor %}

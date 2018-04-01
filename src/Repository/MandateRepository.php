@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\InstitutionTitle;
 use App\Entity\Mandate;
+use App\Entity\Power;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -32,7 +33,7 @@ class MandateRepository extends ServiceEntityRepository
         return $this->findAll();
     }
 
-    public function getLatestByInstitutionTitle(InstitutionTitle $institutionTitle)
+    public function getLatestByInstitutionTitle(InstitutionTitle $institutionTitle) : ?Mandate
     {
         return $this->createQueryBuilder('m')
             ->where('m.institutionTitle = :institutionTitle')
@@ -43,7 +44,7 @@ class MandateRepository extends ServiceEntityRepository
             ->getOneOrNullResult();
     }
 
-    public function getPromiseStatistics(Mandate $mandate)
+    public function getPromiseStatistics(Mandate $mandate) : array
     {
         $statisticsWithStatus = $this->createQueryBuilder('m')
             ->select('COUNT(s.id) AS count', 's AS status')
@@ -68,5 +69,46 @@ class MandateRepository extends ServiceEntityRepository
             ->getArrayResult();
 
         return array_merge($statisticsWithStatus, $statisticsWithoutStatus);
+    }
+
+    public function getPowersStatistics(Mandate $mandate) : array
+    {
+        /** @var Power[] $powers */
+        $powers = $mandate->getInstitutionTitle()->getTitle()->getPowers();
+
+        $statistics = [
+            'count_all' => count($powers),
+            'count_used' => 0,
+            'powers' => (function () use (&$powers) {
+                $byPower = [];
+                foreach ($powers as $power) {
+                    $byPower[ $power->getId() ] = [
+                        'count' => 0,
+                        'power' => $power,
+                    ];
+                }
+                return $byPower;
+            })(),
+        ];
+
+        $powerStatistics = $this->createQueryBuilder('m')
+            ->select('p.id, COUNT(p.id) as count')
+            ->innerJoin('App:Action', 'a', 'WITH', 'a.mandate = m')
+            ->innerJoin('a.usedPowers', 'p')
+            ->groupBy('p.id')
+            ->getQuery()
+            ->getArrayResult();
+
+        foreach ($powerStatistics as $powerStatistic) {
+            $statistics['powers'][ $powerStatistic['id'] ]['count'] = $powerStatistic['count'];
+        }
+
+        $statistics['count_used'] = array_reduce(
+            $statistics['powers'],
+            function($carry, $item) { return $item['count'] ? ++$carry : $carry; },
+            0
+        );
+
+        return $statistics;
     }
 }

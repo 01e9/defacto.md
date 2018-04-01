@@ -29,6 +29,9 @@ class MainController extends AbstractController
             throw new \Exception('President mandate is required');
         }
 
+        $presidentMandatePowersStatistics = $this->getDoctrine()->getRepository('App:Mandate')
+            ->getPowersStatistics($presidentMandate);
+
         $presidentMandatePromiseStatistics = $this->getDoctrine()->getRepository('App:Mandate')
             ->getPromiseStatistics($presidentMandate);
         /** @var Promise[] $presidentMandatePromises */
@@ -39,6 +42,7 @@ class MainController extends AbstractController
             'president_mandate' => $presidentMandate,
             'president_mandate_promise_statistics' => $presidentMandatePromiseStatistics,
             'president_mandate_promises' => $presidentMandatePromises,
+            'president_mandate_power_statistics' => $presidentMandatePowersStatistics,
         ]);
     }
 }

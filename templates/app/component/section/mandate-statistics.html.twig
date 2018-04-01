@@ -1,7 +1,7 @@
 {% import 'macros.html.twig' as macros %}
 
 {% set maxCount = 0 %}
-{% for promise in promiseStatistics %}
+{% for promise in promise_statistics %}
     {% set maxCount = max(maxCount, promise.count) %}
 {% endfor %}
 
@@ -30,8 +30,8 @@
                     <div class="card-body">
                         <h2 class="mb-4">{{ 'title.promises'|trans }}</h2>
                         {% if maxCount %}
-                            {% for promise in promiseStatistics %}
-                                <div class="h5">
+                            {% for promise in promise_statistics %}
+                                <div class="h5{% if not loop.last %} mb-4{% endif %}">
                                     <div>
                                         {% if promise.status is defined %}
                                             {{ promise.count == 1 ? promise.status.name : promise.status.namePlural }}
@@ -43,7 +43,7 @@
                                             <sup class="text-muted">{{ promise.count }}</sup>
                                         {% endif %}
                                     </div>
-                                    <div class="progress mt-1{% if not loop.last %} mb-4{% endif %}">
+                                    <div class="progress mt-1">
                                         <div class="progress-bar{%
                                             if promise.status is defined
                                         %} status-bg-{{ promise.status.color }}{%
@@ -65,33 +65,48 @@
                     <div class="card-body">
                         <h2 class="mb-4">{{ 'title.mandate'|trans }}</h2>
                         {% set statistics_color = 'primary' %}
-                        <div class="h5">
+                        <div class="h5 mb-4">
                             <div>
                                 {{ 'title.votes'|trans }}
                                 <sup class="text-muted">
                                     <span class="text-{{ statistics_color }}">{{ mandate.votesCount }}</span>
-                                    &nbsp;&middot;&nbsp;
+                                    &nbsp;<span class="fa fa-male"></span>&nbsp;
                                     <span class="text-{{ statistics_color }}">{{ mandate.votesPercent }}%</span>
                                 </sup>
                             </div>
-                            <div class="progress mt-1 mb-4">
+                            <div class="progress mt-1">
                                 <div class="progress-bar bg-{{ statistics_color }}"
                                      style="width: {{ mandate.votesPercent }}%;"
                                 ></div>
                             </div>
                         </div>
-                        <div class="h5">
+                        <div class="h5 mb-4">
                             <div>
                                 {{ 'title.the_duration'|trans }}
                                 <sup class="text-muted">
                                     <span class="text-{{ statistics_color }}">{{ mandate.beginDate|date('m.Y') }}</span>
-                                    &nbsp;&middot;&nbsp;
+                                    &nbsp;<span class="fa fa-clock"></span>&nbsp;
                                     <span class="text-{{ statistics_color }}">{{ mandate.endDate|date('m.Y') }}</span>
                                 </sup>
                             </div>
                             <div class="progress mt-1">
                                 <div class="progress-bar bg-{{ statistics_color }}"
                                      style="width: {{ '' ~ macros.get_date_interval_progress(mandate.beginDate, mandate.endDate) }}%;"
+                                ></div>
+                            </div>
+                        </div>
+                        <div class="h5">
+                            <div>
+                                {{ 'title.used_powers'|trans }}
+                                <sup class="text-muted">
+                                    <span class="text-{{ statistics_color }}">{{ power_statistics.count_used }}</span>
+                                    din
+                                    <span class="text-{{ statistics_color }}">{{ power_statistics.count_all }}</span>
+                                </sup>
+                            </div>
+                            <div class="progress mt-1">
+                                <div class="progress-bar bg-{{ statistics_color }}"
+                                     style="width: {{ power_statistics.count_used / power_statistics.count_all * 100 }}%;"
                                 ></div>
                             </div>
                         </div>

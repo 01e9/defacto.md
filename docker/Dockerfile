@@ -18,8 +18,8 @@ RUN apt-get update \
         && php -r "unlink('composer-setup.php');" \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-ENV TINI_VERSION v0.17.0
-ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /tini
+ENV TINI_VERSION 0.17.0
+ADD https://github.com/krallin/tini/releases/download/v${TINI_VERSION}/tini /tini
 RUN chmod +x /tini
 
 EXPOSE 8080

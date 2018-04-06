@@ -3,14 +3,12 @@
 [ -n "$(which x11docker)" ] \
     || { echo "x11docker is required"; exit 1; }
 
-SCRIPT_DIR=$(dirname $(readlink -f "$0"))
-PROJECT_DIR=$(dirname ${SCRIPT_DIR})
-CMD=${@}
-
 CMD=${@}
 [ -n "${CMD}" ] \
     || { echo "Command is required"; exit 1; }
 
+SCRIPT_DIR=$(dirname $(readlink -f "$0"))
+PROJECT_DIR=$(dirname ${SCRIPT_DIR})
 IMAGE=defacto
 
 [ -n "$(docker images -q --filter=reference="${IMAGE}")" ] \

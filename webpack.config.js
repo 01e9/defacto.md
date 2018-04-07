@@ -25,7 +25,7 @@ Encore
 
     .addPlugin(new GoogleFontsPlugin({
         fonts: [
-            { family: "Merriweather", variants: [ "400", "700" ] }
+            { family: "Merriweather", variants: [ "400", "700" ], subsets: [ "latin-ext" ] }
         ],
         name: 'google-fonts',
         path: 'google-fonts/',

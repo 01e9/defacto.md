@@ -44,39 +44,6 @@
     padding: .3em .3em 0;
 }
 
-.navbar {
-    .navbar-brand.logo-effect {
-        padding-bottom: 0;
-        position: relative;
-
-        font-family: $app-font-brand;
-        font-weight: bold;
-        line-height: 1;
-        font-size: 2em;
-
-        .text {
-            &:before {
-                content: 'de';
-                color: $app-color-primary;
-            }
-            &:after {
-                content: 'FACTO';
-                color: #000;
-            }
-        }
-        .check {
-            width: 0.9em;
-            height: 0.9em;
-            display: inline-block;
-            background: transparent url("../../img/check.svg") no-repeat scroll center center;
-            background-size: contain;
-            position: absolute;
-            top: -0.04em;
-            right: -0.4em;
-        }
-    }
-}
-
 .mandate-statistics {
     .photo-col {
         text-align: center;

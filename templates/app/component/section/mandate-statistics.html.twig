@@ -15,7 +15,7 @@
         </div>
         <div class="row align-items-lg-center">
             <div class="photo-col col-lg-4 mb-4 mb-lg-0">
-                <img src="{{ mandate.politician.photo ? asset('uploads/politicians/' ~ mandate.politician.photo.filename) : 'about:blank' }}"
+                <img src="{{ macros.politician_photo_url(mandate.politician) }}"
                      class="rounded-circle img-fluid mb-3" alt="Politician">
                 <h3 class="text-center mb-0">
                     <strong>

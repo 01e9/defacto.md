@@ -19,6 +19,6 @@
     {{-
     politician.photo
     ? asset('uploads/politicians/' ~ politician.photo.filename)
-    : 'about:blank'
+    : asset('img/1px.png')
     -}}
 {% endmacro %}

@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Promise;
 use App\Entity\Mandate;
+use App\Entity\Status;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,13 +32,13 @@ class PromiseRepository extends ServiceEntityRepository
         return $this->findAll();
     }
 
-    public function getListByStatusGroupByPolitician(string $statusId)
+    public function getListByStatusGroupByPolitician(?Status $status)
     {
         $promises = [];
 
         foreach (
             $this->findBy(
-                ['status' => $statusId, 'published' => true],
+                ['status' => $status, 'published' => true],
                 ['madeTime' => 'desc']
             )
             as $promise /** @var Promise $promise */

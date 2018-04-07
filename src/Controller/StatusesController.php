@@ -16,13 +16,17 @@ class StatusesController extends AbstractController
      */
     public function viewAction(Request $request, string $slug)
     {
-        /** @var Status $status */
-        $status = $this->getDoctrine()->getRepository('App:Status')->findOneBy([
-            'slug' => $slug,
-        ]);
+        $status = null;
 
-        if (!$status) {
-            throw $this->createNotFoundException();
+        if ('~' !== $slug) {
+            /** @var Status $status */
+            $status = $this->getDoctrine()->getRepository('App:Status')->findOneBy([
+                'slug' => $slug,
+            ]);
+
+            if (!$status) {
+                throw $this->createNotFoundException();
+            }
         }
 
         return $this->render('app/page/status.html.twig', [

@@ -1,6 +1,6 @@
 {% extends 'app/base.html.twig' %}
 
-{% set politiciansPromises = app_repo_promise.getListByStatusGroupByPolitician(status.id) %}
+{% set politiciansPromises = app_repo_promise.getListByStatusGroupByPolitician(status) %}
 
 {% block html_class %}bg-dark-pattern{% endblock %}
 {% block body_class %}bg-transparent{% endblock %}
@@ -11,8 +11,8 @@
             <div class="row">
                 <div class="col text-center">
                     <h1>
-                        <span class="my-5 status-stamp status-color-{{ status.color }}">
-                            {{ status.namePlural }}
+                        <span class="my-5 status-stamp {{ status ? "status-color-" ~ status.color : "text-muted" }}">
+                            {{ status ? status.namePlural : 'placeholder.inactive_plural'|trans }}
                         </span>
                     </h1>
                 </div>

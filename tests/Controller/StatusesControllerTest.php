@@ -20,6 +20,7 @@ class StatusesControllerTest extends WebTestCase
         $this->assertNotNull($status);
 
         $path = '/s/'. $status->getSlug();
+        $pathInactive = '/s/~';
 
         // without lang
         (function () use (&$client, &$path) {
@@ -37,6 +38,14 @@ class StatusesControllerTest extends WebTestCase
             (function () use (&$client, &$lang, &$path) {
                 $client->restart();
                 $crawler = $client->request('GET', '/'. $lang . $path);
+                $response = $client->getResponse();
+
+                $this->assertEquals(200, $response->getStatusCode());
+                $this->assertEquals(1, $crawler->filter('body')->count());
+            })();
+            (function () use (&$client, &$lang, &$pathInactive) {
+                $client->restart();
+                $crawler = $client->request('GET', '/'. $lang . $pathInactive);
                 $response = $client->getResponse();
 
                 $this->assertEquals(200, $response->getStatusCode());

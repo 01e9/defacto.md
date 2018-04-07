@@ -25,7 +25,7 @@ Encore
 
     .addPlugin(new GoogleFontsPlugin({
         fonts: [
-            { family: "Roboto", variants: [ "400", "700" ] }
+            { family: "Merriweather", variants: [ "400", "700" ] }
         ],
         name: 'google-fonts',
         path: 'google-fonts/',

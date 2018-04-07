@@ -35,12 +35,12 @@
                                     <div>
                                         {% if promise.status is defined %}
                                             {{ promise.count == 1 ? promise.status.name : promise.status.namePlural }}
-                                            <sup class="status-color-{{ promise.status.color }}">{{ promise.count }}</sup>
+                                            <sup class="status-color-{{ promise.status.color }}"><samp>{{ promise.count }}</samp></sup>
                                         {% else %}
                                             <span class="text-muted">
                                                 {{ promise.count == 1 ? 'placeholder.inactive_singular'|trans : 'placeholder.inactive_plural'|trans }}
                                             </span>
-                                            <sup class="text-muted">{{ promise.count }}</sup>
+                                            <sup class="text-muted"><samp>{{ promise.count }}</samp></sup>
                                         {% endif %}
                                     </div>
                                     <div class="progress mt-1">
@@ -69,9 +69,9 @@
                             <div>
                                 {{ 'title.votes'|trans }}
                                 <sup class="text-muted">
-                                    <span class="text-{{ statistics_color }}">{{ mandate.votesCount }}</span>
+                                    <samp class="text-{{ statistics_color }}">{{ mandate.votesCount }}</samp>
                                     &nbsp;<span class="fa fa-male"></span>&nbsp;
-                                    <span class="text-{{ statistics_color }}">{{ mandate.votesPercent }}%</span>
+                                    <samp class="text-{{ statistics_color }}">{{ mandate.votesPercent }}%</samp>
                                 </sup>
                             </div>
                             <div class="progress mt-1">
@@ -84,9 +84,9 @@
                             <div>
                                 {{ 'title.the_duration'|trans }}
                                 <sup class="text-muted">
-                                    <span class="text-{{ statistics_color }}">{{ mandate.beginDate|date('m.Y') }}</span>
+                                    <samp class="text-{{ statistics_color }}">{{ mandate.beginDate|date('m.Y') }}</samp>
                                     &nbsp;<span class="fa fa-clock"></span>&nbsp;
-                                    <span class="text-{{ statistics_color }}">{{ mandate.endDate|date('m.Y') }}</span>
+                                    <samp class="text-{{ statistics_color }}">{{ mandate.endDate|date('m.Y') }}</samp>
                                 </sup>
                             </div>
                             <div class="progress mt-1">
@@ -99,9 +99,9 @@
                             <div>
                                 {{ 'title.used_powers'|trans }}
                                 <sup class="text-muted">
-                                    <span class="text-{{ statistics_color }}">{{ power_statistics.count_used }}</span>
+                                    <samp class="text-{{ statistics_color }}">{{ power_statistics.count_used }}</samp>
                                     din
-                                    <span class="text-{{ statistics_color }}">{{ power_statistics.count_all }}</span>
+                                    <samp class="text-{{ statistics_color }}">{{ power_statistics.count_all }}</samp>
                                 </sup>
                             </div>
                             <div class="progress mt-1">

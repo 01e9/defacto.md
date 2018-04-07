@@ -23,7 +23,9 @@
         {% if politiciansPromises is empty %}
         <div class="row">
             <div class="col text-center text-light">
-                <h2 class="h3 mt-5">{{ 'title.no_primises_by_status'|trans }}</h2>
+                <h2 class="h3 mt-5">
+                    {{ status ? 'title.no_primises_by_status'|trans : 'title.no_inactive_primises'|trans }}
+                </h2>
                 <p class="h3 mt-4"><span class="fa fa-hourglass-half"></span></p>
             </div>
         </div>

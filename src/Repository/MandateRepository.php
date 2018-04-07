@@ -93,7 +93,9 @@ class MandateRepository extends ServiceEntityRepository
 
         $powerStatistics = $this->createQueryBuilder('m')
             ->select('p.id, COUNT(p.id) as count')
-            ->innerJoin('App:Action', 'a', 'WITH', 'a.mandate = m')
+            ->innerJoin('App:Action', 'a', Expr\Join::WITH,
+                'a.mandate = m AND a.published = true'
+            )
             ->innerJoin('a.usedPowers', 'p')
             ->groupBy('p.id')
             ->getQuery()

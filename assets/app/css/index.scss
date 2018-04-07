@@ -45,6 +45,12 @@
 }
 
 .mandate-statistics {
+    @include media-breakpoint-down(sm) {
+        h1 {
+            font-size: $h3-font-size;
+        }
+    }
+
     .photo-col {
         text-align: center;
 
@@ -124,6 +130,6 @@
 
     img {
         display: block;
-        height: 30px;
+        height: 28px;
     }
 }

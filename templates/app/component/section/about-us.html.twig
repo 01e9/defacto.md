@@ -18,7 +18,7 @@
         </div>
     </div>
 </div>
-<div class="container-fluid bg-white">
+<div class="container-fluid bg-white pb-5">
     <div class="row">
         <div class="col text-center about-us-with-photo">
             <h3 class="h1 text-white pb-4 pb-sm-5">{{ 'title.about_us'|trans }}</h3>
@@ -29,17 +29,20 @@
         <div class="row">
             <div class="col">
                 <p>
-                    Echipa s-a constituit în urma campaniei civice AVEM CE VOTĂM,
+                    Echipa s-a constituit în urma campaniei civice <a href="http://avemcevotam.md/" target="_blank">AVEM CE VOTĂM</a>,
                     care a avut drept scop încurajarea tinerilor să participe la alegerile prezidenţiale.
                     Prin intermediul campaniei s- au identificat cele mai importante probleme ale tinerilor,
                     iar candidaţii la funcția de președinte au fost întrebați cum îşi propun rezolvarea acestora.
                 </p>
                 <p>
-                    Campania a fost organizată de grupul de inițiativă neafiliat politic CHALLENGER,
+                    Campania a fost organizată de grupul de inițiativă neafiliat politic <a href="http://www.challenger.md/" target="_blank">CHALLENGER</a>,
                     care promovează participarea democratică a cetățenilor și a politicienilor în procesul decizional.
                     Credem că democrația este un efort continuu, care nu se limitează doar la ziua votării,
                     iar comunicarea sistematică între politicieni și cetățeni este un element fundamental al acesteia.
-                    Alte proiecte CHALLENGER: DA' EU VOTEZ, Cântărește-ți votul și Primăria Mea.
+                    Alte proiecte CHALLENGER:
+                    <a href="http://daeuvotez.challenger.md/" target="_blank">DA' EU VOTEZ</a>,
+                    <a href="https://www.facebook.com/cantarestetivotul/" target="_blank">Cântărește-ți votul</a> și
+                    <a href="http://primariamea.md/" target="_blank">Primăria Mea</a>.
                 </p>
             </div>
         </div>
@@ -78,7 +81,7 @@
                         <div class="px-1 px-sm-3 px-xl-4">
                             <h5 class="text-center">{{ member.name }}</h5>
                             <p><img src="{{ asset('photo/team/' ~ member.photo) }}" alt="{{ member.name }}" class="img-fluid mx-auto"></p>
-                            <p>{{ member.info }}</p>
+                            <p class="text-justify">{{ member.info }}</p>
                         </div>
                     </div>
                 {% endfor %}

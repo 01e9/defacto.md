@@ -19,7 +19,7 @@
             </div>
         </div>
     </div>
-    <div class="container-fluid">
+    <div class="container-fluid mb-5">
         {% if politiciansPromises is empty %}
         <div class="row">
             <div class="col text-center text-light">
@@ -44,4 +44,5 @@
             {% endfor %}
         {% endif %}
     </div>
+    {% include 'app/component/section/footer.html.twig' only %}
 {% endblock %}

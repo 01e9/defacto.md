@@ -139,7 +139,10 @@
 
 .about-us-with-photo {
     position: relative;
-    max-height: 22rem;
+
+    img {
+        max-height: 22rem;
+    }
 
     h3 {
         position: absolute;

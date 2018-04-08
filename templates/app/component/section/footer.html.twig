@@ -1,12 +1,12 @@
 <div class="container text-light py-5">
     <div class="row">
-        <div class="col mb-3 text-sm-center">
+        <div class="col mb-3 text-sm-center text-muted">
             <p>deFacto - Platformă online de monitorizare a promisiunilor făcute de politicieni</p>
         </div>
     </div>
     <div class="row justify-content-md-center">
         <div class="col-sm-6 col-md-4 col-xl-3">
-            <h4 class="mb-3">Ne găsiți pe</h4>
+            <h5 class="mb-3">Ne găsiți pe</h5>
             <ul class="list-unstyled">
                 {% for item in [
                     {
@@ -25,7 +25,7 @@
                         icon: 'fab fa-trello'
                     }
                 ] %}
-                <li class="h5">
+                <li class="h6">
                     <span class="{{ item.icon }} mr-2"></span>
                     <a href="{{ item.link }}"
                        target="_blank"
@@ -35,9 +35,9 @@
             </ul>
         </div>
         <div class="col-sm-6 col-md-4 col-xl-3 pt-4 pt-sm-0">
-            <h4 class="mb-3">Parteneri</h4>
+            <h5 class="mb-3">Parteneri</h5>
             <ul class="list-unstyled">
-                <li class="h5">
+                <li class="h6">
                     <a href="http://www.challenger.md/"
                        target="_blank"
                        class="text-primary-light">CHALLENGER</a>

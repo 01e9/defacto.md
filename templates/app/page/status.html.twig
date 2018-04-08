@@ -11,7 +11,8 @@
             <div class="row">
                 <div class="col text-center">
                     <h1>
-                        <span class="my-5 status-stamp {{ status ? "status-color-" ~ status.color : "text-muted" }}">
+                        {{ 'title.promises'|trans }}
+                        <span class="my-5 ml-4 status-stamp {{ status ? "status-color-" ~ status.color : "text-muted" }}">
                             {{ status ? status.namePlural : 'placeholder.inactive_plural'|trans }}
                         </span>
                     </h1>

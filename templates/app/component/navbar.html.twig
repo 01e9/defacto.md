@@ -5,52 +5,11 @@
             <img src="{{ asset('img/de-facto-check.svg') }}" alt="deFACTO">
         </a>
 
-        <button class="navbar-toggler" type="button"
-                data-toggle="collapse" data-target="#navbarContent"
-                aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation"
-        >
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarContent">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle{%
-                        if app.request.attributes.get('_route') == 'status' %} active{% endif
-                    %}"
-                       href="#"
-                       id="navbarPromisesDropdown" role="button"
-                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                    >
-                        {{ 'title.promises'|trans }}
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarPromisesDropdown">
-                        {% for status in app_repo_status.list %}
-                            <a class="dropdown-item"
-                               href="{{ path('status', {'slug': status.slug}) }}"
-                            >{{ status.namePlural }}</a>
-                        {% endfor %}
-                        <a class="dropdown-item"
-                           href="{{ path('status', {'slug': '~'}) }}"
-                        >{{ 'placeholder.inactive_plural'|trans }}</a>
-                    </div>
-                </li>
-                {#<li class="nav-item">
-                    <a class="nav-link disabled" href="javascript:void(0)">{{ 'title.prerogatives'|trans }}</a>
-                </li>#}
-                {#<li class="nav-item">
-                    <a class="nav-link disabled" href="javascript:void(0)">{{ 'title.blog'|trans }}</a>
-                </li>#}
-                {#<li class="nav-item">
-                    <a class="nav-link disabled" href="javascript:void(0)">{{ 'title.about_us'|trans }}</a>
-                </li>#}
-            </ul>
-            <button class="btn btn-sm btn-outline-primary my-2 my-sm-0"
-                    type="button"
-                    data-toggle="modal"
-                    data-target="#instant-search-modal"
-            ><span class="fa fa-search"></span>&nbsp;&nbsp;{{ 'action.searching'|trans }}</button>
-        </div>
+        <button class="btn btn-sm btn-outline-primary my-2 my-sm-0"
+                type="button"
+                data-toggle="modal"
+                data-target="#instant-search-modal"
+        ><span class="fa fa-search"></span>&nbsp;&nbsp;{{ 'action.searching'|trans }}</button>
     </div>
 </nav>
 

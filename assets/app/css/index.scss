@@ -4,6 +4,7 @@
 @import "~@fortawesome/fontawesome-free-webfonts/css/fa-solid.css";
 @import "~@fortawesome/fontawesome-free-webfonts/css/fontawesome.css";
 @import "~instantsearch.js/dist/instantsearch.css";
+@import "~slick-carousel/slick/slick.css";
 
 @each $color, $value in $app-status-colors {
     .status-color-#{$color} { color: $value; }
@@ -148,5 +149,17 @@
 
         display: flex;
         flex-direction: column-reverse;
+    }
+}
+
+.slick-slider {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.team-slider {
+    img {
+        max-height: 16rem;
     }
 }

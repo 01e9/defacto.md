@@ -58,6 +58,14 @@ class PromiseType extends AbstractType
                 'label' => 'label.published',
                 'required' => false,
             ])
+            ->add('sourceName', TextType::class, [
+                'label' => 'label.source_name',
+                'required' => false,
+            ])
+            ->add('sourceLink', TextType::class, [
+                'label' => 'label.source_link',
+                'required' => false,
+            ])
         ;
 
         $builder->get('categories')

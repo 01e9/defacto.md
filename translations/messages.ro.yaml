@@ -41,6 +41,8 @@ label:
     action: Acțiune
     votes_count: Numărul de voturi obținute
     votes_percent: Procentul de voturi obținute
+    source_name: Denumirea sursei
+    source_link: Linkul sursei
     color: Culoarea
     color_name:
         violet: Violet

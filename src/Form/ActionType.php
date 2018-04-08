@@ -67,6 +67,14 @@ class ActionType extends AbstractType
                 'choices' => $options['powers'],
                 'choice_value' => 'id',
             ])
+            ->add('sourceName', TextType::class, [
+                'label' => 'label.source_name',
+                'required' => false,
+            ])
+            ->add('sourceLink', TextType::class, [
+                'label' => 'label.source_link',
+                'required' => false,
+            ])
         ;
 
         $builder->get('usedPowers')

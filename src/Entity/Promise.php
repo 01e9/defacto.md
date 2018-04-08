@@ -87,6 +87,21 @@ class Promise
     private $published;
 
     /**
+     * @ORM\Column(type="string", nullable=true)
+     *
+     * @Assert\Length(min=3)
+     */
+    private $sourceName;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     *
+     * @Assert\Length(min=3)
+     * @Assert\Url(checkDNS=false)
+     */
+    private $sourceLink;
+
+    /**
      * @ORM\OneToMany(targetEntity="PromiseUpdate", mappedBy="promise")
      * @ORM\JoinColumn(nullable=false)
      *
@@ -205,6 +220,30 @@ class Promise
     public function getPromiseUpdates()
     {
         return $this->promiseUpdates;
+    }
+
+    public function getSourceName() : ?string
+    {
+        return $this->sourceName;
+    }
+
+    public function setSourceName(?string $sourceName) : Promise
+    {
+        $this->sourceName = $sourceName;
+
+        return $this;
+    }
+
+    public function getSourceLink() : ?string
+    {
+        return $this->sourceLink;
+    }
+
+    public function setSourceLink(?string $sourceLink) : Promise
+    {
+        $this->sourceLink = $sourceLink;
+
+        return $this;
     }
 
     public function getPublishedPromiseUpdatesSortedByActionDate()

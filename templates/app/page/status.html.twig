@@ -9,10 +9,11 @@
     <div class="container-fluid bg-light-pattern">
         <div class="container">
             <div class="row">
-                <div class="col text-center">
+                <div class="col text-center py-5">
                     <h1>
                         {{ 'title.promises'|trans }}
-                        <span class="my-5 ml-4 status-stamp {{ status ? "status-color-" ~ status.color : "text-muted" }}">
+                        <br class="d-block d-md-none">
+                        <span class="ml-md-4 mt-5 mt-md-0 status-stamp {{ status ? "status-color-" ~ status.color : "text-muted" }}">
                             {{ status ? status.namePlural : 'placeholder.inactive_plural'|trans }}
                         </span>
                     </h1>

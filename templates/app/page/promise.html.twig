@@ -36,13 +36,13 @@
         </div>
         {% include 'app/component/after-header-space.html.twig' %}
     </div>
-    <div class="container-fluid py-5">
+    <div class="container-fluid mt-5">
         <div class="container">
             <div class="row">
                 {% if promise.promiseUpdates is empty %}
                     <div class="col text-center text-white">
                         <h2 class="h3 text-danger-light">{{ 'title.promise_no_actions'|trans }}</h2>
-                        <p class="h3 pt-5"><span class="fa fa-search"></span></p>
+                        <p class="h3 mt-5"><span class="fa fa-search"></span></p>
                         <p>{{ 'text.promise_is_monitored'|trans }}</p>
                     </div>
                 {% else %}
@@ -89,5 +89,5 @@
             </div>
         </div>
     </div>
-    {% include 'app/component/section/footer.html.twig' only %}
+    {% include 'app/component/section/footer.html.twig' with {delimiter: true} only %}
 {% endblock %}

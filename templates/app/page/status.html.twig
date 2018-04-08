@@ -45,5 +45,5 @@
             {% endfor %}
         {% endif %}
     </div>
-    {% include 'app/component/section/footer.html.twig' only %}
+    {% include 'app/component/section/footer.html.twig' with {delimiter: true} only %}
 {% endblock %}

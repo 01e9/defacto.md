@@ -22,8 +22,7 @@ jQuery(($) => {
                 settings: {
                     slidesToShow: 1,
                     slidesToScroll: 1,
-                    arrows: false,
-                    centerPadding: '1em'
+                    centerPadding: '0'
                 }
             }
         ]

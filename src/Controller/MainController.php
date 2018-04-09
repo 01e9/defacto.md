@@ -36,7 +36,7 @@ class MainController extends AbstractController
             ->getPromiseStatistics($presidentMandate);
         /** @var Promise[] $presidentMandatePromises */
         $presidentMandatePromises = $this->getDoctrine()->getRepository('App:Promise')
-            ->findBy(['mandate' => $presidentMandate]);
+            ->findBy(['mandate' => $presidentMandate], ['madeTime' => 'DESC']);
 
         return $this->render('app/page/home.html.twig', [
             'president_mandate' => $presidentMandate,

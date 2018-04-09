@@ -28,6 +28,7 @@ class ActionType extends AbstractType
             ->add('description', TextareaType::class, [
                 'label' => 'label.description',
                 'attr' => ['class' => 'wysiwyg'],
+                'required' => false,
             ])
             ->add('occurredTime', DateType::class, [
                 'label' => 'label.occurred_time',

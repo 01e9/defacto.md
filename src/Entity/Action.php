@@ -35,9 +35,8 @@ class Action
     private $name;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text", nullable=true)
      *
-     * @Assert\NotBlank()
      * @Assert\Length(min=3, max=10000)
      */
     private $description;

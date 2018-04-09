@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Promise;
 use Doctrine\Common\Collections\Collection;
+use KMS\FroalaEditorBundle\Form\Type\FroalaEditorType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -26,9 +27,8 @@ class PromiseType extends AbstractType
                 'label' => 'label.slug',
                 'attr' => ['data-slug-from' => 'promise[name]'],
             ])
-            ->add('description', TextareaType::class, [
+            ->add('description', FroalaEditorType::class, [
                 'label' => 'label.description',
-                'attr' => ['class' => 'wysiwyg'],
             ])
             ->add('madeTime', DateType::class, [
                 'label' => 'label.made_date',

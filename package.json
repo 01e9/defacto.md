@@ -17,7 +17,6 @@
         "bootstrap": "^4.0.0",
         "bootstrap-material-design": "^4.1.1",
         "exports-loader": "^0.7.0",
-        "froala-editor": "^2.7.6",
         "google-fonts-webpack-plugin": "^0.4.4",
         "instantsearch.js": "^2.6.0",
         "jquery": "^3.3.1",

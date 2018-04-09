@@ -1,0 +1,30 @@
+kms_froala_editor:
+    language: "%locale%"
+    pluginsEnabled:
+        - "align"
+        - "char_counter"
+        - "code_beautifier"
+        - "code_view"
+        - "entities"
+        - "fullscreen"
+        - "help"
+        - "line_breaker"
+        - "link"
+        - "lists"
+        - "quick_insert"
+        - "quote"
+        - "special_characters"
+        - "url"
+        - "word_paste"
+
+    imageManagerDeleteURL: false
+    imageManagerLoadURL: false
+    imageUploadURL: false
+    fileUploadURL: false
+    videoUploadURL: false
+
+    includeJQuery: true
+    includeCodeMirror: true
+    includeFontAwesome: false
+    includeJS: true
+    includeCSS: true

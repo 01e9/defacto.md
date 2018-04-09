@@ -83,6 +83,9 @@
     "jdorn/sql-formatter": {
         "version": "v1.2.17"
     },
+    "kms/froala-editor-bundle": {
+        "version": "dev-master"
+    },
     "knplabs/knp-time-bundle": {
         "version": "1.8.0"
     },

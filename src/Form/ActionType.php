@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Action;
 use Doctrine\Common\Collections\Collection;
+use KMS\FroalaEditorBundle\Form\Type\FroalaEditorType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -25,9 +26,8 @@ class ActionType extends AbstractType
             ->add('name', TextType::class, [
                 'label' => 'label.name',
             ])
-            ->add('description', TextareaType::class, [
+            ->add('description', FroalaEditorType::class, [
                 'label' => 'label.description',
-                'attr' => ['class' => 'wysiwyg'],
                 'required' => false,
             ])
             ->add('occurredTime', DateType::class, [

@@ -4,20 +4,12 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ActionRepository")
- * @ORM\Table(
- *     name="actions",
- *     uniqueConstraints={
- *      @ORM\UniqueConstraint(name="action_unique_slug", columns={"slug"})
- *     }
- * )
- *
- * @UniqueEntity(fields={"slug"})
+ * @ORM\Table(name="actions")
  */
 class Action
 {
@@ -27,19 +19,6 @@ class Action
      * @ORM\GeneratedValue(strategy="UUID")
      */
     private $id;
-
-    /**
-     * @ORM\Column(type="string", length=50)
-     * @Groups({"searchable"})
-     *
-     * @Assert\NotBlank()
-     * @Assert\Length(min=3, max=30)
-     * @Assert\Regex(
-     *     pattern="/^\p{L}+(\-\p{L}+)*$/u",
-     *     message="invalid.slug"
-     * )
-     */
-    private $slug;
 
     /**
      * @ORM\Column(name="occurred_time", type="date")
@@ -111,18 +90,6 @@ class Action
     public function getId() : ?string
     {
         return $this->id;
-    }
-
-    public function getSlug() : ?string
-    {
-        return $this->slug;
-    }
-
-    public function setSlug(?string $slug) : Action
-    {
-        $this->slug = $slug;
-
-        return $this;
     }
 
     public function getOccurredTime() : ?\DateTime

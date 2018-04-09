@@ -1,5 +1,6 @@
 const GoogleFontsPlugin = require("google-fonts-webpack-plugin");
 var Encore = require('@symfony/webpack-encore');
+const BabelMinifyPlugin = require("babel-minify-webpack-plugin");
 
 Encore
     .setOutputPath('public/build/')
@@ -31,22 +32,15 @@ Encore
         path: 'google-fonts/',
         filename: 'google-fonts.css'
     }))
-
-    .configureBabel(function(config) {
-        config.presets = [
-            "@babel/preset-env",
-            "@babel/preset-es2015"
-        ];
-        config.plugins = [
-            "@babel/plugin-proposal-class-properties",
-            "@babel/plugin-proposal-object-rest-spread",
-            "@babel/plugin-transform-modules-commonjs",
-            "@babel/plugin-transform-destructuring",
-            "@babel/plugin-syntax-dynamic-import",
-            "@babel/plugin-syntax-export-default-from",
-            "@babel/plugin-syntax-export-namespace-from"
-        ];
-    })
 ;
+
+if (Encore.isProduction()) {
+    Encore
+        .configureUglifyJsPlugin((options) => {
+            options.test = /\.DISABLED$/i;
+            return options;
+        })
+        .addPlugin(new BabelMinifyPlugin({}, {}))
+}
 
 module.exports = Encore.getWebpackConfig();

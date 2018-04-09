@@ -33,6 +33,15 @@
                     {% include 'app/component/item/promise.html.twig' with {promise: promise, is_main: true} only %}
                 </div>
             </div>
+            {% if promise.description|trim is not empty %}
+            <div class="row">
+                <div class="col">
+                    <div class="card mt-5 bg-light">
+                        <div class="card-body raw-html">{{ promise.description|raw }}</div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
         </div>
         {% include 'app/component/after-header-space.html.twig' %}
     </div>
@@ -48,11 +57,11 @@
                 {% else %}
                     <div class="col">
                         <h2 class="h3 text-white text-center">{{ 'title.promise_actions'|trans }}</h2>
-                        <div class="mt-5 promise-actions">
+                        <div class="mt-5">
                             {% for promiseUpdate in promise.publishedPromiseUpdatesSortedByActionDate %}
                                 <div class="row align-items-md-center{% if not loop.last %} mb-5{% endif %}">
                                     <div class="col">
-                                        <div class="card promise-action">
+                                        <div class="card bg-light">
                                             <div class="card-body">
                                                 <div class="row h6 mb-0">
                                                     <div class="col-sm-6">
@@ -76,11 +85,11 @@
                                                     </div>
                                                 </div>
                                                 {% set has_description = promiseUpdate.action.description|trim is not empty %}
-                                                <h4 class="{% if not has_description %}mb-0{% endif %}">
+                                                <h4 class="mb-{{ has_description ? '3' : '0' }}">
                                                     {{- promiseUpdate.action.name -}}
                                                 </h4>
                                                 {% if has_description %}
-                                                    <div class="description">{{ promiseUpdate.action.description|raw }}</div>
+                                                    <div class="raw-html">{{ promiseUpdate.action.description|raw }}</div>
                                                 {% endif %}
                                             </div>
                                         </div>

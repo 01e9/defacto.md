@@ -29,6 +29,7 @@ class PromiseType extends AbstractType
             ])
             ->add('description', FroalaEditorType::class, [
                 'label' => 'label.description',
+                'required' => false,
             ])
             ->add('madeTime', DateType::class, [
                 'label' => 'label.made_date',

@@ -1,6 +1,7 @@
-<div class="card p-3 promise-item bg-light">
+{% set is_main = is_main is defined and is_main %}
+<div class="card p-3 promise-item{% if not is_main %} bg-light{% endif %}">
     <blockquote class="blockquote mb-0 card-body">
-        {% if is_main is defined and is_main %}
+        {% if is_main %}
             <h1 class="h5">{{ promise.name }}</h1>
         {% else %}
             <p><a href="{{ path('promise', {'slug': promise.slug}) }}"

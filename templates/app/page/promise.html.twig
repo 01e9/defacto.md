@@ -49,14 +49,14 @@
         <div class="container">
             <div class="row">
                 {% if promise.promiseUpdates is empty %}
-                    <div class="col text-center text-white">
+                    <div class="col text-center text-light">
                         <h2 class="h3 text-danger-light">{{ 'title.promise_no_actions'|trans }}</h2>
                         <p class="h3 mt-5"><span class="fa fa-search"></span></p>
                         <p class="mb-0">{{ 'text.promise_is_monitored'|trans }}</p>
                     </div>
                 {% else %}
                     <div class="col">
-                        <h2 class="h3 text-white text-center">{{ 'title.promise_actions'|trans }}</h2>
+                        <h2 class="h3 text-light text-center">{{ 'title.promise_actions'|trans }}</h2>
                         <div class="mt-5">
                             {% for promiseUpdate in promise.publishedPromiseUpdatesSortedByActionDate %}
                                 <div class="row align-items-md-center{% if not loop.last %} mb-5{% endif %}">

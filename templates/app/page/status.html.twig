@@ -33,9 +33,9 @@
         </div>
         {% else %}
             {% for politicianData in politiciansPromises %}
-                <div class="row mt-5 justify-content-md-center">
+                <div class="row mt-2 justify-content-md-center">
                     {% for promise in politicianData.promises %}
-                        <div class="col-md-6 col-lg-4">
+                        <div class="col-lg-6 col-xl-4 mt-3 mt-lg-4">
                             {% include 'app/component/item/promise.html.twig' with {
                                 promise: promise,
                                 show_status: false

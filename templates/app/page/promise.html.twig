@@ -48,11 +48,11 @@
                 {% else %}
                     <div class="col">
                         <h2 class="h3 text-white text-center">{{ 'title.promise_actions'|trans }}</h2>
-                        <div class="mt-5">
+                        <div class="mt-5 promise-actions">
                             {% for promiseUpdate in promise.publishedPromiseUpdatesSortedByActionDate %}
                                 <div class="row align-items-md-center{% if not loop.last %} mb-5{% endif %}">
                                     <div class="col">
-                                        <div class="card">
+                                        <div class="card promise-action">
                                             <div class="card-body">
                                                 <div class="row h6 mb-0">
                                                     <div class="col-sm-6">
@@ -75,9 +75,13 @@
                                                         </p>
                                                     </div>
                                                 </div>
-                                                <h4 class="mb-0">
-                                                    <a href="javascript:void(0)">{{ promiseUpdate.action.name }}</a>
+                                                {% set has_description = promiseUpdate.action.description|trim is not empty %}
+                                                <h4 class="{% if not has_description %}mb-0{% endif %}">
+                                                    {{- promiseUpdate.action.name -}}
                                                 </h4>
+                                                {% if has_description %}
+                                                    <div class="description">{{ promiseUpdate.action.description|raw }}</div>
+                                                {% endif %}
                                             </div>
                                         </div>
                                     </div>

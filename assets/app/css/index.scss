@@ -168,3 +168,9 @@
         max-height: 16rem;
     }
 }
+
+.promise-actions .promise-action {
+    .description > :last-child {
+        margin-bottom: 0;
+    }
+}

@@ -35,7 +35,5 @@ install:
 script:
   - mkdir -p public/build && echo '{}' > public/build/manifest.json
   - ./vendor/bin/simple-phpunit
-  # this checks that the composer.json and composer.lock files are valid
-  - composer validate --strict
-  # this checks that Doctrine's mapping configurations are valid
+  - composer validate
   - ./bin/console doctrine:schema:validate --skip-sync -vvv --no-interaction

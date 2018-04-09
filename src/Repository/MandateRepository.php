@@ -46,7 +46,7 @@ class MandateRepository extends ServiceEntityRepository
 
     public function getPromiseStatistics(Mandate $mandate) : array
     {
-        $statisticsWithStatus = $this->createQueryBuilder('m')
+        $statistics = $this->createQueryBuilder('m')
             ->select('COUNT(s.id) AS count', 's AS status')
             ->innerJoin('App:Promise', 'p', Expr\Join::WITH, 'p.published = true AND p.mandate = m.id')
             ->innerJoin('App:Status', 's', Expr\Join::WITH,'s.id = p.status')
@@ -68,7 +68,11 @@ class MandateRepository extends ServiceEntityRepository
             ->getQuery()
             ->getArrayResult();
 
-        return array_merge($statisticsWithStatus, $statisticsWithoutStatus);
+        if ($statisticsWithoutStatus[0]['count']) {
+            $statistics = array_merge($statistics, $statisticsWithoutStatus);
+        }
+
+        return $statistics;
     }
 
     public function getPowersStatistics(Mandate $mandate) : array

@@ -1,5 +1,6 @@
 import 'bootstrap';
 import { initSlugGenerator } from "./slug-generator";
+import "./editors";
 
 jQuery(($) => {
     $('input[data-slug-from]').each((i, slugInput) => {

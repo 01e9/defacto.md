@@ -10,6 +10,7 @@
         "@babel/plugin-transform-modules-commonjs": "^7.0.0-beta.40",
         "@babel/preset-env": "^7.0.0-beta.40",
         "@babel/preset-es2015": "^7.0.0-beta.40",
+        "@ckeditor/ckeditor5-build-classic": "^1.0.0-beta.1",
         "@fortawesome/fontawesome-free-webfonts": "^1.0.4",
         "@symfony/webpack-encore": "^0.17.1",
         "animate.css": "^3.6.1",

@@ -21,3 +21,13 @@ input.form-control[type="color"] {
 }
 
 //endregion
+
+.ck-content {
+    blockquote {
+        ol:last-child,
+        p:last-child,
+        ul:last-child {
+            margin-bottom: 0;
+        }
+    }
+}

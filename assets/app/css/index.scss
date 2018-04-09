@@ -172,3 +172,14 @@
 .raw-html > :last-child {
     margin-bottom: 0;
 }
+
+blockquote {
+    padding: $spacer*0.7 $spacer;
+    border-left: 5px solid #eee;
+
+    ol:last-child,
+    p:last-child,
+    ul:last-child {
+        margin-bottom: 0;
+    }
+}

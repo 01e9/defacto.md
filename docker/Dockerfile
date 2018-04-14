@@ -1,5 +1,7 @@
 FROM php:7.1-cli
 
+ARG TINI_VERSION='0.17.0'
+
 RUN apt-get update \
     && apt-get install -y \
         libfreetype6-dev libjpeg62-turbo-dev libmcrypt-dev libpng-dev libicu-dev libpq-dev \
@@ -18,7 +20,6 @@ RUN apt-get update \
         && php -r "unlink('composer-setup.php');" \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-ENV TINI_VERSION 0.17.0
 ADD https://github.com/krallin/tini/releases/download/v${TINI_VERSION}/tini /tini
 RUN chmod +x /tini
 

@@ -5,6 +5,9 @@
 {% block html_class %}bg-dark-pattern{% endblock %}
 {% block body_class %}bg-transparent{% endblock %}
 
+{% set has_description = (promise.description|trim is not empty and promise.description != '<p>&nbsp;</p>') %}
+{% set has_categories = promise.categories is not empty %}
+
 {% block main %}
     <div class="container-fluid bg-light-pattern">
         {% include 'app/component/after-header-space.html.twig' %}
@@ -33,7 +36,7 @@
                     {% include 'app/component/item/promise.html.twig' with {promise: promise, is_main: true} only %}
                 </div>
             </div>
-            {% if promise.categories|length %}
+            {% if has_categories %}
                 <div class="row mt-3">
                     <div class="offset-lg-5 offset-xl-4 col-lg-7 col-xl-8">
                         {% for category in promise.categories %}
@@ -44,10 +47,11 @@
                     </div>
                 </div>
             {% endif %}
-            {% if promise.description|trim is not empty %}
+
+            {% if has_description %}
             <div class="row">
                 <div class="col">
-                    <div class="card mt-5 bg-light">
+                    <div class="card bg-light {% if has_categories %}mt-3{% else %} mt-5{% endif %}">
                         <div class="card-body raw-html">{{ promise.description|raw }}</div>
                     </div>
                 </div>
@@ -80,13 +84,9 @@
                                                               data-toggle="tooltip" data-placement="right"
                                                               title="{{ promiseUpdate.action.occurredTime|date }}"
                                                         >{{ promiseUpdate.action.occurredTime|ago }}</span>
-                                                        {% if promiseUpdate.action.usedPowers|length %}
+                                                        {% if promiseUpdate.action.usedPowers is not empty %}
                                                             {% for power in promiseUpdate.action.usedPowers %}
-                                                                <span class="badge badge-primary{%
-                                                                    if not loop.first
-                                                                %} ml-3{%
-                                                                    endif
-                                                                %}">{{ power.name }}</span>
+                                                                <span class="badge badge-primary">{{ power.name }}</span>
                                                             {% endfor %}
                                                         {% endif %}
                                                     </div>

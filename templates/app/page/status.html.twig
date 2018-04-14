@@ -1,4 +1,5 @@
 {% extends 'app/base.html.twig' %}
+{% import 'app/macros.html.twig' as app_macros %}
 
 {% set politiciansPromises = app_repo_promise.getListByStatusGroupByPolitician(status) %}
 
@@ -35,7 +36,7 @@
             {% for politicianData in politiciansPromises %}
                 <div class="row mt-2 justify-content-md-center">
                     {% for promise in politicianData.promises %}
-                        <div class="col-lg-6 col-xl-4 mt-3 mt-lg-4">
+                        <div class="{{ app_macros.card_list_item_col_classes() }}">
                             {% include 'app/component/item/promise.html.twig' with {
                                 promise: promise,
                                 show_status: false

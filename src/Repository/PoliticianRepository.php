@@ -18,7 +18,7 @@ class PoliticianRepository extends ServiceEntityRepository
     {
         $choices = [];
 
-        foreach ($this->findAll() as $politician) {
+        foreach ($this->findBy([], ['firstName' => 'ASC', 'lastName' => 'ASC']) as $politician) {
             $choices[
                 $politician->getFirstName() . ' ' . $politician->getLastName()
             ] = $politician;
@@ -29,6 +29,6 @@ class PoliticianRepository extends ServiceEntityRepository
 
     public function getAdminList(Request $request)
     {
-        return $this->findAll();
+        return $this->findBy([], ['firstName' => 'ASC', 'lastName' => 'ASC']);
     }
 }

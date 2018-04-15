@@ -17,7 +17,7 @@ class CategoryRepository extends ServiceEntityRepository
     {
         $choices = [];
 
-        foreach ($this->findAll() as $category) { /** @var Category $category */
+        foreach ($this->findBy([], ['name' => 'ASC']) as $category) { /** @var Category $category */
             $choices[ $category->getName() ] = $category;
         }
 

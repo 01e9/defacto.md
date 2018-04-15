@@ -21,7 +21,7 @@ class MandateRepository extends ServiceEntityRepository
     {
         $choices = [];
 
-        foreach ($this->findAll() as $mandate) { /** @var Mandate $mandate */
+        foreach ($this->findBy([], ['beginDate' => 'DESC']) as $mandate) { /** @var Mandate $mandate */
             $choices[ $mandate->getChoiceName() ] = $mandate;
         }
 
@@ -30,14 +30,14 @@ class MandateRepository extends ServiceEntityRepository
 
     public function getAdminList(Request $request)
     {
-        return $this->findAll();
+        return $this->findBy([], ['beginDate' => 'DESC']);
     }
 
     public function getLatestByInstitutionTitle(InstitutionTitle $institutionTitle) : ?Mandate
     {
         return $this->createQueryBuilder('m')
             ->where('m.institutionTitle = :institutionTitle')
-            ->orderBy('m.beginDate', 'desc')
+            ->orderBy('m.beginDate', 'DESC')
             ->setMaxResults(1)
             ->setParameter('institutionTitle', $institutionTitle)
             ->getQuery()
@@ -51,7 +51,7 @@ class MandateRepository extends ServiceEntityRepository
             ->innerJoin('App:Promise', 'p', Expr\Join::WITH, 'p.published = true AND p.mandate = m.id')
             ->innerJoin('App:Status', 's', Expr\Join::WITH,'s.id = p.status')
             ->where('m.id = :mandate')
-            ->orderBy('s.effect','desc')
+            ->orderBy('s.effect','DESC')
             ->groupBy('s.id')
             ->setParameter('mandate', $mandate)
             ->getQuery()

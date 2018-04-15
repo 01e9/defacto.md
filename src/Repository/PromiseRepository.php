@@ -20,7 +20,7 @@ class PromiseRepository extends ServiceEntityRepository
     {
         $choices = [];
 
-        foreach ($this->findBy(['mandate' => $mandate]) as $promise) { /** @var Promise $promise */
+        foreach ($this->findBy(['mandate' => $mandate], ['madeTime' => 'DESC']) as $promise) { /** @var Promise $promise */
             $choices[ $promise->getName() ] = $promise;
         }
 
@@ -29,7 +29,7 @@ class PromiseRepository extends ServiceEntityRepository
 
     public function getAdminList(Request $request)
     {
-        return $this->findAll();
+        return $this->findBy([], ['madeTime' => 'DESC']);
     }
 
     public function getListByStatusGroupByPolitician(?Status $status)
@@ -39,7 +39,7 @@ class PromiseRepository extends ServiceEntityRepository
         foreach (
             $this->findBy(
                 ['status' => $status, 'published' => true],
-                ['madeTime' => 'desc']
+                ['madeTime' => 'DESC']
             )
             as $promise /** @var Promise $promise */
         ) {

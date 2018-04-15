@@ -17,7 +17,7 @@ class InstitutionTitleRepository extends ServiceEntityRepository
     {
         $choices = [];
 
-        foreach ($this->findAll() as $institutionTitle) {
+        foreach ($this->findBy([], [/* can't order by relation */]) as $institutionTitle) {
             $choices[
                 $institutionTitle->getInstitution()->getName()
                 . ' / ' .

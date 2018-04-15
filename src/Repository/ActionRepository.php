@@ -17,7 +17,7 @@ class ActionRepository extends ServiceEntityRepository
 
     public function getAdminList(Request $request)
     {
-        return $this->findAll();
+        return $this->findBy([], ['occurredTime' => 'DESC']);
     }
 
     public function getAdminPowerChoices(Action $action)

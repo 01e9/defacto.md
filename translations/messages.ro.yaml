@@ -117,3 +117,5 @@ placeholder:
 text:
     at: la
     promise_is_monitored: Promisiunea se monitorizează
+    promise_lower: promisiune
+    status_unchanged_lower: statut neschimbat

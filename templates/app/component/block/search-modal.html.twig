@@ -1,7 +1,9 @@
 {% set types = [
     {title: 'title.promises'|trans, id: 'promises', path: 'p/{{slug}}'},
-    {title: 'title.actions'|trans, id: 'actions', path: 'a/{{objectID}}'},
-] %}
+]
+%}
+{# {title: 'title.actions'|trans, id: 'actions', path: 'a/{{slug}}'}, #}
+
 <div class="modal fade"
      id="instant-search-modal"
      tabindex="-1"
@@ -25,7 +27,8 @@
                 </button>
             </div>
             <div class="modal-body pt-0">
-                <div class="nav nav-tabs nav-fill" role="tablist">
+                <div class="nav nav-tabs nav-fill{% if types|length == 1 %} d-none{% endif %}"
+                     role="tablist">
                     {% for type in types %}
                         <a class="nav-item py-3 nav-link{% if loop.first %} active{% endif %}"
                            id="search-{{ type.id }}-tab"

@@ -57,6 +57,8 @@ class ExceptionSubscriber implements EventSubscriberInterface
 
         // Redirect to previous referer if valid
         do {
+            break; // fixme: for some reason on frontend the flash message added here is not shown
+
             $referer = $request->headers->get('referer');
 
             if (empty($referer)) {

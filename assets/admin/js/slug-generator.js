@@ -11,10 +11,16 @@ export function slugify(text) {
 export function initSlugGenerator($sources, $slug) {
     const eventNamespace = '.auto-slug';
 
+    let enabled = !$slug.val().length;
+
     $sources.off(eventNamespace);
     $slug.off(eventNamespace);
 
     $sources.on(['keyup', 'change'].map(event => event + eventNamespace).join(' '), () => {
+        if (!enabled) {
+            return;
+        }
+
         let values = [];
         $sources.each((i, sourceInput) => {
             values.push($(sourceInput).val());
@@ -22,7 +28,7 @@ export function initSlugGenerator($sources, $slug) {
         $slug.val(slugify(values.join(' ')));
     });
 
-    $slug.one('change'+ eventNamespace, () => {
-        $sources.off(eventNamespace);
+    $slug.on('change'+ eventNamespace, () => {
+        enabled = !$slug.val().length;
     });
 }

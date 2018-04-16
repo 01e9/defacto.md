@@ -7,11 +7,22 @@
                 {{ form_row(form.name) }}
             </div>
         </div>
+        <div class="row">
+            <div class="col">
+                {{ form_row(form.slug) }}
+            </div>
+        </div>
     </div>
     <div class="col-lg-4">
         <div class="row">
             <div class="col">
                 {{ form_row(form.occurredTime) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="p-md-3"></div>
+                {{ form_row(form.published) }}
             </div>
         </div>
     </div>
@@ -47,12 +58,6 @@
         {% endif %}
     </div>
     <div class="col-12 col-lg-4">
-        <div class="row">
-            <div class="col">
-                <div class="p-md-3"></div>
-                {{ form_row(form.published) }}
-            </div>
-        </div>
         {% if form.vars.value.id %}
             <div class="row">
                 <div class="col">

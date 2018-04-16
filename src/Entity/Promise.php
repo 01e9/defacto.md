@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(
  *     name="promises",
  *     uniqueConstraints={
- *      @ORM\UniqueConstraint(name="promise_unique_slug_mandate", columns={"slug", "mandate_id"})
+ *      @ORM\UniqueConstraint(name="promise_unique_slug", columns={"slug"})
  *     }
  * )
  */
@@ -24,19 +24,6 @@ class Promise
      * @ORM\GeneratedValue(strategy="UUID")
      */
     private $id;
-
-    /**
-     * @ORM\Column(name="slug", type="string", length=50)
-     * @Groups({"searchable"})
-     *
-     * @Assert\NotBlank()
-     * @Assert\Length(min=3, max=50)
-     * @Assert\Regex(
-     *     pattern="/^\p{L}+(\-\p{L}+)*$/u",
-     *     message="invalid.slug"
-     * )
-     */
-    private $slug;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Mandate")
@@ -72,6 +59,19 @@ class Promise
      * @Assert\Length(min=3, max=255)
      */
     private $name;
+
+    /**
+     * @ORM\Column(name="slug", type="string", length=50)
+     * @Groups({"searchable"})
+     *
+     * @Assert\NotBlank()
+     * @Assert\Length(min=3, max=50)
+     * @Assert\Regex(
+     *     pattern="/^\p{L}+(\-\p{L}+)*$/u",
+     *     message="invalid.slug"
+     * )
+     */
+    private $slug;
 
     /**
      * @ORM\Column(type="text", nullable=true)
@@ -120,18 +120,6 @@ class Promise
         return $this->id;
     }
 
-    public function getSlug() : ?string
-    {
-        return $this->slug;
-    }
-
-    public function setSlug(?string $slug) : Promise
-    {
-        $this->slug = $slug;
-
-        return $this;
-    }
-
     public function getMandate() : ?Mandate
     {
         return $this->mandate;
@@ -176,6 +164,18 @@ class Promise
     public function setName(?string $name) : Promise
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getSlug() : ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(?string $slug) : Promise
+    {
+        $this->slug = $slug;
 
         return $this;
     }

@@ -9,7 +9,12 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ActionRepository")
- * @ORM\Table(name="actions")
+ * @ORM\Table(
+ *     name="actions",
+ *     uniqueConstraints={
+ *      @ORM\UniqueConstraint(name="action_unique_slug", columns={"slug"})
+ *     }
+ * )
  */
 class Action
 {
@@ -33,6 +38,19 @@ class Action
      * @Assert\Length(min=3, max=50)
      */
     private $name;
+
+    /**
+     * @ORM\Column(name="slug", type="string", length=50)
+     * @Groups({"searchable"})
+     *
+     * @Assert\NotBlank()
+     * @Assert\Length(min=3, max=50)
+     * @Assert\Regex(
+     *     pattern="/^\p{L}+(\-\p{L}+)*$/u",
+     *     message="invalid.slug"
+     * )
+     */
+    private $slug;
 
     /**
      * @ORM\Column(type="text", nullable=true)
@@ -111,6 +129,18 @@ class Action
     public function setName(?string $name) : Action
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getSlug() : ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(?string $slug) : Action
+    {
+        $this->slug = $slug;
 
         return $this;
     }

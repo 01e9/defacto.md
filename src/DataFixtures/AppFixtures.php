@@ -101,6 +101,7 @@ class AppFixtures extends Fixture
         $action
             ->setMandate($mandate)
             ->setName('Demo acțiune')
+            ->setSlug('demo-acțiune')
             ->setDescription('Demo descriere')
             ->setOccurredTime(new \DateTime())
             ->setPublished(true);
@@ -110,6 +111,7 @@ class AppFixtures extends Fixture
         $action2
             ->setMandate($mandate)
             ->setName('Demo altă acțiune')
+            ->setSlug('demo-altă-acțiune')
             ->setDescription('Demo descriere')
             ->setOccurredTime(new \DateTime())
             ->setPublished(true);

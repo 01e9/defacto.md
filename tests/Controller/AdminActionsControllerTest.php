@@ -38,6 +38,7 @@ class AdminActionsControllerTest extends WebTestCase
 
         $formData = [
             'action[name]' => 'Test',
+            'action[slug]' => 'test',
             'action[description]' => 'Test',
             'action[occurredTime]' => (new \DateTime())->format('Y-m-d'),
             'action[published]' => true,
@@ -108,6 +109,7 @@ class AdminActionsControllerTest extends WebTestCase
             $action = new Action();
             $action
                 ->setName('Test')
+                ->setSlug('test')
                 ->setDescription('Test')
                 ->setOccurredTime(new \DateTime())
                 ->setPublished(true)
@@ -129,6 +131,7 @@ class AdminActionsControllerTest extends WebTestCase
 
             return [
                 'action[name]' => 'Updated',
+                'action[slug]' => 'updated',
                 'action[description]' => 'Updated',
                 'action[occurredTime]' => (new \DateTime())->format('Y-m-d'),
                 'action[published]' => true,

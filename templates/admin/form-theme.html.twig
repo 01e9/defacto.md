@@ -27,12 +27,14 @@
                     newEl.querySelector('legend').remove();
                     wrap.appendChild(newEl.firstChild);
                     })(document.getElementById('{{ form.vars.id }}'))"
-            >{{ 'action.add_promise_update'|trans }}</button>
+            >{{ ('action.add_' ~ form.vars.name)|trans }}</button>
         </div>
     </div>
 {% endblock %}
 
 {% block promise_update_widget %}
+    {% import _self as macros %}
+
     <div class="d-none">
         {{ form_row(form.action) }}
     </div>
@@ -44,15 +46,38 @@
             {{ form_row(form.status) }}
         </div>
         {% if form.parent.vars.allow_delete %}
-            <div class="col-lg-auto">
-                <label class="form-control-label">&nbsp;</label>
-                <div>
-                    <button type="button" class="btn btn-light"
-                            aria-label="Delete" onclick="this.closest('.form-group').remove();">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            </div>
+            {{ macros.delete_btn_col() }}
         {% endif %}
     </div>
 {% endblock %}
+
+{% block promise_source_widget %}
+    {% import _self as macros %}
+
+    <div class="d-none">
+        {{ form_row(form.promise) }}
+    </div>
+    <div class="row">
+        <div class="col">
+            {{ form_row(form.name) }}
+        </div>
+        <div class="col">
+            {{ form_row(form.link) }}
+        </div>
+        {% if form.parent.vars.allow_delete %}
+            {{ macros.delete_btn_col() }}
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% macro delete_btn_col() %}
+    <div class="col-auto">
+        <label class="form-control-label">&nbsp;</label>
+        <div>
+            <button type="button" class="btn btn-light"
+                    aria-label="Delete" onclick="this.closest('.form-group').remove();">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </div>
+{% endmacro %}

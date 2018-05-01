@@ -1,2 +1,6 @@
 logout:
     path: /logout
+
+redirect_to_locale:
+    path: /
+    controller: App\Controller\MainController::redirectToLocaleAction

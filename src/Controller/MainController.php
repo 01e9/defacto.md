@@ -12,6 +12,11 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class MainController extends AbstractController
 {
+    public function redirectToLocaleAction()
+    {
+        return $this->redirectToRoute('home');
+    }
+
     /**
      * @Route(path="", name="home")
      * @Method("GET")

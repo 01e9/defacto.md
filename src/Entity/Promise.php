@@ -86,21 +86,6 @@ class Promise
     private $published;
 
     /**
-     * @ORM\Column(type="string", nullable=true)
-     *
-     * @Assert\Length(min=3)
-     */
-    private $sourceName;
-
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     *
-     * @Assert\Length(min=3)
-     * @Assert\Url(checkDNS=false)
-     */
-    private $sourceLink;
-
-    /**
      * @ORM\OneToMany(targetEntity="PromiseUpdate", mappedBy="promise")
      * @ORM\JoinColumn(nullable=false)
      *
@@ -108,11 +93,20 @@ class Promise
      */
     private $promiseUpdates;
 
+    /**
+     * @ORM\OneToMany(targetEntity="PromiseSource", mappedBy="promise", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
+     *
+     * @Assert\Valid()
+     */
+    private $sources;
+
     public function __construct()
     {
         $this->published = false;
         $this->categories = new ArrayCollection();
         $this->promiseUpdates = new ArrayCollection();
+        $this->sources = new ArrayCollection();
     }
 
     public function getId() : ?string
@@ -221,30 +215,6 @@ class Promise
         return $this->promiseUpdates;
     }
 
-    public function getSourceName() : ?string
-    {
-        return $this->sourceName;
-    }
-
-    public function setSourceName(?string $sourceName) : Promise
-    {
-        $this->sourceName = $sourceName;
-
-        return $this;
-    }
-
-    public function getSourceLink() : ?string
-    {
-        return $this->sourceLink;
-    }
-
-    public function setSourceLink(?string $sourceLink) : Promise
-    {
-        $this->sourceLink = $sourceLink;
-
-        return $this;
-    }
-
     public function getPublishedPromiseUpdatesSortedByActionDate()
     {
         $promiseUpdates = $this->promiseUpdates->toArray();
@@ -259,5 +229,10 @@ class Promise
         }
 
         return $promiseUpdates;
+    }
+
+    public function getSources()
+    {
+        return $this->sources;
     }
 }

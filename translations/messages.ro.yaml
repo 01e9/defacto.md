@@ -41,6 +41,7 @@ label:
     action: Acțiune
     votes_count: Numărul de voturi obținute
     votes_percent: Procentul de voturi obținute
+    sources: Surse
     source_name: Denumirea sursei
     source_link: Linkul sursei
     color: Culoarea
@@ -69,7 +70,8 @@ action:
     edit_promise: Modifică promisiune
     add_action: Adaugă acțiune
     edit_action: Modifică acțiune
-    add_promise_update: Adaugă conexiune cu promisiune
+    add_promiseUpdates: Adaugă conexiune cu promisiune
+    add_sources: Adaugă sursă
     search: Caută
     searching: Căutare
     edit_setting: Modifică setare

@@ -38,7 +38,9 @@ class AdminPromisesController extends Controller
      */
     public function addAction(Request $request)
     {
-        $form = $this->createForm(PromiseType::class, null, [
+        $promise = new Promise();
+
+        $form = $this->createForm(PromiseType::class, $promise, [
             'categories' => $this->getDoctrine()->getRepository('App:Category')->getAdminChoices(),
             'mandates' => $this->getDoctrine()->getRepository('App:Mandate')->getAdminChoices(),
             'statuses' => $this->getDoctrine()->getRepository('App:Status')->getAdminChoices(),
@@ -81,6 +83,7 @@ class AdminPromisesController extends Controller
             'categories' => $this->getDoctrine()->getRepository('App:Category')->getAdminChoices(),
             'mandates' => $this->getDoctrine()->getRepository('App:Mandate')->getAdminChoices(),
             'statuses' => $this->getDoctrine()->getRepository('App:Status')->getAdminChoices(),
+            'promises' => [$promise->getName() => $promise],
         ]);
         $form->handleRequest($request);
 

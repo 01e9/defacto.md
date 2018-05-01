@@ -8,6 +8,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -59,13 +60,15 @@ class PromiseType extends AbstractType
                 'label' => 'label.published',
                 'required' => false,
             ])
-            ->add('sourceName', TextType::class, [
-                'label' => 'label.source_name',
-                'required' => false,
-            ])
-            ->add('sourceLink', TextType::class, [
-                'label' => 'label.source_link',
-                'required' => false,
+            ->add('sources', CollectionType::class, [
+                'label' => 'label.sources',
+                'allow_add' => true,
+                'allow_delete' => true,
+                'prototype' => true,
+                'entry_type' => PromiseSourceType::class,
+                'entry_options' => [
+                    'promises' => $options['promises'],
+                ],
             ])
         ;
 
@@ -87,6 +90,7 @@ class PromiseType extends AbstractType
             'data_class' => Promise::class,
             'statuses' => [],
             'mandates' => [],
+            'promises' => [],
             'categories' => [],
         ]);
     }

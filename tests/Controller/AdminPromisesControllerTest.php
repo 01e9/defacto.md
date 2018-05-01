@@ -152,18 +152,27 @@ class AdminPromisesControllerTest extends WebTestCase
             return $promise;
         };
 
-        $formData = [
-            'promise[name]' => 'Test',
-            'promise[slug]' => 'test',
-            'promise[description]' => 'Test',
-            'promise[madeTime]' => (new \DateTime())->format('Y-m-d'),
-            'promise[status]' => $em->getRepository('App:Status')->findOneBy([])->getId(),
-            'promise[mandate]' => $em->getRepository('App:Mandate')->findOneBy([])->getId(),
-            'promise[categories]' => [
-                $em->getRepository('App:Category')->findOneBy([])->getId()
-            ],
-            'promise[published]' => true,
-        ];
+        $createFormData = function (Promise $promise) use (&$em) {
+            return [
+                'promise[name]' => 'Test',
+                'promise[slug]' => 'test',
+                'promise[description]' => 'Test',
+                'promise[madeTime]' => (new \DateTime())->format('Y-m-d'),
+                'promise[status]' => $em->getRepository('App:Status')->findOneBy([])->getId(),
+                'promise[mandate]' => $em->getRepository('App:Mandate')->findOneBy([])->getId(),
+                'promise[categories]' => [
+                    $em->getRepository('App:Category')->findOneBy([])->getId()
+                ],
+                'promise[published]' => true,
+                'promise[sources]' => [
+                    [
+                        'promise' => $promise->getId(),
+                        'name' => 'Source name',
+                        'link' => 'https://source.link'
+                    ],
+                ],
+            ];
+        };
 
         foreach (self::getLangs() as $lang) {
             (function () use (&$client, &$lang, &$createPromise, &$em) {
@@ -183,12 +192,13 @@ class AdminPromisesControllerTest extends WebTestCase
                 $em->flush();
             })();
 
-            (function () use (&$client, &$lang, &$createPromise, &$formData, &$router, &$em) {
+            (function () use (&$client, &$lang, &$createPromise, &$createFormData, &$router, &$em) {
                 $promise = $createPromise();
+                $formData = $createFormData($promise);
                 $form = $client
                     ->request('GET', '/'. $lang .'/admin/promises/'. $promise->getId())
                     ->filter('form')->form();
-                $client->submit($form, $formData);
+                $client->submit($form, array_diff_key($formData, ['promise[sources]' => false]));
                 $response = $client->getResponse();
 
                 $this->assertEquals(302, $response->getStatusCode());
@@ -212,12 +222,44 @@ class AdminPromisesControllerTest extends WebTestCase
                 $em->flush();
             })();
 
-            (function () use (&$client, &$lang, &$createPromise, &$formData, &$router, &$em) {
+            (function () use (&$client, &$lang, &$createPromise, &$createFormData, &$router, &$em) {
                 $promise = $createPromise();
+                $formData = $createFormData($promise);
                 $form = $client
                     ->request('GET', '/'. $lang .'/admin/promises/'. $promise->getId())
                     ->filter('form')->form();
-                $client->submit($form, array_merge($formData, [
+                $formPhpValues = $form->getPhpValues();
+                $formPhpValues['promise']['sources'] = $formData['promise[sources]'];
+
+                $client->request($form->getMethod(), $form->getUri(), $formPhpValues);
+                $response = $client->getResponse();
+
+                $this->assertEquals(302, $response->getStatusCode());
+
+                $route = $router->match($response->getTargetUrl());
+                $this->assertEquals('admin_promises', $route['_route']);
+                $this->assertEquals($lang, $route['_locale']);
+
+                /** @var Promise $promise */
+                $promise = $em->getRepository('App:Promise')->find($promise->getId());
+
+                $this->assertNotNull($promise);
+
+                $em->refresh($promise);
+
+                $this->assertCount(count($formData['promise[sources]']), $promise->getSources());
+
+                $em->remove($promise);
+                $em->flush();
+            })();
+
+            (function () use (&$client, &$lang, &$createPromise, &$createFormData, &$router, &$em) {
+                $promise = $createPromise();
+                $formData = $createFormData($promise);
+                $form = $client
+                    ->request('GET', '/'. $lang .'/admin/promises/'. $promise->getId())
+                    ->filter('form')->form();
+                $client->submit($form, array_merge(array_diff_key($formData, ['promise[sources]' => false]), [
                     'promise[status]' => '',
                 ]));
                 $response = $client->getResponse();

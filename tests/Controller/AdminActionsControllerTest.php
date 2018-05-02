@@ -152,6 +152,13 @@ class AdminActionsControllerTest extends WebTestCase
                         'status' => '',
                     ],
                 ],
+                'action[sources]' => [
+                    [
+                        'action' => $action->getId(),
+                        'name' => 'Test source',
+                        'link' => 'https://test.link',
+                    ],
+                ],
             ];
         };
 
@@ -177,7 +184,10 @@ class AdminActionsControllerTest extends WebTestCase
                 $form = $client
                     ->request('GET', '/'. $lang .'/admin/actions/'. $action->getId())
                     ->filter('form')->form();
-                $client->submit($form, array_diff_key($formData, ['action[promiseUpdates]' => false]));
+                $client->submit($form, array_diff_key($formData, [
+                    'action[promiseUpdates]' => false,
+                    'action[sources]' => false,
+                ]));
                 $response = $client->getResponse();
 
                 $this->assertEquals(302, $response->getStatusCode());
@@ -207,6 +217,7 @@ class AdminActionsControllerTest extends WebTestCase
                     ->filter('form')->form();
                 $formPhpValues = $form->getPhpValues();
                 $formPhpValues['action']['promiseUpdates'] = $formData['action[promiseUpdates]'];
+                $formPhpValues['action']['sources'] = $formData['action[sources]'];
 
                 $client->request($form->getMethod(), $form->getUri(), $formPhpValues);
                 $response = $client->getResponse();
@@ -224,6 +235,7 @@ class AdminActionsControllerTest extends WebTestCase
                 $em->refresh($action);
 
                 $this->assertCount(count($formData['action[promiseUpdates]']), $action->getPromiseUpdates());
+                $this->assertCount(count($formData['action[sources]']), $action->getSources());
 
                 array_map(function (PromiseUpdate $promiseUpdate) use (&$em) {
                     $em->remove($promiseUpdate);

@@ -15,7 +15,7 @@ class PromiseSourceType extends AbstractType
     {
         $builder
             ->add('promise', ChoiceType::class, [
-                'label' => 'label.action',
+                'label' => 'label.promise',
                 'placeholder' => count($options['promises']) > 1 ? 'placeholder.choose_option' : null,
                 'choices' => $options['promises'],
                 'choice_value' => 'id',

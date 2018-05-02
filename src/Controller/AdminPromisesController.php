@@ -5,6 +5,7 @@ namespace App\Controller;
 
 use App\Entity\Promise;
 use App\Form\PromiseType;
+use Doctrine\Common\Collections\ArrayCollection;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -79,6 +80,11 @@ class AdminPromisesController extends Controller
             throw $this->createNotFoundException();
         }
 
+        $originalSources = new ArrayCollection();
+        foreach ($promise->getSources() as $source) {
+            $originalSources->add($source);
+        }
+
         $form = $this->createForm(PromiseType::class, $promise, [
             'categories' => $this->getDoctrine()->getRepository('App:Category')->getAdminChoices(),
             'mandates' => $this->getDoctrine()->getRepository('App:Mandate')->getAdminChoices(),
@@ -92,6 +98,14 @@ class AdminPromisesController extends Controller
             $promise = $form->getData();
 
             $em = $this->getDoctrine()->getManager();
+
+            foreach ($originalSources as $source) {
+                if (false === $promise->getSources()->contains($source)) {
+                    $promise->getSources()->removeElement($source);
+                    $em->remove($source);
+                }
+            }
+
             $em->persist($promise);
             $em->flush();
 

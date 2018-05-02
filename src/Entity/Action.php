@@ -95,6 +95,7 @@ class Action
     {
         $this->promiseUpdates = new ArrayCollection();
         $this->usedPowers = new ArrayCollection();
+        $this->sources = new ArrayCollection();
     }
 
     public function getId() : ?string

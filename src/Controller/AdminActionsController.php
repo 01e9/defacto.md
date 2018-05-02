@@ -84,6 +84,11 @@ class AdminActionsController extends Controller
             $originalPromiseUpdates->add($promiseUpdate);
         }
 
+        $originalSources = new ArrayCollection();
+        foreach ($action->getSources() as $source) {
+            $originalSources->add($source);
+        }
+
         $this->getDoctrine()->getRepository('App:Mandate')->getAdminChoices();
 
         $form = $this->createForm(ActionType::class, $action, [
@@ -106,6 +111,13 @@ class AdminActionsController extends Controller
                 if (false === $action->getPromiseUpdates()->contains($promiseUpdate)) {
                     $action->getPromiseUpdates()->removeElement($promiseUpdate);
                     $em->remove($promiseUpdate);
+                }
+            }
+
+            foreach ($originalSources as $source) {
+                if (false === $action->getSources()->contains($source)) {
+                    $action->getSources()->removeElement($source);
+                    $em->remove($source);
                 }
             }
 

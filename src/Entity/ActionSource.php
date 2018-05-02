@@ -6,15 +6,15 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\PromiseSourceRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\ActionSourceRepository")
  * @ORM\Table(
- *     name="promise_sources",
+ *     name="action_sources",
  *     uniqueConstraints={
- *      @ORM\UniqueConstraint(name="promise_source_unique_name", columns={"promise_id", "name"})
+ *      @ORM\UniqueConstraint(name="action_source_unique_name", columns={"action_id", "name"})
  *     }
  * )
  */
-class PromiseSource
+class ActionSource
 {
     /**
      * @ORM\Id()
@@ -41,10 +41,10 @@ class PromiseSource
     private $link;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Promise", inversedBy="sources")
+     * @ORM\ManyToOne(targetEntity="Action", inversedBy="sources")
      * @ORM\JoinColumn(onDelete="CASCADE", nullable=false)
      */
-    private $promise;
+    private $action;
 
     public function getId()
     {
@@ -75,14 +75,14 @@ class PromiseSource
         return $this;
     }
 
-    public function getPromise() : ?Promise
+    public function getAction() : ?Action
     {
-        return $this->promise;
+        return $this->action;
     }
 
-    public function setPromise(?Promise $promise) : self
+    public function setAction(?Action $action) : self
     {
-        $this->promise = $promise;
+        $this->action = $action;
 
         return $this;
     }

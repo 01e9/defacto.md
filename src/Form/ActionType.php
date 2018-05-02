@@ -68,13 +68,15 @@ class ActionType extends AbstractType
                 'choices' => $options['powers'],
                 'choice_value' => 'id',
             ])
-            ->add('sourceName', TextType::class, [
-                'label' => 'label.source_name',
-                'required' => false,
-            ])
-            ->add('sourceLink', TextType::class, [
-                'label' => 'label.source_link',
-                'required' => false,
+            ->add('sources', CollectionType::class, [
+                'label' => 'label.sources',
+                'allow_add' => true,
+                'allow_delete' => true,
+                'prototype' => true,
+                'entry_type' => ActionSourceType::class,
+                'entry_options' => [
+                    'actions' => $options['actions'],
+                ],
             ])
         ;
 

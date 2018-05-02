@@ -27,14 +27,17 @@
         </div>
     </div>
 </div>
-<div class="row">
-    <div class="col-lg-8">
-        {{ form_row(form.sourceName) }}
+
+{% if form.vars.value.id %}
+    <div class="row">
+        <div class="col pb-3">
+            {{ form_row(form.sources) }}
+        </div>
     </div>
-    <div class="col-lg-4">
-        {{ form_row(form.sourceLink) }}
-    </div>
-</div>
+{% else %}
+    {% do form.sources.setRendered() %}
+{% endif %}
+
 <div class="row">
     <div class="col">
         {{ form_row(form.description) }}

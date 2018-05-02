@@ -71,21 +71,6 @@ class Action
     private $published;
 
     /**
-     * @ORM\Column(type="string", nullable=true)
-     *
-     * @Assert\Length(min=3)
-     */
-    private $sourceName;
-
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     *
-     * @Assert\Length(min=3)
-     * @Assert\Url(checkDNS=false)
-     */
-    private $sourceLink;
-
-    /**
      * @ORM\OneToMany(targetEntity="PromiseUpdate", mappedBy="action", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      *
@@ -97,6 +82,14 @@ class Action
      * @ORM\ManyToMany(targetEntity="App\Entity\Power", cascade={"persist"})
      */
     private $usedPowers;
+
+    /**
+     * @ORM\OneToMany(targetEntity="ActionSource", mappedBy="action", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
+     *
+     * @Assert\Valid()
+     */
+    private $sources;
 
     public function __construct()
     {
@@ -205,27 +198,8 @@ class Action
         return $this;
     }
 
-    public function getSourceName() : ?string
+    public function getSources()
     {
-        return $this->sourceName;
-    }
-
-    public function setSourceName(?string $sourceName) : Action
-    {
-        $this->sourceName = $sourceName;
-
-        return $this;
-    }
-
-    public function getSourceLink() : ?string
-    {
-        return $this->sourceLink;
-    }
-
-    public function setSourceLink(?string $sourceLink) : Action
-    {
-        $this->sourceLink = $sourceLink;
-
-        return $this;
+        return $this->sources;
     }
 }

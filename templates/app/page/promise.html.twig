@@ -140,10 +140,10 @@
 {% endblock %}
 
 {% macro sources(list) %}
-    <h6 class="d-inline-block mr-1">
+    <h6 class="d-inline-block mb-0 mr-1">
         {{ list|length == 1 ? 'title.source'|trans : 'title.sources'|trans }}
     </h6>
-    <div class="d-inline-block h6">
+    <div class="d-inline-block mb-0 h6">
         {% for source in list %}
             <a href="{{ source.link }}" target="_blank" rel="nofollow" class="badge badge-light">{{ source.name }}</a>
         {% endfor %}

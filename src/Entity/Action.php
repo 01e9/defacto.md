@@ -31,20 +31,20 @@ class Action
     private $occurredTime;
 
     /**
-     * @ORM\Column(type="string", length=50)
+     * @ORM\Column(type="string", length=120)
      * @Groups({"searchable"})
      *
      * @Assert\NotBlank()
-     * @Assert\Length(min=3, max=50)
+     * @Assert\Length(min=3, max=120)
      */
     private $name;
 
     /**
-     * @ORM\Column(name="slug", type="string", length=50)
+     * @ORM\Column(name="slug", type="string", length=120)
      * @Groups({"searchable"})
      *
      * @Assert\NotBlank()
-     * @Assert\Length(min=3, max=50)
+     * @Assert\Length(min=3, max=120)
      * @Assert\Regex(
      *     pattern="/^\p{L}+(\-\p{L}+)*$/u",
      *     message="invalid.slug"

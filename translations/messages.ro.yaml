@@ -103,6 +103,8 @@ title:
     no_primises_by_status: Nu sunt promisiuni cu acest statut
     no_inactive_primises: Nu sunt promisiuni inactive
     used_powers: Atribuții folosite
+    sources: Surse
+    source: Sursa
     error: Eroare
     errors:
         not_found: Pagina nu există

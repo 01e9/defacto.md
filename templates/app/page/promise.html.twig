@@ -1,6 +1,7 @@
 {% extends 'app/base.html.twig' %}
 
 {% import 'macros.html.twig' as macros %}
+{% import _self as self_macros %}
 
 {% block html_class %}bg-dark-pattern{% endblock %}
 {% block body_class %}bg-transparent{% endblock %}
@@ -56,6 +57,12 @@
                     </div>
                 </div>
             </div>
+            {% endif %}
+
+            {% if promise.sources is not empty %}
+                <section class="mt-3">
+                    {{ self_macros.sources(promise.sources) }}
+                </section>
             {% endif %}
         </div>
         {% include 'app/component/after-header-space.html.twig' %}
@@ -114,6 +121,11 @@
                                                     <div class="raw-html">{{ promiseUpdate.action.description|raw }}</div>
                                                 {% endif %}
                                             </div>
+                                            {% if promiseUpdate.action.sources is not empty %}
+                                                <div class="card-footer">
+                                                    {{ self_macros.sources(promiseUpdate.action.sources) }}
+                                                </div>
+                                            {% endif %}
                                         </div>
                                     </div>
                                 </div>
@@ -126,3 +138,14 @@
     </div>
     {% include 'app/component/section/footer.html.twig' with {delimiter: true} only %}
 {% endblock %}
+
+{% macro sources(list) %}
+    <h6 class="d-inline-block mr-1">
+        {{ list|length == 1 ? 'title.source'|trans : 'title.sources'|trans }}
+    </h6>
+    <div class="d-inline-block h6">
+        {% for source in list %}
+            <a href="{{ source.link }}" target="_blank" rel="nofollow" class="badge badge-light">{{ source.name }}</a>
+        {% endfor %}
+    </div>
+{% endmacro %}

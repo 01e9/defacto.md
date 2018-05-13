@@ -12,13 +12,6 @@ class AdminActionsControllerTest extends WebTestCase
 {
     use TestCaseTrait;
 
-    public function testIndexAction()
-    {
-        $client = static::createClient();
-        $client->insulate();
-        $this->assertTrue(self::onlyAdminCanAccess('/admin/actions', $client));
-    }
-
     public function testAddActionAccess()
     {
         $client = static::createClient();
@@ -72,6 +65,34 @@ class AdminActionsControllerTest extends WebTestCase
                 $action = $em->getRepository('App:Action')->find($route['id']);
 
                 $this->assertNotNull($action);
+
+                $em->remove($action);
+                $em->flush();
+            })();
+
+            (function () use (&$em, &$client, &$lang, &$formData, &$router) {
+                $promise = $em->getRepository('App:Promise')->findOneBy([]);
+                $this->assertNotNull($promise);
+
+                $form = $client
+                    ->request('GET', '/'. $lang .'/admin/actions/add?'. http_build_query([
+                            'promise' => $promise->getId(),
+                        ])
+                    )
+                    ->filter('form')->form();
+                $client->submit($form, $formData);
+                $response = $client->getResponse();
+                $this->assertEquals(302, $response->getStatusCode());
+
+                $route = $router->match($response->getTargetUrl());
+                $this->assertEquals('admin_action_edit', $route['_route']);
+                $this->assertEquals($lang, $route['_locale']);
+
+                $action = $em->getRepository('App:Action')->find($route['id']);
+
+                $this->assertNotNull($action);
+                $this->assertNotEmpty($action->getPromiseUpdates());
+                $this->assertEquals($promise->getId(), $action->getPromiseUpdates()->first()->getPromise()->getId());
 
                 $em->remove($action);
                 $em->flush();
@@ -193,7 +214,7 @@ class AdminActionsControllerTest extends WebTestCase
                 $this->assertEquals(302, $response->getStatusCode());
 
                 $route = $router->match($response->getTargetUrl());
-                $this->assertEquals('admin_actions', $route['_route']);
+                $this->assertEquals('admin_action_edit', $route['_route']);
                 $this->assertEquals($lang, $route['_locale']);
 
                 $action = $em->getRepository('App:Action')->find($action->getId());
@@ -225,7 +246,7 @@ class AdminActionsControllerTest extends WebTestCase
                 $this->assertEquals(302, $response->getStatusCode());
 
                 $route = $router->match($response->getTargetUrl());
-                $this->assertEquals('admin_actions', $route['_route']);
+                $this->assertEquals('admin_action_edit', $route['_route']);
                 $this->assertEquals($lang, $route['_locale']);
 
                 $action = $em->getRepository('App:Action')->find($action->getId());

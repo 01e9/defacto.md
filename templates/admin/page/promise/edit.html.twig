@@ -13,5 +13,22 @@
             form: form,
             submitText: 'action.edit_promise'|trans
         } only %}
+
+        <div class="mt-5"></div>
+        <div class="row">
+            <div class="col">
+                <h3>
+                    {{ 'title.actions'|trans }}
+                    <sup>
+                        <a href="{{ path('admin_action_add', {'promise': promise.id}) }}"
+                           class="badge badge-light text-muted"
+                        >{{ 'action.add'|trans }}</a>
+                    </sup>
+                </h3>
+                {% include 'admin/component/list/actions.html.twig' with {
+                    actions: actions
+                } only %}
+            </div>
+        </div>
     </div>
 {% endblock %}

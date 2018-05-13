@@ -85,6 +85,8 @@ class AdminPromisesController extends Controller
             $originalSources->add($source);
         }
 
+        $actions = $this->getDoctrine()->getRepository('App:Action')->getAdminListByPromise($promise);
+
         $form = $this->createForm(PromiseType::class, $promise, [
             'categories' => $this->getDoctrine()->getRepository('App:Category')->getAdminChoices(),
             'mandates' => $this->getDoctrine()->getRepository('App:Mandate')->getAdminChoices(),
@@ -119,6 +121,8 @@ class AdminPromisesController extends Controller
 
         return $this->render('admin/page/promise/edit.html.twig', [
             'form' => $form->createView(),
+            'actions' => $actions,
+            'promise' => $promise,
         ]);
     }
 }

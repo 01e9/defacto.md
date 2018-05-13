@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Action;
+use App\Entity\PromiseUpdate;
 use App\Form\ActionType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -18,19 +19,6 @@ use Symfony\Component\HttpFoundation\Response;
 class AdminActionsController extends Controller
 {
     /**
-     * @Route(path="", name="admin_actions")
-     * @return Response
-     */
-    public function indexAction(Request $request)
-    {
-        $actions = $this->getDoctrine()->getRepository('App:Action')->getAdminList($request);
-
-        return $this->render('admin/page/action/index.html.twig', [
-            'actions' => $actions,
-        ]);
-    }
-
-    /**
      * @Route(path="/add", name="admin_action_add")
      * @return Response
      */
@@ -38,11 +26,24 @@ class AdminActionsController extends Controller
     {
         $action = new Action();
 
+        if ($promise = $this->getDoctrine()->getRepository('App:Promise')->find(
+            $request->query->get('promise', '~')
+        )) {
+            $action->setMandate($promise->getMandate());
+
+            $mandates = [$promise->getMandate()->getChoiceName() => $promise->getMandate()];
+            $promises = $powers = [];
+        } else {
+            $mandates = $this->getDoctrine()->getRepository('App:Mandate')->getAdminChoices();
+            $promises = $powers = [];
+        }
+
         $form = $this->createForm(ActionType::class, $action, [
-            'mandates' => $this->getDoctrine()->getRepository('App:Mandate')->getAdminChoices(),
-            'actions' => [],
-            'promises' => [],
-            'statuses' => [],
+            'mandates' => $mandates,
+            'actions' => ['~' => $action],
+            'promises' => $promises,
+            'statuses' => $this->getDoctrine()->getRepository('App:Status')->getAdminChoices(),
+            'powers' => $powers,
         ]);
         $form->handleRequest($request);
 
@@ -52,6 +53,18 @@ class AdminActionsController extends Controller
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($action);
+
+            if ($promise) {
+                $action->setPromiseUpdates(new ArrayCollection([
+                    (function () use (&$action, &$promise) {
+                        $promiseUpdate = new PromiseUpdate();
+                        $promiseUpdate->setAction($action);
+                        $promiseUpdate->setPromise($promise);
+                        return $promiseUpdate;
+                    })()
+                ]));
+            }
+
             $em->flush();
 
             $this->addFlash(
@@ -129,7 +142,7 @@ class AdminActionsController extends Controller
                 $this->get('translator')->trans('flash.action_updated')
             );
 
-            return $this->redirectToRoute('admin_actions');
+            return $this->redirectToRoute('admin_action_edit', ['id' => $action->getId()]);
         }
 
         return $this->render('admin/page/action/edit.html.twig', [

@@ -11,9 +11,6 @@
 
         <div class="collapse navbar-collapse" id="navbarMenu">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item {{ app.request.attributes.get('_route') starts with 'admin_action' ? 'active' : '' }}">
-                    <a class="nav-link" href="{{ path('admin_actions') }}">{{ 'title.actions'|trans }}</a>
-                </li>
                 <li class="nav-item {{ app.request.attributes.get('_route') starts with 'admin_promise' ? 'active' : '' }}">
                     <a class="nav-link" href="{{ path('admin_promises') }}">{{ 'title.promises'|trans }}</a>
                 </li>

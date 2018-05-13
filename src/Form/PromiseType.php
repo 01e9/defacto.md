@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Consts;
 use App\Entity\Promise;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Form\AbstractType;
@@ -35,7 +36,7 @@ class PromiseType extends AbstractType
             ->add('madeTime', DateType::class, [
                 'label' => 'label.made_date',
                 'widget' => 'single_text',
-                'format' => 'dd.MM.yyyy',
+                'format' => Consts::DATE_FORMAT_INTL,
             ])
             ->add('status', ChoiceType::class, [
                 'label' => 'label.status',

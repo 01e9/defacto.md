@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Consts;
 use App\Entity\Mandate;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -18,12 +19,12 @@ class MandateType extends AbstractType
             ->add('beginDate', DateType::class, [
                 'label' => 'label.begin_date',
                 'widget' => 'single_text',
-                'format' => 'dd.MM.yyyy',
+                'format' => Consts::DATE_FORMAT_INTL,
             ])
             ->add('endDate', DateType::class, [
                 'label' => 'label.end_date',
                 'widget' => 'single_text',
-                'format' => 'dd.MM.yyyy',
+                'format' => Consts::DATE_FORMAT_INTL,
             ])
             ->add('politician', ChoiceType::class, [
                 'label' => 'label.politician',

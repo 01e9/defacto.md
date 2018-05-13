@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Consts;
 use App\Entity\Action;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Form\AbstractType;
@@ -37,7 +38,7 @@ class ActionType extends AbstractType
             ->add('occurredTime', DateType::class, [
                 'label' => 'label.occurred_time',
                 'widget' => 'single_text',
-                'format' => 'dd.MM.yyyy',
+                'format' => Consts::DATE_FORMAT_INTL,
             ])
             ->add('mandate', ChoiceType::class, [
                 'label' => 'label.mandate',

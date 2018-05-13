@@ -2,6 +2,7 @@
 
 namespace App\Tests\Controller;
 
+use App\Consts;
 use App\Entity\Mandate;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use App\Tests\TestCaseTrait;
@@ -31,8 +32,8 @@ class AdminMandatesControllerTest extends WebTestCase
         $formData = [
             'mandate[votesCount]' => 1000000,
             'mandate[votesPercent]' => 51,
-            'mandate[beginDate]' => (new \DateTime('-2 years'))->format('Y-m-d'),
-            'mandate[endDate]' => (new \DateTime('+2 years'))->format('Y-m-d'),
+            'mandate[beginDate]' => (new \DateTime('-2 years'))->format(Consts::DATE_FORMAT_PHP),
+            'mandate[endDate]' => (new \DateTime('+2 years'))->format(Consts::DATE_FORMAT_PHP),
             'mandate[politician]' => $em->getRepository('App:Politician')->findOneBy([])->getId(),
             'mandate[institutionTitle]' => $em->getRepository('App:InstitutionTitle')->findOneBy([])->getId(),
         ];
@@ -118,8 +119,8 @@ class AdminMandatesControllerTest extends WebTestCase
         $formData = [
             'mandate[votesCount]' => 1000001,
             'mandate[votesPercent]' => 51,
-            'mandate[beginDate]' => (new \DateTime('-2 years'))->format('Y-m-d'),
-            'mandate[endDate]' => (new \DateTime('+2 years'))->format('Y-m-d'),
+            'mandate[beginDate]' => (new \DateTime('-2 years'))->format(Consts::DATE_FORMAT_PHP),
+            'mandate[endDate]' => (new \DateTime('+2 years'))->format(Consts::DATE_FORMAT_PHP),
             'mandate[politician]' => $em->getRepository('App:Politician')->findOneBy([])->getId(),
             'mandate[institutionTitle]' => $em->getRepository('App:InstitutionTitle')->findOneBy([])->getId(),
         ];

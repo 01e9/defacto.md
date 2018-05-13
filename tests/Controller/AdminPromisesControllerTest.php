@@ -2,6 +2,7 @@
 
 namespace App\Tests\Controller;
 
+use App\Consts;
 use App\Entity\Promise;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use App\Tests\TestCaseTrait;
@@ -39,7 +40,7 @@ class AdminPromisesControllerTest extends WebTestCase
             'promise[name]' => 'Test',
             'promise[slug]' => 'test',
             'promise[description]' => 'Test',
-            'promise[madeTime]' => (new \DateTime())->format('Y-m-d'),
+            'promise[madeTime]' => (new \DateTime())->format(Consts::DATE_FORMAT_PHP),
             'promise[status]' => $em->getRepository('App:Status')->findOneBy([])->getId(),
             'promise[mandate]' => $em->getRepository('App:Mandate')->findOneBy([])->getId(),
             'promise[categories]' => [
@@ -157,7 +158,7 @@ class AdminPromisesControllerTest extends WebTestCase
                 'promise[name]' => 'Test',
                 'promise[slug]' => 'test',
                 'promise[description]' => 'Test',
-                'promise[madeTime]' => (new \DateTime())->format('Y-m-d'),
+                'promise[madeTime]' => (new \DateTime())->format(Consts::DATE_FORMAT_PHP),
                 'promise[status]' => $em->getRepository('App:Status')->findOneBy([])->getId(),
                 'promise[mandate]' => $em->getRepository('App:Mandate')->findOneBy([])->getId(),
                 'promise[categories]' => [

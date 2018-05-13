@@ -2,6 +2,7 @@
 
 namespace App\Tests\Controller;
 
+use App\Consts;
 use App\Entity\Action;
 use App\Entity\PromiseUpdate;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -33,7 +34,7 @@ class AdminActionsControllerTest extends WebTestCase
             'action[name]' => 'Test',
             'action[slug]' => 'test',
             'action[description]' => 'Test',
-            'action[occurredTime]' => (new \DateTime())->format('Y-m-d'),
+            'action[occurredTime]' => (new \DateTime())->format(Consts::DATE_FORMAT_PHP),
             'action[published]' => true,
             'action[mandate]' => $em->getRepository('App:Mandate')->findOneBy([])->getId(),
         ];
@@ -154,7 +155,7 @@ class AdminActionsControllerTest extends WebTestCase
                 'action[name]' => 'Updated',
                 'action[slug]' => 'updated',
                 'action[description]' => 'Updated',
-                'action[occurredTime]' => (new \DateTime())->format('Y-m-d'),
+                'action[occurredTime]' => (new \DateTime())->format(Consts::DATE_FORMAT_PHP),
                 'action[published]' => true,
                 'action[mandate]' => $action->getMandate()->getId(),
                 'action[usedPowers]' => [

@@ -205,7 +205,7 @@ class AdminPromisesControllerTest extends WebTestCase
                 $this->assertEquals(302, $response->getStatusCode());
 
                 $route = $router->match($response->getTargetUrl());
-                $this->assertEquals('admin_promises', $route['_route']);
+                $this->assertEquals('admin_promise_edit', $route['_route']);
                 $this->assertEquals($lang, $route['_locale']);
 
                 /** @var Promise $promise */
@@ -238,7 +238,7 @@ class AdminPromisesControllerTest extends WebTestCase
                 $this->assertEquals(302, $response->getStatusCode());
 
                 $route = $router->match($response->getTargetUrl());
-                $this->assertEquals('admin_promises', $route['_route']);
+                $this->assertEquals('admin_promise_edit', $route['_route']);
                 $this->assertEquals($lang, $route['_locale']);
 
                 /** @var Promise $promise */
@@ -267,7 +267,7 @@ class AdminPromisesControllerTest extends WebTestCase
                 $this->assertEquals(302, $response->getStatusCode());
 
                 $route = $router->match($response->getTargetUrl());
-                $this->assertEquals('admin_promises', $route['_route']);
+                $this->assertEquals('admin_promise_edit', $route['_route']);
                 $this->assertEquals($lang, $route['_locale']);
 
                 /** @var Promise $promise */

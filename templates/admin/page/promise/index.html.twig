@@ -9,8 +9,19 @@
                 } only %}
             </div>
         </div>
+
         <div class="row">
             <div class="col-lg-8">
+                {% if orphanActions is not empty %}
+                    <h3 class="text-danger">
+                        {{ 'title.orphan_actions'|trans }}
+                    </h3>
+                    {% include 'admin/component/list/actions.html.twig' with {
+                        actions: orphanActions
+                    } only %}
+                    <div class="mb-5"></div>
+                {% endif %}
+
                 <h3>
                     {{ 'title.promises'|trans }}
                     <sup>

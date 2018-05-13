@@ -26,10 +26,12 @@ class AdminPromisesController extends Controller
     {
         $promises = $this->getDoctrine()->getRepository('App:Promise')->getAdminList($request);
         $statuses = $this->getDoctrine()->getRepository('App:Status')->getAdminList($request);
+        $orphanActions = $this->getDoctrine()->getRepository('App:Action')->getAdminOrphanList();
 
         return $this->render('admin/page/promise/index.html.twig', [
             'promises' => $promises,
             'statuses' => $statuses,
+            'orphanActions' => $orphanActions,
         ]);
     }
 

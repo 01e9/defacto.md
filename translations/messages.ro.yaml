@@ -84,6 +84,7 @@ title:
     promises: Promisiuni
     promise: Promisiune
     actions: Acțiuni
+    orphan_actions: Acțiuni orfane
     action: Acțiune
     dashboard: Dashboard
     mandates: Mandate

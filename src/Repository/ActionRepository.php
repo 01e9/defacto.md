@@ -24,10 +24,19 @@ class ActionRepository extends ServiceEntityRepository
     public function getAdminListByPromise(Promise $promise)
     {
         return $this->createQueryBuilder('a')
-            ->innerJoin('a.promiseUpdates', 'pu')
-            ->where('pu.promise = :promise')
+            ->innerJoin('a.promiseUpdates', 'pu', 'WITH', 'pu.promise = :promise')
             ->orderBy('a.occurredTime', 'DESC')
             ->setParameter('promise', $promise)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function getAdminOrphanList()
+    {
+        return $this->createQueryBuilder('a')
+            ->leftJoin('a.promiseUpdates', 'pu')
+            ->where('pu.promise IS NULL')
+            ->orderBy('a.occurredTime', 'DESC')
             ->getQuery()
             ->getResult();
     }

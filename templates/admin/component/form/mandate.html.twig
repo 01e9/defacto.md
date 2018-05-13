@@ -10,10 +10,16 @@
 </div>
 <div class="row">
     <div class="col-lg-6">
-        {{ form_row(form.beginDate) }}
+        {{ form_row(form.beginDate, {
+            'type': 'text',
+            'attr': {'class': 'datepicker-input', 'readonly': true}
+        }) }}
     </div>
     <div class="col-lg-6">
-        {{ form_row(form.endDate) }}
+        {{ form_row(form.endDate, {
+            'type': 'text',
+            'attr': {'class': 'datepicker-input', 'readonly': true}
+        }) }}
     </div>
 </div>
 <div class="row">

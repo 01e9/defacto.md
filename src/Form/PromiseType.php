@@ -35,6 +35,7 @@ class PromiseType extends AbstractType
             ->add('madeTime', DateType::class, [
                 'label' => 'label.made_date',
                 'widget' => 'single_text',
+                'format' => 'dd.MM.yyyy',
             ])
             ->add('status', ChoiceType::class, [
                 'label' => 'label.status',

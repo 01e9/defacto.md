@@ -37,6 +37,7 @@ class ActionType extends AbstractType
             ->add('occurredTime', DateType::class, [
                 'label' => 'label.occurred_time',
                 'widget' => 'single_text',
+                'format' => 'dd.MM.yyyy',
             ])
             ->add('mandate', ChoiceType::class, [
                 'label' => 'label.mandate',

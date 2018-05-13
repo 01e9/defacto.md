@@ -1,8 +1,9 @@
 import 'bootstrap';
 import { initSlugGenerator } from "./slug-generator";
 import "./editors";
+import "./datepicker"
 
-jQuery(($) => {
+jQuery($ => {
     $('input[data-slug-from]').each((i, slugInput) => {
         const $slug = $(slugInput);
 

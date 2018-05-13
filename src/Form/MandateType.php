@@ -18,10 +18,12 @@ class MandateType extends AbstractType
             ->add('beginDate', DateType::class, [
                 'label' => 'label.begin_date',
                 'widget' => 'single_text',
+                'format' => 'dd.MM.yyyy',
             ])
             ->add('endDate', DateType::class, [
                 'label' => 'label.end_date',
                 'widget' => 'single_text',
+                'format' => 'dd.MM.yyyy',
             ])
             ->add('politician', ChoiceType::class, [
                 'label' => 'label.politician',

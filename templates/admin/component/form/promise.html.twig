@@ -16,7 +16,10 @@
     <div class="col-lg-4">
         <div class="row">
             <div class="col">
-                {{ form_row(form.madeTime) }}
+                {{ form_row(form.madeTime, {
+                    'type': 'text',
+                    'attr': {'class': 'datepicker-input', 'readonly': true}
+                }) }}
             </div>
         </div>
         <div class="row">

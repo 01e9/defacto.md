@@ -1,6 +1,6 @@
 # Monitoring politicians promises
 
-## ⚒ [![Build Status](https://travis-ci.org/decentracy/defacto.md.svg?branch=dev)](https://travis-ci.org/decentracy/defacto.md)
+## ⚒ [![Build Status](https://travis-ci.org/arteniioleg/defacto.md.svg?branch=dev)](https://travis-ci.org/arteniioleg/defacto.md)
 
 ## Configuration
 

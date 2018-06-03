@@ -11,9 +11,25 @@ services:
             POSTGRES_PASSWORD: "defacto"
             POSTGRES_DB: "defacto"
         restart: unless-stopped
-    defacto_adminer:
-        container_name: defacto_adminer
-        image: adminer
-        ports:
-            - 8080:8080
+    defacto_pg_backup:
+        container_name: defacto_pg_backup
+        image: postgres:9
+        depends_on:
+            - defacto_pg
+        volumes:
+            - ./.volumes/backup/postgres:/backups
+            - ./cmd/pg_backup.sh:/cmd.sh:ro
+            - ../backup/postgres/pg_backup_rotated.sh:/backup/pg_backup.sh:ro
+            - ../backup/postgres/pg_backup.config:/backup/pg_backup.config:ro
+            - ../backup/postgres/.pgpass:/backup/.pgpass:ro
+        entrypoint: ["/cmd.sh"]
         restart: unless-stopped
+
+# Add in `docker-compose.override.yml`
+#
+#    defacto_adminer:
+#        container_name: defacto_adminer
+#        image: adminer
+#        ports:
+#            - 8080:8080
+#        restart: unless-stopped

@@ -1,3 +1,14 @@
 /.volumes/*
 !/.volumes/.gitkeep
+
+!/.volumes/backup/
+/.volumes/backup/*
+!/.volumes/backup/.gitkeep
+!/.volumes/backup/postgres/
+/.volumes/backup/postgres/*
+!/.volumes/backup/postgres/.gitkeep
+!/.volumes/backup/uploads/
+/.volumes/backup/uploads/*
+!/.volumes/backup/uploads/.gitkeep
+
 docker-compose.override.yml

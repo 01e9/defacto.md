@@ -24,6 +24,14 @@ services:
             - ../backup/postgres/.pgpass:/backup/.pgpass:ro
         entrypoint: ["/cmd.sh"]
         restart: unless-stopped
+    defacto_sync:
+        container_name: defacto_sync
+        image: resilio/sync
+        ports:
+            - 8800:8888
+        volumes:
+            - ./.volumes/sync:/mnt/sync
+            - ./.volumes/backup:/mnt/mounted_folders/backup/backups:ro
 
 # Add in `docker-compose.override.yml`
 #

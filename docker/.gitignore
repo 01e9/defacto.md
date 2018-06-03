@@ -11,4 +11,8 @@
 /.volumes/backup/uploads/*
 !/.volumes/backup/uploads/.gitkeep
 
+!/.volumes/sync/
+/.volumes/sync/*
+!/.volumes/sync/.gitkeep
+
 docker-compose.override.yml

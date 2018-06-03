@@ -11,17 +11,27 @@ services:
             POSTGRES_PASSWORD: "defacto"
             POSTGRES_DB: "defacto"
         restart: unless-stopped
-    defacto_pg_backup:
-        container_name: defacto_pg_backup
+    defacto_backup_pg:
+        container_name: defacto_backup_pg
         image: postgres:9
         depends_on:
             - defacto_pg
         volumes:
             - ./.volumes/backup/postgres:/backups
-            - ./cmd/pg_backup.sh:/cmd.sh:ro
-            - ../backup/postgres/pg_backup_rotated.sh:/backup/pg_backup.sh:ro
+            - ./cmd/backup_pg.sh:/cmd.sh:ro
+            - ../backup/postgres/pg_backup_rotated.sh:/backup/pg_backup_rotated.sh:ro
             - ../backup/postgres/pg_backup.config:/backup/pg_backup.config:ro
             - ../backup/postgres/.pgpass:/backup/.pgpass:ro
+        entrypoint: ["/cmd.sh"]
+        restart: unless-stopped
+    defacto_backup_uploads:
+        container_name: defacto_backup_uploads
+        image: ubuntu:18.04
+        volumes:
+            - ../uploads:/uploads:ro
+            - ./.volumes/backup/uploads:/backups
+            - ./cmd/backup_uploads.sh:/cmd.sh:ro
+            - ../backup/uploads/backup_rotated.sh:/backup.sh:ro
         entrypoint: ["/cmd.sh"]
         restart: unless-stopped
     defacto_sync:

@@ -7,15 +7,16 @@ services:
         build:
             context: .
         volumes:
-          - ./.volumes/php/sock:/sock
-          - ./.volumes/php/conf:/usr/local/etc/php-fpm.d:ro
-          - ../vendor:/www/vendor:ro
-          - ../config:/www/config:ro
-          - ../public:/www/public:ro
-          - ../src:/www/src:ro
-          - ../templates:/www/templates:ro
-          - ../.env:/www/.env:ro
-          - ../uploads:/www/uploads:rw
+            - ./.volumes/php/sock:/sock
+            - ./.volumes/php/conf:/usr/local/etc/php-fpm.d:ro
+            - ../vendor:/www/vendor:ro
+            - ../config:/www/config:ro
+            - ../public:/www/public:ro
+            - ../src:/www/src:ro
+            - ../templates:/www/templates:ro
+            - ../.env:/www/.env:ro
+            - ../uploads:/www/uploads:rw
+        command: ["-F"]
     defacto_pg:
         container_name: defacto_pg
         image: postgres:9
@@ -57,6 +58,7 @@ services:
         volumes:
             - ./.volumes/sync:/mnt/sync
             - ./.volumes/backup:/mnt/mounted_folders/backup/backups:ro
+        command: ["--config", "/mnt/sync/sync.conf", "--log", "/mnt/sync/sync.log"]
 
 # Add in `docker-compose.override.yml`
 #

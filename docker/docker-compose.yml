@@ -9,13 +9,16 @@ services:
         volumes:
             - ./.volumes/php/sock:/sock
             - ./.volumes/php/conf:/usr/local/etc/php-fpm.d:ro
-            - ../vendor:/www/vendor:ro
-            - ../config:/www/config:ro
-            - ../public:/www/public:ro
-            - ../src:/www/src:ro
-            - ../templates:/www/templates:ro
-            - ../.env:/www/.env:ro
-            - ../uploads:/www/uploads:rw
+            - ../vendor:/var/www/vendor:ro
+            - ../composer.json:/var/www/composer.json:ro
+            - ../config:/var/www/config:ro
+            - ../public:/var/www/public:ro
+            - ../src:/var/www/src:ro
+            - ../templates:/var/www/templates:ro
+            - ../translations:/var/www/translations:ro
+            - ../.env:/var/www/.env:ro
+            - ../uploads:/var/www/uploads:rw
+            - ../var:/var/www/var:rw
         command: ["-F"]
     defacto_pg:
         container_name: defacto_pg
@@ -59,6 +62,7 @@ services:
             - ./.volumes/sync:/mnt/sync
             - ./.volumes/backup:/mnt/mounted_folders/backup/backups:ro
         command: ["--config", "/mnt/sync/sync.conf", "--log", "/mnt/sync/sync.log"]
+        restart: unless-stopped
 
 # Add in `docker-compose.override.yml`
 #

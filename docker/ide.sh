@@ -24,7 +24,6 @@ x11docker \
     --clipboard \
     --stdout --stderr \
     --cap-default \
-    --no-init \
     --workdir ${PROJECT_DIR} \
     --runasroot "apt-get update && apt-get install -y \
         libgtk2.0-0 libcanberra-gtk-module libxext-dev libxrender-dev \

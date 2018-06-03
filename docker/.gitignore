@@ -4,9 +4,11 @@
 !/.volumes/backup/
 /.volumes/backup/*
 !/.volumes/backup/.gitkeep
+!/.volumes/backup/postgres.sh
 !/.volumes/backup/postgres/
 /.volumes/backup/postgres/*
 !/.volumes/backup/postgres/.gitkeep
+!/.volumes/backup/uploads.sh
 !/.volumes/backup/uploads/
 /.volumes/backup/uploads/*
 !/.volumes/backup/uploads/.gitkeep
@@ -14,5 +16,9 @@
 !/.volumes/sync/
 /.volumes/sync/*
 !/.volumes/sync/.gitkeep
+
+!/.volumes/php/
+/.volumes/php/sock/*
+!/.volumes/php/sock/.gitkeep
 
 docker-compose.override.yml

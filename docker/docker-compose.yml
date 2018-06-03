@@ -1,6 +1,21 @@
 version: '3.4'
 
 services:
+    defacto_php:
+        container_name: defacto_php
+        image: defacto_php
+        build:
+            context: .
+        volumes:
+          - ./.volumes/php/sock:/sock
+          - ./.volumes/php/conf:/usr/local/etc/php-fpm.d:ro
+          - ../vendor:/www/vendor:ro
+          - ../config:/www/config:ro
+          - ../public:/www/public:ro
+          - ../src:/www/src:ro
+          - ../templates:/www/templates:ro
+          - ../.env:/www/.env:ro
+          - ../uploads:/www/uploads:rw
     defacto_pg:
         container_name: defacto_pg
         image: postgres:9
@@ -18,11 +33,11 @@ services:
             - defacto_pg
         volumes:
             - ./.volumes/backup/postgres:/backups
-            - ./cmd/backup_pg.sh:/cmd.sh:ro
+            - ./.volumes/backup/postgres.sh:/entrypoint.sh:ro
             - ../backup/postgres/pg_backup_rotated.sh:/backup/pg_backup_rotated.sh:ro
             - ../backup/postgres/pg_backup.config:/backup/pg_backup.config:ro
             - ../backup/postgres/.pgpass:/backup/.pgpass:ro
-        entrypoint: ["/cmd.sh"]
+        entrypoint: ["/entrypoint.sh"]
         restart: unless-stopped
     defacto_backup_uploads:
         container_name: defacto_backup_uploads
@@ -30,9 +45,9 @@ services:
         volumes:
             - ../uploads:/uploads:ro
             - ./.volumes/backup/uploads:/backups
-            - ./cmd/backup_uploads.sh:/cmd.sh:ro
+            - ./.volumes/backup/uploads.sh:/entrypoint.sh:ro
             - ../backup/uploads/backup_rotated.sh:/backup.sh:ro
-        entrypoint: ["/cmd.sh"]
+        entrypoint: ["/entrypoint.sh"]
         restart: unless-stopped
     defacto_sync:
         container_name: defacto_sync

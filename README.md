@@ -18,4 +18,5 @@
 * Execute `docker/php.sh bin/console doctrine:fixtures:load`
 * Execute `docker/js.sh npm install`
 * Execute `docker/js.sh npm run build`
-* Execute `docker/test-nginx.sh`
+* Execute `docker/test-nginx.sh` _(check if works in browser then Ctrl+C)_
+* Execute `docker/ide.sh ~/path/to/phpstorm/bin/phpstorm.sh` _(create php built-in server)_

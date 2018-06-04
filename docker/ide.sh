@@ -28,6 +28,6 @@ x11docker \
     --runasroot "apt-get update && apt-get install -y \
         libgtk2.0-0 libcanberra-gtk-module libxext-dev libxrender-dev \
         libxtst-dev libxslt-dev dmz-cursor-theme \
-        git wget htop zip unzip nano" \
+        git wget htop zip unzip nano iputils-ping" \
     -- "--cap-add=SYS_PTRACE --publish=80:8080 --network ${NETWORK}" \
     ${IMAGE} ${CMD}

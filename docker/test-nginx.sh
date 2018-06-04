@@ -19,7 +19,7 @@ docker run --rm -it --name defacto_test_nginx \
         location ~ \.php\$ {
             fastcgi_pass   unix:/sock/fpm.sock;
             include        fastcgi_params;
-            fastcgi_param  SCRIPT_FILENAME /public\$fastcgi_script_name;
+            fastcgi_param  SCRIPT_FILENAME \$document_root\$fastcgi_script_name;
             fastcgi_param  DOCUMENT_ROOT /;
             internal;
         }

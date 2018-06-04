@@ -2,6 +2,6 @@
 
 ## Configuration
 
-1. Create `docker/docker-compose.override.yml`
-2. Create `backup/postgres/pg_backup.config`
-3. Create `backup/postgres/.pgpass`
+1. Create `backup/postgres/pg_backup.config`
+2. Create `backup/postgres/.pgpass`
+3. Create `.env`

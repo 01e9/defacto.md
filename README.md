@@ -44,6 +44,6 @@
 ### Configure backup sync
 
 * Open in browser `http://YOUR_IP:8800`
-* Navigate to: [+] > Standard folder > Choose `/mnt/mounted_folders/backup`
+* Navigate [+] > Standard folder > Choose `/mnt/mounted_folders/backup`
 * Copy the Read Only Key
 * Setup [Resilio Sync](https://www.resilio.com/individuals/) on another machine and sync a folder with that key

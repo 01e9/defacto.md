@@ -1,5 +1,9 @@
 version: '3.4'
 
+volumes:
+    postgres:
+    sync:
+
 services:
     defacto_php:
         container_name: defacto_php
@@ -24,7 +28,7 @@ services:
         container_name: defacto_pg
         image: postgres:9
         volumes:
-            - ./.volumes/postgres:/var/lib/postgresql/data
+            - postgres:/var/lib/postgresql/data
         environment:
             POSTGRES_USER: "defacto"
             POSTGRES_PASSWORD: "defacto"
@@ -59,8 +63,9 @@ services:
         ports:
             - 8800:8888
         volumes:
-            - ./.volumes/sync:/mnt/sync
-            - ./.volumes/backup:/mnt/mounted_folders/backup/backups:ro
+            - sync:/mnt/sync
+            - ./.volumes/backup/postgres:/mnt/mounted_folders/backup/backups/postgres:ro
+            - ./.volumes/backup/uploads:/mnt/mounted_folders/backup/backups/uploads:ro
         command: ["--config", "/mnt/sync/sync.conf", "--log", "/mnt/sync/sync.log"]
         restart: unless-stopped
 

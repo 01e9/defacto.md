@@ -1,11 +1,15 @@
 /.idea/
 /npm-debug.log
 
+/var/*
+!/var/.gitkeep
+
+/vendor/*
+!/vendor/.gitkeep
+
 ###> symfony/framework-bundle ###
 .env
 /public/bundles/
-/var/
-/vendor/
 ###< symfony/framework-bundle ###
 
 ###> symfony/web-server-bundle ###

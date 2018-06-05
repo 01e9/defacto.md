@@ -3,7 +3,8 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\AdvancedUserInterface;
+use Symfony\Component\Security\Core\User\EquatableInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
@@ -14,7 +15,7 @@ use Symfony\Component\Security\Core\User\AdvancedUserInterface;
  *     }
  * )
  */
-class User implements AdvancedUserInterface, \Serializable
+class User implements UserInterface, EquatableInterface, \Serializable
 {
     /**
      * @ORM\Id
@@ -151,23 +152,33 @@ class User implements AdvancedUserInterface, \Serializable
         ) = unserialize($serialized);
     }
 
-    public function isAccountNonExpired()
-    {
-        return true;
-    }
-
-    public function isAccountNonLocked()
-    {
-        return true;
-    }
-
-    public function isCredentialsNonExpired()
-    {
-        return true;
-    }
-
     public function isEnabled()
     {
         return $this->isActive;
+    }
+
+    public function isEqualTo(UserInterface $user)
+    {
+        if (!$user instanceof User) {
+            return false;
+        }
+
+        if ($this->getUsername() !== $user->getUsername()) {
+            return false;
+        }
+
+        if ($this->password !== $user->getPassword()) {
+            return false;
+        }
+
+        if ($this->salt !== $user->getSalt()) {
+            return false;
+        }
+
+        if ($this->isActive !== $user->getIsActive()) {
+            return false;
+        }
+
+        return true;
     }
 }

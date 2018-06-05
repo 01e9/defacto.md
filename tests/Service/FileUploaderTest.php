@@ -43,7 +43,7 @@ class FileUploaderTest extends TestCase
 
         $this->fs->dumpFile($filePath, $fileContents);
 
-        $uploadedFile = new UploadedFile($filePath, 'test.txt', null, null, null, true);
+        $uploadedFile = new UploadedFile($filePath, 'test.txt', null, null, true);
 
         $fileName = $this->service->upload($uploadSubDir, $uploadedFile);
         $filePath = $this->service->getTargetDir() . $uploadSubDir . '/' . $fileName;

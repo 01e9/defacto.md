@@ -4,6 +4,7 @@
 namespace App\Controller;
 
 use App\Entity\Promise;
+use App\EventListener\DoctrineLogsListener;
 use App\Form\PromiseType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -86,6 +87,8 @@ class AdminPromisesController extends Controller
         foreach ($promise->getSources() as $source) {
             $originalSources->add($source);
         }
+
+        $this->get(DoctrineLogsListener::class)->addPromiseDataBefore($promise);
 
         $actions = $this->getDoctrine()->getRepository('App:Action')->getAdminListByPromise($promise);
 

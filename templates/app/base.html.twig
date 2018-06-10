@@ -13,6 +13,9 @@
 
 {% block body %}
     {% block navbar %}
+        {% if is_granted('ROLE_ADMIN') %}
+            {% include 'admin/component/navbar.html.twig' %}
+        {% endif %}
         {% include 'app/component/navbar.html.twig' %}
     {% endblock %}
 

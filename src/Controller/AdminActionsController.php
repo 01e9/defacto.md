@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Action;
 use App\Entity\PromiseUpdate;
+use App\EventListener\DoctrineLogsListener;
 use App\Form\ActionType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -102,7 +103,9 @@ class AdminActionsController extends Controller
             $originalSources->add($source);
         }
 
-        $this->getDoctrine()->getRepository('App:Mandate')->getAdminChoices();
+        if ($request->isMethod('POST')) {
+            $this->get(DoctrineLogsListener::class)->addActionDataBefore($action);
+        }
 
         $form = $this->createForm(ActionType::class, $action, [
             'mandates' => [$action->getMandate()->getChoiceName() => $action->getMandate()],

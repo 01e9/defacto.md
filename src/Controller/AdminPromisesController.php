@@ -88,7 +88,9 @@ class AdminPromisesController extends Controller
             $originalSources->add($source);
         }
 
-        $this->get(DoctrineLogsListener::class)->addPromiseDataBefore($promise);
+        if ($request->isMethod('POST')) {
+            $this->get(DoctrineLogsListener::class)->addPromiseDataBefore($promise);
+        }
 
         $actions = $this->getDoctrine()->getRepository('App:Action')->getAdminListByPromise($promise);
 

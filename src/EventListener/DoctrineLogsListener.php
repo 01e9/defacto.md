@@ -193,8 +193,8 @@ class DoctrineLogsListener
                         $text
                         . (empty($text) ? '' : "\n")
                         . $promiseUpdate->getPromise()->getName()
-                        . ' '
-                        . ($promiseUpdate->getStatus() ? $promiseUpdate->getStatus()->getName() : '')
+                        . ' » '
+                        . ($promiseUpdate->getStatus() ? $promiseUpdate->getStatus()->getName() : '·')
                     );
                 },
                 ''

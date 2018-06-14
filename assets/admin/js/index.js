@@ -2,6 +2,7 @@ import 'bootstrap';
 import { initSlugGenerator } from "./slug-generator";
 import "./editors";
 import "./datepicker"
+import "./log-diff"
 
 jQuery($ => {
     $('input[data-slug-from]').each((i, slugInput) => {

@@ -13,5 +13,12 @@
             form: form,
             submitText: 'action.edit_action'|trans
         } only %}
+
+        <div class="row mt-5">
+            <div class="col">
+                <h4>{{ 'title.logs'|trans }}</h4>
+                {% include 'admin/component/list/logs.html.twig' with {logs: logs} only %}
+            </div>
+        </div>
     </div>
 {% endblock %}

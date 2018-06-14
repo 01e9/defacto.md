@@ -150,6 +150,7 @@ class AdminActionsController extends Controller
 
         return $this->render('admin/page/action/edit.html.twig', [
             'form' => $form->createView(),
+            'logs' => $this->getDoctrine()->getRepository('App:Log')->findLatestByAction($action)
         ]);
     }
 }

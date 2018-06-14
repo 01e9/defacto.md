@@ -130,6 +130,7 @@ class AdminPromisesController extends Controller
             'form' => $form->createView(),
             'actions' => $actions,
             'promise' => $promise,
+            'logs' => $this->getDoctrine()->getRepository('App:Log')->findLatestByPromise($promise)
         ]);
     }
 }

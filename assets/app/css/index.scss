@@ -67,9 +67,15 @@
 
 .promise-item {
     position: relative;
+    overflow: hidden; /* cut stamp */
 
     a.promise-name {
         color: inherit;
+    }
+    .promise-name {
+        position: relative;
+        z-index: 1; /* over stamp */
+        text-shadow: 0px 1px 1px #fff, 1px 0px 1px #fff, -1px 0px 1px #fff, 0px -1px 1px #fff;
     }
 
     .status {
@@ -184,4 +190,8 @@
             margin-bottom: 0;
         }
     }
+}
+
+.navbar {
+    z-index: 3;
 }

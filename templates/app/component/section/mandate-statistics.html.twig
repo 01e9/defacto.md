@@ -7,16 +7,16 @@
 
 <div class="mandate-statistics bg-light-pattern pb-5">
     {% include 'app/component/after-header-space.html.twig' %}
-    <div class="container">
-        <div class="row">
+    <div>
+        <div class="row no-gutters">
             <div class="col text-center pb-3">
-                <h1 class="mb-3">{{ mandate.institutionTitle.title.name }}</h1>
+                <h1 class="mb-3 mb-lg-5">{{ mandate.institutionTitle.title.name }}</h1>
             </div>
         </div>
-        <div class="row align-items-lg-center">
+        <div class="row no-gutters align-items-lg-stretch">
             <div class="photo-col col-lg-4 mb-4 mb-lg-0">
                 <img src="{{ macros.politician_photo_url(mandate.politician) }}"
-                     class="rounded-circle img-fluid mb-3" alt="Politician">
+                     class="rounded-circle img-fluid mb-3 mb-lg-5" alt="Politician">
                 <h3 class="text-center mb-0">
                     <strong>
                         {{- mandate.politician.firstName }}
@@ -26,7 +26,7 @@
             </div>
             <div class="w-100 d-lg-none"></div>
             <div class="col-md-6 col-lg-4 order-lg-first mb-4 mb-md-0">
-                <div class="card">
+                <div class="card h-100 text-lg-right">
                     <div class="card-body">
                         <h2 class="mb-4">{{ 'title.promises'|trans }}</h2>
                         {% if maxCount %}
@@ -37,7 +37,7 @@
                                             <a href="{{ path('status', {'slug': promise.status.slug}) }}">
                                                 {{- promise.count == 1 ? promise.status.name : promise.status.namePlural -}}
                                             </a>
-                                            <sup class="status-color-{{ promise.status.color }}"><samp>{{ promise.count }}</samp></sup>
+                                            <sub class="status-color-{{ promise.status.color }}"><samp>{{ promise.count }}</samp></sub>
                                         {% else %}
                                             <span class="text-muted">
                                                 <a href="{{ path('status', {'slug': '~'}) }}">
@@ -47,7 +47,7 @@
                                             <sup class="text-muted"><samp>{{ promise.count }}</samp></sup>
                                         {% endif %}
                                     </div>
-                                    <div class="progress mt-1">
+                                    <div class="progress mt-1 justify-content-lg-end bg-light">
                                         <div class="progress-bar{%
                                             if promise.status is defined
                                         %} status-bg-{{ promise.status.color }}{%
@@ -65,20 +65,20 @@
                 </div>
             </div>
             <div class="col-md-6 col-lg-4">
-                <div class="card">
+                <div class="card h-100">
                     <div class="card-body">
                         <h2 class="mb-4">{{ 'title.mandate'|trans }}</h2>
                         {% set statistics_color = 'primary' %}
                         <div class="h5 mb-4">
                             <div>
                                 {{ 'title.votes'|trans }}
-                                <sup class="text-muted">
+                                <sub class="text-muted">
                                     <samp class="text-{{ statistics_color }}">{{ mandate.votesCount }}</samp>
                                     &nbsp;<span class="fa fa-male"></span>&nbsp;
                                     <samp class="text-{{ statistics_color }}">{{ mandate.votesPercent }}%</samp>
-                                </sup>
+                                </sub>
                             </div>
-                            <div class="progress mt-1">
+                            <div class="progress mt-1 bg-light">
                                 <div class="progress-bar bg-{{ statistics_color }}"
                                      style="width: {{ mandate.votesPercent }}%;"
                                 ></div>
@@ -87,13 +87,13 @@
                         <div class="h5 mb-4">
                             <div>
                                 {{ 'title.the_duration'|trans }}
-                                <sup class="text-muted">
+                                <sub class="text-muted">
                                     <samp class="text-{{ statistics_color }}">{{ mandate.beginDate|date('m.Y') }}</samp>
                                     &nbsp;<span class="fa fa-clock"></span>&nbsp;
                                     <samp class="text-{{ statistics_color }}">{{ mandate.endDate|date('m.Y') }}</samp>
-                                </sup>
+                                </sub>
                             </div>
-                            <div class="progress mt-1">
+                            <div class="progress mt-1 bg-light">
                                 <div class="progress-bar bg-{{ statistics_color }}"
                                      style="width: {{ '' ~ macros.get_date_interval_progress(mandate.beginDate, mandate.endDate) }}%;"
                                 ></div>
@@ -102,13 +102,13 @@
                         <div class="h5">
                             <div>
                                 {{ 'title.used_powers'|trans }}
-                                <sup class="text-muted">
+                                <sub class="text-muted">
                                     <samp class="text-{{ statistics_color }}">{{ power_statistics.count_used }}</samp>
                                     din
                                     <samp class="text-{{ statistics_color }}">{{ power_statistics.count_all }}</samp>
-                                </sup>
+                                </sub>
                             </div>
-                            <div class="progress mt-1">
+                            <div class="progress mt-1 bg-light">
                                 <div class="progress-bar bg-{{ statistics_color }}"
                                      style="width: {{ power_statistics.count_used / power_statistics.count_all * 100 }}%;"
                                 ></div>

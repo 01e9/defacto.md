@@ -1,0 +1,21 @@
+{
+    "device_name": "DeFacto",
+    "storage_path": "/mnt/sync/config",
+    "vendor": "docker",
+    "display_new_version": false,
+    "directory_root_policy": "belowroot",
+    "webui": {},
+    "shared_folders": [
+        {
+            "secret": "SECRET",
+            "dir": "/mnt/mounted_folders/sync",
+            "use_relay_server": true,
+            "use_tracker": true,
+            "search_lan": true,
+            "use_sync_trash": false,
+            "overwrite_changes": false,
+            "selective_sync": false,
+            "known_hosts": []
+        }
+    ]
+}

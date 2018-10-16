@@ -1,8 +1,10 @@
 version: '3.4'
 
 volumes:
+    php_sock:
     postgres:
-    sync:
+    resilio:
+    backup:
 
 services:
     defacto_php:
@@ -11,8 +13,8 @@ services:
         build:
             context: .
         volumes:
-            - ./.volumes/php/sock:/sock
-            - ./.volumes/php/conf:/usr/local/etc/php-fpm.d:ro
+            - php_sock:/sock
+            - ./php/fpm.conf:/usr/local/etc/php-fpm.d/fpm.conf:ro
             - ../vendor:/var/www/vendor:ro
             - ../composer.json:/var/www/composer.json:ro
             - ../config:/var/www/config:ro
@@ -20,7 +22,7 @@ services:
             - ../src:/var/www/src:ro
             - ../templates:/var/www/templates:ro
             - ../translations:/var/www/translations:ro
-            - ../.env:/var/www/.env:ro
+            - ../.env.dist:/var/www/.env:ro
             - ../uploads:/var/www/uploads:rw
             - ../var:/var/www/var:rw
         command: ["-F"]
@@ -35,46 +37,15 @@ services:
             POSTGRES_PASSWORD: "defacto"
             POSTGRES_DB: "defacto"
         restart: unless-stopped
-    defacto_backup_pg:
-        container_name: defacto_backup_pg
-        image: postgres:9
-        depends_on:
-            - defacto_pg
-        volumes:
-            - ./.volumes/backup/postgres:/backups
-            - ./.volumes/backup/postgres.sh:/entrypoint.sh:ro
-            - ../backup/postgres/pg_backup_rotated.sh:/backup/pg_backup_rotated.sh:ro
-            - ../backup/postgres/pg_backup.config:/backup/pg_backup.config:ro
-            - ../backup/postgres/.pgpass:/backup/.pgpass:ro
-        entrypoint: ["/entrypoint.sh"]
-        restart: unless-stopped
-    defacto_backup_uploads:
-        container_name: defacto_backup_uploads
-        image: ubuntu:18.04
-        volumes:
-            - ../uploads:/uploads:ro
-            - ./.volumes/backup/uploads:/backups
-            - ./.volumes/backup/uploads.sh:/entrypoint.sh:ro
-            - ../backup/uploads/backup_rotated.sh:/backup.sh:ro
-        entrypoint: ["/entrypoint.sh"]
-        restart: unless-stopped
-    defacto_sync:
-        container_name: defacto_sync
+    defacto_resilio:
+        container_name: defacto_resilio
         image: resilio/sync
-        ports:
-            - 8800:8888
         volumes:
-            - sync:/mnt/sync
-            - ./.volumes/backup/postgres:/mnt/mounted_folders/backup/backups/postgres:ro
-            - ./.volumes/backup/uploads:/mnt/mounted_folders/backup/backups/uploads:ro
-        command: ["--config", "/mnt/sync/sync.conf", "--log", "/mnt/sync/sync.log"]
+            - resilio:/mnt/sync
+            - backup:/mnt/mounted_folders/sync/archives:ro
+            - ./resilio/sync.conf.template:/etc/sync.conf.template:ro
+            - ./resilio/entrypoint.sh:/sbin/entrypoint.sh:ro
+            - ./secrets/resilio/secret.dist:/run/secrets/resilio:ro
+        entrypoint: ["entrypoint.sh"]
+        command: ["--config", "/etc/sync.conf"]
         restart: unless-stopped
-
-# Add in `docker-compose.override.yml`
-#
-#    defacto_adminer:
-#        container_name: defacto_adminer
-#        image: adminer
-#        ports:
-#            - 8080:8080
-#        restart: unless-stopped

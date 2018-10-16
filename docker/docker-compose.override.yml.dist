@@ -1,0 +1,14 @@
+version: '3.4'
+
+services:
+    defacto_php:
+        volumes:
+            - ../.env.dist:/var/www/.env:ro
+    defacto_pg:
+        environment:
+            POSTGRES_USER: "defacto"
+            POSTGRES_PASSWORD: "defacto"
+            POSTGRES_DB: "defacto"
+    defacto_resilio:
+        volumes:
+            - ./secrets/resilio/secret.dist:/run/secrets/resilio:ro

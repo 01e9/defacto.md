@@ -3,7 +3,6 @@ version: '3.4'
 volumes:
     php_sock:
     postgres:
-    resilio:
     backup:
 
 services:
@@ -41,7 +40,6 @@ services:
         container_name: defacto_resilio
         image: resilio/sync
         volumes:
-            - resilio:/mnt/sync
             - backup:/mnt/mounted_folders/sync/archives:ro
             - ./resilio/sync.conf.template:/etc/sync.conf.template:ro
             - ./resilio/entrypoint.sh:/sbin/entrypoint.sh:ro

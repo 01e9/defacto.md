@@ -12,6 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * @Route(path="/admin/promises")
@@ -40,7 +41,7 @@ class AdminPromisesController extends AbstractController
      * @Route(path="/add", name="admin_promise_add")
      * @return Response
      */
-    public function addAction(Request $request)
+    public function addAction(Request $request, TranslatorInterface $translator)
     {
         $promise = new Promise();
 
@@ -59,10 +60,7 @@ class AdminPromisesController extends AbstractController
             $em->persist($promise);
             $em->flush();
 
-            $this->addFlash(
-                'success',
-                $this->get('translator')->trans('flash.promise_created')
-            );
+            $this->addFlash('success', $translator->trans('flash.promise_created'));
 
             return $this->redirectToRoute('admin_promise_edit', ['id' => $promise->getId()]);
         }
@@ -76,7 +74,7 @@ class AdminPromisesController extends AbstractController
      * @Route(path="/{id}", name="admin_promise_edit")
      * @return Response
      */
-    public function editAction(Request $request, string $id)
+    public function editAction(Request $request, string $id, TranslatorInterface $translator)
     {
         $promise = $this->getDoctrine()->getRepository('App:Promise')->find($id);
         if (!$promise) {
@@ -118,10 +116,7 @@ class AdminPromisesController extends AbstractController
             $em->persist($promise);
             $em->flush();
 
-            $this->addFlash(
-                'success',
-                $this->get('translator')->trans('flash.promise_updated')
-            );
+            $this->addFlash('success', $translator->trans('flash.promise_updated'));
 
             return $this->redirectToRoute('admin_promise_edit', ['id' => $promise->getId()]);
         }

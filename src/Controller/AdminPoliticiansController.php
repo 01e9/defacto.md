@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * @Route(path="/admin/politicians")
@@ -37,7 +38,7 @@ class AdminPoliticiansController extends AbstractController
      * @Route(path="/add", name="admin_politician_add")
      * @return Response
      */
-    public function addAction(Request $request)
+    public function addAction(Request $request, TranslatorInterface $translator)
     {
         $form = $this->createForm(PoliticianType::class, null, []);
         $form->handleRequest($request);
@@ -50,10 +51,7 @@ class AdminPoliticiansController extends AbstractController
             $em->persist($politician);
             $em->flush();
 
-            $this->addFlash(
-                'success',
-                $this->get('translator')->trans('flash.politician_created')
-            );
+            $this->addFlash('success', $translator->trans('flash.politician_created'));
 
             return $this->redirectToRoute('admin_politician_edit', ['id' => $politician->getId()]);
         }
@@ -67,7 +65,7 @@ class AdminPoliticiansController extends AbstractController
      * @Route(path="/{id}", name="admin_politician_edit")
      * @return Response
      */
-    public function editAction(Request $request, string $id)
+    public function editAction(Request $request, string $id, TranslatorInterface $translator)
     {
         $politician = $this->getDoctrine()->getRepository('App:Politician')->find($id);
 
@@ -93,10 +91,7 @@ class AdminPoliticiansController extends AbstractController
             $em->persist($politician);
             $em->flush();
 
-            $this->addFlash(
-                'success',
-                $this->get('translator')->trans('flash.politician_updated')
-            );
+            $this->addFlash('success', $translator->trans('flash.politician_updated'));
 
             return $this->redirectToRoute('admin_politicians');
         }

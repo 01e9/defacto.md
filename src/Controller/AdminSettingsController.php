@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * @Route(path="/admin/settings")
@@ -33,7 +34,7 @@ class AdminSettingsController extends AbstractController
      * @Route(path="/{id}", name="admin_setting_edit")
      * @return Response
      */
-    public function editAction(Request $request, string $id)
+    public function editAction(Request $request, string $id, TranslatorInterface $translator)
     {
         $config = $this->getDoctrine()->getRepository('App:Setting')->getConfig($id);
 
@@ -63,7 +64,7 @@ class AdminSettingsController extends AbstractController
             $em->persist($setting);
             $em->flush();
 
-            $this->addFlash('success', $this->get('translator')->trans('flash.setting_updated'));
+            $this->addFlash('success', $translator->trans('flash.setting_updated'));
 
             return $this->redirectToRoute('admin_settings');
         }

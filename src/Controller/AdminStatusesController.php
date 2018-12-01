@@ -12,6 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * @Route(path="/admin/statuses")
@@ -23,7 +24,7 @@ class AdminStatusesController extends AbstractController
      * @Route(path="/add", name="admin_status_add")
      * @return Response
      */
-    public function addAction(Request $request)
+    public function addAction(Request $request, TranslatorInterface $translator)
     {
         $form = $this->createForm(StatusType::class, null, [])->handleRequest($request);
 
@@ -35,10 +36,7 @@ class AdminStatusesController extends AbstractController
             $em->persist($status);
             $em->flush();
 
-            $this->addFlash(
-                'success',
-                $this->get('translator')->trans('flash.status_created')
-            );
+            $this->addFlash('success', $translator->trans('flash.status_created'));
 
             return $this->redirectToRoute('admin_status_edit', ['id' => $status->getId()]);
         }
@@ -52,7 +50,7 @@ class AdminStatusesController extends AbstractController
      * @Route(path="/{id}", name="admin_status_edit")
      * @return Response
      */
-    public function editAction(Request $request, string $id)
+    public function editAction(Request $request, string $id, TranslatorInterface $translator)
     {
         $status = $this->getDoctrine()->getRepository('App:Status')->find($id);
         if (!$status) {
@@ -69,7 +67,7 @@ class AdminStatusesController extends AbstractController
             $em->persist($status);
             $em->flush();
 
-            $this->addFlash('success', $this->get('translator')->trans('flash.status_updated'));
+            $this->addFlash('success', $translator->trans('flash.status_updated'));
 
             return $this->redirectToRoute('admin_promises');
         }
@@ -84,7 +82,7 @@ class AdminStatusesController extends AbstractController
      * @Route(path="/{id}/d", name="admin_status_delete")
      * @Method("GET|POST")
      */
-    public function deleteAction(Request $request, string $id)
+    public function deleteAction(Request $request, string $id, TranslatorInterface $translator)
     {
         $status = $this->getDoctrine()->getRepository('App:Status')->find($id);
         if (!$status) {
@@ -101,7 +99,7 @@ class AdminStatusesController extends AbstractController
             $em->remove($status);
             $em->flush();
 
-            $this->addFlash('success', $this->get('translator')->trans('flash.status_deleted'));
+            $this->addFlash('success', $translator->trans('flash.status_deleted'));
 
             return $this->redirectToRoute('admin_promises');
         }

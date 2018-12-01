@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class SecurityController extends AbstractController
 {
@@ -15,13 +16,10 @@ class SecurityController extends AbstractController
      * @Route("/login", name="login")
      * @Method({"GET","POST"})
      */
-    public function login(Request $request, AuthenticationUtils $authUtils)
+    public function login(Request $request, AuthenticationUtils $authUtils, TranslatorInterface $translator)
     {
         if ($this->isGranted('ROLE_USER')) {
-            $this->addFlash(
-                'warning',
-                $this->get('translator')->trans('flash.already_logged_in')
-            );
+            $this->addFlash('warning', $translator->trans('flash.already_logged_in'));
 
             return $this->redirectToRoute('home');
         }

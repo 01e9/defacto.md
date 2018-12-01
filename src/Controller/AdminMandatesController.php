@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * @Route(path="/admin/mandates")
@@ -21,7 +22,7 @@ class AdminMandatesController extends AbstractController
      * @Route(path="/add", name="admin_mandate_add")
      * @return Response
      */
-    public function addAction(Request $request)
+    public function addAction(Request $request, TranslatorInterface $translator)
     {
         $form = $this->createForm(MandateType::class, null, [
             'politicians' => $this->getDoctrine()->getRepository('App:Politician')->getAdminChoices(),
@@ -37,10 +38,7 @@ class AdminMandatesController extends AbstractController
             $em->persist($mandate);
             $em->flush();
 
-            $this->addFlash(
-                'success',
-                $this->get('translator')->trans('flash.mandate_created')
-            );
+            $this->addFlash('success', $translator->trans('flash.mandate_created'));
 
             return $this->redirectToRoute('admin_mandate_edit', ['id' => $mandate->getId()]);
         }
@@ -54,7 +52,7 @@ class AdminMandatesController extends AbstractController
      * @Route(path="/{id}", name="admin_mandate_edit")
      * @return Response
      */
-    public function editAction(Request $request, string $id)
+    public function editAction(Request $request, string $id, TranslatorInterface $translator)
     {
         $mandate = $this->getDoctrine()->getRepository('App:Mandate')->find($id);
 
@@ -76,10 +74,7 @@ class AdminMandatesController extends AbstractController
             $em->persist($mandate);
             $em->flush();
 
-            $this->addFlash(
-                'success',
-                $this->get('translator')->trans('flash.mandate_updated')
-            );
+            $this->addFlash('success', $translator->trans('flash.mandate_updated'));
 
             return $this->redirectToRoute('admin_politicians');
         }

@@ -12,6 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * @Route(path="/admin/actions")
@@ -23,7 +24,7 @@ class AdminActionsController extends AbstractController
      * @Route(path="/add", name="admin_action_add")
      * @return Response
      */
-    public function addAction(Request $request)
+    public function addAction(Request $request, TranslatorInterface $translator)
     {
         $action = new Action();
 
@@ -68,10 +69,7 @@ class AdminActionsController extends AbstractController
 
             $em->flush();
 
-            $this->addFlash(
-                'success',
-                $this->get('translator')->trans('flash.action_created')
-            );
+            $this->addFlash('success', $translator->trans('flash.action_created'));
 
             return $this->redirectToRoute('admin_action_edit', ['id' => $action->getId()]);
         }
@@ -85,7 +83,7 @@ class AdminActionsController extends AbstractController
      * @Route(path="/{id}", name="admin_action_edit")
      * @return Response
      */
-    public function editAction(Request $request, string $id)
+    public function editAction(Request $request, string $id, TranslatorInterface $translator)
     {
         /** @var Action $action */
         $action = $this->getDoctrine()->getRepository('App:Action')->find($id);
@@ -140,10 +138,7 @@ class AdminActionsController extends AbstractController
             $em->persist($action);
             $em->flush();
 
-            $this->addFlash(
-                'success',
-                $this->get('translator')->trans('flash.action_updated')
-            );
+            $this->addFlash('success', $translator->trans('flash.action_updated'));
 
             return $this->redirectToRoute('admin_action_edit', ['id' => $action->getId()]);
         }

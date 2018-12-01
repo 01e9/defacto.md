@@ -1,0 +1,19 @@
+@import "lighten_amount";
+
+$app-status-colors: (
+    red: #dd3333,
+    orange: #f48414,
+    yellow: #f4cf28,
+    green: #159b4d,
+    blue: #2652aa,
+    violet: #4f2baa,
+    grey: #7c7c7c
+);
+
+@each $color, $value in $app-status-colors {
+    .status-color-#{$color} { color: $value; }
+    .status-bg-#{$color} { background-color: lighten($value, 10%); }
+
+    .status-color-#{$color}-light { color: lighten($value, $app-color-lighten-amount); }
+    .status-bg-#{$color}-light { background-color: lighten($value, 20%); }
+}

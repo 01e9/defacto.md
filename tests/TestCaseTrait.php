@@ -2,6 +2,7 @@
 
 namespace App\Tests;
 
+use App\Entity\Status;
 use App\Entity\User;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\BrowserKit\Cookie;
@@ -107,5 +108,20 @@ trait TestCaseTrait
         }
 
         return true;
+    }
+
+    protected function createStatus(ObjectManager $objectManager) : Status
+    {
+        $status = new Status();
+        $status->setColor('blue');
+        $status->setEffect(73);
+        $status->setName("Test");
+        $status->setNamePlural("Tests");
+        $status->setSlug("test");
+
+        $objectManager->persist($status);
+        $objectManager->flush();
+
+        return $status;
     }
 }

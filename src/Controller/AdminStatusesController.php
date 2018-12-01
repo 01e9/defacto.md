@@ -4,8 +4,10 @@
 namespace App\Controller;
 
 use App\Entity\Status;
+use App\Form\StatusDeleteType;
 use App\Form\StatusType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,8 +25,7 @@ class AdminStatusesController extends Controller
      */
     public function addAction(Request $request)
     {
-        $form = $this->createForm(StatusType::class, null, []);
-        $form->handleRequest($request);
+        $form = $this->createForm(StatusType::class, null, [])->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var Status $status */
@@ -58,8 +59,7 @@ class AdminStatusesController extends Controller
             throw $this->createNotFoundException();
         }
 
-        $form = $this->createForm(StatusType::class, $status, []);
-        $form->handleRequest($request);
+        $form = $this->createForm(StatusType::class, $status, [])->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var Status $status */
@@ -69,16 +69,46 @@ class AdminStatusesController extends Controller
             $em->persist($status);
             $em->flush();
 
-            $this->addFlash(
-                'success',
-                $this->get('translator')->trans('flash.status_updated')
-            );
+            $this->addFlash('success', $this->get('translator')->trans('flash.status_updated'));
 
             return $this->redirectToRoute('admin_promises');
         }
 
         return $this->render('admin/page/status/edit.html.twig', [
             'form' => $form->createView(),
+            'status' => $status,
+        ]);
+    }
+
+    /**
+     * @Route(path="/{id}/d", name="admin_status_delete")
+     * @Method("GET|POST")
+     */
+    public function deleteAction(Request $request, string $id)
+    {
+        $status = $this->getDoctrine()->getRepository('App:Status')->find($id);
+        if (!$status) {
+            throw $this->createNotFoundException();
+        }
+
+        $form = $this->createForm(StatusDeleteType::class, $status, [])->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            /** @var Status $status */
+            $status = $form->getData();
+
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($status);
+            $em->flush();
+
+            $this->addFlash('success', $this->get('translator')->trans('flash.status_deleted'));
+
+            return $this->redirectToRoute('admin_promises');
+        }
+
+        return $this->render('admin/page/status/delete.html.twig', [
+            'form' => $form->createView(),
+            'status' => $status,
         ]);
     }
 }

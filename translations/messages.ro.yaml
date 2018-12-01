@@ -8,6 +8,7 @@ flash:
     promise_updated: Promisiunea a fost modificată
     status_created: Statutul a fost creat
     status_updated: Statutul a fost modificat
+    status_deleted: Statutul a fost șters
     action_created: Acțiunea a fost creată
     action_updated: Acțiunea a fost modificată
     setting_updated: Setarea a fost modificată
@@ -60,9 +61,11 @@ action:
     edit_politician: Modifică politician
     add_status: Adaugă statut
     edit_status: Modifică statut
+    delete_status: Șterge statut
     logout: Ieșire
     save: Salvează
     add: Adaugă
+    delete: Șterge
     change_photo: Modifică foto
     add_mandate: Adaugă mandat
     edit_mandate: Modifică mandat

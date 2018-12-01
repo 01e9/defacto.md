@@ -11,7 +11,9 @@
 
         {% include 'admin/component/form/status.html.twig' with {
             form: form,
-            submitText: 'action.edit_status'|trans
+            submitText: 'action.edit_status'|trans,
+            deleteText: 'action.delete_status'|trans,
+            id: status.id
         } only %}
     </div>
 {% endblock %}

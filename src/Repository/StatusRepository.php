@@ -34,4 +34,12 @@ class StatusRepository extends ServiceEntityRepository
     {
         return $this->findBy([], ['effect' => 'DESC']);
     }
+
+    public function hasConnections(string $id) : bool
+    {
+        return (
+            $this->getEntityManager()->getRepository('App:Promise')->findOneBy(['status' => $id]) ||
+            $this->getEntityManager()->getRepository('App:PromiseUpdate')->findOneBy(['status' => $id])
+        );
+    }
 }

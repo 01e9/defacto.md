@@ -74,8 +74,12 @@ class AdminPromisesController extends AbstractController
      * @Route(path="/{id}", name="admin_promise_edit")
      * @return Response
      */
-    public function editAction(Request $request, string $id, TranslatorInterface $translator)
-    {
+    public function editAction(
+        Request $request,
+        string $id,
+        TranslatorInterface $translator,
+        DoctrineLogsListener $logsListener
+    ) {
         $promise = $this->getDoctrine()->getRepository('App:Promise')->find($id);
         if (!$promise) {
             throw $this->createNotFoundException();
@@ -87,7 +91,7 @@ class AdminPromisesController extends AbstractController
         }
 
         if ($request->isMethod('POST')) {
-            $this->get(DoctrineLogsListener::class)->addPromiseDataBefore($promise);
+            $logsListener->addPromiseDataBefore($promise);
         }
 
         $actions = $this->getDoctrine()->getRepository('App:Action')->getAdminListByPromise($promise);

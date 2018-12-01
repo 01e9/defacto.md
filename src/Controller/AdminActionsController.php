@@ -83,8 +83,12 @@ class AdminActionsController extends AbstractController
      * @Route(path="/{id}", name="admin_action_edit")
      * @return Response
      */
-    public function editAction(Request $request, string $id, TranslatorInterface $translator)
-    {
+    public function editAction(
+        Request $request,
+        string $id,
+        TranslatorInterface $translator,
+        DoctrineLogsListener $logsListener
+    ) {
         /** @var Action $action */
         $action = $this->getDoctrine()->getRepository('App:Action')->find($id);
         if (!$action) {
@@ -102,7 +106,7 @@ class AdminActionsController extends AbstractController
         }
 
         if ($request->isMethod('POST')) {
-            $this->get(DoctrineLogsListener::class)->addActionDataBefore($action);
+            $logsListener->addActionDataBefore($action);
         }
 
         $form = $this->createForm(ActionType::class, $action, [

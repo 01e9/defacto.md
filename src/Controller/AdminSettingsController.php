@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Entity\Setting;
 use App\Form\SettingType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
  * @Route(path="/admin/settings")
  * @IsGranted("ROLE_ADMIN")
  */
-class AdminSettingsController extends Controller
+class AdminSettingsController extends AbstractController
 {
     /**
      * @Route(path="", name="admin_settings")

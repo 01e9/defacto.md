@@ -6,7 +6,7 @@ namespace App\Controller;
 use App\Entity\Mandate;
 use App\Form\MandateType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
  * @Route(path="/admin/mandates")
  * @IsGranted("ROLE_ADMIN")
  */
-class AdminMandatesController extends Controller
+class AdminMandatesController extends AbstractController
 {
     /**
      * @Route(path="/add", name="admin_mandate_add")

@@ -6,7 +6,7 @@ namespace App\Controller;
 use App\Entity\Politician;
 use App\Form\PoliticianType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
  * @Route(path="/admin/politicians")
  * @IsGranted("ROLE_ADMIN")
  */
-class AdminPoliticiansController extends Controller
+class AdminPoliticiansController extends AbstractController
 {
     /**
      * @Route(path="", name="admin_politicians")

@@ -8,7 +8,7 @@ use App\EventListener\DoctrineLogsListener;
 use App\Form\PromiseType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,7 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
  * @Route(path="/admin/promises")
  * @IsGranted("ROLE_ADMIN")
  */
-class AdminPromisesController extends Controller
+class AdminPromisesController extends AbstractController
 {
     /**
      * @Route(path="", name="admin_promises")

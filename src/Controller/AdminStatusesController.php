@@ -8,7 +8,7 @@ use App\Form\StatusDeleteType;
 use App\Form\StatusType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,7 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
  * @Route(path="/admin/statuses")
  * @IsGranted("ROLE_ADMIN")
  */
-class AdminStatusesController extends Controller
+class AdminStatusesController extends AbstractController
 {
     /**
      * @Route(path="/add", name="admin_status_add")

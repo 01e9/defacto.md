@@ -7,7 +7,7 @@ use App\Entity\PromiseUpdate;
 use App\EventListener\DoctrineLogsListener;
 use App\Form\ActionType;
 use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\Response;
  * @Route(path="/admin/actions")
  * @IsGranted("ROLE_ADMIN")
  */
-class AdminActionsController extends Controller
+class AdminActionsController extends AbstractController
 {
     /**
      * @Route(path="/add", name="admin_action_add")

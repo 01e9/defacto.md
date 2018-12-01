@@ -1,7 +1,7 @@
 <div class="list-group list-group-flush">
     {% for status in statuses %}
         <a class="list-group-item list-group-item-action" href="{{ path('admin_status_edit', {id: status.id}) }}">
-            {{ status.name }}
+            <span class="status-color-{{ status.color }}">{{ status.name }}</span>
             <sup>{{ status.effect }}</sup>
         </a>
     {% endfor %}

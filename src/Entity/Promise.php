@@ -45,9 +45,9 @@ class Promise
     private $categories;
 
     /**
-     * @ORM\Column(type="date")
+     * @var \DateTimeInterface
      *
-     * @Assert\Date()
+     * @ORM\Column(type="date")
      */
     private $madeTime;
 

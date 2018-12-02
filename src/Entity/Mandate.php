@@ -35,20 +35,18 @@ class Mandate
     private $id;
 
     /**
-     * @var \DateTime
+     * @var \DateTimeInterface
      * @ORM\Column(type="date")
      *
      * @Assert\NotBlank()
-     * @Assert\Date()
      */
     private $beginDate;
 
     /**
-     * @var \DateTime
+     * @var \DateTimeInterface
      * @ORM\Column(type="date")
      *
      * @Assert\NotBlank()
-     * @Assert\Date()
      * @Assert\Expression(
      *     expression="this.getBeginDate() < this.getEndDate()",
      *     message="invalid.date_range"

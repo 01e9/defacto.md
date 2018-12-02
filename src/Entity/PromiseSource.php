@@ -36,7 +36,7 @@ class PromiseSource
      *
      * @Assert\NotBlank()
      * @Assert\Length(min=3)
-     * @Assert\Url(checkDNS=false)
+     * @Assert\Url()
      */
     private $link;
 

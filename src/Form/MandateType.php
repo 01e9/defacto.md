@@ -40,11 +40,9 @@ class MandateType extends AbstractType
             ])
             ->add('votesCount', NumberType::class, [
                 'label' => 'label.votes_count',
-                'scale' => 0,
             ])
             ->add('votesPercent', NumberType::class, [
                 'label' => 'label.votes_percent',
-                'scale' => 2,
             ])
         ;
     }

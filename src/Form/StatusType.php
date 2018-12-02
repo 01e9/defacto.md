@@ -32,7 +32,6 @@ class StatusType extends AbstractType
             ])
             ->add('effect', IntegerType::class, [
                 'label' => 'label.effect',
-                'scale' => 0,
             ])
             ->add('color', ChoiceType::class, [
                 'label' => 'label.color',

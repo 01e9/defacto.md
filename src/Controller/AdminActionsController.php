@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Action;
 use App\Entity\PromiseUpdate;
 use App\EventListener\DoctrineLogsListener;
+use App\Form\ActionDeleteType;
 use App\Form\ActionType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -150,6 +151,37 @@ class AdminActionsController extends AbstractController
         return $this->render('admin/page/action/edit.html.twig', [
             'form' => $form->createView(),
             'logs' => $this->getDoctrine()->getRepository('App:Log')->findLatestByAction($action)
+        ]);
+    }
+
+    /**
+     * @Route(path="/{id}/d", name="admin_action_delete", methods={"GET","POST"})
+     */
+    public function deleteAction(Request $request, string $id, TranslatorInterface $translator)
+    {
+        $action = $this->getDoctrine()->getRepository('App:Action')->find($id);
+        if (!$action) {
+            throw $this->createNotFoundException();
+        }
+
+        $form = $this->createForm(ActionDeleteType::class, $action, [])->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            /** @var Action $action */
+            $action = $form->getData();
+
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($action);
+            $em->flush();
+
+            $this->addFlash('success', $translator->trans('flash.action_deleted'));
+
+            return $this->redirectToRoute('admin_promises');
+        }
+
+        return $this->render('admin/page/action/delete.html.twig', [
+            'form' => $form->createView(),
+            'action' => $action,
         ]);
     }
 }

@@ -11,6 +11,7 @@ flash:
     status_deleted: Statutul a fost șters
     action_created: Acțiunea a fost creată
     action_updated: Acțiunea a fost modificată
+    action_deleted: Acțiunea a fost ștearsă
     setting_updated: Setarea a fost modificată
     error_404: Pagina nu există
 
@@ -73,6 +74,7 @@ action:
     edit_promise: Modifică promisiune
     add_action: Adaugă acțiune
     edit_action: Modifică acțiune
+    delete_action: Șterge acțiune
     add_promiseUpdates: Adaugă conexiune cu promisiune
     add_sources: Adaugă sursă
     search: Caută

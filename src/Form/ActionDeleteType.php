@@ -2,24 +2,24 @@
 
 namespace App\Form;
 
-use App\Entity\Status;
+use App\Entity\Action;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use App\Validator\DeletableStatus;
+use App\Validator\DeletableAction;
 
-class StatusDeleteType extends AbstractType
+class ActionDeleteType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('id', HiddenType::class, ['constraints' => [new DeletableStatus()]]);
+        $builder->add('id', HiddenType::class, ['constraints' => [new DeletableAction()]]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Status::class,
+            'data_class' => Action::class,
         ]);
     }
 }

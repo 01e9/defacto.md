@@ -73,7 +73,6 @@ class AdminStatusesController extends AbstractController
 
         return $this->render('admin/page/status/edit.html.twig', [
             'form' => $form->createView(),
-            'status' => $status,
         ]);
     }
 

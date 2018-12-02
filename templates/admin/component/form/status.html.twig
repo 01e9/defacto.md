@@ -1,3 +1,5 @@
+{% set id = form.vars.value|default({id:0}).id %}
+
 {{ form_start(form) }}
 
 <div class="row">
@@ -22,17 +24,17 @@
 <div class="row">
     <div class="col">
         <button type="submit" class="btn btn-primary">
-            <span class="fa {{ id is defined ? 'fa-pencil-alt' : 'fa-plus' }} mr-1"></span>
+            <span class="fa {{ id ? 'fa-pencil-alt' : 'fa-plus' }} mr-1"></span>
             {{ submitText is defined ? submitText : 'action.save'|trans }}
         </button>
     </div>
-    {% if id is defined %}
-    <div class="col text-right">
-        <a class="btn btn-secondary" href="{{ path('admin_status_delete', {id: id}) }}">
-            <span class="fa fa-trash-alt mr-1"></span>
-            {{ deleteText is defined ? deleteText : 'action.delete'|trans }}
-        </a>
-    </div>
+    {% if id %}
+        <div class="col text-right">
+            <a class="btn btn-secondary" href="{{ path('admin_status_delete', {id: id}) }}">
+                <span class="fa fa-trash-alt mr-1"></span>
+                {{ deleteText is defined ? deleteText : 'action.delete'|trans }}
+            </a>
+        </div>
     {% endif %}
 </div>
 

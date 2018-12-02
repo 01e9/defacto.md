@@ -54,4 +54,9 @@ class ActionRepository extends ServiceEntityRepository
 
         return $choices;
     }
+
+    public function hasConnections(string $id) : bool
+    {
+        return false;
+    }
 }

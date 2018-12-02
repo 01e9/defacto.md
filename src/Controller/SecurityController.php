@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Form\LoginType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -13,8 +12,7 @@ use Symfony\Component\Translation\TranslatorInterface;
 class SecurityController extends AbstractController
 {
     /**
-     * @Route("/login", name="login")
-     * @Method({"GET","POST"})
+     * @Route("/login", name="login", methods={"GET","POST"})
      */
     public function login(Request $request, AuthenticationUtils $authUtils, TranslatorInterface $translator)
     {

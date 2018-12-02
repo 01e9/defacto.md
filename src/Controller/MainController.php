@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\InstitutionTitle;
 use App\Entity\Mandate;
 use App\Entity\Promise;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -18,8 +17,7 @@ class MainController extends AbstractController
     }
 
     /**
-     * @Route(path="", name="home")
-     * @Method("GET")
+     * @Route(path="", name="home", methods={"GET"})
      */
     public function homeAction(Request $request)
     {

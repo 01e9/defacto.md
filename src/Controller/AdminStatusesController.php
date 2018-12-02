@@ -7,7 +7,6 @@ use App\Entity\Status;
 use App\Form\StatusDeleteType;
 use App\Form\StatusType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -79,8 +78,7 @@ class AdminStatusesController extends AbstractController
     }
 
     /**
-     * @Route(path="/{id}/d", name="admin_status_delete")
-     * @Method("GET|POST")
+     * @Route(path="/{id}/d", name="admin_status_delete", methods={"GET","POST"})
      */
     public function deleteAction(Request $request, string $id, TranslatorInterface $translator)
     {

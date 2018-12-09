@@ -31,4 +31,11 @@ class PoliticianRepository extends ServiceEntityRepository
     {
         return $this->findBy([], ['firstName' => 'ASC', 'lastName' => 'ASC']);
     }
+
+    public function hasConnections(string $id) : bool
+    {
+        return (
+            !!$this->getEntityManager()->getRepository('App:Mandate')->findOneBy(['politician' => $id])
+        );
+    }
 }

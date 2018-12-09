@@ -4,6 +4,7 @@
 namespace App\Controller;
 
 use App\Entity\Politician;
+use App\Form\PoliticianDeleteType;
 use App\Form\PoliticianType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -98,6 +99,37 @@ class AdminPoliticiansController extends AbstractController
 
         return $this->render('admin/page/politician/edit.html.twig', [
             'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route(path="/{id}/d", name="admin_politician_delete", methods={"GET","POST"})
+     */
+    public function deleteAction(Request $request, string $id, TranslatorInterface $translator)
+    {
+        $politician = $this->getDoctrine()->getRepository('App:Politician')->find($id);
+        if (!$politician) {
+            throw $this->createNotFoundException();
+        }
+
+        $form = $this->createForm(PoliticianDeleteType::class, $politician, [])->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            /** @var Politician $politician */
+            $politician = $form->getData();
+
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($politician);
+            $em->flush();
+
+            $this->addFlash('success', $translator->trans('flash.politician_deleted'));
+
+            return $this->redirectToRoute('admin_politicians');
+        }
+
+        return $this->render('admin/page/politician/delete.html.twig', [
+            'form' => $form->createView(),
+            'politician' => $politician,
         ]);
     }
 }

@@ -4,6 +4,7 @@
 namespace App\Controller;
 
 use App\Entity\Mandate;
+use App\Form\MandateDeleteType;
 use App\Form\MandateType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -81,6 +82,37 @@ class AdminMandatesController extends AbstractController
 
         return $this->render('admin/page/mandate/edit.html.twig', [
             'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route(path="/{id}/d", name="admin_mandate_delete", methods={"GET","POST"})
+     */
+    public function deleteAction(Request $request, string $id, TranslatorInterface $translator)
+    {
+        $mandate = $this->getDoctrine()->getRepository('App:Mandate')->find($id);
+        if (!$mandate) {
+            throw $this->createNotFoundException();
+        }
+
+        $form = $this->createForm(MandateDeleteType::class, $mandate, [])->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            /** @var Mandate $mandate */
+            $mandate = $form->getData();
+
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($mandate);
+            $em->flush();
+
+            $this->addFlash('success', $translator->trans('flash.mandate_deleted'));
+
+            return $this->redirectToRoute('admin_politicians');
+        }
+
+        return $this->render('admin/page/mandate/delete.html.twig', [
+            'form' => $form->createView(),
+            'mandate' => $mandate,
         ]);
     }
 }

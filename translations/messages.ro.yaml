@@ -5,6 +5,7 @@ flash:
     politician_deleted: Politicianul a fost șters
     mandate_created: Mandatul a fost adăugat
     mandate_updated: Mandatul a fost modificat
+    mandate_deleted: Mandatul a fost șters
     promise_created: Promisiunea a fost creată
     promise_updated: Promisiunea a fost modificată
     promise_deleted: Promisiunea a fost ștearsă
@@ -73,6 +74,7 @@ action:
     change_photo: Modifică foto
     add_mandate: Adaugă mandat
     edit_mandate: Modifică mandat
+    delete_mandate: Șterge mandat
     add_promise: Adaugă promisiune
     edit_promise: Modifică promisiune
     delete_promise: Șterge promisiune

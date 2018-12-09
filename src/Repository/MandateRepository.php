@@ -117,4 +117,11 @@ class MandateRepository extends ServiceEntityRepository
 
         return $statistics;
     }
+
+    public function hasConnections(string $id) : bool
+    {
+        return (
+            !!$this->getEntityManager()->getRepository('App:Promise')->findOneBy(['mandate' => $id])
+        );
+    }
 }

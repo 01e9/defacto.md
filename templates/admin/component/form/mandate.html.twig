@@ -35,7 +35,7 @@
 
 {% include "admin/component/form/widget/submit-delete-buttons.html.twig" with {
     submitText: id ? 'action.edit_mandate'|trans : 'action.add_mandate'|trans,
-    delete: false
+    delete: id ? {text: 'action.delete_mandate'|trans, link: path('admin_mandate_delete', {id: id})} : false
 } only %}
 
 {{ form_rest(form) }}

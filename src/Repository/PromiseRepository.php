@@ -57,4 +57,11 @@ class PromiseRepository extends ServiceEntityRepository
 
         return $promises;
     }
+
+    public function hasConnections(string $id) : bool
+    {
+        return (
+            !!$this->getEntityManager()->getRepository('App:PromiseUpdate')->findOneBy(['promise' => $id])
+        );
+    }
 }

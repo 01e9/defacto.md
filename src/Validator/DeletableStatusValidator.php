@@ -5,7 +5,6 @@ namespace App\Validator;
 use App\Repository\StatusRepository;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
-use App\Validator\DeletableStatus;
 
 class DeletableStatusValidator extends ConstraintValidator
 {
@@ -18,9 +17,7 @@ class DeletableStatusValidator extends ConstraintValidator
 
     public function validate($value, Constraint $constraint)
     {
-        if (!$constraint instanceof DeletableStatus) {
-            throw new UnexpectedTypeException($constraint, DeletableStatus::class);
-        }
+        /* @var $constraint \App\Validator\DeletableStatus */
 
         if ($this->statusRepository->hasConnections($value)) {
             $this->context->buildViolation($constraint->message)->addViolation();

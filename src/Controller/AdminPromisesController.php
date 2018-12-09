@@ -5,6 +5,7 @@ namespace App\Controller;
 
 use App\Entity\Promise;
 use App\EventListener\DoctrineLogsListener;
+use App\Form\PromiseDeleteType;
 use App\Form\PromiseType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -130,6 +131,37 @@ class AdminPromisesController extends AbstractController
             'actions' => $actions,
             'promise' => $promise,
             'logs' => $this->getDoctrine()->getRepository('App:Log')->findLatestByPromise($promise)
+        ]);
+    }
+
+    /**
+     * @Route(path="/{id}/d", name="admin_promise_delete", methods={"GET","POST"})
+     */
+    public function deleteAction(Request $request, string $id, TranslatorInterface $translator)
+    {
+        $promise = $this->getDoctrine()->getRepository('App:Promise')->find($id);
+        if (!$promise) {
+            throw $this->createNotFoundException();
+        }
+
+        $form = $this->createForm(PromiseDeleteType::class, $promise, [])->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            /** @var Promise $promise */
+            $promise = $form->getData();
+
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($promise);
+            $em->flush();
+
+            $this->addFlash('success', $translator->trans('flash.promise_deleted'));
+
+            return $this->redirectToRoute('admin_promises');
+        }
+
+        return $this->render('admin/page/promise/delete.html.twig', [
+            'form' => $form->createView(),
+            'promise' => $promise,
         ]);
     }
 }

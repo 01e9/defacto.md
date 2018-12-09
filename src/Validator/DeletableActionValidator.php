@@ -5,7 +5,6 @@ namespace App\Validator;
 use App\Repository\ActionRepository;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
-use App\Validator\DeletableAction;
 
 class DeletableActionValidator extends ConstraintValidator
 {
@@ -18,9 +17,7 @@ class DeletableActionValidator extends ConstraintValidator
 
     public function validate($value, Constraint $constraint)
     {
-        if (!$constraint instanceof DeletableAction) {
-            throw new UnexpectedTypeException($constraint, DeletableAction::class);
-        }
+        /* @var $constraint \App\Validator\DeletableAction */
 
         if ($this->actionRepository->hasConnections($value)) {
             $this->context->buildViolation($constraint->message)->addViolation();

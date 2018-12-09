@@ -6,6 +6,7 @@ flash:
     mandate_updated: Mandatul a fost modificat
     promise_created: Promisiunea a fost creată
     promise_updated: Promisiunea a fost modificată
+    promise_deleted: Promisiunea a fost ștearsă
     status_created: Statutul a fost creat
     status_updated: Statutul a fost modificat
     status_deleted: Statutul a fost șters
@@ -72,6 +73,7 @@ action:
     edit_mandate: Modifică mandat
     add_promise: Adaugă promisiune
     edit_promise: Modifică promisiune
+    delete_promise: Șterge promisiune
     add_action: Adaugă acțiune
     edit_action: Modifică acțiune
     delete_action: Șterge acțiune

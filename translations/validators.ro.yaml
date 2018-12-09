@@ -5,3 +5,5 @@ invalid:
 
 not_deletable:
     status: "Statutul nu poate fi șters pentru că e conectat cu alte înregistrări."
+    action: "Acțiunea nu poate fi ștearsă pentru că e conectată cu alte înregistrări."
+    promise: "Promisiunea nu poate fi ștearsă pentru că e conectată cu alte înregistrări."

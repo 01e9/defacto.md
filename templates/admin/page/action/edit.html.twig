@@ -11,7 +11,8 @@
 
         {% include 'admin/component/form/action.html.twig' with {
             form: form,
-            submitText: 'action.edit_action'|trans
+            submitText: 'action.edit_action'|trans,
+            deleteText: 'action.delete_action'|trans
         } only %}
 
         <div class="row mt-5">

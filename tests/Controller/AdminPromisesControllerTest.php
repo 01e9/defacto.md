@@ -288,4 +288,59 @@ class AdminPromisesControllerTest extends WebTestCase
         $em = null;
         static::$kernel->shutdown();
     }
+
+    public function testDeleteActionAccess()
+    {
+        $client = static::createClient();
+        $client->insulate();
+
+        /** @var ObjectManager $manager */
+        $manager = $client->getContainer()->get('doctrine')->getManager();
+        $promise = $this->createPromise($manager);
+
+        $this->assertTrue(self::onlyAdminCanAccess('/admin/promises/'. $promise->getId() .'/d', $client));
+
+        $manager->remove($promise);
+        $manager->flush();
+        $manager = null;
+        $promise = null;
+        static::$kernel->shutdown();
+    }
+
+    public function testDeleteActionSubmit()
+    {
+        $client = static::createClient();
+        $client->insulate();
+        $client->followRedirects(false);
+        self::logInClientAsRole($client, 'ROLE_ADMIN');
+
+        /** @var ObjectManager $manager */
+        $manager = $client->getContainer()->get('doctrine')->getManager();
+        $router = $client->getContainer()->get('router');
+
+        foreach (self::getLangs() as $lang) {
+            $promise = $this->createPromise($manager);
+
+            $form = $client
+                ->request('GET', '/'. $lang .'/admin/promises/'. $promise->getId() .'/d')
+                ->filter('form')->form();
+            $client->submit($form);
+            $response = $client->getResponse();
+            $this->assertEquals(302, $response->getStatusCode());
+
+            $route = $router->match($response->getTargetUrl());
+            $this->assertEquals('admin_promises', $route['_route']);
+            $this->assertEquals($lang, $route['_locale']);
+
+            $manager->clear('App:Promise');
+
+            /** @var Promise $promise */
+            $promise = $manager->getRepository('App:Promise')->find($promise->getId());
+
+            $this->assertNull($promise);
+        }
+
+        $manager = null;
+        static::$kernel->shutdown();
+    }
 }

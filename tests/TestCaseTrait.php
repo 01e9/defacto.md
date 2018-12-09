@@ -234,6 +234,7 @@ trait TestCaseTrait
         $promise->setSlug("test");
         $promise->setPublished(true);
         $promise->setMandate($this->createMandate($objectManager));
+        $promise->setMadeTime(new \DateTime("-3 days"));
 
         $objectManager->persist($promise);
         $objectManager->flush();

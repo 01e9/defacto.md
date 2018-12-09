@@ -9,10 +9,6 @@
             current: {title: 'title.status'|trans}
         } only %}
 
-        {% include 'admin/component/form/status.html.twig' with {
-            form: form,
-            submitText: 'action.edit_status'|trans,
-            deleteText: 'action.delete_status'|trans
-        } only %}
+        {% include 'admin/component/form/status.html.twig' with {form: form} only %}
     </div>
 {% endblock %}

@@ -9,9 +9,6 @@
             current: {title: 'title.setting'|trans}
         } only %}
 
-        {% include 'admin/component/form/setting.html.twig' with {
-            form: form,
-            submitText: 'action.edit_setting'|trans
-        } only %}
+        {% include 'admin/component/form/setting.html.twig' with {form: form} only %}
     </div>
 {% endblock %}

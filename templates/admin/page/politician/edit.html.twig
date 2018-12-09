@@ -9,9 +9,6 @@
             current: {title: 'title.politician'|trans}
         } only %}
 
-        {% include 'admin/component/form/politician.html.twig' with {
-            form: form,
-            submitText: 'action.edit_politician'|trans
-        } only %}
+        {% include 'admin/component/form/politician.html.twig' with {form: form} only %}
     </div>
 {% endblock %}

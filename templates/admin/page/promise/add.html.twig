@@ -9,9 +9,6 @@
             current: {title: 'title.promise'|trans}
         } only %}
 
-        {% include 'admin/component/form/promise.html.twig' with {
-            form: form,
-            submitText: 'action.add_promise'|trans
-        } only %}
+        {% include 'admin/component/form/promise.html.twig' with {form: form} only %}
     </div>
 {% endblock %}

@@ -9,9 +9,6 @@
             current: {title: 'title.mandates'|trans}
         } only %}
 
-        {% include 'admin/component/form/mandate.html.twig' with {
-            form: form,
-            submitText: 'action.edit_mandate'|trans
-        } only %}
+        {% include 'admin/component/form/mandate.html.twig' with {form: form} only %}
     </div>
 {% endblock %}

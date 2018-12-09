@@ -9,11 +9,7 @@
             current: {title: 'title.action'|trans}
         } only %}
 
-        {% include 'admin/component/form/action.html.twig' with {
-            form: form,
-            submitText: 'action.edit_action'|trans,
-            deleteText: 'action.delete_action'|trans
-        } only %}
+        {% include 'admin/component/form/action.html.twig' with {form: form} only %}
 
         <div class="row mt-5">
             <div class="col">

@@ -1,3 +1,5 @@
+{% set id = form.vars.value|default({id:0}).id %}
+
 {{ form_start(form) }}
 
 <div class="row">
@@ -30,11 +32,11 @@
         {{ form_row(form.votesPercent) }}
     </div>
 </div>
-<div class="row">
-    <div class="col">
-        <button type="submit" class="btn btn-primary">{{ submitText is defined ? submitText : 'action.save'|trans }}</button>
-    </div>
-</div>
+
+{% include "admin/component/form/widget/submit-delete-buttons.html.twig" with {
+    submitText: id ? 'action.edit_mandate'|trans : 'action.add_mandate'|trans,
+    delete: false
+} only %}
 
 {{ form_rest(form) }}
 

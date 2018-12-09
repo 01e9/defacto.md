@@ -1,0 +1,16 @@
+<div class="row">
+    <div class="col">
+        <button type="submit" class="btn btn-primary">
+            <span class="fa {{ delete|default(false) ? 'fa-pencil-alt' : 'fa-plus' }} mr-1"></span>
+            {{ submitText|default('action.save'|trans) }}
+        </button>
+    </div>
+    {% if delete|default(false) %}
+        <div class="col text-right">
+            <a class="btn btn-secondary" href="{{ delete['link'] }}">
+                <span class="fa fa-trash-alt mr-1"></span>
+                {{ delete['text']|default('action.delete'|trans) }}
+            </a>
+        </div>
+    {% endif %}
+</div>

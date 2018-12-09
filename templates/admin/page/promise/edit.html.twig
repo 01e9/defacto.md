@@ -9,11 +9,7 @@
             current: {title: 'title.promise'|trans}
         } only %}
 
-        {% include 'admin/component/form/promise.html.twig' with {
-            form: form,
-            submitText: 'action.edit_promise'|trans,
-            deleteText: 'action.delete_promise'|trans
-        } only %}
+        {% include 'admin/component/form/promise.html.twig' with {form: form} only %}
 
         <div class="mt-5"></div>
         <div class="row">

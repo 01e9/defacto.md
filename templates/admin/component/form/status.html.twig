@@ -21,22 +21,11 @@
         {{ form_row(form.slug) }}
     </div>
 </div>
-<div class="row">
-    <div class="col">
-        <button type="submit" class="btn btn-primary">
-            <span class="fa {{ id ? 'fa-pencil-alt' : 'fa-plus' }} mr-1"></span>
-            {{ submitText is defined ? submitText : 'action.save'|trans }}
-        </button>
-    </div>
-    {% if id %}
-        <div class="col text-right">
-            <a class="btn btn-secondary" href="{{ path('admin_status_delete', {id: id}) }}">
-                <span class="fa fa-trash-alt mr-1"></span>
-                {{ deleteText is defined ? deleteText : 'action.delete'|trans }}
-            </a>
-        </div>
-    {% endif %}
-</div>
+
+{% include "admin/component/form/widget/submit-delete-buttons.html.twig" with {
+    submitText: id ? 'action.edit_status'|trans : 'action.add_status'|trans,
+    delete: id ? {text: 'action.delete_status'|trans, link: path('admin_status_delete', {id: id})} : false
+} only %}
 
 {{ form_rest(form) }}
 

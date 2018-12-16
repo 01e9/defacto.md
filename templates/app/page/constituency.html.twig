@@ -1,0 +1,63 @@
+{% extends 'app/base.html.twig' %}
+
+{% block title %}Circumscripție{% endblock %}
+
+{% block main %}
+    <div class="container-fluid bg-light-pattern">
+        {% include 'app/component/after-header-space.html.twig' %}
+        <div class="container">
+            <div class="row mb-3">
+                <div class="col">
+                    <h1 class="text-center">Circumscripția uninominală nr. 29 mun. Chișinău</h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col col-lg-4">
+                    <div class="card">
+                        <div class="card-body p-0">
+                            <img
+                                src="https://static.md/703c0d1852c543848226b3e63c2e6518.png"
+                                alt="Harta"
+                                class="img-fluid"
+                            >
+                        </div>
+                        <div class="card-footer p-0">
+                            <a
+                                href="https://bit.ly/2LmkVdL"
+                                target="_blank"
+                                class="btn btn-link btn-sm btn-block mb-0"
+                            >Detalii circumscripție</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <h2 class="text-center mb-3">Top 3 candidați</h2>
+                    <div class="row mb-4">
+                        {% for name in ["Vasile Ionescu", "Ion Vasilescu", "John Smith"] %}
+                            <div class="col">
+                                <div class="card bg-light">
+                                    <div class="card-header text-center">{{ name }}</div>
+                                    <div class="card-body p-0">
+                                        <img
+                                            src="https://static.md/96f4a8e507956d5e9c72df0b929786ab.jpg"
+                                            alt="Politician"
+                                            class="img-fluid"
+                                        >
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <div class="alert alert-light" role="alert">
+                        <h6 class="alert-heading">Metodologia de selectare a candidaților</h6>
+                        <p class="mb-0 small">
+                            Et aliquid eaque non ea corporis consequuntur eligendi. Voluptatem voluptatem sint sit et.
+                            Incidunt quae nesciunt atque omnis aliquam laboriosam. Et ut impedit qui. Repellendus sit vitae harum.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="my-5"></div>
+{% endblock %}

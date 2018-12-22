@@ -13,9 +13,11 @@ IMAGE='defacto_php'
 NETWORK='defacto_default'
 HOST='defacto.local'
 
-docker build -t ${IMAGE} ${SCRIPT_DIR}
+cd ${SCRIPT_DIR}
 
-docker-compose -f ${SCRIPT_DIR}/docker-compose.yml up -d
+docker build -t ${IMAGE} .
+
+docker-compose up -d
 
 x11docker \
     --hostdisplay \

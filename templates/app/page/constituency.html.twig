@@ -1,5 +1,8 @@
 {% extends 'app/base.html.twig' %}
 
+{% block html_class %}bg-dark-pattern{% endblock %}
+{% block body_class %}bg-transparent{% endblock %}
+
 {% block title %}Circumscripție{% endblock %}
 
 {% block main %}
@@ -11,7 +14,7 @@
                     <h1 class="text-center">Circumscripția uninominală nr. 29 mun. Chișinău</h1>
                 </div>
             </div>
-            <div class="row">
+            <div class="row mb-3">
                 <div class="col col-lg-4">
                     <div class="card">
                         <div class="card-body p-0">
@@ -57,7 +60,31 @@
                     </div>
                 </div>
             </div>
+            <div class="row pb-5">
+                <div class="col">
+                    <h2 class="text-center mb-3">Top 3 probleme din circumscripție</h2>
+                    <div class="row mb-4">
+                        {% for name in ["Nu există canalizare", "Drumuri stricate", "Apă potabilă necalitativă"] %}
+                            <div class="col">
+                                <div class="card bg-light">
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ name }}</h5>
+                                        <p class="card-text"><small class="text-muted">33 respondenți</small></p>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <div class="alert alert-light" role="alert">
+                        <h6 class="alert-heading">Metodologia de chestionare a alegătorilor</h6>
+                        <p class="mb-0 small">
+                            Et aliquid eaque non ea corporis consequuntur eligendi. Voluptatem voluptatem sint sit et.
+                            Incidunt quae nesciunt atque omnis aliquam laboriosam. Et ut impedit qui. Repellendus sit vitae harum.
+                        </p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-    <div class="my-5"></div>
+    {% include 'app/component/section/footer.html.twig' only %}
 {% endblock %}

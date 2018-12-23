@@ -14,6 +14,7 @@ use App\Entity\Promise;
 use App\Entity\Setting;
 use App\Entity\Status;
 use App\Entity\Title;
+use App\Entity\Election;
 use App\Repository\SettingRepository;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -53,6 +54,13 @@ class AppFixtures extends Fixture
             ->setLastName('Testescu')
             ->setSlug('demo-testescu');
         $manager->persist($politician);
+
+        $election = new Election();
+        $election
+            ->setName('Demo election')
+            ->setSlug('demo-election')
+            ->setDate(new \DateTime());
+        $manager->persist($election);
 
         $mandate = new Mandate();
         $mandate

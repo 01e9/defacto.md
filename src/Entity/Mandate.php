@@ -70,8 +70,6 @@ class Mandate
      *     fetch="EAGER"
      * )
      * @ORM\JoinColumn(name="politician_id", nullable=true)
-     *
-     * @Assert\NotBlank()
      */
     private $politician;
 

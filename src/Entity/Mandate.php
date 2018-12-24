@@ -74,6 +74,16 @@ class Mandate
     private $politician;
 
     /**
+     * @var Constituency
+     * @ORM\ManyToOne(
+     *     targetEntity="App\Entity\Constituency",
+     *     fetch="EAGER"
+     * )
+     * @ORM\JoinColumn(name="constituency_id", nullable=true)
+     */
+    private $constituency;
+
+    /**
      * @var InstitutionTitle
      * @ORM\ManyToOne(targetEntity="App\Entity\InstitutionTitle")
      * @ORM\JoinColumn(name="institution_title_id", nullable=false)
@@ -149,6 +159,18 @@ class Mandate
     public function setPolitician(?Politician $politician) : Mandate
     {
         $this->politician = $politician;
+
+        return $this;
+    }
+
+    public function getConstituency() : ?Constituency
+    {
+        return $this->constituency;
+    }
+
+    public function setConstituency(?Constituency $constituency) : Mandate
+    {
+        $this->constituency = $constituency;
 
         return $this;
     }

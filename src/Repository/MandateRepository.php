@@ -36,7 +36,7 @@ class MandateRepository extends ServiceEntityRepository
     public function getLatestByInstitutionTitle(InstitutionTitle $institutionTitle) : ?Mandate
     {
         return $this->createQueryBuilder('m')
-            ->where('m.institutionTitle = :institutionTitle')
+            ->where('m.politician IS NOT NULL AND m.institutionTitle = :institutionTitle')
             ->orderBy('m.beginDate', 'DESC')
             ->setMaxResults(1)
             ->setParameter('institutionTitle', $institutionTitle)

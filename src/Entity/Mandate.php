@@ -60,7 +60,7 @@ class Mandate
      *     targetEntity="App\Entity\Politician",
      *     fetch="EAGER"
      * )
-     * @ORM\JoinColumn(name="politician_id", nullable=false)
+     * @ORM\JoinColumn(name="politician_id", nullable=true)
      *
      * @Assert\NotBlank()
      */

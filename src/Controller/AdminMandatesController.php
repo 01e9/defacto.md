@@ -26,6 +26,7 @@ class AdminMandatesController extends AbstractController
     public function addAction(Request $request, TranslatorInterface $translator)
     {
         $form = $this->createForm(MandateType::class, null, [
+            'elections' => $this->getDoctrine()->getRepository('App:Election')->getAdminChoices(),
             'politicians' => $this->getDoctrine()->getRepository('App:Politician')->getAdminChoices(),
             'institution_titles' => $this->getDoctrine()->getRepository('App:InstitutionTitle')->getAdminChoices(),
         ]);
@@ -62,6 +63,7 @@ class AdminMandatesController extends AbstractController
         }
 
         $form = $this->createForm(MandateType::class, $mandate, [
+            'elections' => $this->getDoctrine()->getRepository('App:Election')->getAdminChoices(),
             'politicians' => $this->getDoctrine()->getRepository('App:Politician')->getAdminChoices(),
             'institution_titles' => $this->getDoctrine()->getRepository('App:InstitutionTitle')->getAdminChoices(),
         ]);

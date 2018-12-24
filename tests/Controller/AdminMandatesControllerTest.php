@@ -34,6 +34,7 @@ class AdminMandatesControllerTest extends WebTestCase
             'mandate[votesPercent]' => 51,
             'mandate[beginDate]' => (new \DateTime('-2 years'))->format(Consts::DATE_FORMAT_PHP),
             'mandate[endDate]' => (new \DateTime('+2 years'))->format(Consts::DATE_FORMAT_PHP),
+            'mandate[election]' => $em->getRepository('App:Election')->findOneBy([])->getId(),
             'mandate[politician]' => $em->getRepository('App:Politician')->findOneBy([])->getId(),
             'mandate[institutionTitle]' => $em->getRepository('App:InstitutionTitle')->findOneBy([])->getId(),
         ];
@@ -108,6 +109,7 @@ class AdminMandatesControllerTest extends WebTestCase
                 ->setVotesPercent(51)
                 ->setBeginDate(new \DateTime('-2 years'))
                 ->setEndDate(new \DateTime('+2 years'))
+                ->setElection($em->getRepository('App:Election')->findOneBy([]))
                 ->setPolitician($em->getRepository('App:Politician')->findOneBy([]))
                 ->setInstitutionTitle($em->getRepository('App:InstitutionTitle')->findOneBy([]));
             $em->persist($mandate);
@@ -121,6 +123,7 @@ class AdminMandatesControllerTest extends WebTestCase
             'mandate[votesPercent]' => 51,
             'mandate[beginDate]' => (new \DateTime('-2 years'))->format(Consts::DATE_FORMAT_PHP),
             'mandate[endDate]' => (new \DateTime('+2 years'))->format(Consts::DATE_FORMAT_PHP),
+            'mandate[election]' => $em->getRepository('App:Election')->findOneBy([])->getId(),
             'mandate[politician]' => $em->getRepository('App:Politician')->findOneBy([])->getId(),
             'mandate[institutionTitle]' => $em->getRepository('App:InstitutionTitle')->findOneBy([])->getId(),
         ];

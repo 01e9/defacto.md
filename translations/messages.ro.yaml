@@ -31,6 +31,7 @@ label:
     begin_date: Date de început
     end_date: Date de sfârșit
     politician: Politician
+    election: Alegeri
     institution_title: Funcție
     title: Titlu
     description: Descriere

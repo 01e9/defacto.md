@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Consts;
 use App\Entity\Election;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -19,32 +20,16 @@ class ElectionRepository extends ServiceEntityRepository
         parent::__construct($registry, Election::class);
     }
 
-    // /**
-    //  * @return Election[] Returns an array of Election objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function getAdminChoices() : array
     {
-        return $this->createQueryBuilder('e')
-            ->andWhere('e.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('e.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $choices = [];
 
-    /*
-    public function findOneBySomeField($value): ?Election
-    {
-        return $this->createQueryBuilder('e')
-            ->andWhere('e.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        foreach ($this->findBy([], ['date' => 'DESC']) as $election) {
+            $choices[
+                $election->getDate()->format(Consts::DATE_FORMAT_PHP) . ' | ' . $election->getName()
+            ] = $election;
+        }
+
+        return $choices;
     }
-    */
 }

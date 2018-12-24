@@ -69,7 +69,8 @@ class AppFixtures extends Fixture
             ->setPolitician($politician)
             ->setInstitutionTitle($institutionTitle)
             ->setVotesCount(10000)
-            ->setVotesPercent(51);
+            ->setVotesPercent(51)
+            ->setElection($election);
         $manager->persist($mandate);
 
         $promise = new Promise();

@@ -26,6 +26,12 @@ class MandateType extends AbstractType
                 'widget' => 'single_text',
                 'format' => Consts::DATE_FORMAT_INTL,
             ])
+            ->add('election', ChoiceType::class, [
+                'label' => 'label.election',
+                'placeholder' => 'placeholder.choose_option',
+                'choices' => $options['elections'],
+                'choice_value' => 'id',
+            ])
             ->add('politician', ChoiceType::class, [
                 'label' => 'label.politician',
                 'placeholder' => 'placeholder.no_mandate_politician',
@@ -54,6 +60,7 @@ class MandateType extends AbstractType
             'data_class' => Mandate::class,
             'politicians' => [],
             'institution_titles' => [],
+            'elections' => [],
         ]);
     }
 }

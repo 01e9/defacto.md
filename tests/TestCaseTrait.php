@@ -3,6 +3,7 @@
 namespace App\Tests;
 
 use App\Entity\Action;
+use App\Entity\Election;
 use App\Entity\Institution;
 use App\Entity\InstitutionTitle;
 use App\Entity\Mandate;
@@ -198,6 +199,19 @@ trait TestCaseTrait
         return $institutionTitle;
     }
 
+    protected function createElection(ObjectManager $objectManager) : Election
+    {
+        $election = new Election();
+        $election->setName("Test election");
+        $election->setSlug("test-election");
+        $election->setDate(new \DateTime());
+
+        $objectManager->persist($election);
+        $objectManager->flush();
+
+        return $election;
+    }
+
     protected function createPolitician(ObjectManager $objectManager) : Politician
     {
         $politician = new Politician();
@@ -220,6 +234,7 @@ trait TestCaseTrait
         $mandate->setVotesPercent(73);
         $mandate->setInstitutionTitle($this->createInstitutionTitle($objectManager));
         $mandate->setPolitician($this->createPolitician($objectManager));
+        $mandate->setElection($this->createElection($objectManager));
 
         $objectManager->persist($mandate);
         $objectManager->flush();

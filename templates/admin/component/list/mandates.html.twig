@@ -2,7 +2,9 @@
     {% for mandate in mandates %}
         <a class="list-group-item list-group-item-action" href="{{ path('admin_mandate_edit', {id: mandate.id}) }}">
             <h5>
-                {{ mandate.politician.firstName ~ ' ' ~ mandate.politician.lastName }}
+                {% include 'admin/component/widget/politician-name.html.twig' with {
+                    politician: mandate.politician
+                } only %}
                 <sup>{{ mandate.institutionTitle.title.name }}</sup>
             </h5>
             {% include 'admin/component/widget/begin-end-date-progress.html.twig' with {

@@ -5,7 +5,9 @@
                 {{ promise.name }}
             </h5>
             <p class="mb-1">
-                {{ promise.mandate.politician.firstName }} {{ promise.mandate.politician.lastName }}
+                {% include 'admin/component/widget/politician-name.html.twig' with {
+                    politician: promise.mandate.politician
+                } only %}
                 <sup>{{ promise.madeTime|date }}</sup>
                 <span>{{ promise.status.name|default('placeholder.no_status'|trans) }}</span>
             </p>

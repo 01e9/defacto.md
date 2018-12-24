@@ -1,0 +1,5 @@
+{% if politician %}
+    {{ politician.firstName }} {{ politician.lastName }}
+{% else %}
+    <em>{{ 'placeholder.no_mandate_politician'|trans }}</em>
+{% endif %}

@@ -55,6 +55,15 @@ class Mandate
     private $endDate;
 
     /**
+     * @var Election
+     * @ORM\ManyToOne(targetEntity="App\Entity\Election")
+     * @ORM\JoinColumn(name="election_id", nullable=false)
+     *
+     * @Assert\NotBlank()
+     */
+    private $election;
+
+    /**
      * @var Politician
      * @ORM\ManyToOne(
      *     targetEntity="App\Entity\Politician",
@@ -118,6 +127,18 @@ class Mandate
     public function setEndDate(?\DateTime $date) : Mandate
     {
         $this->endDate = $date;
+
+        return $this;
+    }
+
+    public function getElection() : ?Election
+    {
+        return $this->election;
+    }
+
+    public function setElection(?Election $election) : Mandate
+    {
+        $this->election = $election;
 
         return $this;
     }

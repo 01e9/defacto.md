@@ -47,16 +47,13 @@ class Mandate
      * @ORM\Column(type="date")
      *
      * @Assert\NotBlank()
-     * @Assert\Expression(
-     *     expression="this.getBeginDate() < this.getEndDate()",
-     *     message="invalid.date_range"
-     * )
+     * @Assert\Expression(expression="this.getBeginDate() < this.getEndDate()", message="invalid.date_range")
      */
     private $endDate;
 
     /**
      * @var Election
-     * @ORM\ManyToOne(targetEntity="App\Entity\Election")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Election", inversedBy="mandates", fetch="EAGER")
      * @ORM\JoinColumn(name="election_id", nullable=false)
      *
      * @Assert\NotBlank()
@@ -64,24 +61,18 @@ class Mandate
     private $election;
 
     /**
-     * @var Politician
-     * @ORM\ManyToOne(
-     *     targetEntity="App\Entity\Politician",
-     *     fetch="EAGER"
-     * )
-     * @ORM\JoinColumn(name="politician_id", nullable=true)
-     */
-    private $politician;
-
-    /**
      * @var Constituency
-     * @ORM\ManyToOne(
-     *     targetEntity="App\Entity\Constituency",
-     *     fetch="EAGER"
-     * )
+     * @ORM\ManyToOne(targetEntity="App\Entity\Constituency", inversedBy="mandates")
      * @ORM\JoinColumn(name="constituency_id", nullable=true)
      */
     private $constituency;
+
+    /**
+     * @var Politician
+     * @ORM\ManyToOne(targetEntity="App\Entity\Politician", inversedBy="mandates", fetch="EAGER")
+     * @ORM\JoinColumn(name="politician_id", nullable=true)
+     */
+    private $politician;
 
     /**
      * @var InstitutionTitle
@@ -97,7 +88,7 @@ class Mandate
      * @ORM\Column(type="integer", options={"unsigned"=true})
      *
      * @Assert\NotBlank()
-     * @Assert\GreaterThanOrEqual(1)
+     * @Assert\GreaterThanOrEqual(0)
      */
     private $votesCount;
 
@@ -106,7 +97,7 @@ class Mandate
      * @ORM\Column(type="decimal", precision=5, scale=2)
      *
      * @Assert\NotBlank()
-     * @Assert\GreaterThanOrEqual(1)
+     * @Assert\GreaterThanOrEqual(0)
      */
     private $votesPercent;
 

@@ -15,6 +15,9 @@ flash:
     action_created: Acțiunea a fost creată
     action_updated: Acțiunea a fost modificată
     action_deleted: Acțiunea a fost ștearsă
+    constituency_created: Circumscripția a fost creată
+    constituency_updated: Circumscripția a fost modificată
+    constituency_deleted: Circumscripția a fost ștearsă
     setting_updated: Setarea a fost modificată
     error_404: Pagina nu există
 
@@ -51,6 +54,7 @@ label:
     sources: Surse
     source_name: Denumirea sursei
     source_link: Linkul sursei
+    constituency_link: Link cec.md
     color: Culoarea
     color_name:
         violet: Violet
@@ -85,6 +89,9 @@ action:
     delete_action: Șterge acțiune
     add_promiseUpdates: Adaugă conexiune cu promisiune
     add_sources: Adaugă sursă
+    add_constituency: Adaugă circumscripție
+    edit_constituency: Modifică circumscripție
+    delete_constituency: Șterge circumscripție
     search: Caută
     searching: Căutare
     edit_setting: Modifică setare
@@ -102,6 +109,8 @@ title:
     dashboard: Dashboard
     mandates: Mandate
     mandate: Mandat
+    constituencies: Circumscripții
+    constituency: Circumscripție
     settings: Setări
     setting: Setare
     votes: Voturi

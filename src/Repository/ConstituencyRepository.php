@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Constituency;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @method Constituency|null find($id, $lockMode = null, $lockVersion = null)
@@ -28,5 +29,17 @@ class ConstituencyRepository extends ServiceEntityRepository
         }
 
         return $choices;
+    }
+
+    public function getAdminList(Request $request)
+    {
+        return $this->findBy([], ['name' => 'ASC']);
+    }
+
+    public function hasConnections(string $id) : bool
+    {
+        return (
+            !!$this->getEntityManager()->getRepository('App:Mandate')->findOneBy(['constituency' => $id])
+        );
     }
 }

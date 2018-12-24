@@ -1,0 +1,28 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block main %}
+    <div class="container">
+        {% include 'admin/component/breadcrumb.html.twig' with {
+            items: [
+                {title: 'title.constituencies'|trans, link: path('admin_constituencies')}
+            ],
+            current: {title: 'title.constituency'|trans}
+        } only %}
+
+        {{ form_start(form) }}
+        <div class="row">
+            <div class="col">
+                <h3>{{ constituency.name }}</h3>
+                {{ form_errors(form) }}
+                <p>
+                    <button type="submit" class="btn btn-danger">
+                        <span class="fa fa-trash-alt"></span>
+                        {{ 'action.delete_constituency'|trans }}
+                    </button>
+                </p>
+            </div>
+        </div>
+        {{ form_rest(form) }}
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

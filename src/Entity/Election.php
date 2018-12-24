@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ElectionRepository")
@@ -56,6 +57,16 @@ class Election
      * @Assert\NotBlank()
      */
     private $date;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Mandate", mappedBy="election")
+     */
+    private $mandates;
+
+    public function __construct()
+    {
+        $this->mandates = new ArrayCollection();
+    }
 
     public function getId(): ?string
     {

@@ -7,6 +7,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\PoliticianRepository")
@@ -67,6 +68,16 @@ class Politician
      * @Assert\File(mimeTypes={"image/jpeg", "image/png", "image/gif"})
      */
     private $photo;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Mandate", mappedBy="politician")
+     */
+    private $mandates;
+
+    public function __construct()
+    {
+        $this->mandates = new ArrayCollection();
+    }
 
     public function getId() : ?string
     {

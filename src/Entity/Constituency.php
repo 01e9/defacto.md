@@ -5,6 +5,8 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ConstituencyRepository")
@@ -28,6 +30,7 @@ class Constituency
 
     /**
      * @ORM\Column(type="string", length=120)
+     * @Groups({"searchable"})
      *
      * @Assert\NotBlank()
      * @Assert\Length(min=3, max=120)
@@ -40,6 +43,7 @@ class Constituency
 
     /**
      * @ORM\Column(type="string", length=120)
+     * @Groups({"searchable"})
      *
      * @Assert\NotBlank()
      * @Assert\Length(min=3, max=120)
@@ -53,6 +57,16 @@ class Constituency
      * @Assert\Url()
      */
     private $link;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Mandate", mappedBy="constituency")
+     */
+    private $mandates;
+
+    public function __construct()
+    {
+        $this->mandates = new ArrayCollection();
+    }
 
     public function getId(): ?string
     {

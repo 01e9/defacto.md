@@ -1,0 +1,26 @@
+{% set id = form.vars.value|default({id:0}).id %}
+
+{{ form_start(form) }}
+
+<div class="row">
+    <div class="col-lg-6">
+        {{ form_row(form.name) }}
+    </div>
+    <div class="col-lg-6">
+        {{ form_row(form.slug) }}
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        {{ form_row(form.link) }}
+    </div>
+</div>
+
+{% include "admin/component/form/widget/submit-delete-buttons.html.twig" with {
+    submitText: id ? 'action.edit_constituency'|trans : 'action.add_constituency'|trans,
+    delete: id ? {text: 'action.delete_constituency'|trans, link: path('admin_constituency_delete', {id: id})} : false
+} only %}
+
+{{ form_rest(form) }}
+
+{{ form_end(form) }}

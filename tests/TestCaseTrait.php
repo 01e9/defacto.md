@@ -3,6 +3,7 @@
 namespace App\Tests;
 
 use App\Entity\Action;
+use App\Entity\Constituency;
 use App\Entity\Election;
 use App\Entity\Institution;
 use App\Entity\InstitutionTitle;
@@ -212,6 +213,19 @@ trait TestCaseTrait
         return $election;
     }
 
+    protected function createConstituency(ObjectManager $objectManager) : Constituency
+    {
+        $constituency = new Constituency();
+        $constituency->setName("Test constituency");
+        $constituency->setSlug("test-constituency");
+        $constituency->setLink("http://constituency.test");
+
+        $objectManager->persist($constituency);
+        $objectManager->flush();
+
+        return $constituency;
+    }
+
     protected function createPolitician(ObjectManager $objectManager) : Politician
     {
         $politician = new Politician();
@@ -235,6 +249,7 @@ trait TestCaseTrait
         $mandate->setInstitutionTitle($this->createInstitutionTitle($objectManager));
         $mandate->setPolitician($this->createPolitician($objectManager));
         $mandate->setElection($this->createElection($objectManager));
+        $mandate->setConstituency($this->createConstituency($objectManager));
 
         $objectManager->persist($mandate);
         $objectManager->flush();

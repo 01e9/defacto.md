@@ -32,6 +32,7 @@ label:
     end_date: Date de sfârșit
     politician: Politician
     election: Alegeri
+    constituency: Circumscripție
     institution_title: Funcție
     title: Titlu
     description: Descriere
@@ -132,6 +133,7 @@ placeholder:
     no_status: Fără statut
     no_promise_update: Nu schimbă statutul
     no_mandate_politician: Neales încă
+    no_constituency: Fără circumscripție
 
 text:
     at: la

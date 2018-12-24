@@ -25,11 +25,7 @@ class AdminMandatesController extends AbstractController
      */
     public function addAction(Request $request, TranslatorInterface $translator)
     {
-        $form = $this->createForm(MandateType::class, null, [
-            'elections' => $this->getDoctrine()->getRepository('App:Election')->getAdminChoices(),
-            'politicians' => $this->getDoctrine()->getRepository('App:Politician')->getAdminChoices(),
-            'institution_titles' => $this->getDoctrine()->getRepository('App:InstitutionTitle')->getAdminChoices(),
-        ]);
+        $form = $this->createForm(MandateType::class, null, $this->getChoiceFormOptions());
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -62,11 +58,7 @@ class AdminMandatesController extends AbstractController
             throw $this->createNotFoundException();
         }
 
-        $form = $this->createForm(MandateType::class, $mandate, [
-            'elections' => $this->getDoctrine()->getRepository('App:Election')->getAdminChoices(),
-            'politicians' => $this->getDoctrine()->getRepository('App:Politician')->getAdminChoices(),
-            'institution_titles' => $this->getDoctrine()->getRepository('App:InstitutionTitle')->getAdminChoices(),
-        ]);
+        $form = $this->createForm(MandateType::class, $mandate, $this->getChoiceFormOptions());
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -116,5 +108,15 @@ class AdminMandatesController extends AbstractController
             'form' => $form->createView(),
             'mandate' => $mandate,
         ]);
+    }
+
+    private function getChoiceFormOptions() : array
+    {
+        return [
+            'elections' => $this->getDoctrine()->getRepository('App:Election')->getAdminChoices(),
+            'constituencies' => $this->getDoctrine()->getRepository('App:Constituency')->getAdminChoices(),
+            'politicians' => $this->getDoctrine()->getRepository('App:Politician')->getAdminChoices(),
+            'institution_titles' => $this->getDoctrine()->getRepository('App:InstitutionTitle')->getAdminChoices(),
+        ];
     }
 }

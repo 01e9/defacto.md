@@ -32,6 +32,13 @@ class MandateType extends AbstractType
                 'choices' => $options['elections'],
                 'choice_value' => 'id',
             ])
+            ->add('constituency', ChoiceType::class, [
+                'label' => 'label.constituency',
+                'placeholder' => 'placeholder.no_constituency',
+                'choices' => $options['constituencies'],
+                'choice_value' => 'id',
+                'required' => false,
+            ])
             ->add('politician', ChoiceType::class, [
                 'label' => 'label.politician',
                 'placeholder' => 'placeholder.no_mandate_politician',
@@ -61,6 +68,7 @@ class MandateType extends AbstractType
             'politicians' => [],
             'institution_titles' => [],
             'elections' => [],
+            'constituencies' => [],
         ]);
     }
 }

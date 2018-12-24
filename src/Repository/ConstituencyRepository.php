@@ -19,32 +19,14 @@ class ConstituencyRepository extends ServiceEntityRepository
         parent::__construct($registry, Constituency::class);
     }
 
-    // /**
-    //  * @return Constituency[] Returns an array of Constituency objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function getAdminChoices() : array
     {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $choices = [];
 
-    /*
-    public function findOneBySomeField($value): ?Constituency
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        foreach ($this->findBy([], ['name' => 'ASC']) as $constituency) {
+            $choices[ $constituency->getName() ] = $constituency;
+        }
+
+        return $choices;
     }
-    */
 }

@@ -47,6 +47,16 @@ class Problem
      */
     private $slug;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\ConstituencyProblem", mappedBy="problem")
+     */
+    private $constituencyProblems;
+
+    public function __construct()
+    {
+        $this->constituencyProblems = new ArrayCollection();
+    }
+
     public function getId(): ?string
     {
         return $this->id;

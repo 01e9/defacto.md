@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @Route(path="/admin/constituencies")
@@ -66,12 +67,20 @@ class AdminConstituenciesController extends AbstractController
     public function editAction(Request $request, string $id, TranslatorInterface $translator)
     {
         $constituency = $this->getDoctrine()->getRepository('App:Constituency')->find($id);
-
         if (!$constituency) {
             throw $this->createNotFoundException();
         }
 
-        $form = $this->createForm(ConstituencyType::class, $constituency, []);
+        $originalProblems = new ArrayCollection();
+        foreach ($constituency->getProblems() as $problem) {
+            $originalProblems->add($problem);
+        }
+
+        $form = $this->createForm(ConstituencyType::class, $constituency, [
+            'constituencies' => ['~' => $constituency],
+            'elections' => $this->getDoctrine()->getRepository('App:Election')->getAdminChoices(),
+            'problems' => $this->getDoctrine()->getRepository('App:Problem')->getAdminChoices(),
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -79,6 +88,14 @@ class AdminConstituenciesController extends AbstractController
             $constituency = $form->getData();
 
             $em = $this->getDoctrine()->getManager();
+
+            foreach ($originalProblems as $problem) {
+                if (false === $constituency->getProblems()->contains($problem)) {
+                    $constituency->getProblems()->removeElement($problem);
+                    $em->remove($problem);
+                }
+            }
+
             $em->persist($constituency);
             $em->flush();
 

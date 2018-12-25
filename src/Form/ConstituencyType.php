@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Constituency;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -22,6 +23,18 @@ class ConstituencyType extends AbstractType
             ])
             ->add('link', TextType::class, [
                 'label' => 'label.constituency_link',
+            ])
+            ->add('problems', CollectionType::class, [
+                'label' => 'label.problems',
+                'allow_add' => true,
+                'allow_delete' => true,
+                'prototype' => true,
+                'entry_type' => ConstituencyProblemType::class,
+                'entry_options' => [
+                    'constituencies' => $options['constituencies'],
+                    'elections' => $options['elections'],
+                    'problems' => $options['problems'],
+                ],
             ]);
     }
 
@@ -29,6 +42,9 @@ class ConstituencyType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Constituency::class,
+            'constituencies' => [],
+            'elections' => [],
+            'problems' => [],
         ]);
     }
 }

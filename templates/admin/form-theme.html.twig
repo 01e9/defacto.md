@@ -51,6 +51,28 @@
     </div>
 {% endblock %}
 
+{% block constituency_problem_widget %}
+    {% import _self as macros %}
+
+    <div class="d-none">
+        {{ form_row(form.constituency) }}
+    </div>
+    <div class="row">
+        <div class="col-lg-5">
+            {{ form_row(form.election) }}
+        </div>
+        <div class="col-lg-5">
+            {{ form_row(form.problem) }}
+        </div>
+        <div class="col">
+            {{ form_row(form.respondents) }}
+        </div>
+        {% if form.parent.vars.allow_delete %}
+            {{ macros.delete_btn_col() }}
+        {% endif %}
+    </div>
+{% endblock %}
+
 {% block promise_source_widget %}
     {% import _self as macros %}
 

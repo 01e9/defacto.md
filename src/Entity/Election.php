@@ -63,9 +63,15 @@ class Election
      */
     private $mandates;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\ConstituencyProblem", mappedBy="election")
+     */
+    private $constituencyProblems;
+
     public function __construct()
     {
         $this->mandates = new ArrayCollection();
+        $this->constituencyProblems = new ArrayCollection();
     }
 
     public function getId(): ?string

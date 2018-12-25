@@ -38,6 +38,6 @@ class ProblemRepository extends ServiceEntityRepository
 
     public function hasConnections(string $id) : bool
     {
-        return false;
+        return !!$this->getEntityManager()->getRepository('App:ConstituencyProblem')->findOneBy(['problem' => $id]);
     }
 }

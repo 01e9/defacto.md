@@ -9,17 +9,17 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\ConstituencyRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\ProblemRepository")
  * @ORM\Table(
- *     name="constituencies",
+ *     name="problems",
  *     uniqueConstraints={
- *      @ORM\UniqueConstraint(name="constituency_unique_slug", columns={"slug"})
+ *      @ORM\UniqueConstraint(name="problems_unique_slug", columns={"slug"})
  *     }
  * )
  *
  * @UniqueEntity(fields={"slug"})
  */
-class Constituency
+class Problem
 {
     /**
      * @ORM\Id()
@@ -34,9 +34,8 @@ class Constituency
      *
      * @Assert\NotBlank()
      * @Assert\Length(min=3, max=120)
-     * @Assert\Regex(pattern="/^\p{L}+(\-\p{L}+)*$/u", message="invalid.slug")
      */
-    private $slug;
+    private $name;
 
     /**
      * @ORM\Column(type="string", length=120)
@@ -44,42 +43,13 @@ class Constituency
      *
      * @Assert\NotBlank()
      * @Assert\Length(min=3, max=120)
+     * @Assert\Regex(pattern="/^\p{L}+(\-\p{L}+)*$/u", message="invalid.slug")
      */
-    private $name;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     *
-     * @Assert\Length(min=3)
-     * @Assert\Url()
-     */
-    private $link;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Mandate", mappedBy="constituency")
-     */
-    private $mandates;
-
-    public function __construct()
-    {
-        $this->mandates = new ArrayCollection();
-    }
+    private $slug;
 
     public function getId(): ?string
     {
         return $this->id;
-    }
-
-    public function getSlug() : ?string
-    {
-        return $this->slug;
-    }
-
-    public function setSlug(?string $slug) : self
-    {
-        $this->slug = $slug;
-
-        return $this;
     }
 
     public function getName(): ?string
@@ -94,14 +64,14 @@ class Constituency
         return $this;
     }
 
-    public function getLink(): ?string
+    public function getSlug(): ?string
     {
-        return $this->link;
+        return $this->slug;
     }
 
-    public function setLink(?string $link): self
+    public function setSlug(string $slug): self
     {
-        $this->link = $link;
+        $this->slug = $slug;
 
         return $this;
     }

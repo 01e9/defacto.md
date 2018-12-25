@@ -9,6 +9,7 @@ use App\Entity\Institution;
 use App\Entity\InstitutionTitle;
 use App\Entity\Mandate;
 use App\Entity\Politician;
+use App\Entity\Problem;
 use App\Entity\Promise;
 use App\Entity\Status;
 use App\Entity\Title;
@@ -224,6 +225,18 @@ trait TestCaseTrait
         $objectManager->flush();
 
         return $constituency;
+    }
+
+    protected function createProblem(ObjectManager $objectManager) : Problem
+    {
+        $problem = new Problem();
+        $problem->setName("Test problem");
+        $problem->setSlug("test-problem");
+
+        $objectManager->persist($problem);
+        $objectManager->flush();
+
+        return $problem;
     }
 
     protected function createPolitician(ObjectManager $objectManager) : Politician

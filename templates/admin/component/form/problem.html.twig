@@ -1,0 +1,21 @@
+{% set id = form.vars.value|default({id:0}).id %}
+
+{{ form_start(form) }}
+
+<div class="row">
+    <div class="col-lg-6">
+        {{ form_row(form.name) }}
+    </div>
+    <div class="col-lg-6">
+        {{ form_row(form.slug) }}
+    </div>
+</div>
+
+{% include "admin/component/form/widget/submit-delete-buttons.html.twig" with {
+    submitText: id ? 'action.edit_problem'|trans : 'action.add_problem'|trans,
+    delete: id ? {text: 'action.delete_problem'|trans, link: path('admin_problem_delete', {id: id})} : false
+} only %}
+
+{{ form_rest(form) }}
+
+{{ form_end(form) }}

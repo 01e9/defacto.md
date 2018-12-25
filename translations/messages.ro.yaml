@@ -18,6 +18,9 @@ flash:
     constituency_created: Circumscripția a fost creată
     constituency_updated: Circumscripția a fost modificată
     constituency_deleted: Circumscripția a fost ștearsă
+    problem_created: Problema a fost creată
+    problem_updated: Problema a fost modificată
+    problem_deleted: Problema a fost ștearsă
     setting_updated: Setarea a fost modificată
     error_404: Pagina nu există
 
@@ -36,6 +39,7 @@ label:
     politician: Politician
     election: Alegeri
     constituency: Circumscripție
+    problem: Problemă
     institution_title: Funcție
     title: Titlu
     description: Descriere
@@ -92,6 +96,9 @@ action:
     add_constituency: Adaugă circumscripție
     edit_constituency: Modifică circumscripție
     delete_constituency: Șterge circumscripție
+    add_problem: Adaugă problemă
+    edit_problem: Modifică problemă
+    delete_problem: Șterge problemă
     search: Caută
     searching: Căutare
     edit_setting: Modifică setare
@@ -111,6 +118,8 @@ title:
     mandate: Mandat
     constituencies: Circumscripții
     constituency: Circumscripție
+    problems: Probleme
+    problem: Problemă
     settings: Setări
     setting: Setare
     votes: Voturi

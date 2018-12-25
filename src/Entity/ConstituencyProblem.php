@@ -30,7 +30,7 @@ class ConstituencyProblem
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Constituency", inversedBy="constituencyProblems")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Constituency", inversedBy="problems")
      * @ORM\JoinColumn(nullable=false)
      */
     private $constituency;

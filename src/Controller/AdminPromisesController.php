@@ -87,9 +87,7 @@ class AdminPromisesController extends AbstractController
         }
 
         $originalSources = new ArrayCollection();
-        foreach ($promise->getSources() as $source) {
-            $originalSources->add($source);
-        }
+        array_map([$originalSources, 'add'], $promise->getSources()->toArray());
 
         if ($request->isMethod('POST')) {
             $logsListener->addPromiseDataBefore($promise);

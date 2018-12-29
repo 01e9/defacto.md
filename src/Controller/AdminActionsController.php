@@ -97,14 +97,10 @@ class AdminActionsController extends AbstractController
         }
 
         $originalPromiseUpdates = new ArrayCollection();
-        foreach ($action->getPromiseUpdates() as $promiseUpdate) {
-            $originalPromiseUpdates->add($promiseUpdate);
-        }
+        array_map([$originalPromiseUpdates, 'add'], $action->getPromiseUpdates()->toArray());
 
         $originalSources = new ArrayCollection();
-        foreach ($action->getSources() as $source) {
-            $originalSources->add($source);
-        }
+        array_map([$originalSources, 'add'], $action->getSources()->toArray());
 
         if ($request->isMethod('POST')) {
             $logsListener->addActionDataBefore($action);

@@ -29,6 +29,10 @@ trait TestCaseTrait
 {
     private static $application;
 
+    private static $increments = [
+        Election::class => 0,
+    ];
+
     protected function setUp()
     {
         self::runCommand('doctrine:schema:drop --force');
@@ -203,9 +207,11 @@ trait TestCaseTrait
 
     protected function createElection(ObjectManager $objectManager) : Election
     {
+        $increment = ++self::$increments[Election::class];
+
         $election = new Election();
-        $election->setName("Test election");
-        $election->setSlug("test-election");
+        $election->setName("Test election ". $increment);
+        $election->setSlug("test-election-". $increment);
         $election->setDate(new \DateTime());
 
         $objectManager->persist($election);

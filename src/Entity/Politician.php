@@ -74,9 +74,15 @@ class Politician
      */
     private $mandates;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\ConstituencyCandidate", mappedBy="politician")
+     */
+    private $constituencyCandidates;
+
     public function __construct()
     {
         $this->mandates = new ArrayCollection();
+        $this->constituencyCandidates = new ArrayCollection();
     }
 
     public function getId() : ?string

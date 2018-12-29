@@ -40,6 +40,7 @@ label:
     election: Alegeri
     constituency: Circumscripție
     problem: Problemă
+    problems: Probleme
     respondents: Respondenți
     institution_title: Funcție
     title: Titlu
@@ -53,7 +54,6 @@ label:
     occurred_time: Întâmplat(ă) pe data
     promise: Promisiune
     promise_updates: Conexiuni cu primisiuni
-    problems: Probleme
     action: Acțiune
     votes_count: Numărul de voturi obținute
     votes_percent: Procentul de voturi obținute
@@ -62,6 +62,7 @@ label:
     source_link: Linkul sursei
     constituency_link: Link cec.md
     color: Culoarea
+    candidates: Candidați
     color_name:
         violet: Violet
         orange: Oranj
@@ -95,6 +96,7 @@ action:
     delete_action: Șterge acțiune
     add_promiseUpdates: Adaugă conexiune cu promisiune
     add_problems: Adaugă problemă
+    add_candidates: Adaugă candidat
     add_sources: Adaugă sursă
     add_constituency: Adaugă circumscripție
     edit_constituency: Modifică circumscripție

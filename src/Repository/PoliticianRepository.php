@@ -35,7 +35,9 @@ class PoliticianRepository extends ServiceEntityRepository
     public function hasConnections(string $id) : bool
     {
         return (
-            !!$this->getEntityManager()->getRepository('App:Mandate')->findOneBy(['politician' => $id])
+            $this->getEntityManager()->getRepository('App:Mandate')->findOneBy(['politician' => $id])
+            ||
+            $this->getEntityManager()->getRepository('App:ConstituencyCandidate')->findOneBy(['politician' => $id])
         );
     }
 }

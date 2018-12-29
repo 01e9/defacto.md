@@ -72,14 +72,16 @@ class AdminConstituenciesController extends AbstractController
         }
 
         $originalProblems = new ArrayCollection();
-        foreach ($constituency->getProblems() as $problem) {
-            $originalProblems->add($problem);
-        }
+        array_map([$originalProblems, 'add'], $constituency->getProblems()->toArray());
+
+        $originalCandidates = new ArrayCollection();
+        array_map([$originalCandidates, 'add'], $constituency->getCandidates()->toArray());
 
         $form = $this->createForm(ConstituencyType::class, $constituency, [
             'constituencies' => ['~' => $constituency],
             'elections' => $this->getDoctrine()->getRepository('App:Election')->getAdminChoices(),
             'problems' => $this->getDoctrine()->getRepository('App:Problem')->getAdminChoices(),
+            'politicians' => $this->getDoctrine()->getRepository('App:Politician')->getAdminChoices(),
         ]);
         $form->handleRequest($request);
 
@@ -93,6 +95,12 @@ class AdminConstituenciesController extends AbstractController
                 if (false === $constituency->getProblems()->contains($problem)) {
                     $constituency->getProblems()->removeElement($problem);
                     $em->remove($problem);
+                }
+            }
+            foreach ($originalCandidates as $candidate) {
+                if (false === $constituency->getCandidates()->contains($candidate)) {
+                    $constituency->getCandidates()->removeElement($candidate);
+                    $em->remove($candidate);
                 }
             }
 

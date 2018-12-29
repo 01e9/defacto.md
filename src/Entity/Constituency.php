@@ -68,10 +68,19 @@ class Constituency
      */
     private $problems;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\ConstituencyCandidate", mappedBy="constituency", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
+     *
+     * @Assert\Valid()
+     */
+    private $candidates;
+
     public function __construct()
     {
         $this->mandates = new ArrayCollection();
         $this->problems = new ArrayCollection();
+        $this->candidates = new ArrayCollection();
     }
 
     public function getId(): ?string
@@ -123,6 +132,18 @@ class Constituency
     public function setProblems($problems): self
     {
         $this->problems = $problems;
+
+        return $this;
+    }
+
+    public function getCandidates()
+    {
+        return $this->candidates;
+    }
+
+    public function setCandidates($candidates): self
+    {
+        $this->candidates = $candidates;
 
         return $this;
     }

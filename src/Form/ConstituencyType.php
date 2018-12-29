@@ -35,6 +35,18 @@ class ConstituencyType extends AbstractType
                     'elections' => $options['elections'],
                     'problems' => $options['problems'],
                 ],
+            ])
+            ->add('candidates', CollectionType::class, [
+                'label' => 'label.candidates',
+                'allow_add' => true,
+                'allow_delete' => true,
+                'prototype' => true,
+                'entry_type' => ConstituencyCandidateType::class,
+                'entry_options' => [
+                    'constituencies' => $options['constituencies'],
+                    'elections' => $options['elections'],
+                    'politicians' => $options['politicians'],
+                ],
             ]);
     }
 
@@ -45,6 +57,7 @@ class ConstituencyType extends AbstractType
             'constituencies' => [],
             'elections' => [],
             'problems' => [],
+            'politicians' => [],
         ]);
     }
 }

@@ -162,6 +162,13 @@ class AdminConstituenciesControllerTest extends WebTestCase
                         'respondents' => 123,
                     ],
                 ];
+                $formPhpValues['constituency']['candidates'] = [
+                    [
+                        'constituency' => $constituency->getId(),
+                        'election' => $this->createElection($em)->getId(),
+                        'politician' => $this->createPolitician($em)->getId(),
+                    ],
+                ];
 
                 $client->request($form->getMethod(), $form->getUri(), $formPhpValues);
                 $response = $client->getResponse();
@@ -181,6 +188,10 @@ class AdminConstituenciesControllerTest extends WebTestCase
                 $this->assertEquals(
                     $formPhpValues['constituency']['problems'][0]['respondents'],
                     $constituency->getProblems()->first()->getRespondents()
+                );
+                $this->assertEquals(
+                    $formPhpValues['constituency']['candidates'][0]['politician'],
+                    $constituency->getCandidates()->first()->getPolitician()->getId()
                 );
 
                 $em->remove($constituency);

@@ -26,6 +26,16 @@
     {% do form.problems.setRendered() %}
 {% endif %}
 
+{% if id %}
+    <div class="row">
+        <div class="col pb-3">
+            {{ form_row(form.candidates) }}
+        </div>
+    </div>
+{% else %}
+    {% do form.candidates.setRendered() %}
+{% endif %}
+
 {% if not id %}
     <div class="row">
         <div class="col">

@@ -155,7 +155,7 @@ class AdminMandatesControllerTest extends WebTestCase
                 $this->assertEquals(302, $response->getStatusCode());
 
                 $route = $router->match($response->getTargetUrl());
-                $this->assertEquals('admin_politicians', $route['_route']);
+                $this->assertEquals('admin_mandates', $route['_route']);
                 $this->assertEquals($lang, $route['_locale']);
 
                 $mandate = $em->getRepository('App:Mandate')->find($mandate->getId());
@@ -216,7 +216,7 @@ class AdminMandatesControllerTest extends WebTestCase
             $this->assertEquals(302, $response->getStatusCode());
 
             $route = $router->match($response->getTargetUrl());
-            $this->assertEquals('admin_politicians', $route['_route']);
+            $this->assertEquals('admin_mandates', $route['_route']);
             $this->assertEquals($lang, $route['_locale']);
 
             $manager->clear('App:Mandate');

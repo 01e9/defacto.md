@@ -20,6 +20,19 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class AdminMandatesController extends AbstractController
 {
     /**
+     * @Route(path="", name="admin_mandates")
+     * @return Response
+     */
+    public function indexAction(Request $request)
+    {
+        $mandates = $this->getDoctrine()->getRepository('App:Mandate')->getAdminList($request);
+
+        return $this->render('admin/page/mandate/index.html.twig', [
+            'mandates' => $mandates,
+        ]);
+    }
+
+    /**
      * @Route(path="/add", name="admin_mandate_add")
      * @return Response
      */
@@ -71,7 +84,7 @@ class AdminMandatesController extends AbstractController
 
             $this->addFlash('success', $translator->trans('flash.mandate_updated'));
 
-            return $this->redirectToRoute('admin_politicians');
+            return $this->redirectToRoute('admin_mandates');
         }
 
         return $this->render('admin/page/mandate/edit.html.twig', [
@@ -101,7 +114,7 @@ class AdminMandatesController extends AbstractController
 
             $this->addFlash('success', $translator->trans('flash.mandate_deleted'));
 
-            return $this->redirectToRoute('admin_politicians');
+            return $this->redirectToRoute('admin_mandates');
         }
 
         return $this->render('admin/page/mandate/delete.html.twig', [

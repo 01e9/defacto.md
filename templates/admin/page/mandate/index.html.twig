@@ -5,21 +5,21 @@
         <div class="row">
             <div class="col">
                 {% include 'admin/component/breadcrumb.html.twig' with {
-                    current: {title: 'title.politicians'|trans}
+                    current: {title: 'title.mandates'|trans}
                 } only %}
             </div>
         </div>
         <div class="row">
             <div class="col">
                 <h3>
-                    {{ 'title.politicians'|trans }}
+                    {{ 'title.mandates'|trans }}
                     <sup>
-                        <a href="{{ path('admin_politician_add') }}" class="badge badge-light text-muted"
+                        <a href="{{ path('admin_mandate_add') }}" class="badge badge-light text-muted"
                         >{{ 'action.add'|trans }}</a>
                     </sup>
                 </h3>
-                {% include 'admin/component/list/politicians.html.twig' with {
-                    politicians: politicians
+                {% include 'admin/component/list/mandates.html.twig' with {
+                    mandates: mandates
                 } only %}
             </div>
         </div>

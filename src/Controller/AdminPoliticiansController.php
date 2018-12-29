@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Controller;
 
 use App\Entity\Politician;
@@ -27,11 +26,9 @@ class AdminPoliticiansController extends AbstractController
     public function indexAction(Request $request)
     {
         $politicians = $this->getDoctrine()->getRepository('App:Politician')->getAdminList($request);
-        $mandates = $this->getDoctrine()->getRepository('App:Mandate')->getAdminList($request);
 
         return $this->render('admin/page/politician/index.html.twig', [
             'politicians' => $politicians,
-            'mandates' => $mandates,
         ]);
     }
 

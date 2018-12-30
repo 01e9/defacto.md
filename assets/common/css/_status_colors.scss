@@ -3,7 +3,7 @@
 $app-status-colors: (
     red: #dd3333,
     orange: #f48414,
-    yellow: #f4cf28,
+    yellow: #edc303,
     green: #159b4d,
     blue: #2652aa,
     violet: #4f2baa,
@@ -16,4 +16,5 @@ $app-status-colors: (
 
     .status-color-#{$color}-light { color: lighten($value, $app-color-lighten-amount); }
     .status-bg-#{$color}-light { background-color: lighten($value, 20%); }
+    .status-bg-#{$color}-dark { background-color: $value; }
 }

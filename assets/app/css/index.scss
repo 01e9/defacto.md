@@ -47,13 +47,22 @@
         }
     }
 
-    .photo-col {
-        text-align: center;
+    a.status-statistics {
+        display: block;
+        position: relative;
+        font-weight: bold;
 
-        @include media-breakpoint-down(md) {
-            img {
-                max-width: 13rem;
-            }
+        &:hover {
+            text-decoration: none;
+        }
+
+        > div {
+            position: absolute;
+            left: 0;
+            top: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            color: $white;
         }
     }
 }

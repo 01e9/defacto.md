@@ -43,7 +43,7 @@ class Problem
      *
      * @Assert\NotBlank()
      * @Assert\Length(min=3, max=120)
-     * @Assert\Regex(pattern="/^\p{L}+(\-\p{L}+)*$/u", message="invalid.slug")
+     * @Assert\Regex(pattern="/^\p{L}+(\-[\p{L}\d]+)*$/u", message="invalid.slug")
      */
     private $slug;
 

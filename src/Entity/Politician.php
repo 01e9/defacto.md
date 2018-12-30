@@ -38,7 +38,7 @@ class Politician
      * @Assert\NotBlank()
      * @Assert\Length(min=3, max=50)
      * @Assert\Regex(
-     *     pattern="/^\p{L}+(\-\p{L}+)*$/u",
+     *     pattern="/^\p{L}+(\-[\p{L}\d]+)*$/u",
      *     message="invalid.slug"
      * )
      */

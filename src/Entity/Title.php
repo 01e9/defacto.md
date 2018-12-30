@@ -33,7 +33,7 @@ class Title
      * @Assert\NotBlank()
      * @Assert\Length(min=3, max=30)
      * @Assert\Regex(
-     *     pattern="/^\p{L}+(\-\p{L}+)*$/u",
+     *     pattern="/^\p{L}+(\-[\p{L}\d]+)*$/u",
      *     message="invalid.slug"
      * )
      */

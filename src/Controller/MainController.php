@@ -2,10 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\Election;
 use App\Entity\InstitutionTitle;
 use App\Entity\Mandate;
 use App\Entity\Promise;
 use App\Repository\SettingRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -20,43 +22,62 @@ class MainController extends AbstractController
     /**
      * @Route(path="", name="home", methods={"GET"})
      */
-    public function homeAction(Request $request)
+    public function homeAction(Request $request, ManagerRegistry $em)
     {
         return $this->render('app/page/home.html.twig', [
-            'president_mandate' => $this->getPresidentMandateData(),
+            'president_mandate' => $this->getPresidentMandateData($em),
+            'current_election' => $this->getCurrentElectionData($em),
         ]);
     }
 
-    private function getPresidentMandateData()
+    private function getPresidentMandateData(ManagerRegistry $em) : array
     {
-        /** @var InstitutionTitle $institutionTitle */
-        $institutionTitle = $this->getDoctrine()->getRepository('App:Setting')
-            ->get(SettingRepository::PRESIDENT_INSTITUTION_TITLE_ID);
-        /** @var Mandate $mandate */
-        $mandate = $this->getDoctrine()->getRepository('App:Mandate')
-            ->getLatestByInstitutionTitle($institutionTitle);
+        $settingId = SettingRepository::PRESIDENT_INSTITUTION_TITLE_ID;
 
+        /** @var InstitutionTitle $institutionTitle */
+        $institutionTitle = $em->getRepository('App:Setting')->get($settingId);
+
+        /** @var Mandate $mandate */
+        $mandate = $em->getRepository('App:Mandate')->getLatestByInstitutionTitle($institutionTitle);
         if (!$mandate) {
             throw new \Exception('President mandate is required');
         }
 
-        $powersStatistics = $this->getDoctrine()->getRepository('App:Mandate')
-            ->getPowersStatistics($mandate);
+        $powersStatistics = $em->getRepository('App:Mandate')->getPowersStatistics($mandate);
 
-        $promiseStatistics = $this->getDoctrine()->getRepository('App:Mandate')
-            ->getPromiseStatistics($mandate);
+        $promiseStatistics = $em->getRepository('App:Mandate')->getPromiseStatistics($mandate);
         /** @var Promise[] $promises */
-        $promises = $this->getDoctrine()->getRepository('App:Promise')
-            ->findBy(
-                ['mandate' => $mandate, 'published' => true],
-                ['madeTime' => 'DESC']
-            );
+        $promises = $em->getRepository('App:Promise')->findBy(
+            ['mandate' => $mandate, 'published' => true],
+            ['madeTime' => 'DESC']
+        );
 
         return [
             'mandate' => $mandate,
             'promise_statistics' => $promiseStatistics,
             'promises' => $promises,
             'power_statistics' => $powersStatistics,
+        ];
+    }
+
+    private function getCurrentElectionData(ManagerRegistry $em) : ?array
+    {
+        $settingId = SettingRepository::CURRENT_ELECTION_ID;
+
+        /** @var Election $election */
+        $election = $em->getRepository('App:Setting')->get($settingId);
+        if (!$election) {
+            return null;
+        }
+
+        /** @var Mandate[] $mandates */
+        $mandates = $em->getRepository('App:Mandate')->findBy([
+            'election' => $election,
+        ]);
+
+        return [
+            'election' => $election,
+            'mandates' => $mandates,
         ];
     }
 }

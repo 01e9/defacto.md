@@ -9,6 +9,12 @@
         promise_statistics: president_mandate.promise_statistics,
         power_statistics: president_mandate.power_statistics,
     } only %}
+    {% if current_election %}
+        {% include 'app/component/section/election-statistics.html.twig' with {
+            election: current_election.election,
+            mandates: current_election.mandates,
+        } only %}
+    {% endif %}
     {% include 'app/component/section/promises.html.twig' with {
         promises: president_mandate.promises,
         container_class: 'bg-transparent'

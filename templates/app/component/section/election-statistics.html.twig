@@ -1,0 +1,21 @@
+{% import 'macros.html.twig' as macros %}
+
+<div class="election-statistics bg-white pb-5">
+    {% include 'app/component/after-header-space.html.twig' %}
+    <div class="container">
+        <div class="row">
+            <div class="col text-center pb-3">
+                <h2 class="mb-3">{{ election.name }}</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col text-center">
+                {% for mandate in mandates %}
+                    {% if mandate.constituency %}
+                        <p>{{ mandate.constituency.name }}</p>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>

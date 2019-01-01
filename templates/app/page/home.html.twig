@@ -5,12 +5,12 @@
 
 {% block main %}
     {% include 'app/component/section/mandate-statistics.html.twig' with {
-        mandate: president_mandate,
-        promise_statistics: president_mandate_promise_statistics,
-        power_statistics: president_mandate_power_statistics,
+        mandate: president_mandate.mandate,
+        promise_statistics: president_mandate.promise_statistics,
+        power_statistics: president_mandate.power_statistics,
     } only %}
     {% include 'app/component/section/promises.html.twig' with {
-        promises: president_mandate_promises,
+        promises: president_mandate.promises,
         container_class: 'bg-transparent'
     } only %}
     {% include 'app/component/section/about-us.html.twig' only %}

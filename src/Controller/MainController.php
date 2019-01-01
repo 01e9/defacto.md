@@ -21,6 +21,13 @@ class MainController extends AbstractController
      */
     public function homeAction(Request $request)
     {
+        return $this->render('app/page/home.html.twig', [
+            'president_mandate' => $this->getPresidentMandateData(),
+        ]);
+    }
+
+    private function getPresidentMandateData()
+    {
         /** @var InstitutionTitle $presidentInstitutionTitle */
         $presidentInstitutionTitle = $this->getDoctrine()->getRepository('App:Setting')
             ->get('president_institution_title_id');
@@ -44,11 +51,11 @@ class MainController extends AbstractController
                 ['madeTime' => 'DESC']
             );
 
-        return $this->render('app/page/home.html.twig', [
-            'president_mandate' => $presidentMandate,
-            'president_mandate_promise_statistics' => $presidentMandatePromiseStatistics,
-            'president_mandate_promises' => $presidentMandatePromises,
-            'president_mandate_power_statistics' => $presidentMandatePowersStatistics,
-        ]);
+        return [
+            'mandate' => $presidentMandate,
+            'promise_statistics' => $presidentMandatePromiseStatistics,
+            'promises' => $presidentMandatePromises,
+            'power_statistics' => $presidentMandatePowersStatistics,
+        ];
     }
 }

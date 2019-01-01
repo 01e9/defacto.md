@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\InstitutionTitle;
 use App\Entity\Mandate;
 use App\Entity\Promise;
+use App\Repository\SettingRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -28,34 +29,34 @@ class MainController extends AbstractController
 
     private function getPresidentMandateData()
     {
-        /** @var InstitutionTitle $presidentInstitutionTitle */
-        $presidentInstitutionTitle = $this->getDoctrine()->getRepository('App:Setting')
-            ->get('president_institution_title_id');
-        /** @var Mandate $presidentMandate */
-        $presidentMandate = $this->getDoctrine()->getRepository('App:Mandate')
-            ->getLatestByInstitutionTitle($presidentInstitutionTitle);
+        /** @var InstitutionTitle $institutionTitle */
+        $institutionTitle = $this->getDoctrine()->getRepository('App:Setting')
+            ->get(SettingRepository::PRESIDENT_INSTITUTION_TITLE_ID);
+        /** @var Mandate $mandate */
+        $mandate = $this->getDoctrine()->getRepository('App:Mandate')
+            ->getLatestByInstitutionTitle($institutionTitle);
 
-        if (!$presidentMandate) {
+        if (!$mandate) {
             throw new \Exception('President mandate is required');
         }
 
-        $presidentMandatePowersStatistics = $this->getDoctrine()->getRepository('App:Mandate')
-            ->getPowersStatistics($presidentMandate);
+        $powersStatistics = $this->getDoctrine()->getRepository('App:Mandate')
+            ->getPowersStatistics($mandate);
 
-        $presidentMandatePromiseStatistics = $this->getDoctrine()->getRepository('App:Mandate')
-            ->getPromiseStatistics($presidentMandate);
-        /** @var Promise[] $presidentMandatePromises */
-        $presidentMandatePromises = $this->getDoctrine()->getRepository('App:Promise')
+        $promiseStatistics = $this->getDoctrine()->getRepository('App:Mandate')
+            ->getPromiseStatistics($mandate);
+        /** @var Promise[] $promises */
+        $promises = $this->getDoctrine()->getRepository('App:Promise')
             ->findBy(
-                ['mandate' => $presidentMandate, 'published' => true],
+                ['mandate' => $mandate, 'published' => true],
                 ['madeTime' => 'DESC']
             );
 
         return [
-            'mandate' => $presidentMandate,
-            'promise_statistics' => $presidentMandatePromiseStatistics,
-            'promises' => $presidentMandatePromises,
-            'power_statistics' => $presidentMandatePowersStatistics,
+            'mandate' => $mandate,
+            'promise_statistics' => $promiseStatistics,
+            'promises' => $promises,
+            'power_statistics' => $powersStatistics,
         ];
     }
 }

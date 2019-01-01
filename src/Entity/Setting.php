@@ -17,7 +17,7 @@ class Setting
     private $id;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text", nullable=true)
      */
     private $value;
 
@@ -33,7 +33,7 @@ class Setting
         return $this;
     }
 
-    public function getValue() : string
+    public function getValue() : ?string
     {
         return $this->value;
     }

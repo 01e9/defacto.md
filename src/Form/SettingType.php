@@ -33,6 +33,7 @@ class SettingType extends AbstractType
                 ]);
                 break;
             case 'App:InstitutionTitle':
+            case 'App:Election':
                 $builder->add('value', ChoiceType::class, [
                     'label' => $options['label'],
                     'placeholder' => 'placeholder.choose_option',

@@ -10,13 +10,19 @@ use Symfony\Component\HttpFoundation\Request;
 class SettingRepository extends ServiceEntityRepository
 {
     const PRESIDENT_INSTITUTION_TITLE_ID = 'president_institution_title_id';
+    const CURRENT_ELECTION_ID = 'current_election_id';
 
     private static $whitelist = [
         self::PRESIDENT_INSTITUTION_TITLE_ID => [
             'type' => 'App:InstitutionTitle',
             'name' => 'Funcția de președinte',
             'default' => null,
-        ]
+        ],
+        self::CURRENT_ELECTION_ID => [
+            'type' => 'App:Election',
+            'name' => 'Alegerile curente',
+            'default' => false,
+        ],
     ];
 
     public static function getWhiteList() : array
@@ -86,6 +92,7 @@ class SettingRepository extends ServiceEntityRepository
             case 'string':
                 return $value;
             case 'App:InstitutionTitle':
+            case 'App:Election':
                 $entity = $value
                     ? $this->getEntityManager()->getRepository($config['type'])->find($value)
                     : $value;

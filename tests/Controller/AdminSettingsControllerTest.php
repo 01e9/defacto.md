@@ -39,23 +39,34 @@ class AdminSettingsControllerTest extends WebTestCase
         $em = $client->getContainer()->get('doctrine.orm.default_entity_manager');
         $router = $client->getContainer()->get('router');
 
+        $this->createElection($em);
+
         foreach (SettingRepository::getWhiteList() as $settingId => $setting) {
             foreach (self::getLangs() as $lang) {
-                (function () use (&$settingId, &$setting, &$lang, &$client, &$em) {
+                (function () use (&$settingId, &$setting, &$lang, &$client, &$em, &$router) {
                     $form = $client
                         ->request('GET', '/'. $lang .'/admin/settings/'. $settingId)
                         ->filter('form')->form();
                     $client->submit($form, ['setting[value]' => '']);
                     $response = $client->getResponse();
 
-                    $this->assertEquals(200, $response->getStatusCode());
-                    $this->assertContains('is-invalid', $response->getContent());
+                    if (is_null($setting['default'])) {
+                        $this->assertEquals(200, $response->getStatusCode());
+                        $this->assertContains('is-invalid', $response->getContent());
+                    } else {
+                        $this->assertEquals(302, $response->getStatusCode());
+
+                        $route = $router->match($response->getTargetUrl());
+                        $this->assertEquals('admin_settings', $route['_route']);
+                        $this->assertEquals($lang, $route['_locale']);
+                    }
                 })();
 
                 (function () use (&$settingId, &$setting, &$lang, &$client, &$em, &$router) {
                     $formData = ['setting[value]' => ''];
                     switch ($setting['type']) {
                         case 'App:InstitutionTitle':
+                        case 'App:Election':
                             $formData['setting[value]'] = $em->getRepository($setting['type'])->findOneBy([])->getId();
                             break;
                         default:

@@ -1,17 +1,18 @@
 <div class="list-group list-group-flush">
     {% for promise in promises %}
         <a class="list-group-item list-group-item-action" href="{{ path('admin_promise_edit', {id: promise.id}) }}">
+            <p class="mb-1">
+                {% include 'admin/component/widget/politician-name.html.twig' with {politician: promise.politician} only %}
+                <span>{{ promise.madeTime|date }}</span>
+            </p>
             <h5 {% if not promise.published %}class="text-muted font-italic"{% endif %}>
                 {{ promise.name }}
             </h5>
             <p class="mb-1">
-                {% include 'admin/component/widget/politician-name.html.twig' with {
-                    politician: promise.politician
-                } only %}
-                <sup>{{ promise.madeTime|date }}</sup>
-                <span>{{ promise.status.name|default('placeholder.no_status'|trans) }}</span>
+                <span>{{ promise.election.name }} {{ promise.election.date|date }}</span>
             </p>
-            <small>
+            <span>{{ promise.status.name|default('placeholder.no_status'|trans) }}</span>
+            <small class="ml-3">
                 {% for category in promise.categories %}
                     {{ category.name }}
                     {% if not loop.last %}&middot;{% endif %}

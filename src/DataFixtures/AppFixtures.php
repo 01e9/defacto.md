@@ -75,7 +75,8 @@ class AppFixtures extends Fixture
 
         $promise = new Promise();
         $promise
-            ->setMandate($mandate)
+            ->setPolitician($politician)
+            ->setElection($election)
             ->setStatus(current($statuses))
             ->setName('Demo promisiune')
             ->setSlug('demo-promisiune')
@@ -86,7 +87,8 @@ class AppFixtures extends Fixture
 
         $promiseNoStatus = new Promise();
         $promiseNoStatus
-            ->setMandate($mandate)
+            ->setPolitician($politician)
+            ->setElection($election)
             ->setStatus(null)
             ->setName('Demo promisiune fără statut')
             ->setSlug('demo-promisiune-fără-statut')
@@ -97,7 +99,8 @@ class AppFixtures extends Fixture
 
         $promiseUnpublished = new Promise();
         $promiseUnpublished
-            ->setMandate($mandate)
+            ->setPolitician($politician)
+            ->setElection($election)
             ->setStatus(null)
             ->setName('Demo promisiune nepublicată')
             ->setSlug('demo-promisiune-nepublicată')

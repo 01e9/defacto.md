@@ -26,12 +26,20 @@ class Promise
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Mandate")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Election")
      * @ORM\JoinColumn(nullable=false)
      *
      * @Assert\NotBlank()
      */
-    private $mandate;
+    private $election;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Politician")
+     * @ORM\JoinColumn(nullable=false)
+     *
+     * @Assert\NotBlank()
+     */
+    private $politician;
 
     /**
      * @ORM\ManyToOne(targetEntity="Status", fetch="EAGER")
@@ -114,14 +122,26 @@ class Promise
         return $this->id;
     }
 
-    public function getMandate() : ?Mandate
+    public function getElection() : ?Election
     {
-        return $this->mandate;
+        return $this->election;
     }
 
-    public function setMandate(?Mandate $mandate) : Promise
+    public function setElection(?Election $election) : Promise
     {
-        $this->mandate = $mandate;
+        $this->election = $election;
+
+        return $this;
+    }
+
+    public function getPolitician() : ?Politician
+    {
+        return $this->politician;
+    }
+
+    public function setPolitician(?Politician $politician) : Promise
+    {
+        $this->politician = $politician;
 
         return $this;
     }

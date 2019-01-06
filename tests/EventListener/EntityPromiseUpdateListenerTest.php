@@ -27,7 +27,8 @@ class EntityPromiseUpdateListenerTest extends KernelTestCase
             ->setDescription('Test')
             ->setMadeTime(new \DateTime())
             ->setStatus(null)
-            ->setMandate($em->getRepository('App:Mandate')->findOneBy([]));
+            ->setPolitician($em->getRepository('App:Politician')->findOneBy([]))
+            ->setElection($em->getRepository('App:Election')->findOneBy([]));
         $em->persist($promise);
 
         $em->flush();

@@ -45,10 +45,16 @@ class PromiseType extends AbstractType
                 'choice_value' => 'id',
                 'required' => false,
             ])
-            ->add('mandate', ChoiceType::class, [
-                'label' => 'label.mandate',
+            ->add('election', ChoiceType::class, [
+                'label' => 'label.election',
                 'placeholder' => 'placeholder.choose_option',
-                'choices' => $options['mandates'],
+                'choices' => $options['elections'],
+                'choice_value' => 'id',
+            ])
+            ->add('politician', ChoiceType::class, [
+                'label' => 'label.politician',
+                'placeholder' => 'placeholder.choose_option',
+                'choices' => $options['politicians'],
                 'choice_value' => 'id',
             ])
             ->add('categories', ChoiceType::class, [
@@ -91,7 +97,8 @@ class PromiseType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Promise::class,
             'statuses' => [],
-            'mandates' => [],
+            'elections' => [],
+            'politicians' => [],
             'promises' => [],
             'categories' => [],
         ]);

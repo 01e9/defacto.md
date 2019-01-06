@@ -48,7 +48,10 @@ class MandateRepository extends ServiceEntityRepository
     {
         $statistics = $this->createQueryBuilder('m')
             ->select('COUNT(s.id) AS count', 's AS status')
-            ->innerJoin('App:Promise', 'p', Expr\Join::WITH, 'p.published = true AND p.mandate = m.id')
+            ->innerJoin(
+                'App:Promise', 'p', Expr\Join::WITH,
+                'p.published = true AND p.politician = m.politician AND p.election = m.election'
+            )
             ->innerJoin('App:Status', 's', Expr\Join::WITH,'s.id = p.status')
             ->where('m.id = :mandate')
             ->orderBy('s.effect','DESC')
@@ -61,7 +64,7 @@ class MandateRepository extends ServiceEntityRepository
             ->select('COUNT(p.id) AS count')
             ->innerJoin(
                 'App:Promise', 'p', Expr\Join::WITH,
-                'p.published = true AND p.status IS NULL AND p.mandate = m.id'
+                'p.published = true AND p.status IS NULL AND p.politician = m.politician AND p.election = m.election'
             )
             ->where('m.id = :mandate')
             ->setParameter('mandate', $mandate)
@@ -120,8 +123,6 @@ class MandateRepository extends ServiceEntityRepository
 
     public function hasConnections(string $id) : bool
     {
-        return (
-            !!$this->getEntityManager()->getRepository('App:Promise')->findOneBy(['mandate' => $id])
-        );
+        return false;
     }
 }

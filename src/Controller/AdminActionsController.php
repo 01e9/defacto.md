@@ -29,12 +29,19 @@ class AdminActionsController extends AbstractController
     {
         $action = new Action();
 
-        if ($promise = $this->getDoctrine()->getRepository('App:Promise')->find(
-            $request->query->get('promise', '~')
-        )) {
-            $action->setMandate($promise->getMandate());
+        if (
+            ($promise = $this->getDoctrine()->getRepository('App:Promise')->find(
+                $request->query->get('promise', '~')
+            ))
+            &&
+            ($mandate = $this->getDoctrine()->getRepository('App:Mandate')->findOneBy([
+                'election' => $promise->getElection(),
+                'politician' => $promise->getPolitician(),
+            ]))
+        ) {
+            $action->setMandate($mandate);
 
-            $mandates = [$promise->getMandate()->getChoiceName() => $promise->getMandate()];
+            $mandates = [$mandate->getChoiceName() => $mandate];
             $promises = $powers = [];
         } else {
             $mandates = $this->getDoctrine()->getRepository('App:Mandate')->getAdminChoices();

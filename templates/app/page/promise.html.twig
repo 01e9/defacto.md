@@ -19,12 +19,12 @@
                         <div class="col">
                             <div class="d-lg-flex align-items-center text-center">
                                 <img class="rounded-circle img-fluid mr-0 mr-lg-3 mb-3 mb-lg-0"
-                                     src="{{ macros.politician_photo_url(promise.mandate.politician) }}"
+                                     src="{{ macros.politician_photo_url(promise.politician) }}"
                                      alt="Politician">
                                 <h1 class="h4">
                                     <strong>
-                                        {{- promise.mandate.politician.firstName }}
-                                        {{ promise.mandate.politician.lastName -}}
+                                        {{- promise.politician.firstName }}
+                                        {{ promise.politician.lastName -}}
                                     </strong>
                                     <br>
                                     {{ 'title._promised'|trans }}

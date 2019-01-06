@@ -20,7 +20,12 @@ class PromiseRepository extends ServiceEntityRepository
     {
         $choices = [];
 
-        foreach ($this->findBy(['mandate' => $mandate], ['madeTime' => 'DESC']) as $promise) { /** @var Promise $promise */
+        /** @var Promise[] $promises */
+        $promises = $this->findBy(
+            ['politician' => $mandate->getPolitician(), 'election' => $mandate->getElection()],
+            ['madeTime' => 'DESC']
+        );
+        foreach ($promises as $promise) {
             $choices[ $promise->getName() ] = $promise;
         }
 
@@ -43,7 +48,7 @@ class PromiseRepository extends ServiceEntityRepository
             )
             as $promise /** @var Promise $promise */
         ) {
-            $politician = $promise->getMandate()->getPolitician();
+            $politician = $promise->getPolitician();
 
             if (empty($promises[$politician->getId()])) {
                 $promises[$politician->getId()] = [

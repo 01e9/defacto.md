@@ -31,6 +31,7 @@ trait TestCaseTrait
 
     private static $increments = [
         Election::class => 0,
+        Politician::class => 0,
     ];
 
     protected function setUp()
@@ -247,10 +248,12 @@ trait TestCaseTrait
 
     protected function createPolitician(ObjectManager $objectManager) : Politician
     {
+        $increment = ++self::$increments[Politician::class];
+
         $politician = new Politician();
         $politician->setFirstName("Foo");
         $politician->setLastName("Bar");
-        $politician->setSlug("foo-bar");
+        $politician->setSlug("foo-bar-". $increment);
 
         $objectManager->persist($politician);
         $objectManager->flush();
@@ -282,7 +285,8 @@ trait TestCaseTrait
         $promise->setName("Test");
         $promise->setSlug("test");
         $promise->setPublished(true);
-        $promise->setMandate($this->createMandate($objectManager));
+        $promise->setPolitician($this->createPolitician($objectManager));
+        $promise->setElection($this->createElection($objectManager));
         $promise->setMadeTime(new \DateTime("-3 days"));
 
         $objectManager->persist($promise);

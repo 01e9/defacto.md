@@ -48,7 +48,7 @@ class MainController extends AbstractController
         $promiseStatistics = $em->getRepository('App:Mandate')->getPromiseStatistics($mandate);
         /** @var Promise[] $promises */
         $promises = $em->getRepository('App:Promise')->findBy(
-            ['mandate' => $mandate, 'published' => true],
+            ['politician' => $mandate->getPolitician(), 'election' => $mandate->getElection(), 'published' => true],
             ['madeTime' => 'DESC']
         );
 

@@ -42,7 +42,8 @@ class AdminPromisesControllerTest extends WebTestCase
             'promise[description]' => 'Test',
             'promise[madeTime]' => (new \DateTime())->format(Consts::DATE_FORMAT_PHP),
             'promise[status]' => $em->getRepository('App:Status')->findOneBy([])->getId(),
-            'promise[mandate]' => $em->getRepository('App:Mandate')->findOneBy([])->getId(),
+            'promise[election]' => $this->createElection($em)->getId(),
+            'promise[politician]' => $this->createPolitician($em)->getId(),
             'promise[categories]' => [
                 $em->getRepository('App:Category')->findOneBy([])->getId()
             ],
@@ -137,7 +138,7 @@ class AdminPromisesControllerTest extends WebTestCase
         $em = $client->getContainer()->get('doctrine.orm.default_entity_manager');
         $router = $client->getContainer()->get('router');
 
-        $createPromise = function () use (&$em, &$initialMandate) : Promise {
+        $createPromise = function () use (&$em) : Promise {
             $promise = new Promise();
             $promise
                 ->setName('Test')
@@ -145,7 +146,8 @@ class AdminPromisesControllerTest extends WebTestCase
                 ->setDescription('Test')
                 ->setMadeTime(new \DateTime())
                 ->setStatus(null)
-                ->setMandate($em->getRepository('App:Mandate')->findOneBy([]))
+                ->setElection($this->createElection($em))
+                ->setPolitician($this->createPolitician($em))
                 ->setPublished(true);
             $em->persist($promise);
             $em->flush();
@@ -160,7 +162,8 @@ class AdminPromisesControllerTest extends WebTestCase
                 'promise[description]' => 'Test',
                 'promise[madeTime]' => (new \DateTime())->format(Consts::DATE_FORMAT_PHP),
                 'promise[status]' => $em->getRepository('App:Status')->findOneBy([])->getId(),
-                'promise[mandate]' => $em->getRepository('App:Mandate')->findOneBy([])->getId(),
+                'promise[election]' => $this->createElection($em)->getId(),
+                'promise[politician]' => $this->createPolitician($em)->getId(),
                 'promise[categories]' => [
                     $em->getRepository('App:Category')->findOneBy([])->getId()
                 ],
@@ -231,6 +234,7 @@ class AdminPromisesControllerTest extends WebTestCase
                     ->filter('form')->form();
                 $formPhpValues = $form->getPhpValues();
                 $formPhpValues['promise']['sources'] = $formData['promise[sources]'];
+                $formPhpValues['promise']['politician'] = $formData['promise[politician]']; // fixme: why it's empty?
 
                 $client->request($form->getMethod(), $form->getUri(), $formPhpValues);
                 $response = $client->getResponse();

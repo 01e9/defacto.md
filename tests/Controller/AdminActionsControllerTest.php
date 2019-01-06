@@ -144,7 +144,8 @@ class AdminActionsControllerTest extends WebTestCase
 
         $createFormData = function (Action $action) use (&$em) {
             $promises = $em->getRepository('App:Promise')->findBy([
-                'mandate' => $action->getMandate()->getId(),
+                'politician' => $action->getMandate()->getPolitician()->getId(),
+                'election' => $action->getMandate()->getElection()->getId(),
             ], null, 2);
             $this->assertCount(2, $promises);
 

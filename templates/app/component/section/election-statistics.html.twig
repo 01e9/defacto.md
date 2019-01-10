@@ -12,7 +12,11 @@
             <div class="col text-center">
                 {% for mandate in mandates %}
                     {% if mandate.constituency %}
-                        <p>{{ mandate.constituency.name }}</p>
+                        <p>
+                            <a
+                                href="{{ path('constituency', {slug: mandate.constituency.slug}) }}"
+                            >{{ mandate.constituency.name }}</a>
+                        </p>
                     {% endif %}
                 {% endfor %}
             </div>

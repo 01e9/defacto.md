@@ -124,6 +124,9 @@ class Constituency
         return $this;
     }
 
+    /**
+     * @return ArrayCollection|ConstituencyProblem[]
+     */
     public function getProblems()
     {
         return $this->problems;
@@ -136,6 +139,9 @@ class Constituency
         return $this;
     }
 
+    /**
+     * @return ArrayCollection|ConstituencyCandidate[]
+     */
     public function getCandidates()
     {
         return $this->candidates;

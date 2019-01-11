@@ -6,7 +6,8 @@
             items: [
                 {title: 'title.problems'|trans, link: path('admin_problems')}
             ],
-            current: {title: 'title.problem'|trans}
+            current: {title: 'title.problem_edit'|trans},
+            add: {link: path('admin_problem_add'), text: 'action.add_problem'|trans}
         } only %}
 
         {% include 'admin/component/form/problem.html.twig' with {form: form} only %}

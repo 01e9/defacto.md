@@ -6,7 +6,8 @@
             items: [
                 {title: 'title.mandates'|trans, link: path('admin_mandates')}
             ],
-            current: {title: 'title.mandate'|trans}
+            current: {title: 'title.mandate_delete'|trans},
+            add: {link: path('admin_mandate_add'), text: 'action.add_mandate'|trans}
         } only %}
 
         {{ form_start(form) }}

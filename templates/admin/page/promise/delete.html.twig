@@ -6,7 +6,8 @@
             items: [
                 {title: 'title.promises'|trans, link: path('admin_promises')}
             ],
-            current: {title: 'title.promise'|trans}
+            current: {title: 'title.promise_delete'|trans},
+            add: {link: path('admin_promise_add'), text: 'action.add_promise'|trans}
         } only %}
 
         {{ form_start(form) }}

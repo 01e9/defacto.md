@@ -5,7 +5,8 @@
         <div class="row">
             <div class="col">
                 {% include 'admin/component/breadcrumb.html.twig' with {
-                    current: {title: 'title.promises'|trans}
+                    current: {title: 'title.promises'|trans},
+                    add: {link: path('admin_promise_add'), text: 'action.add_promise'|trans}
                 } only %}
             </div>
         </div>
@@ -22,13 +23,6 @@
                     <div class="mb-5"></div>
                 {% endif %}
 
-                <h3>
-                    {{ 'title.promises'|trans }}
-                    <sup>
-                        <a href="{{ path('admin_promise_add') }}" class="badge badge-light text-muted"
-                        >{{ 'action.add'|trans }}</a>
-                    </sup>
-                </h3>
                 {% include 'admin/component/list/promises.html.twig' with {
                     promises: promises
                 } only %}

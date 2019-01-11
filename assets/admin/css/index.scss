@@ -33,3 +33,7 @@ input.form-control[type="color"] {
         }
     }
 }
+
+a.no-underline:hover {
+    text-decoration: none !important;
+}

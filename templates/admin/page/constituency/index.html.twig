@@ -5,19 +5,13 @@
         <div class="row">
             <div class="col">
                 {% include 'admin/component/breadcrumb.html.twig' with {
-                    current: {title: 'title.constituencies'|trans}
+                    current: {title: 'title.constituencies'|trans},
+                    add: {link: path('admin_constituency_add'), text: 'action.add_constituency'|trans}
                 } only %}
             </div>
         </div>
         <div class="row">
             <div class="col">
-                <h3>
-                    {{ 'title.constituencies'|trans }}
-                    <sup>
-                        <a href="{{ path('admin_constituency_add') }}" class="badge badge-light text-muted"
-                        >{{ 'action.add'|trans }}</a>
-                    </sup>
-                </h3>
                 {% include 'admin/component/list/constituencies.html.twig' with {
                     constituencies: constituencies
                 } only %}

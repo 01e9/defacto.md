@@ -207,15 +207,15 @@ class Mandate
         $dateFormat = 'd.m.Y';
 
         return (
-            $this->getPolitician()->getFirstName() . ' ' . $this->getPolitician()->getLastName()
-            . ' / ' .
-            (
+            ($this->getPolitician()
+                ? ($this->getPolitician()->getFirstName() . ' ' . $this->getPolitician()->getLastName()) . ' / '
+                : ''
+            ) . (
                 $this->getBeginDate()->format($dateFormat)
                 . ' - ' .
                 $this->getEndDate()->format($dateFormat)
             )
-            . ' / ' .
-            $this->getInstitutionTitle()->getTitle()->getName()
+            . ' / ' . $this->getInstitutionTitle()->getTitle()->getName()
         );
     }
 }

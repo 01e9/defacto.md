@@ -6,7 +6,8 @@
             items: [
                 {title: 'title.constituencies'|trans, link: path('admin_constituencies')}
             ],
-            current: {title: 'title.constituency'|trans}
+            current: {title: 'title.constituency_delete'|trans},
+            add: {link: path('admin_constituency_add'), text: 'action.add_constituency'|trans}
         } only %}
 
         {{ form_start(form) }}

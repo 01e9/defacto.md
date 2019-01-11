@@ -9,5 +9,16 @@
         {% if current is defined %}
             <li class="breadcrumb-item active" aria-current="page">{{ current.title }}</li>
         {% endif %}
+        {% if add is defined %}
+        <li class="ml-auto">
+            <a
+                class="no-underline"
+                href="{{ add.link }}"
+            >
+                <span class="fa fa-plus-square"></span>
+                <span class="d-none d-md-inline ml-1">{{ add.text|default('action.add'|trans) }}</span>
+            </a>
+        </li>
+        {% endif %}
     </ol>
 </nav>

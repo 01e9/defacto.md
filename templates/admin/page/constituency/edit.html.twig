@@ -6,7 +6,8 @@
             items: [
                 {title: 'title.constituencies'|trans, link: path('admin_constituencies')}
             ],
-            current: {title: 'title.constituency'|trans}
+            current: {title: 'title.constituency_edit'|trans},
+            add: {link: path('admin_constituency_add'), text: 'action.add_constituency'|trans}
         } only %}
 
         {% include 'admin/component/form/constituency.html.twig' with {form: form} only %}

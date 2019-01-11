@@ -111,20 +111,35 @@ action:
 title:
     politicians: Politicieni
     politician: Politician
+    politician_add: Adăugare politician
+    politician_edit: Redactare politician
+    politician_delete: Ștergere politician
     statuses: Statuturi
     status: Statut
     promises: Promisiuni
     promise: Promisiune
+    promise_add: Adăugare promisiune
+    promise_edit: Redactare promisiune
+    promise_delete: Ștergere promisiune
     actions: Acțiuni
     orphan_actions: Acțiuni orfane
     action: Acțiune
     dashboard: Dashboard
     mandates: Mandate
     mandate: Mandat
+    mandate_add: Adăugare mandat
+    mandate_edit: Redactare mandat
+    mandate_delete: Ștergere mandat
     constituencies: Circumscripții
     constituency: Circumscripție
+    constituency_add: Adăugare circumscripție
+    constituency_edit: Redactare circumscripție
+    constituency_delete: Ștergere circumscripție
     problems: Probleme
     problem: Problemă
+    problem_add: Adăugare problemă
+    problem_edit: Redactare problemă
+    problem_delete: Ștergere problemă
     settings: Setări
     setting: Setare
     votes: Voturi

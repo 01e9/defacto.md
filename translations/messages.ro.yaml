@@ -32,7 +32,7 @@ label:
     slug: Identificatorul pentru linkuri (slug)
     name: Denumirea
     name_plural: Denumirea la plural
-    effect: Efectul/Impactul
+    effect: Ordinea/Impactul
     photo: Foto
     begin_date: Date de început
     end_date: Date de sfârșit

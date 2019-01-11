@@ -1,5 +1,5 @@
 invalid:
-    slug: "Se permit doar litere și cratimă (exemplu: ion-mustață)"
+    slug: "Se permit doar litere, cifre și cratimă (exemplu: ion-mustață-al-2-lea)"
     date_range: "Date de sfârșit trebuie să fie mai mare decât cea de început"
     color: "Codul culorii este incorect"
 

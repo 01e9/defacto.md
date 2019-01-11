@@ -68,7 +68,7 @@ class AdminStatusesController extends AbstractController
 
             $this->addFlash('success', $translator->trans('flash.status_updated'));
 
-            return $this->redirectToRoute('admin_promises');
+            return $this->redirectToRoute('admin_settings');
         }
 
         return $this->render('admin/page/status/edit.html.twig', [
@@ -98,7 +98,7 @@ class AdminStatusesController extends AbstractController
 
             $this->addFlash('success', $translator->trans('flash.status_deleted'));
 
-            return $this->redirectToRoute('admin_promises');
+            return $this->redirectToRoute('admin_settings');
         }
 
         return $this->render('admin/page/status/delete.html.twig', [

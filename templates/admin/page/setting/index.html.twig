@@ -10,10 +10,24 @@
             </div>
         </div>
         <div class="row">
-            <div class="col">
+            <div class="col-lg-8 mb-4 mb-lg-0">
                 <h3>{{ 'title.settings'|trans }}</h3>
                 {% include 'admin/component/list/settings.html.twig' with {
                     settings: settings
+                } only %}
+            </div>
+            <div class="col-lg-4">
+                <h3>
+                    {{ 'title.statuses'|trans }}
+                    <small class="float-right">
+                        <a
+                            href="{{ path('admin_status_add') }}"
+                            class="badge badge-light text-muted ml-auto"
+                        >{{ 'action.add'|trans }}</a>
+                    </small>
+                </h3>
+                {% include 'admin/component/list/statuses.html.twig' with {
+                    statuses: statuses
                 } only %}
             </div>
         </div>

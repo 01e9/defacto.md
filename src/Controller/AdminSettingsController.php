@@ -24,9 +24,11 @@ class AdminSettingsController extends AbstractController
     public function indexAction(Request $request)
     {
         $settings = $this->getDoctrine()->getRepository('App:Setting')->getAdminList($request);
+        $statuses = $this->getDoctrine()->getRepository('App:Status')->getAdminList($request);
 
         return $this->render('admin/page/setting/index.html.twig', [
             'settings' => $settings,
+            'statuses' => $statuses,
         ]);
     }
 

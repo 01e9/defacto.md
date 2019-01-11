@@ -148,7 +148,7 @@ class AdminStatusesControllerTest extends WebTestCase
                 $this->assertEquals(302, $response->getStatusCode());
 
                 $route = $router->match($response->getTargetUrl());
-                $this->assertEquals('admin_promises', $route['_route']);
+                $this->assertEquals('admin_settings', $route['_route']);
                 $this->assertEquals($lang, $route['_locale']);
 
                 /** @var Status $status */
@@ -211,7 +211,7 @@ class AdminStatusesControllerTest extends WebTestCase
             $this->assertEquals(302, $response->getStatusCode());
 
             $route = $router->match($response->getTargetUrl());
-            $this->assertEquals('admin_promises', $route['_route']);
+            $this->assertEquals('admin_settings', $route['_route']);
             $this->assertEquals($lang, $route['_locale']);
 
             $manager->clear('App:Status');

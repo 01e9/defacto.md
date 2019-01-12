@@ -153,20 +153,33 @@ class AdminConstituenciesControllerTest extends WebTestCase
                     ->request('GET', '/'. $lang .'/admin/constituencies/'. $constituency->getId())
                     ->filter('form')->form();
 
+                $electionId = $this->createElection($em)->getId();
+                $problemId = $this->createProblem($em)->getId();
+                $politicianId = $this->createPolitician($em)->getId();
+
                 $formPhpValues = $form->getPhpValues();
                 $formPhpValues['constituency']['problems'] = [
                     [
                         'constituency' => $constituency->getId(),
-                        'election' => $this->createElection($em)->getId(),
-                        'problem' => $this->createProblem($em)->getId(),
+                        'election' => $electionId,
+                        'problem' => $problemId,
                         'respondents' => 123,
                     ],
                 ];
                 $formPhpValues['constituency']['candidates'] = [
                     [
                         'constituency' => $constituency->getId(),
-                        'election' => $this->createElection($em)->getId(),
-                        'politician' => $this->createPolitician($em)->getId(),
+                        'election' => $electionId,
+                        'politician' => $politicianId,
+                    ],
+                ];
+                $formPhpValues['constituency']['candidateProblemOpinions'] = [
+                    [
+                        'constituency' => $constituency->getId(),
+                        'politician' => $politicianId,
+                        'election' => $electionId,
+                        'problem' => $problemId,
+                        'opinion' => 'I can solve this!'
                     ],
                 ];
 
@@ -192,6 +205,10 @@ class AdminConstituenciesControllerTest extends WebTestCase
                 $this->assertEquals(
                     $formPhpValues['constituency']['candidates'][0]['politician'],
                     $constituency->getCandidates()->first()->getPolitician()->getId()
+                );
+                $this->assertEquals(
+                    $formPhpValues['constituency']['candidateProblemOpinions'][0]['opinion'],
+                    'I can solve this!'
                 );
 
                 $em->remove($constituency);

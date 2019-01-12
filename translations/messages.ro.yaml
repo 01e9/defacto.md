@@ -42,6 +42,7 @@ label:
     problem: Problemă
     problems: Probleme
     respondents: Respondenți
+    opinion: Opinia
     institution_title: Funcție
     title: Titlu
     description: Descriere
@@ -63,6 +64,7 @@ label:
     constituency_link: Link cec.md
     color: Culoarea
     candidates: Candidați
+    candidate_problem_opinions: Opiniile candidaților față de probleme
     color_name:
         violet: Violet
         orange: Oranj
@@ -95,6 +97,7 @@ action:
     edit_action: Modifică acțiune
     delete_action: Șterge acțiune
     add_promiseUpdates: Adaugă conexiune cu promisiune
+    add_candidateProblemOpinions: Adaugă opinie
     add_problems: Adaugă problemă
     add_candidates: Adaugă candidat
     add_sources: Adaugă sursă

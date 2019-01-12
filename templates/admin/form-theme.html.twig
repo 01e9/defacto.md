@@ -92,6 +92,33 @@
     </div>
 {% endblock %}
 
+{% block candidate_problem_opinion_widget %}
+    {% import _self as macros %}
+
+    <div class="d-none">
+        {{ form_row(form.constituency) }}
+    </div>
+    <div class="row">
+        <div class="col-lg-4">
+            {{ form_row(form.election) }}
+        </div>
+        <div class="col-lg-4">
+            {{ form_row(form.politician) }}
+        </div>
+        <div class="col">
+            {{ form_row(form.problem) }}
+        </div>
+        {% if form.parent.vars.allow_delete %}
+            {{ macros.delete_btn_col() }}
+        {% endif %}
+    </div>
+    <div class="row">
+        <div class="col">
+            {{ form_row(form.opinion) }}
+        </div>
+    </div>
+{% endblock %}
+
 {% block promise_source_widget %}
     {% import _self as macros %}
 

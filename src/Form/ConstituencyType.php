@@ -47,6 +47,19 @@ class ConstituencyType extends AbstractType
                     'elections' => $options['elections'],
                     'politicians' => $options['politicians'],
                 ],
+            ])
+            ->add('candidateProblemOpinions', CollectionType::class, [
+                'label' => 'label.candidate_problem_opinions',
+                'allow_add' => true,
+                'allow_delete' => true,
+                'prototype' => true,
+                'entry_type' => CandidateProblemOpinionType::class,
+                'entry_options' => [
+                    'constituencies' => $options['constituencies'],
+                    'politicians' => $options['politicians'],
+                    'elections' => $options['elections'],
+                    'problems' => $options['problems'],
+                ],
             ]);
     }
 

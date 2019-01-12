@@ -86,6 +86,14 @@
                                                     {{ problem.respondents }} respondenți
                                                 </small>
                                             </p>
+                                            {% if election.problemOpinions[ problem.problem.id ] is defined %}
+                                                <hr>
+                                                <h6 class="text-secondary">Opinii</h6>
+                                                {% for opinion in election.problemOpinions[ problem.problem.id ] %}
+                                                    <strong>{{ opinion.politician.firstName }} {{ opinion.politician.lastName }}</strong>:
+                                                    {{ opinion.opinion }}
+                                                {% endfor %}
+                                            {% endif %}
                                         </div>
                                     </div>
                                 </div>

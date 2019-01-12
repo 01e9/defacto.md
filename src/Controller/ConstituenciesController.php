@@ -32,6 +32,11 @@ class ConstituenciesController extends AbstractController
             $elections[ $election->getId() ]['election'] = $election;
             $elections[ $election->getId() ]['problems'][] = $problem;
         }
+        foreach ($constituency->getCandidateProblemOpinions() as $opinion) {
+            $election = $opinion->getElection();
+            $elections[ $election->getId() ]['election'] = $election;
+            $elections[ $election->getId() ]['problemOpinions'][ $opinion->getProblem()->getId() ][] = $opinion;
+        }
 
         return $this->render('app/page/constituency.html.twig', [
             'constituency' => $constituency,

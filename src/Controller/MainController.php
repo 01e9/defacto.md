@@ -70,6 +70,14 @@ class MainController extends AbstractController
             return null;
         }
 
+        $constituencies = $em->getRepository('App:Constituency')->createQueryBuilder('con')
+            ->innerJoin('con.candidates', 'can', 'WITH', 'can.election = :election')
+            ->innerJoin('con.problems', 'prob', 'WITH', 'prob.election = :election')
+            ->setParameters(['election' => $election])
+            ->groupBy('con.id')
+            ->getQuery()
+            ->getResult();
+
         /** @var Mandate[] $mandates */
         $mandates = $em->getRepository('App:Mandate')->findBy([
             'election' => $election,
@@ -78,6 +86,7 @@ class MainController extends AbstractController
         return [
             'election' => $election,
             'mandates' => $mandates,
+            'constituencies' => $constituencies,
         ];
     }
 }

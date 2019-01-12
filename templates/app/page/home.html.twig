@@ -13,6 +13,7 @@
         {% include 'app/component/section/election-statistics.html.twig' with {
             election: current_election.election,
             mandates: current_election.mandates,
+            constituencies: current_election.constituencies
         } only %}
     {% endif %}
     {% include 'app/component/section/promises.html.twig' with {

@@ -42,7 +42,7 @@ class CandidateProblemOpinion
     private $election;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Constituency")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Constituency", inversedBy="candidateProblemOpinions")
      * @ORM\JoinColumn(nullable=false)
      */
     private $constituency;

@@ -1,5 +1,7 @@
 {% import 'macros.html.twig' as macros %}
 
+{% set photoSize = '3rem' %}
+
 <div class="list-group list-group-flush">
     {% for politician in politicians %}
         <a
@@ -9,12 +11,14 @@
             <div class="container-fluid">
                 <div class="row align-items-center">
                     <div class="col-auto">
-                        <img
-                            src="{{ macros.politician_photo_url(politician) }}"
-                            alt="Photo"
-                            style="max-width: 3rem; max-height: 3rem;"
-                            class="rounded"
-                        >
+                        <div style="width: {{ photoSize }};">
+                            <img
+                                src="{{ macros.politician_photo_url(politician) }}"
+                                alt="Photo"
+                                style="max-width: {{ photoSize }}; max-height: {{ photoSize }};"
+                                class="rounded"
+                            >
+                        </div>
                     </div>
                     <div class="col">
                         <h5 class="mb-0">{{ politician.firstName }} {{ politician.lastName }}</h5>

@@ -130,7 +130,7 @@ class AdminConstituenciesControllerTest extends WebTestCase
                 $this->assertEquals(302, $response->getStatusCode());
 
                 $route = $router->match($response->getTargetUrl());
-                $this->assertEquals('admin_constituencies', $route['_route']);
+                $this->assertEquals('admin_constituency_edit', $route['_route']);
                 $this->assertEquals($lang, $route['_locale']);
 
                 /** @var Constituency $constituency */
@@ -188,7 +188,7 @@ class AdminConstituenciesControllerTest extends WebTestCase
                 $this->assertEquals(302, $response->getStatusCode());
 
                 $route = $router->match($response->getTargetUrl());
-                $this->assertEquals('admin_constituencies', $route['_route']);
+                $this->assertEquals('admin_constituency_edit', $route['_route']);
                 $this->assertEquals($lang, $route['_locale']);
 
                 /** @var Constituency $constituency */

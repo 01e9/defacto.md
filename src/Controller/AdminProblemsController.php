@@ -83,7 +83,7 @@ class AdminProblemsController extends AbstractController
 
             $this->addFlash('success', $translator->trans('flash.problem_updated'));
 
-            return $this->redirectToRoute('admin_problems');
+            return $this->redirectToRoute('admin_problem_edit', ['id' => $problem->getId()]);
         }
 
         return $this->render('admin/page/problem/edit.html.twig', [

@@ -182,7 +182,7 @@ class AdminPoliticiansControllerTest extends WebTestCase
                 $this->assertEquals(302, $response->getStatusCode());
 
                 $route = $router->match($response->getTargetUrl());
-                $this->assertEquals('admin_politicians', $route['_route']);
+                $this->assertEquals('admin_politician_edit', $route['_route']);
                 $this->assertEquals($lang, $route['_locale']);
 
                 $em->remove($politician);
@@ -205,7 +205,7 @@ class AdminPoliticiansControllerTest extends WebTestCase
                 $this->assertEquals(302, $response->getStatusCode());
 
                 $route = $router->match($response->getTargetUrl());
-                $this->assertEquals('admin_politicians', $route['_route']);
+                $this->assertEquals('admin_politician_edit', $route['_route']);
                 $this->assertEquals($lang, $route['_locale']);
 
                 $politician = $em->getRepository('App:Politician')->find($politician->getId());

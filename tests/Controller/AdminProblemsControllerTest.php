@@ -128,7 +128,7 @@ class AdminProblemsControllerTest extends WebTestCase
                 $this->assertEquals(302, $response->getStatusCode());
 
                 $route = $router->match($response->getTargetUrl());
-                $this->assertEquals('admin_problems', $route['_route']);
+                $this->assertEquals('admin_problem_edit', $route['_route']);
                 $this->assertEquals($lang, $route['_locale']);
 
                 /** @var Problem $problem */

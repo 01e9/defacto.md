@@ -84,7 +84,7 @@ class AdminMandatesController extends AbstractController
 
             $this->addFlash('success', $translator->trans('flash.mandate_updated'));
 
-            return $this->redirectToRoute('admin_mandates');
+            return $this->redirectToRoute('admin_mandate_edit', ['id' => $mandate->getId()]);
         }
 
         return $this->render('admin/page/mandate/edit.html.twig', [

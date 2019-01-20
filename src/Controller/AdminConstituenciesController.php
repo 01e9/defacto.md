@@ -118,7 +118,7 @@ class AdminConstituenciesController extends AbstractController
 
             $this->addFlash('success', $translator->trans('flash.constituency_updated'));
 
-            return $this->redirectToRoute('admin_constituencies');
+            return $this->redirectToRoute('admin_constituency_edit', ['id' => $constituency->getId()]);
         }
 
         return $this->render('admin/page/constituency/edit.html.twig', [

@@ -91,7 +91,7 @@ class AdminPoliticiansController extends AbstractController
 
             $this->addFlash('success', $translator->trans('flash.politician_updated'));
 
-            return $this->redirectToRoute('admin_politicians');
+            return $this->redirectToRoute('admin_politician_edit', ['id' => $politician->getId()]);
         }
 
         return $this->render('admin/page/politician/edit.html.twig', [

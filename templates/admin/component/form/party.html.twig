@@ -1,0 +1,32 @@
+{% set id = form.vars.value|default({id:0}).id %}
+
+{{ form_start(form) }}
+
+<div class="row">
+    <div class="col-lg-6">
+        {{ form_row(form.name) }}
+    </div>
+    <div class="col-lg-6">
+        {{ form_row(form.slug) }}
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-4">
+        <div class="card mb-3">
+            {% include 'admin/component/form/field/photo.html.twig' with {
+                field: form.logo,
+                imageDir: '/uploads/parties/',
+                changeText: 'action.change_logo'|trans
+            } only %}
+        </div>
+    </div>
+</div>
+
+{% include "admin/component/form/widget/submit-delete-buttons.html.twig" with {
+    submitText: id ? 'action.edit_party'|trans : 'action.add_party'|trans,
+    delete: id ? {text: 'action.delete_party'|trans, link: path('admin_party_delete', {id: id})} : false
+} only %}
+
+{{ form_rest(form) }}
+
+{{ form_end(form) }}

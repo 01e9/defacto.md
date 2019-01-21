@@ -1,0 +1,30 @@
+{% import 'macros.html.twig' as macros %}
+
+{% set logoSize = '3rem' %}
+
+<div class="list-group list-group-flush">
+    {% for party in parties %}
+        <a
+            class="list-group-item list-group-item-action px-0"
+            href="{{ path('admin_party_edit', {id: party.id}) }}"
+        >
+            <div class="container-fluid">
+                <div class="row align-items-center">
+                    <div class="col-auto">
+                        <div style="width: {{ logoSize }};" class="text-center">
+                            <img
+                                src="{{ macros.party_logo_url(party) }}"
+                                alt="Logo"
+                                style="max-width: {{ logoSize }}; max-height: {{ logoSize }};"
+                                class="rounded"
+                            >
+                        </div>
+                    </div>
+                    <div class="col">
+                        <h5 class="mb-0">{{ party.name }}</h5>
+                    </div>
+                </div>
+            </div>
+        </a>
+    {% endfor %}
+</div>

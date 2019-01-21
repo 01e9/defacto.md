@@ -3,6 +3,9 @@ flash:
     politician_created: Politicianul a fost adăugat
     politician_updated: Politicianul a fost modificat
     politician_deleted: Politicianul a fost șters
+    party_created: Partidul a fost adăugat
+    party_updated: Partidul a fost modificat
+    party_deleted: Partidul a fost șters
     mandate_created: Mandatul a fost adăugat
     mandate_updated: Mandatul a fost modificat
     mandate_deleted: Mandatul a fost șters
@@ -34,9 +37,11 @@ label:
     name_plural: Denumirea la plural
     effect: Ordinea/Impactul
     photo: Foto
+    logo: Logo
     begin_date: Date de început
     end_date: Date de sfârșit
     politician: Politician
+    party: Partid
     election: Alegeri
     constituency: Circumscripție
     problem: Problemă
@@ -79,6 +84,9 @@ action:
     add_politician: Adaugă politician
     edit_politician: Modifică politician
     delete_politician: Șterge politician
+    add_party: Adaugă partid
+    edit_party: Modifică partid
+    delete_party: Șterge partid
     add_status: Adaugă statut
     edit_status: Modifică statut
     delete_status: Șterge statut
@@ -87,6 +95,7 @@ action:
     add: Adaugă
     delete: Șterge
     change_photo: Modifică foto
+    change_logo: Modifică logo
     add_mandate: Adaugă mandat
     edit_mandate: Modifică mandat
     delete_mandate: Șterge mandat
@@ -117,6 +126,11 @@ title:
     politician_add: Adăugare politician
     politician_edit: Redactare politician
     politician_delete: Ștergere politician
+    parties: Partide
+    party: Partid
+    party_add: Adăugare partid
+    party_edit: Redactare partid
+    party_delete: Ștergere partid
     statuses: Statuturi
     status: Statut
     promises: Promisiuni

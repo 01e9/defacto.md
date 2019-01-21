@@ -92,7 +92,7 @@ class Politician
         return $this->slug;
     }
 
-    public function setSlug(?string $slug) : Politician
+    public function setSlug(?string $slug) : self
     {
         $this->slug = $slug;
 
@@ -104,7 +104,7 @@ class Politician
         return $this->firstName;
     }
 
-    public function setFirstName(?string $firstName) : Politician
+    public function setFirstName(?string $firstName) : self
     {
         $this->firstName = $firstName;
 
@@ -116,7 +116,7 @@ class Politician
         return $this->lastName;
     }
 
-    public function setLastName(?string $lastName) : Politician
+    public function setLastName(?string $lastName) : self
     {
         $this->lastName = $lastName;
 
@@ -131,7 +131,7 @@ class Politician
         return $this->photo;
     }
 
-    public function setPhoto($photo) : Politician
+    public function setPhoto($photo) : self
     {
         $this->photo = $photo;
 

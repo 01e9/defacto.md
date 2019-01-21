@@ -26,6 +26,9 @@
                 <li class="nav-item {{ app.request.attributes.get('_route') starts with 'admin_problem' ? 'active' : '' }}">
                     <a class="nav-link" href="{{ path('admin_problems') }}">{{ 'title.problems'|trans }}</a>
                 </li>
+                <li class="nav-item {{ app.request.attributes.get('_route') starts with 'admin_part' ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ path('admin_parties') }}">{{ 'title.parties'|trans }}</a>
+                </li>
                 <li class="nav-item {{ app.request.attributes.get('_route') starts with 'admin_setting' ? 'active' : '' }}">
                     <a class="nav-link" href="{{ path('admin_settings') }}"><span class="fa fa-cog"></span></a>
                 </li>

@@ -9,5 +9,6 @@ not_deletable:
     promise: "Promisiunea nu poate fi ștearsă pentru că e conectată cu alte înregistrări."
     constituency: "Circumscripția nu poate fi ștearsă pentru că e conectată cu alte înregistrări."
     politician: "Politicianul nu poate fi șters pentru că e conectat cu alte înregistrări."
+    party: "Partidul nu poate fi șters pentru că e conectat cu alte înregistrări."
     mandate: "Mandatul nu poate fi șters pentru că e conectat cu alte înregistrări."
     problem: "Problema nu poate fi ștearsă pentru că e conectată cu alte înregistrări."

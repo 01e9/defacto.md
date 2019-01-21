@@ -1,0 +1,21 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block main %}
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                {% include 'admin/component/breadcrumb.html.twig' with {
+                    current: {title: 'title.parties'|trans},
+                    add: {link: path('admin_party_add'), text: 'action.add_party'|trans}
+                } only %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                {% include 'admin/component/list/parties.html.twig' with {
+                    parties: parties
+                } only %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

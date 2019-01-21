@@ -8,6 +8,7 @@ use App\Entity\Election;
 use App\Entity\Institution;
 use App\Entity\InstitutionTitle;
 use App\Entity\Mandate;
+use App\Entity\Party;
 use App\Entity\Politician;
 use App\Entity\Problem;
 use App\Entity\Promise;
@@ -32,6 +33,7 @@ trait TestCaseTrait
     private static $increments = [
         Election::class => 0,
         Politician::class => 0,
+        Party::class => 0,
     ];
 
     protected function setUp()
@@ -259,6 +261,20 @@ trait TestCaseTrait
         $objectManager->flush();
 
         return $politician;
+    }
+
+    protected function createParty(ObjectManager $objectManager) : Party
+    {
+        $increment = ++self::$increments[Party::class];
+
+        $party = new Party();
+        $party->setName("Foo Bar");
+        $party->setSlug("foo-bar-". $increment);
+
+        $objectManager->persist($party);
+        $objectManager->flush();
+
+        return $party;
     }
 
     protected function createMandate(ObjectManager $objectManager) : Mandate

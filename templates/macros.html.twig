@@ -22,3 +22,11 @@
     : asset('img/no-avatar.png')
     -}}
 {% endmacro %}
+
+{% macro party_logo_url(party) %}
+    {{-
+    party.logo
+    ? asset('uploads/parties/' ~ party.logo.filename)
+    : asset('img/no-image.png')
+    -}}
+{% endmacro %}

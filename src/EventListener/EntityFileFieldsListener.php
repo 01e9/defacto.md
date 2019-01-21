@@ -2,6 +2,7 @@
 
 namespace App\EventListener;
 
+use App\Entity\Party;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Doctrine\ORM\Event\LifecycleEventArgs;
@@ -19,7 +20,13 @@ class EntityFileFieldsListener
                 'name' => 'photo',
                 'dir' => '/politicians',
             ]
-        ]
+        ],
+        Party::class => [
+            [
+                'name' => 'logo',
+                'dir' => '/parties',
+            ]
+        ],
     ];
 
     public function __construct(FileUploader $uploader)

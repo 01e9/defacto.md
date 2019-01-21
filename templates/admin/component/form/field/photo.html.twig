@@ -9,9 +9,11 @@
         <button class="btn btn-sm btn-light" type="button"
                 data-toggle="collapse" data-target="#{{ id }}"
                 aria-expanded="false" aria-controls="{{ id }}"
-        >{{ 'action.change_photo'|trans }}</button>
-        <div class="collapse multi-collapse pt-3 {% if not field.vars.valid %}show{% endif %}"
-             id="{{ id }}">
+        >{{ changeText|default('action.change_photo'|trans) }}</button>
+        <div
+            class="collapse multi-collapse pt-3 {% if not field.vars.valid %}show{% endif %}"
+            id="{{ id }}"
+        >
             {{ form_row(field) }}
         </div>
     {% else %}

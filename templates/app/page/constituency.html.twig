@@ -6,6 +6,8 @@
 
 {% block title %}Circumscripție{% endblock %}
 
+{% set logoSize = '2rem' %}
+
 {% block main %}
     <div class="container-fluid bg-light-pattern">
         {% include 'app/component/after-header-space.html.twig' %}
@@ -63,12 +65,12 @@
                                             <div class="card-footer">
                                                 <div class="row align-items-center">
                                                     <div class="col-auto">
-                                                        <div style="width: 3rem;">
+                                                        <div style="width: {{ logoSize }};">
                                                             <img
                                                                 src="{{ macros.party_logo_url(candidate.party) }}"
                                                                 alt="Partid"
                                                                 class="img-rounded"
-                                                                style="max-height: 3rem; max-width: 3rem;"
+                                                                style="max-height: {{ logoSize }}; max-width: {{ logoSize }};"
                                                             >
                                                         </div>
                                                     </div>
@@ -91,47 +93,51 @@
                         </div>
                     </div>
                 </div>
-                <div class="row pb-5">
-                    <div class="col">
-                        <h2 class="text-center mb-3">Top {{ election.problems|length }} probleme din circumscripție</h2>
-                        <div class="row mb-4 justify-content-around">
-                            {% for problem in election.problems %}
-                                <div class="col-4">
-                                    <div class="card bg-light">
-                                        <div class="card-body">
-                                            <h5 class="card-title">{{ problem.problem.name }}</h5>
-                                            <p class="card-text">
-                                                <small class="text-muted">
-                                                    {{ problem.respondents }} respondenți
-                                                </small>
-                                            </p>
-                                            {% if election.problemOpinions[ problem.problem.id ] is defined %}
-                                                <hr>
-                                                <h6 class="text-secondary">Opinii</h6>
-                                                {% for opinion in election.problemOpinions[ problem.problem.id ] %}
-                                                    <p class="{{ loop.last ? "mb-0" : "mb-1" }}">
-                                                        <strong>
-                                                            {{ opinion.politician.firstName }}
-                                                            {{ opinion.politician.lastName }}
-                                                        </strong>:
-                                                        {{ opinion.opinion }}
-                                                    </p>
-                                                {% endfor %}
-                                            {% endif %}
+                {% if election.problems|default %}
+                    <div class="row pb-5">
+                        <div class="col">
+                            <h2 class="text-center mb-3">Top {{ election.problems|length }} probleme din circumscripție</h2>
+                            <div class="row mb-4 justify-content-around">
+                                {% for problem in election.problems %}
+                                    <div class="col-4">
+                                        <div class="card bg-light">
+                                            <div class="card-body">
+                                                <h5 class="card-title">{{ problem.problem.name }}</h5>
+                                                <p class="card-text">
+                                                    <small class="text-muted">
+                                                        {{ problem.respondents }} respondenți
+                                                    </small>
+                                                </p>
+                                                {% if election.problemOpinions[ problem.problem.id ] is defined %}
+                                                    <hr>
+                                                    <h6 class="text-secondary">Opinii</h6>
+                                                    {% for opinion in election.problemOpinions[ problem.problem.id ] %}
+                                                        <p class="{{ loop.last ? "mb-0" : "mb-1" }}">
+                                                            <strong>
+                                                                {{ opinion.politician.firstName }}
+                                                                {{ opinion.politician.lastName }}
+                                                            </strong>:
+                                                            {{ opinion.opinion }}
+                                                        </p>
+                                                    {% endfor %}
+                                                {% endif %}
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            {% endfor %}
-                        </div>
-                        <div class="alert alert-light" role="alert">
-                            <h6 class="alert-heading">Metodologia de chestionare a alegătorilor</h6>
-                            <p class="mb-0 small">
-                                Et aliquid eaque non ea corporis consequuntur eligendi. Voluptatem voluptatem sint sit et.
-                                Incidunt quae nesciunt atque omnis aliquam laboriosam. Et ut impedit qui. Repellendus sit vitae harum.
-                            </p>
+                                {% endfor %}
+                            </div>
+                            <div class="alert alert-light" role="alert">
+                                <h6 class="alert-heading">Metodologia de chestionare a alegătorilor</h6>
+                                <p class="mb-0 small">
+                                    Et aliquid eaque non ea corporis consequuntur eligendi. Voluptatem voluptatem sint sit et.
+                                    Incidunt quae nesciunt atque omnis aliquam laboriosam. Et ut impedit qui. Repellendus sit vitae harum.
+                                </p>
+                            </div>
                         </div>
                     </div>
-                </div>
+                {% else %}
+                    <div class="pb-5"></div>
+                {% endif %}
             </div>
         {% endfor %}
     </div>

@@ -59,6 +59,25 @@
                                                 class="img-fluid w-100"
                                             >
                                         </div>
+                                        {% if (candidate.party) %}
+                                            <div class="card-footer">
+                                                <div class="row align-items-center">
+                                                    <div class="col-auto">
+                                                        <div style="width: 3rem;">
+                                                            <img
+                                                                src="{{ macros.party_logo_url(candidate.party) }}"
+                                                                alt="Partid"
+                                                                class="img-rounded"
+                                                                style="max-height: 3rem; max-width: 3rem;"
+                                                            >
+                                                        </div>
+                                                    </div>
+                                                    <div class="col pl-0">
+                                                        {{ candidate.party.name }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endif %}
                                     </div>
                                 </div>
                             {% endfor %}

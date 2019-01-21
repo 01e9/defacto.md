@@ -56,7 +56,7 @@ class PromiseUpdate
         return $this->action;
     }
 
-    public function setAction(?Action $action) : PromiseUpdate
+    public function setAction(?Action $action) : self
     {
         $this->action = $action;
 
@@ -68,7 +68,7 @@ class PromiseUpdate
         return $this->promise;
     }
 
-    public function setPromise(?Promise $promise) : PromiseUpdate
+    public function setPromise(?Promise $promise) : self
     {
         $this->promise = $promise;
 
@@ -80,7 +80,7 @@ class PromiseUpdate
         return $this->status;
     }
 
-    public function setStatus(?Status $status) : PromiseUpdate
+    public function setStatus(?Status $status) : self
     {
         $this->status = $status;
 

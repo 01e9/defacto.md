@@ -39,7 +39,7 @@ class PartyRepository extends ServiceEntityRepository
     public function hasConnections(string $id) : bool
     {
         return (
-            false && $this->getEntityManager()->getRepository('App:ConstituencyCandidate')->findOneBy(['party' => $id])
+            !!$this->getEntityManager()->getRepository('App:ConstituencyCandidate')->findOneBy(['party' => $id])
         );
     }
 }

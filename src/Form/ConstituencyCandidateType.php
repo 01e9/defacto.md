@@ -32,6 +32,13 @@ class ConstituencyCandidateType extends AbstractType
                 'choices' => $options['politicians'],
                 'choice_value' => 'id',
             ])
+            ->add('party', ChoiceType::class, [
+                'label' => 'label.party',
+                'placeholder' => 'placeholder.no_party',
+                'choices' => $options['parties'],
+                'choice_value' => 'id',
+                'required' => false,
+            ])
         ;
     }
 
@@ -43,6 +50,7 @@ class ConstituencyCandidateType extends AbstractType
             'constituencies' => [],
             'elections' => [],
             'politicians' => [],
+            'parties' => [],
         ]);
     }
 

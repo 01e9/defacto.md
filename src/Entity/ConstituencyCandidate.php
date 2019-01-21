@@ -46,6 +46,12 @@ class ConstituencyCandidate
      */
     private $politician;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Party")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $party;
+
     public function getId(): ?string
     {
         return $this->id;
@@ -83,6 +89,18 @@ class ConstituencyCandidate
     public function setPolitician(?Politician $politician): self
     {
         $this->politician = $politician;
+
+        return $this;
+    }
+
+    public function getParty() : ?Party
+    {
+        return $this->party;
+    }
+
+    public function setParty(?Party $party) : self
+    {
+        $this->party = $party;
 
         return $this;
     }

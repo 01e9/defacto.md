@@ -189,6 +189,7 @@ placeholder:
     no_promise_update: Nu schimbă statutul
     no_mandate_politician: Neales încă
     no_constituency: Fără circumscripție
+    no_party: Independent
 
 text:
     at: la

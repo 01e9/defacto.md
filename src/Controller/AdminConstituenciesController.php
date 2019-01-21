@@ -85,6 +85,7 @@ class AdminConstituenciesController extends AbstractController
             'elections' => $this->getDoctrine()->getRepository('App:Election')->getAdminChoices(),
             'problems' => $this->getDoctrine()->getRepository('App:Problem')->getAdminChoices(),
             'politicians' => $this->getDoctrine()->getRepository('App:Politician')->getAdminChoices(),
+            'parties' => $this->getDoctrine()->getRepository('App:Party')->getAdminChoices(),
         ]);
         $form->handleRequest($request);
 

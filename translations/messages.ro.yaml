@@ -40,6 +40,11 @@ label:
     logo: Logo
     begin_date: Date de început
     end_date: Date de sfârșit
+    birth_date: Data nașterii
+    profession: Profesie
+    website: Website
+    facebook: Facebook
+    phone: Telefon
     politician: Politician
     party: Partid
     election: Alegeri
@@ -51,6 +56,8 @@ label:
     institution_title: Funcție
     title: Titlu
     description: Descriere
+    studies: Studii
+    previous_titles: Funcții anterioare
     made_date: Făcut(ă) pe data
     mandate: Mandat
     status: Statut
@@ -178,6 +185,7 @@ title:
     errors:
         not_found: Pagina nu există
     logs: Jurnal de bord
+    contact_information: Date de contact
 
 placeholder:
     choose_option: Alegeți o opțiune

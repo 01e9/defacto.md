@@ -22,6 +22,48 @@
             } only %}
         </div>
     </div>
+    <div class="col-lg-4">
+        {{ form_row(form.birthDate, {
+            'type': 'text',
+            'attr': {'class': 'datepicker-input', 'readonly': true}
+        }) }}
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-6">
+        <div class="row">
+            <div class="col-12">
+                {{ form_row(form.studies) }}
+            </div>
+            <div class="col-12">
+                {{ form_row(form.profession) }}
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        {{ form_row(form.previousTitles) }}
+    </div>
+</div>
+<div class="card mb-4">
+    <div class="card-header">{{ "title.contact_information"|trans }}</div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-lg-6">
+                {{ form_row(form.website) }}
+            </div>
+            <div class="col-lg-6">
+                {{ form_row(form.facebook) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                {{ form_row(form.email) }}
+            </div>
+            <div class="col-lg-6">
+                {{ form_row(form.phone) }}
+            </div>
+        </div>
+    </div>
 </div>
 
 {% include "admin/component/form/widget/submit-delete-buttons.html.twig" with {

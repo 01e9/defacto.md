@@ -67,6 +67,71 @@ class Politician
     private $photo;
 
     /**
+     * @var \DateTimeInterface
+     * @ORM\Column(type="date", nullable=true)
+     */
+    private $birthDate;
+
+    /**
+     * @var string
+     * @ORM\Column(type="text", nullable=true)
+     *
+     * @Assert\Length(max=10000)
+     */
+    private $studies;
+
+    /**
+     * @var string
+     * @ORM\Column(type="string", length=120, nullable=true)
+     *
+     * @Assert\Length(max=120)
+     */
+    private $profession;
+
+    /**
+     * @var string
+     * @ORM\Column(type="string", length=120, nullable=true)
+     *
+     * @Assert\Length(max=120)
+     * @Assert\Url()
+     */
+    private $website;
+
+    /**
+     * @var string
+     * @ORM\Column(type="string", length=120, nullable=true)
+     *
+     * @Assert\Length(max=120)
+     * @Assert\Url()
+     */
+    private $facebook;
+
+    /**
+     * @var string
+     * @ORM\Column(type="string", length=120, nullable=true)
+     *
+     * @Assert\Length(max=120)
+     * @Assert\Email()
+     */
+    private $email;
+
+    /**
+     * @var string
+     * @ORM\Column(type="string", length=16, nullable=true)
+     *
+     * @Assert\Length(max=16)
+     */
+    private $phone;
+
+    /**
+     * @var string
+     * @ORM\Column(type="text", nullable=true)
+     *
+     * @Assert\Length(max=10000)
+     */
+    private $previousTitles;
+
+    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Mandate", mappedBy="politician")
      */
     private $mandates;
@@ -134,6 +199,102 @@ class Politician
     public function setPhoto($photo) : self
     {
         $this->photo = $photo;
+
+        return $this;
+    }
+
+    public function getBirthDate(): ?\DateTimeInterface
+    {
+        return $this->birthDate;
+    }
+
+    public function setBirthDate(?\DateTimeInterface $birthDate): self
+    {
+        $this->birthDate = $birthDate;
+
+        return $this;
+    }
+
+    public function getStudies() : ?string
+    {
+        return $this->studies;
+    }
+
+    public function setStudies(?string $studies) : self
+    {
+        $this->studies = $studies;
+
+        return $this;
+    }
+
+    public function getProfession() : ?string
+    {
+        return $this->profession;
+    }
+
+    public function setProfession(?string $profession) : self
+    {
+        $this->profession = $profession;
+
+        return $this;
+    }
+
+    public function getWebsite() : ?string
+    {
+        return $this->website;
+    }
+
+    public function setWebsite(?string $website) : self
+    {
+        $this->website = $website;
+
+        return $this;
+    }
+
+    public function getFacebook() : ?string
+    {
+        return $this->facebook;
+    }
+
+    public function setFacebook(?string $facebook) : self
+    {
+        $this->facebook = $facebook;
+
+        return $this;
+    }
+
+    public function getEmail() : ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(?string $email) : self
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    public function getPhone() : ?string
+    {
+        return $this->phone;
+    }
+
+    public function setPhone(?string $phone) : self
+    {
+        $this->phone = $phone;
+
+        return $this;
+    }
+
+    public function getPreviousTitles() : ?string
+    {
+        return $this->previousTitles;
+    }
+
+    public function setPreviousTitles(?string $previousTitles) : self
+    {
+        $this->previousTitles = $previousTitles;
 
         return $this;
     }

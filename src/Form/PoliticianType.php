@@ -44,23 +44,28 @@ class PoliticianType extends AbstractType
             ])
             ->add('profession', TextType::class, [
                 'label' => 'label.profession',
+                'required' => false,
             ])
             ->add('website', TextType::class, [
                 'label' => 'label.website',
+                'required' => false,
             ])
             ->add('facebook', TextType::class, [
                 'label' => 'label.facebook',
+                'required' => false,
             ])
             ->add('email', TextType::class, [
                 'label' => 'label.email',
+                'required' => false,
             ])
             ->add('phone', TextType::class, [
                 'label' => 'label.phone',
+                'required' => false,
             ])
             ->add('previousTitles', TextareaType::class, [
                 'label' => 'label.previous_titles',
-                'required' => false,
                 'attr' => ['class' => 'wysiwyg'],
+                'required' => false,
             ])
         ;
     }

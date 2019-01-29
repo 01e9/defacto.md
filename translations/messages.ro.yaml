@@ -42,8 +42,10 @@ label:
     end_date: Date de sfârșit
     birth_date: Data nașterii
     registration_date: Data înregistrării
-    registration_link: Link decizie
-    registration_note: Notă (Conform hotărârii...)
+    registration_link: Link decizie înregistrare
+    registration_note: Notă înregistrare (Conform hotărârii...)
+    electoral_platform: Platforma electorală
+    electoral_platform_link: Link platforma electorală
     profession: Profesie
     website: Website
     facebook: Facebook

@@ -73,6 +73,21 @@ class Candidate
      */
     private $registrationLink;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     *
+     * @Assert\Length(min=3, max=10000)
+     */
+    private $electoralPlatform;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     *
+     * @Assert\Length(min=3)
+     * @Assert\Url()
+     */
+    private $electoralPlatformLink;
+
     public function getId(): ?string
     {
         return $this->id;
@@ -158,6 +173,30 @@ class Candidate
     public function setRegistrationLink(?string $registrationLink) : self
     {
         $this->registrationLink = $registrationLink;
+
+        return $this;
+    }
+
+    public function getElectoralPlatform() : ?string
+    {
+        return $this->electoralPlatform;
+    }
+
+    public function setElectoralPlatform(?string $electoralPlatform) : self
+    {
+        $this->electoralPlatform = $electoralPlatform;
+
+        return $this;
+    }
+
+    public function getElectoralPlatformLink() : ?string
+    {
+        return $this->electoralPlatformLink;
+    }
+
+    public function setElectoralPlatformLink(?string $electoralPlatformLink) : self
+    {
+        $this->electoralPlatformLink = $electoralPlatformLink;
 
         return $this;
     }

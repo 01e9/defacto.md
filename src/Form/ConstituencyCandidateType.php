@@ -6,6 +6,7 @@ use App\Consts;
 use App\Entity\Candidate;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -53,6 +54,15 @@ class ConstituencyCandidateType extends AbstractType
             ])
             ->add('registrationNote', TextType::class, [
                 'label' => 'label.registration_note',
+                'required' => false,
+            ])
+            ->add('electoralPlatform', TextareaType::class, [
+                'label' => 'label.electoral_platform',
+                'required' => false,
+                'attr' => ['class' => 'wysiwyg'],
+            ])
+            ->add('electoralPlatformLink', TextType::class, [
+                'label' => 'label.electoral_platform_link',
                 'required' => false,
             ])
         ;

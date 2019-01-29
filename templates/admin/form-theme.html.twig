@@ -106,6 +106,7 @@
                     {{ macros.delete_btn_col() }}
                 {% endif %}
             </div>
+            <hr>
             <div class="row">
                 <div class="col-lg-3">
                     {{ form_row(form.registrationDate, {
@@ -118,6 +119,15 @@
                 </div>
                 <div class="col-lg-4">
                     {{ form_row(form.registrationLink) }}
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-12">
+                    {{ form_row(form.electoralPlatformLink) }}
+                </div>
+                <div class="col-12">
+                    {{ form_row(form.electoralPlatform) }}
                 </div>
             </div>
         </div>
@@ -202,7 +212,7 @@
 {% endblock %}
 
 {% macro delete_btn_col() %}
-    <div class="col-auto px-2">
+    <div class="col-auto pl-0 pr-2">
         <button type="button" class="btn btn-light"
                 aria-label="Delete" onclick="this.closest('.form-group').remove();">
             <span aria-hidden="true">&times;</span>

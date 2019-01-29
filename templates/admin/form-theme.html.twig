@@ -25,8 +25,11 @@
 
                     newEl.innerHTML = html.replace(/__name__/g, 'new_' + wrap.attributes[counterAttrName].value);
                     newEl.querySelector('legend').remove();
+
+                    document.body.dispatchEvent(new CustomEvent('app:initElement', {detail: newEl.firstChild}));
+
                     wrap.appendChild(newEl.firstChild);
-                    })(document.getElementById('{{ form.vars.id }}'))"
+                })(document.getElementById('{{ form.vars.id }}'))"
             >{{ ('action.add_' ~ form.vars.name)|trans }}</button>
         </div>
     </div>
@@ -35,89 +38,119 @@
 {% block promise_update_widget %}
     {% import _self as macros %}
 
-    <div class="d-none">
-        {{ form_row(form.action) }}
-    </div>
-    <div class="row">
-        <div class="col">
-            {{ form_row(form.promise) }}
+    <div class="card mb-3 bg-light">
+        <div class="card-body pt-2 pb-1 px-3">
+            <div class="d-none">
+                {{ form_row(form.action) }}
+            </div>
+            <div class="row">
+                <div class="col">
+                    {{ form_row(form.promise) }}
+                </div>
+                <div class="col">
+                    {{ form_row(form.status) }}
+                </div>
+                {% if form.parent.vars.allow_delete %}
+                    {{ macros.delete_btn_col() }}
+                {% endif %}
+            </div>
         </div>
-        <div class="col">
-            {{ form_row(form.status) }}
-        </div>
-        {% if form.parent.vars.allow_delete %}
-            {{ macros.delete_btn_col() }}
-        {% endif %}
     </div>
 {% endblock %}
 
 {% block constituency_problem_widget %}
     {% import _self as macros %}
 
-    <div class="d-none">
-        {{ form_row(form.constituency) }}
-    </div>
-    <div class="row">
-        <div class="col-lg-5">
-            {{ form_row(form.election) }}
+    <div class="card mb-3 bg-light">
+        <div class="card-body pt-2 pb-1 px-3">
+            <div class="d-none">
+                {{ form_row(form.constituency) }}
+            </div>
+            <div class="row">
+                <div class="col-lg-5">
+                    {{ form_row(form.election) }}
+                </div>
+                <div class="col-lg-5">
+                    {{ form_row(form.problem) }}
+                </div>
+                <div class="col">
+                    {{ form_row(form.respondents) }}
+                </div>
+                {% if form.parent.vars.allow_delete %}
+                    {{ macros.delete_btn_col() }}
+                {% endif %}
+            </div>
         </div>
-        <div class="col-lg-5">
-            {{ form_row(form.problem) }}
-        </div>
-        <div class="col">
-            {{ form_row(form.respondents) }}
-        </div>
-        {% if form.parent.vars.allow_delete %}
-            {{ macros.delete_btn_col() }}
-        {% endif %}
     </div>
 {% endblock %}
 
 {% block constituency_candidate_widget %}
     {% import _self as macros %}
 
-    <div class="d-none">
-        {{ form_row(form.constituency) }}
-    </div>
-    <div class="row">
-        <div class="col-lg-4">
-            {{ form_row(form.election) }}
+    <div class="card mb-3 bg-light">
+        <div class="card-body pt-2 pb-1 px-3">
+            <div class="d-none">
+                {{ form_row(form.constituency) }}
+            </div>
+            <div class="row">
+                <div class="col-lg-3">
+                    {{ form_row(form.politician) }}
+                </div>
+                <div class="col-lg-5">
+                    {{ form_row(form.election) }}
+                </div>
+                <div class="col">
+                    {{ form_row(form.party) }}
+                </div>
+                {% if form.parent.vars.allow_delete %}
+                    {{ macros.delete_btn_col() }}
+                {% endif %}
+            </div>
+            <div class="row">
+                <div class="col-lg-3">
+                    {{ form_row(form.registrationDate, {
+                        'type': 'text',
+                        'attr': {'class': 'datepicker-input', 'readonly': true}
+                    }) }}
+                </div>
+                <div class="col-lg-5">
+                    {{ form_row(form.registrationNote) }}
+                </div>
+                <div class="col-lg-4">
+                    {{ form_row(form.registrationLink) }}
+                </div>
+            </div>
         </div>
-        <div class="col-lg-4">
-            {{ form_row(form.politician) }}
-        </div>
-        <div class="col">
-            {{ form_row(form.party) }}
-        </div>
-        {% if form.parent.vars.allow_delete %}
-            {{ macros.delete_btn_col() }}
-        {% endif %}
     </div>
 {% endblock %}
 
 {% block candidate_problem_opinion_widget %}
     {% import _self as macros %}
 
-    <div class="d-none">
-        {{ form_row(form.constituency) }}
-    </div>
-    <div class="row">
-        <div class="col-lg-4">
-            {{ form_row(form.election) }}
-        </div>
-        <div class="col-lg-4">
-            {{ form_row(form.politician) }}
-        </div>
-        <div class="col">
-            {{ form_row(form.problem) }}
-        </div>
-        {% if form.parent.vars.allow_delete %}
-            {{ macros.delete_btn_col() }}
-        {% endif %}
-    </div>
-    <div class="row">
-        <div class="col">
-            {{ form_row(form.opinion) }}
+    <div class="card mb-3 bg-light">
+        <div class="card-body pt-2 pb-1 px-3">
+            <div class="d-none">
+                {{ form_row(form.constituency) }}
+            </div>
+            <div class="row">
+                <div class="col-lg-4">
+                    {{ form_row(form.election) }}
+                </div>
+                <div class="col-lg-4">
+                    {{ form_row(form.politician) }}
+                </div>
+                <div class="col">
+                    {{ form_row(form.problem) }}
+                </div>
+                {% if form.parent.vars.allow_delete %}
+                    {{ macros.delete_btn_col() }}
+                {% endif %}
+            </div>
+            <div class="row">
+                <div class="col">
+                    {{ form_row(form.opinion) }}
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}
@@ -125,49 +158,54 @@
 {% block promise_source_widget %}
     {% import _self as macros %}
 
-    <div class="d-none">
-        {{ form_row(form.promise) }}
-    </div>
-    <div class="row">
-        <div class="col">
-            {{ form_row(form.name) }}
+    <div class="card mb-3 bg-light">
+        <div class="card-body pt-2 pb-1 px-3">
+            <div class="d-none">
+                {{ form_row(form.promise) }}
+            </div>
+            <div class="row">
+                <div class="col">
+                    {{ form_row(form.name) }}
+                </div>
+                <div class="col">
+                    {{ form_row(form.link) }}
+                </div>
+                {% if form.parent.vars.allow_delete %}
+                    {{ macros.delete_btn_col() }}
+                {% endif %}
+            </div>
         </div>
-        <div class="col">
-            {{ form_row(form.link) }}
-        </div>
-        {% if form.parent.vars.allow_delete %}
-            {{ macros.delete_btn_col() }}
-        {% endif %}
     </div>
 {% endblock %}
 
 {% block action_source_widget %}
     {% import _self as macros %}
 
-    <div class="d-none">
-        {{ form_row(form.action) }}
-    </div>
-    <div class="row">
-        <div class="col">
-            {{ form_row(form.name) }}
+    <div class="card mb-3 bg-light">
+        <div class="card-body pt-2 pb-1 px-3">
+            <div class="d-none">
+                {{ form_row(form.action) }}
+            </div>
+            <div class="row">
+                <div class="col">
+                    {{ form_row(form.name) }}
+                </div>
+                <div class="col">
+                    {{ form_row(form.link) }}
+                </div>
+                {% if form.parent.vars.allow_delete %}
+                    {{ macros.delete_btn_col() }}
+                {% endif %}
+            </div>
         </div>
-        <div class="col">
-            {{ form_row(form.link) }}
-        </div>
-        {% if form.parent.vars.allow_delete %}
-            {{ macros.delete_btn_col() }}
-        {% endif %}
     </div>
 {% endblock %}
 
 {% macro delete_btn_col() %}
-    <div class="col-auto">
-        <label class="form-control-label">&nbsp;</label>
-        <div>
-            <button type="button" class="btn btn-light"
-                    aria-label="Delete" onclick="this.closest('.form-group').remove();">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
+    <div class="col-auto px-2">
+        <button type="button" class="btn btn-light"
+                aria-label="Delete" onclick="this.closest('.form-group').remove();">
+            <span aria-hidden="true">&times;</span>
+        </button>
     </div>
 {% endmacro %}

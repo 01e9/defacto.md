@@ -4,8 +4,8 @@ import "./editors";
 import "./datepicker"
 import "./log-diff"
 
-jQuery($ => {
-    $('input[data-slug-from]').each((i, slugInput) => {
+document.body.addEventListener("app:initElement", (e) => {
+    $(e.detail).find('input[data-slug-from]').each((i, slugInput) => {
         const $slug = $(slugInput);
 
         const $sources = $(
@@ -17,4 +17,10 @@ jQuery($ => {
 
         initSlugGenerator($sources, $slug);
     });
+});
+
+jQuery(() => {
+    document.body.dispatchEvent(
+        new CustomEvent('app:initElement', {detail: document.body})
+    );
 });

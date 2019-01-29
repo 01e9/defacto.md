@@ -137,14 +137,14 @@ class Politician
     private $mandates;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\ConstituencyCandidate", mappedBy="politician")
+     * @ORM\OneToMany(targetEntity="Candidate", mappedBy="politician")
      */
-    private $constituencyCandidates;
+    private $candidates;
 
     public function __construct()
     {
         $this->mandates = new ArrayCollection();
-        $this->constituencyCandidates = new ArrayCollection();
+        $this->candidates = new ArrayCollection();
     }
 
     public function getId() : ?string

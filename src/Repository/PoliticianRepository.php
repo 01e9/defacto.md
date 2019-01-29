@@ -37,7 +37,7 @@ class PoliticianRepository extends ServiceEntityRepository
         return (
             $this->getEntityManager()->getRepository('App:Mandate')->findOneBy(['politician' => $id])
             ||
-            $this->getEntityManager()->getRepository('App:ConstituencyCandidate')->findOneBy(['politician' => $id])
+            $this->getEntityManager()->getRepository('App:Candidate')->findOneBy(['politician' => $id])
         );
     }
 }

@@ -66,15 +66,15 @@ class Election
     private $constituencyProblems;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\ConstituencyCandidate", mappedBy="election")
+     * @ORM\OneToMany(targetEntity="Candidate", mappedBy="election")
      */
-    private $constituencyCandidates;
+    private $candidates;
 
     public function __construct()
     {
         $this->mandates = new ArrayCollection();
         $this->constituencyProblems = new ArrayCollection();
-        $this->constituencyCandidates = new ArrayCollection();
+        $this->candidates = new ArrayCollection();
     }
 
     public function getId(): ?string

@@ -2,7 +2,7 @@
 
 namespace App\Form;
 
-use App\Entity\ConstituencyCandidate;
+use App\Entity\Candidate;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
@@ -46,7 +46,7 @@ class ConstituencyCandidateType extends AbstractType
     {
         $resolver->setDefaults([
             'label' => false,
-            'data_class' => ConstituencyCandidate::class,
+            'data_class' => Candidate::class,
             'constituencies' => [],
             'elections' => [],
             'politicians' => [],

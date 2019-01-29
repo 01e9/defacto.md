@@ -69,7 +69,7 @@ class Constituency
     private $problems;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\ConstituencyCandidate", mappedBy="constituency", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="Candidate", mappedBy="constituency", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      *
      * @Assert\Valid()
@@ -149,7 +149,7 @@ class Constituency
     }
 
     /**
-     * @return ArrayCollection|ConstituencyCandidate[]
+     * @return ArrayCollection|Candidate[]
      */
     public function getCandidates()
     {

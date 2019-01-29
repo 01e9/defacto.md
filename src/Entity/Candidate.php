@@ -6,20 +6,20 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\ConstituencyCandidateRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\CandidateRepository")
  * @ORM\Table(
- *     name="constituency_candidates",
+ *     name="candidates",
  *     uniqueConstraints={
  *      @ORM\UniqueConstraint(
- *          name="constituency_candidates_unique_composite",
- *          columns={"constituency_id", "election_id", "politician_id"}
+ *          name="candidates_unique_composite",
+ *          columns={"politician_id", "election_id", "constituency_id"}
  *      )
  *     }
  * )
  *
- * @UniqueEntity(fields={"constituency", "election", "politician"}, errorPath="politician")
+ * @UniqueEntity(fields={"politician", "election", "constituency"}, errorPath="politician")
  */
-class ConstituencyCandidate
+class Candidate
 {
     /**
      * @ORM\Id()
@@ -29,22 +29,22 @@ class ConstituencyCandidate
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Constituency", inversedBy="candidates")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Politician", inversedBy="candidates")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $constituency;
+    private $politician;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Election", inversedBy="constituencyCandidates")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Election", inversedBy="candidates")
      * @ORM\JoinColumn(nullable=false)
      */
     private $election;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Politician", inversedBy="constituencyCandidates")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\ManyToOne(targetEntity="App\Entity\Constituency", inversedBy="candidates")
+     * @ORM\JoinColumn(nullable=true)
      */
-    private $politician;
+    private $constituency;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Party")

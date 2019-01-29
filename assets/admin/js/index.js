@@ -3,6 +3,7 @@ import { initSlugGenerator } from "./slug-generator";
 import "./editors";
 import "./datepicker"
 import "./log-diff"
+import "./google-map"
 
 document.body.addEventListener("app:initElement", (e) => {
     $(e.detail).find('input[data-slug-from]').each((i, slugInput) => {

@@ -56,6 +56,11 @@ class Constituency
     private $link;
 
     /**
+     * @ORM\Column(type="json", nullable=true)
+     */
+    private $map;
+
+    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Mandate", mappedBy="constituency")
      */
     private $mandates;
@@ -129,6 +134,18 @@ class Constituency
     public function setLink(?string $link): self
     {
         $this->link = $link;
+
+        return $this;
+    }
+
+    public function getMap(): ?array
+    {
+        return $this->map;
+    }
+
+    public function setMap(?array $map): self
+    {
+        $this->map = $map;
 
         return $this;
     }

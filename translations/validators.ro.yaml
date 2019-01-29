@@ -2,6 +2,7 @@ invalid:
     slug: "Se permit doar litere, cifre și cratimă (exemplu: ion-mustață-al-2-lea)"
     date_range: "Date de sfârșit trebuie să fie mai mare decât cea de început"
     color: "Codul culorii este incorect"
+    map: "Coordonatele poziției pe hartă sunt incorecte"
 
 not_deletable:
     status: "Statutul nu poate fi șters pentru că e conectat cu alte înregistrări."

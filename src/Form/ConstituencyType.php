@@ -24,6 +24,9 @@ class ConstituencyType extends AbstractType
             ->add('link', TextType::class, [
                 'label' => 'label.constituency_link',
             ])
+            ->add('map', GoogleMapType::class, [
+                'label' => 'label.map',
+            ])
             ->add('problems', CollectionType::class, [
                 'label' => 'label.problems',
                 'allow_add' => true,

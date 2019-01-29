@@ -82,6 +82,9 @@ label:
     color: Culoarea
     candidates: Candidați
     candidate_problem_opinions: Opiniile candidaților față de probleme
+    lat: Latitudine
+    lng: Longitudine
+    map: Poziția pe hartă
     color_name:
         violet: Violet
         orange: Oranj

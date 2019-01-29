@@ -8,3 +8,4 @@ twig:
     globals:
         app_repo_status: '@App\Repository\StatusRepository'
         app_repo_promise: '@App\Repository\PromiseRepository'
+        google_maps_api_key: '%google_maps_api_key%'

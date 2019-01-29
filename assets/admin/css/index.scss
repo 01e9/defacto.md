@@ -4,6 +4,7 @@
 @import '~animate.css/animate.css';
 @import "~bootstrap-datepicker/dist/css/bootstrap-datepicker3.standalone.css";
 @import "../../common/css/status_colors";
+@import "../../common/css/utils";
 
 .navbar + .container {
     padding-top: $spacer;
@@ -36,4 +37,14 @@ input.form-control[type="color"] {
 
 a.no-underline:hover {
     text-decoration: none !important;
+}
+
+.google-map-widget {
+    .row.coordinates .form-group {
+        margin-bottom: 0;
+    }
+
+    .map {
+        background-color: $gray-100;
+    }
 }

@@ -219,3 +219,35 @@
         </button>
     </div>
 {% endmacro %}
+
+{% block google_map_widget %}
+    {% import _self as macros %}
+
+    <div class="google-map-widget" id="{{ form.vars.id }}">
+        <div class="row mb-2">
+            <div class="col">
+                <div class="square" style="max-width: 16rem">
+                    <div class="content map"></div>
+                </div>
+            </div>
+        </div>
+        <div class="row coordinates">
+            <div class="col">
+                {{ form_row(form.lat, {attr: {class: "form-control-sm lat"}}) }}
+            </div>
+            <div class="col">
+                {{ form_row(form.lng, {attr: {class: "form-control-sm lng"}}) }}
+            </div>
+        </div>
+    </div>
+
+    {% set callback = 'init_map_' ~ form.vars.id %}
+    <script>
+        function {{ callback }}() {
+            document.body.dispatchEvent(new CustomEvent('app:initElement', {
+                detail: document.getElementById({{ form.vars.id|json_encode|raw }})
+            }));
+        }
+    </script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&callback={{ callback }}"></script>
+{% endblock %}

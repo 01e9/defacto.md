@@ -2,10 +2,12 @@
 
 namespace App\Form;
 
+use App\Consts;
 use App\Entity\Candidate;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -37,6 +39,20 @@ class ConstituencyCandidateType extends AbstractType
                 'placeholder' => 'placeholder.no_party',
                 'choices' => $options['parties'],
                 'choice_value' => 'id',
+                'required' => false,
+            ])
+            ->add('registrationDate', DateType::class, [
+                'label' => 'label.registration_date',
+                'widget' => 'single_text',
+                'format' => Consts::DATE_FORMAT_INTL,
+                'required' => false,
+            ])
+            ->add('registrationLink', TextType::class, [
+                'label' => 'label.registration_link',
+                'required' => false,
+            ])
+            ->add('registrationNote', TextType::class, [
+                'label' => 'label.registration_note',
                 'required' => false,
             ])
         ;

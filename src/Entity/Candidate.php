@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CandidateRepository")
@@ -51,6 +52,26 @@ class Candidate
      * @ORM\JoinColumn(nullable=true)
      */
     private $party;
+
+    /**
+     * @var \DateTimeInterface
+     * @ORM\Column(type="date", nullable=true)
+     */
+    private $registrationDate;
+
+    /**
+     * @var string
+     * @ORM\Column(type="string", length=120, nullable=true)
+     */
+    private $registrationNote;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     *
+     * @Assert\Length(min=3)
+     * @Assert\Url()
+     */
+    private $registrationLink;
 
     public function getId(): ?string
     {
@@ -101,6 +122,42 @@ class Candidate
     public function setParty(?Party $party) : self
     {
         $this->party = $party;
+
+        return $this;
+    }
+
+    public function getRegistrationDate(): ?\DateTimeInterface
+    {
+        return $this->registrationDate;
+    }
+
+    public function setRegistrationDate(?\DateTimeInterface $registrationDate): self
+    {
+        $this->registrationDate = $registrationDate;
+
+        return $this;
+    }
+
+    public function getRegistrationNote() : ?string
+    {
+        return $this->registrationNote;
+    }
+
+    public function setRegistrationNote(?string $registrationNote) : self
+    {
+        $this->registrationNote = $registrationNote;
+
+        return $this;
+    }
+
+    public function getRegistrationLink() : ?string
+    {
+        return $this->registrationLink;
+    }
+
+    public function setRegistrationLink(?string $registrationLink) : self
+    {
+        $this->registrationLink = $registrationLink;
 
         return $this;
     }

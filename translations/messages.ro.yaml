@@ -41,6 +41,9 @@ label:
     begin_date: Date de început
     end_date: Date de sfârșit
     birth_date: Data nașterii
+    registration_date: Data înregistrării
+    registration_link: Link decizie
+    registration_note: Notă
     profession: Profesie
     website: Website
     facebook: Facebook

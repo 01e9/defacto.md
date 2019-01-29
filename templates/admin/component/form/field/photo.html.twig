@@ -1,22 +1,24 @@
-{% if field.vars.valid and field.vars.data %}
-    <img class="card-img-top"
-         src="{{ asset(imageDir ~ field.vars.data.fileName) }}"
-         alt="Photo">
-{% endif %}
-<div class="card-body">
-    {% if field.vars.data %}
+{% if field.vars.data %}
+    <div class="mb-3" style="max-width: 15rem">
+        {% if field.vars.valid and not field.vars.submitted %}
+            <img class="card-img mb-1"
+                 src="{{ asset(imageDir ~ field.vars.data.fileName) }}"
+                 alt="Photo">
+        {% endif %}
+
         {% set id = "photo-field-" ~ random() %}
-        <button class="btn btn-sm btn-light" type="button"
+        <button class="btn btn-sm btn-light btn-block" type="button"
                 data-toggle="collapse" data-target="#{{ id }}"
                 aria-expanded="false" aria-controls="{{ id }}"
         >{{ changeText|default('action.change_photo'|trans) }}</button>
+
         <div
             class="collapse multi-collapse pt-3 {% if not field.vars.valid %}show{% endif %}"
             id="{{ id }}"
         >
-            {{ form_row(field) }}
+            {{ form_widget(field) }}
         </div>
-    {% else %}
-        {{ form_row(field) }}
-    {% endif %}
-</div>
+    </div>
+{% else %}
+    {{ form_row(field) }}
+{% endif %}

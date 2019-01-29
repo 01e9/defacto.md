@@ -3,30 +3,35 @@
 {{ form_start(form) }}
 
 <div class="row">
-    <div class="col-lg-4">
-        {{ form_row(form.firstName) }}
+    <div class="col-lg-2">
+        {% include 'admin/component/form/field/photo.html.twig' with {
+            field: form.photo,
+            imageDir: '/uploads/politicians/'
+        } only %}
     </div>
-    <div class="col-lg-4">
-        {{ form_row(form.lastName) }}
-    </div>
-    <div class="col-lg-4">
-        {{ form_row(form.slug) }}
-    </div>
-</div>
-<div class="row">
-    <div class="col-lg-4">
-        <div class="card mb-3">
-            {% include 'admin/component/form/field/photo.html.twig' with {
-                field: form.photo,
-                imageDir: '/uploads/politicians/'
-            } only %}
+    <div class="col-lg-10">
+        <div class="row">
+            <div class="col-lg-4">
+                {{ form_row(form.firstName) }}
+            </div>
+            <div class="col-lg-4">
+                {{ form_row(form.lastName) }}
+            </div>
+            <div class="col-lg-4">
+                {{ form_row(form.slug) }}
+            </div>
         </div>
-    </div>
-    <div class="col-lg-4">
-        {{ form_row(form.birthDate, {
-            'type': 'text',
-            'attr': {'class': 'datepicker-input', 'readonly': true}
-        }) }}
+        <div class="row">
+            <div class="col-lg-8">
+                {{ form_row(form.profession) }}
+            </div>
+            <div class="col-lg-4">
+                {{ form_row(form.birthDate, {
+                    'type': 'text',
+                    'attr': {'class': 'datepicker-input', 'readonly': true}
+                }) }}
+            </div>
+        </div>
     </div>
 </div>
 <div class="row">
@@ -34,9 +39,6 @@
         <div class="row">
             <div class="col-12">
                 {{ form_row(form.studies) }}
-            </div>
-            <div class="col-12">
-                {{ form_row(form.profession) }}
             </div>
         </div>
     </div>

@@ -21,6 +21,8 @@
         <env name="ALGOLIA_APP_ID" value="..."/>
         <env name="ALGOLIA_API_KEY" value="..."/>
         <!-- ###- algolia/search-bundle ### -->
+
+        <env name="GOOGLE_MAPS_API_KEY" value="..."/>
     </php>
 
     <testsuites>

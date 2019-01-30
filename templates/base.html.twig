@@ -3,6 +3,9 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    {% block head_meta %}
+        <meta name="google-maps-api-key" content="{{ google_maps_api_key }}">
+    {% endblock %}
     <title>{% block title %}DeFacto{% endblock %}</title>
     {% block stylesheets %}{% endblock %}
 </head>

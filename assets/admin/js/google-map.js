@@ -1,11 +1,15 @@
+import {includeScript} from "../../common/js/utils";
+
 /* global google */
 
-document.body.addEventListener("app:initElement", e => {
+let scriptIncluded = false;
+
+function init(element) {
     if (typeof google === "undefined") {
         return;
     }
 
-    $(e.detail).find('.google-map-widget:not(.initialized)').addClass('initialized').each((i, wrapper) => {
+    $(element).find('.google-map-widget:not(.initialized)').addClass('initialized').each((i, wrapper) => {
         const elements = {
             map: $(wrapper).find(".map").get(0),
             $lat: $(wrapper).find("input.lat"),
@@ -37,4 +41,16 @@ document.body.addEventListener("app:initElement", e => {
             map.setCenter(e.latLng);
         });
     });
+}
+
+document.body.addEventListener("app:initElement", e => {
+    if (scriptIncluded) {
+        init(e.detail);
+    } else {
+        scriptIncluded = true;
+
+        const apiKey = $("head > meta[name='google-maps-api-key']").attr("content");
+        includeScript("https://maps.googleapis.com/maps/api/js?key=" + apiKey)
+            .then(() => init(e.detail));
+    }
 });

@@ -198,8 +198,8 @@ title:
 
 placeholder:
     choose_option: Alegeți o opțiune
-    inactive_singular: Inactivă
-    inactive_plural: Inactive
+    inactive_singular: Fără statut
+    inactive_plural: Fără statut
     search: Căutare
     keywords: Cuvinte cheie
     no_status: Fără statut
@@ -215,3 +215,4 @@ text:
     status_unchanged_lower: statut neschimbat
     more_fields_after_add: Mai multe câmpuri vor apărea după adăugare.
     no_logs: Nicio înregistrare
+    map_input_info: Setați poziția mutând markerul.

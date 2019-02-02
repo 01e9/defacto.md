@@ -231,7 +231,12 @@
                 </div>
             </div>
         </div>
-        <div class="row coordinates">
+        <div class="row">
+            <div class="col">
+                <small class="text-muted">{{ "text.map_input_info"|trans }}</small>
+            </div>
+        </div>
+        <div class="row coordinates d-none">
             <div class="col">
                 {{ form_row(form.lat, {attr: {class: "form-control-sm lat"}}) }}
             </div>

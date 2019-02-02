@@ -13,11 +13,13 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @ORM\Table(
  *     name="constituencies",
  *     uniqueConstraints={
- *      @ORM\UniqueConstraint(name="constituency_unique_slug", columns={"slug"})
+ *      @ORM\UniqueConstraint(name="constituency_unique_slug", columns={"slug"}),
+ *      @ORM\UniqueConstraint(name="constituency_unique_number", columns={"number"})
  *     }
  * )
  *
  * @UniqueEntity(fields={"slug"})
+ * @UniqueEntity(fields={"number"})
  */
 class Constituency
 {
@@ -91,8 +93,9 @@ class Constituency
 
     /**
      * @var int
-     * @ORM\Column(type="integer", options={"unsigned"=true}, nullable=true)
+     * @ORM\Column(type="integer", options={"unsigned"=true}, nullable=false)
      *
+     * @Assert\NotBlank()
      * @Assert\GreaterThanOrEqual(1)
      */
     private $number;

@@ -24,7 +24,7 @@ class ConstituencyRepository extends ServiceEntityRepository
     {
         $choices = [];
 
-        foreach ($this->findBy([], ['name' => 'ASC']) as $constituency) {
+        foreach ($this->findBy([], ['number' => 'ASC']) as $constituency) {
             $choices[ $constituency->getName() ] = $constituency;
         }
 
@@ -33,7 +33,7 @@ class ConstituencyRepository extends ServiceEntityRepository
 
     public function getAdminList(Request $request)
     {
-        return $this->findBy([], ['name' => 'ASC']);
+        return $this->findBy([], ['number' => 'ASC']);
     }
 
     public function hasConnections(string $id) : bool

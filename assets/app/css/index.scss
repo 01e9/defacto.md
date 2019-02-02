@@ -51,19 +51,21 @@
     a.status-statistics {
         display: block;
         position: relative;
-        font-weight: bold;
 
         &:hover {
             text-decoration: none;
         }
 
-        > div {
+        .count {
+            line-height: 2rem;
+        }
+
+        .percentage > * {
             position: absolute;
             left: 0;
             top: 0;
             white-space: nowrap;
             overflow: hidden;
-            color: $white;
         }
     }
 }

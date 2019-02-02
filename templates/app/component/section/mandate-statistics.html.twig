@@ -86,19 +86,22 @@
                                     {% set colorClass = "text-secondary" %}
                                 {% endif %}
                                 {% set spacingClasses = "py-1 px-2" %}
-                                {% set badgeClasses = "badge bg-white align-text-top mr-1" %}
+                                {% set width = promise.count * 100 / maxCount %}
 
                                 <a
                                     href="{{ path('status', {'slug': promise.status is defined ? promise.status.slug : '~'}) }}"
-                                    class="status-statistics bg-light {{ spacingClasses }}"
+                                    class="container-fluid status-statistics bg-light"
                                 >
-                                    <div class="{{ bgColorClass }} {{ spacingClasses }}" style="width: {{ promise.count * 100 / maxCount }}%;">
-                                        <span class="{{ colorClass }} {{ badgeClasses }}"><samp>{{ promise.count }}</samp></span>
-                                        {{ statusName }}
-                                    </div>
-                                    <span class="{{ colorClass }}">
-                                        <span class="{{ colorClass }} {{ badgeClasses }}"><samp>{{ promise.count }}</samp></span>
-                                        {{ statusName }}
+                                    <span class="row">
+                                        <samp class="col-auto count text-body">{{ promise.count }}</samp>
+                                        <b class="col percentage">
+                                            <span class="{{ spacingClasses }} {{ colorClass }}">
+                                                {{ statusName }}
+                                            </span>
+                                            <span class="{{ spacingClasses }} text-white {{ bgColorClass }}" style="width: {{ width }}%;">
+                                                {{ statusName }}
+                                            </span>
+                                        </b>
                                     </span>
                                 </a>
                             </div>

@@ -8,6 +8,7 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 
 class ConstituencyType extends AbstractType
 {
@@ -26,6 +27,9 @@ class ConstituencyType extends AbstractType
             ])
             ->add('map', GoogleMapType::class, [
                 'label' => 'label.map',
+            ])
+            ->add('number', NumberType::class, [
+                'label' => 'label.number',
             ])
             ->add('problems', CollectionType::class, [
                 'label' => 'label.problems',

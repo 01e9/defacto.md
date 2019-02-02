@@ -72,8 +72,9 @@ class MainController extends AbstractController
 
         $constituencies = $em->getRepository('App:Constituency')->createQueryBuilder('con')
             ->innerJoin('con.candidates', 'can', 'WITH', 'can.election = :election')
-            ->setParameters(['election' => $election])
+            ->orderBy('con.number', 'ASC')
             ->groupBy('con.id')
+            ->setParameters(['election' => $election])
             ->getQuery()
             ->getResult();
 

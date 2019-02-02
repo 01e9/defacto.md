@@ -89,6 +89,14 @@ class Constituency
      */
     private $candidateProblemOpinions;
 
+    /**
+     * @var int
+     * @ORM\Column(type="integer", options={"unsigned"=true}, nullable=true)
+     *
+     * @Assert\GreaterThanOrEqual(1)
+     */
+    private $number;
+
     public function __construct()
     {
         $this->mandates = new ArrayCollection();
@@ -146,6 +154,18 @@ class Constituency
     public function setMap(?array $map): self
     {
         $this->map = $map;
+
+        return $this;
+    }
+
+    public function getNumber(): ?int
+    {
+        return $this->number;
+    }
+
+    public function setNumber(?int $number): self
+    {
+        $this->number = $number;
 
         return $this;
     }

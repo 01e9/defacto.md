@@ -12,7 +12,10 @@
             <div class="col text-center">
                 {% for constituency in constituencies %}
                     <p>
-                        <a href="{{ path('constituency', {slug: constituency.slug}) }}">{{ constituency.name }}</a>
+                        <span class="badge badge-dark">{{ constituency.number }}</span>
+                        <a href="{{ path('constituency', {slug: constituency.slug}) }}">
+                            {{ constituency.name }}
+                        </a>
                     </p>
                 {% endfor %}
             </div>

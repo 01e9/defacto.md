@@ -27,7 +27,7 @@ class ActionSource
      * @ORM\Column(type="string", length=120)
      *
      * @Assert\NotBlank()
-     * @Assert\Length(min=3)
+     * @Assert\Length(min=3, max=120)
      */
     private $name;
 
@@ -35,7 +35,7 @@ class ActionSource
      * @ORM\Column(type="string", length=255)
      *
      * @Assert\NotBlank()
-     * @Assert\Length(min=3)
+     * @Assert\Length(max=255)
      * @Assert\Url()
      */
     private $link;

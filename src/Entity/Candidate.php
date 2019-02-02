@@ -62,13 +62,15 @@ class Candidate
     /**
      * @var string
      * @ORM\Column(type="string", length=120, nullable=true)
+     *
+     * @Assert\Length(max=120)
      */
     private $registrationNote;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      *
-     * @Assert\Length(min=3)
+     * @Assert\Length(max=255)
      * @Assert\Url()
      */
     private $registrationLink;
@@ -83,7 +85,7 @@ class Candidate
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      *
-     * @Assert\Length(min=3)
+     * @Assert\Length(max=255)
      * @Assert\Url()
      */
     private $electoralPlatformLink;

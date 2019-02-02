@@ -52,7 +52,7 @@ class Constituency
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      *
-     * @Assert\Length(min=3)
+     * @Assert\Length(max=255)
      * @Assert\Url()
      */
     private $link;

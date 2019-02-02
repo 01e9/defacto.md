@@ -34,6 +34,7 @@ trait TestCaseTrait
         Election::class => 0,
         Politician::class => 0,
         Party::class => 0,
+        Constituency::class => 0,
     ];
 
     protected function setUp()
@@ -229,6 +230,7 @@ trait TestCaseTrait
         $constituency->setName("Test constituency");
         $constituency->setSlug("test-constituency");
         $constituency->setLink("http://constituency.test");
+        $constituency->setNumber(++self::$increments[Constituency::class]);
 
         $objectManager->persist($constituency);
         $objectManager->flush();

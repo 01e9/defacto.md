@@ -30,7 +30,7 @@ class Power
      * @ORM\Column(type="string", length=50)
      *
      * @Assert\NotBlank()
-     * @Assert\Length(min=3, max=30)
+     * @Assert\Length(min=3, max=50)
      * @Assert\Regex(pattern="/^[\p{L}\d]+(\-[\p{L}\d]+)*$/u", message="invalid.slug")
      */
     private $slug;

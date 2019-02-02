@@ -32,6 +32,7 @@ class AdminConstituenciesControllerTest extends WebTestCase
             'constituency[name]' => 'Test',
             'constituency[slug]' => 'tests',
             'constituency[link]' => 'https://test.test/test',
+            'constituency[number]' => '1',
         ];
 
         foreach (self::getLangs() as $lang) {

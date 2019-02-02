@@ -1,27 +1,15 @@
 import 'bootstrap';
-import { initSlugGenerator } from "./slug-generator";
-import "./editors";
-import "./datepicker"
+import { initElementSlugGenerators } from "./slug-generator";
+import { initElementDatePickers } from "./datepicker";
+import { initElementEditors } from "./editors";
+import { initElementGoogleMaps } from "./google-map";
 import "./log-diff"
-import "./google-map"
 
-document.body.addEventListener("app:initElement", (e) => {
-    $(e.detail).find('input[data-slug-from]').each((i, slugInput) => {
-        const $slug = $(slugInput);
-
-        const $sources = $(
-            $slug.attr('data-slug-from')
-                .split(',')
-                .map(nameSelector => 'input[name="' + $.trim(nameSelector) + '"]')
-                .join(',')
-        );
-
-        initSlugGenerator($sources, $slug);
-    });
+document.body.addEventListener("app:initElement", ({ detail: element }) => {
+    initElementDatePickers(element);
+    initElementSlugGenerators(element);
+    initElementEditors(element);
+    initElementGoogleMaps(element);
 });
 
-jQuery(() => {
-    document.body.dispatchEvent(
-        new CustomEvent('app:initElement', {detail: document.body})
-    );
-});
+jQuery(() => document.body.dispatchEvent(new CustomEvent('app:initElement', {detail: document.body})));

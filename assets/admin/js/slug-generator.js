@@ -32,3 +32,18 @@ export function initSlugGenerator($sources, $slug) {
         enabled = !$slug.val().length;
     });
 }
+
+export function initElementSlugGenerators(element) {
+    $(element).find('input[data-slug-from]:not(.initialized)').addClass('initialized').each((i, slugInput) => {
+        const $slug = $(slugInput);
+
+        const $sources = $(
+            $slug.attr('data-slug-from')
+                .split(',')
+                .map(nameSelector => 'input[name="' + $.trim(nameSelector) + '"]')
+                .join(',')
+        );
+
+        initSlugGenerator($sources, $slug);
+    });
+}

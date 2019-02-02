@@ -43,14 +43,14 @@ function init(element) {
     });
 }
 
-document.body.addEventListener("app:initElement", e => {
+export function initElementGoogleMaps(element) {
     if (scriptIncluded) {
-        init(e.detail);
+        init(element);
     } else {
         scriptIncluded = true;
 
         const apiKey = $("head > meta[name='google-maps-api-key']").attr("content");
         includeScript("https://maps.googleapis.com/maps/api/js?key=" + apiKey)
-            .then(() => init(e.detail));
+            .then(() => init(element));
     }
-});
+}

@@ -1,8 +1,8 @@
 import "bootstrap-datepicker"
 
-document.body.addEventListener("app:initElement", (e) => {
-    $(e.detail).find('input.datepicker-input').datepicker({
+export function initElementDatePickers(element) {
+    $(element).find('input.datepicker-input:not(.initialized)').addClass('initialized').datepicker({
         format: "dd.mm.yyyy",
         todayHighlight: true
     });
-});
+}

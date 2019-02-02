@@ -4,20 +4,24 @@
     {% include 'app/component/after-header-space.html.twig' %}
     <div class="container">
         <div class="row">
-            <div class="col text-center pb-3">
-                <h2 class="mb-3">{{ election.name }}</h2>
+            <div class="col">
+                <h2 class="text-center">{{ election.name }}</h2>
             </div>
         </div>
         <div class="row">
-            <div class="col text-center">
-                {% for constituency in constituencies %}
-                    <p>
-                        <span class="badge badge-dark">{{ constituency.number }}</span>
-                        <a href="{{ path('constituency', {slug: constituency.slug}) }}">
-                            {{ constituency.name }}
-                        </a>
-                    </p>
-                {% endfor %}
+            <div class="col">
+                <div class="square">
+                    <div class="content bg-light p-3" style="overflow-y: auto;">
+                        {% for constituency in constituencies %}
+                            <p>
+                                <span class="badge badge-dark">{{ constituency.number }}</span>
+                                <a href="{{ path('constituency', {slug: constituency.slug}) }}">
+                                    {{ constituency.name }}
+                                </a>
+                            </p>
+                        {% endfor %}
+                    </div>
+                </div>
             </div>
         </div>
     </div>

@@ -7,6 +7,7 @@
 @import "~instantsearch.js/dist/instantsearch.css";
 @import "~slick-carousel/slick/slick.css";
 @import "../../common/css/status_colors";
+@import "../../common/css/utils";
 
 @each $color, $value in $theme-colors {
     .text-#{$color}-light { color: lighten($value, $app-color-lighten-amount); }
@@ -196,4 +197,26 @@
 
 .navbar {
     z-index: 3;
+}
+
+.progress {
+    height: 1rem;
+
+    &.thin {
+        height: 4px;
+    }
+
+    &.mandate-period {
+        overflow: visible;
+
+        .progress-bar {
+            position: relative;
+
+            span {
+                position: absolute;
+                right: -0.5em;
+                font-size: 1rem;
+            }
+        }
+    }
 }

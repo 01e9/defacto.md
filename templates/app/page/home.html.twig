@@ -4,18 +4,26 @@
 {% block body_class %}bg-transparent{% endblock %}
 
 {% block main %}
-    {% include 'app/component/section/mandate-statistics.html.twig' with {
-        mandate: president_mandate.mandate,
-        promise_statistics: president_mandate.promise_statistics,
-        power_statistics: president_mandate.power_statistics,
-    } only %}
-    {% if current_election %}
-        {% include 'app/component/section/election-statistics.html.twig' with {
-            election: current_election.election,
-            mandates: current_election.mandates,
-            constituencies: current_election.constituencies
-        } only %}
-    {% endif %}
+    <div class="container-fluid px-0">
+        <div class="row no-gutters bg-white">
+            <div class="col-12 col-lg-6">
+                {% include 'app/component/section/mandate-statistics.html.twig' with {
+                    mandate: president_mandate.mandate,
+                    promise_statistics: president_mandate.promise_statistics,
+                    power_statistics: president_mandate.power_statistics,
+                } only %}
+            </div>
+            {% if current_election %}
+                <div class="col-12 col-lg-6">
+                    {% include 'app/component/section/election-statistics.html.twig' with {
+                        election: current_election.election,
+                        mandates: current_election.mandates,
+                        constituencies: current_election.constituencies
+                    } only %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
     {% include 'app/component/section/promises.html.twig' with {
         promises: president_mandate.promises,
         container_class: 'bg-transparent'

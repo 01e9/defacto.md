@@ -1,14 +1,8 @@
-import {includeScript} from "../../common/js/utils";
+import { includeGoogleMapsScript } from "../../common/js/google-maps";
 
 /* global google */
 
-let scriptIncluded = false;
-
 function init(element) {
-    if (typeof google === "undefined") {
-        return;
-    }
-
     $(element).find('.google-map-widget:not(.initialized)').addClass('initialized').each((i, wrapper) => {
         const elements = {
             map: $(wrapper).find(".map").get(0),
@@ -44,13 +38,5 @@ function init(element) {
 }
 
 export function initElementGoogleMaps(element) {
-    if (scriptIncluded) {
-        init(element);
-    } else {
-        scriptIncluded = true;
-
-        const apiKey = $("head > meta[name='google-maps-api-key']").attr("content");
-        includeScript("https://maps.googleapis.com/maps/api/js?key=" + apiKey)
-            .then(() => init(element));
-    }
+    includeGoogleMapsScript().then(() => init(element)).catch(() => alert("Map init error"));
 }

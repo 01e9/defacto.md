@@ -1,5 +1,18 @@
 {% import 'macros.html.twig' as macros %}
 
+{% set mapData = [] %}
+{% for constituency in constituencies %}
+    {% if constituency.map.lat|default %}
+        {% set mapData = mapData|merge([{
+            lat: constituency.map.lat,
+            lng: constituency.map.lng,
+            label: constituency.number,
+            description: constituency.name,
+            url: path('constituency', {slug: constituency.slug}),
+        }]) %}
+    {% endif %}
+{% endfor %}
+
 <div class="election-statistics bg-white pb-5">
     {% include 'app/component/after-header-space.html.twig' %}
     <div class="container">
@@ -11,16 +24,7 @@
         <div class="row">
             <div class="col">
                 <div class="square">
-                    <div class="content bg-light p-3" style="overflow-y: auto;">
-                        {% for constituency in constituencies %}
-                            <p>
-                                <span class="badge badge-dark">{{ constituency.number }}</span>
-                                <a href="{{ path('constituency', {slug: constituency.slug}) }}">
-                                    {{ constituency.name }}
-                                </a>
-                            </p>
-                        {% endfor %}
-                    </div>
+                    <div class="content bg-light map-markers" data-map-markers="{{ mapData|json_encode }}"></div>
                 </div>
             </div>
         </div>

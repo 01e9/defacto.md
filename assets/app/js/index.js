@@ -7,38 +7,43 @@ jQuery($ => {
     $('[data-toggle="tooltip"]').tooltip()
 });
 
+/* global google */
+
 jQuery($ => {
     const $maps = $(".map-markers");
     if (!$maps.length) {
         return;
     }
 
-    includeGoogleMapsScript().then(() => { /* global google */
-        $maps.each((i, el) => {
-            const $map = $(el);
-            const markers = $map.data("map-markers");
+    includeGoogleMapsScript().then(() => $maps.each((i, el) => {
+        const $map = $(el);
+        const markers = $map.data("map-markers");
 
-            const map = new google.maps.Map(el, {
-                zoom: 7,
-                center: {lat: 47.025528, lng: 28.830481},
-                mapTypeControlOptions: {mapTypeIds: []},
-                streetViewControl: false
-            });
-
-            markers.forEach(markerData => {
-                const marker = new google.maps.Marker({
-                    map,
-                    position: {
-                        lat: parseFloat(markerData.lat),
-                        lng: parseFloat(markerData.lng)
-                    },
-                    label: String(markerData.label),
-                    title: markerData.description,
-                });
-                marker.addListener('click', e => {
-                    document.location.assign(markerData.url);
-                });
-            })
+        const map = new google.maps.Map(el, {
+            mapTypeControlOptions: {mapTypeIds: []},
+            streetViewControl: false
         });
-    }).catch(() => alert("Map error"));
+        const bounds = new google.maps.LatLngBounds();
+
+        markers.forEach(markerData => {
+            const position = new google.maps.LatLng(
+                parseFloat(markerData.lat),
+                parseFloat(markerData.lng)
+            );
+            const marker = new google.maps.Marker({
+                map,
+                position,
+                label: String(markerData.label),
+                title: markerData.description,
+            });
+            marker.addListener('click', () => document.location.assign(markerData.url));
+
+            bounds.extend(position);
+        });
+
+        {
+            map.fitBounds(bounds);
+            $(window).on("resize", () => console.log(map.fitBounds(bounds)));
+        }
+    })).catch(() => alert("Map error"));
 });

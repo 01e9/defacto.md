@@ -16,7 +16,7 @@ export const includeScript = (src, document) => new Promise((resolve, reject) =>
         if (typeof script.pendingPromisesStatus === "undefined") {
             addScriptPromiseCallbacks(script, resolve, reject);
         } else {
-            script.pendingPromisesStatus ? resolve() : reject();
+            setTimeout(() => script.pendingPromisesStatus ? resolve() : reject(), 0);
         }
     } else {
         script = document.createElement("script");

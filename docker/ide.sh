@@ -29,6 +29,7 @@ x11docker \
     --runasroot "echo 'Installing GUI libraries...' && apt-get update && apt-get install -y \
         libgtk2.0-0 libcanberra-gtk-module libxext-dev libxrender-dev \
         libxtst-dev libxslt-dev dmz-cursor-theme \
-        git wget htop zip unzip nano iputils-ping" \
+        git wget htop zip unzip nano iputils-ping gnupg2 \
+        && (curl -sL https://deb.nodesource.com/setup_10.x | bash -) && apt-get install -y nodejs" \
     -- "--cap-add=SYS_PTRACE --publish=80:8080 --network ${NETWORK} --hostname ${HOST}" \
     ${IMAGE} ${CMD}

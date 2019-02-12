@@ -9,8 +9,8 @@ $(() => {
 });
 
 $(() => {
-    $(".map-markers").each(() => {
-        initGoogleMapWithMarkers(this, document, $(this).data("map-markers") || [])
+    $(".map-markers").each((i, element) => {
+        initGoogleMapWithMarkers(element, document, $(element).data("map-markers") || [])
             .then(({map, bounds}) => {
                 $(window).on("resize", () => map.fitBounds(bounds));
             });

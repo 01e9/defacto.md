@@ -1,6 +1,7 @@
 import 'slick-carousel'
+import * as $ from "jquery";
 
-jQuery(($) => {
+$(() => {
     $('.team-slider').slick({
         slidesToShow: 3,
         infinite: true,

@@ -39,5 +39,5 @@ function init(element) {
 }
 
 export function initElementGoogleMaps(element) {
-    includeGoogleMapsScript().then(() => init(element)).catch(() => alert("Map init error"));
+    includeGoogleMapsScript(document).then(() => init(element)).catch(() => alert("Map init error"));
 }

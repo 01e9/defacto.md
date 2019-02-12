@@ -21,13 +21,4 @@ Encore
     .addStyleEntry('admin/styles', './assets/admin/css/index.scss')
 ;
 
-/*if (Encore.isProduction()) {
-    Encore
-        .configureUglifyJsPlugin((options) => {
-            options.test = /\.DISABLED$/i;
-            return options;
-        })
-        .addPlugin(new BabelMinifyPlugin({}, {}))
-}*/
-
 module.exports = Encore.getWebpackConfig();

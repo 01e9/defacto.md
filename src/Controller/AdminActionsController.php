@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\Action;
 use App\Entity\PromiseUpdate;
-use App\EventListener\DoctrineLogsListener;
 use App\Form\ActionDeleteType;
 use App\Form\ActionType;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -94,8 +93,7 @@ class AdminActionsController extends AbstractController
     public function editAction(
         Request $request,
         string $id,
-        TranslatorInterface $translator,
-        DoctrineLogsListener $logsListener
+        TranslatorInterface $translator
     ) {
         /** @var Action $action */
         $action = $this->getDoctrine()->getRepository('App:Action')->find($id);
@@ -108,10 +106,6 @@ class AdminActionsController extends AbstractController
 
         $originalSources = new ArrayCollection();
         array_map([$originalSources, 'add'], $action->getSources()->toArray());
-
-        if ($request->isMethod('POST')) {
-            $logsListener->addActionDataBefore($action);
-        }
 
         $form = $this->createForm(ActionType::class, $action, [
             'mandates' => [$action->getMandate()->getChoiceName() => $action->getMandate()],
@@ -153,7 +147,6 @@ class AdminActionsController extends AbstractController
 
         return $this->render('admin/page/action/edit.html.twig', [
             'form' => $form->createView(),
-            'logs' => $this->getDoctrine()->getRepository('App:Log')->findLatestByAction($action)
         ]);
     }
 

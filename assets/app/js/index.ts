@@ -1,15 +1,16 @@
-import 'bootstrap-material-design'
+import 'bootstrap'
 import './search'
 import './sliders'
 import { includeGoogleMapsScript } from "../../common/js/google-maps";
+import * as $ from "jquery";
 
-jQuery($ => {
-    $('[data-toggle="tooltip"]').tooltip()
+$(() => {
+    $('[data-toggle="tooltip"]').tooltip();
 });
 
 /* global google */
 
-jQuery($ => {
+$(() => {
     const $maps = $(".map-markers");
     if (!$maps.length) {
         return;

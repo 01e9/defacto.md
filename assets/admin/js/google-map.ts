@@ -1,4 +1,5 @@
 import { includeGoogleMapsScript } from "../../common/js/google-maps";
+import * as $ from "jquery";
 
 /* global google */
 
@@ -11,8 +12,8 @@ function init(element) {
         };
 
         const center = {
-            lat: parseFloat(elements.$lat.val()) || 47.025528,
-            lng: parseFloat(elements.$lng.val()) || 28.830481
+            lat: parseFloat(elements.$lat.val().toString()) || 47.025528,
+            lng: parseFloat(elements.$lng.val().toString()) || 28.830481
         };
 
         const map = new google.maps.Map(elements.map, {

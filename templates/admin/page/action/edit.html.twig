@@ -10,12 +10,5 @@
         } only %}
 
         {% include 'admin/component/form/action.html.twig' with {form: form} only %}
-
-        <div class="row mt-5">
-            <div class="col">
-                <h4>{{ 'title.logs'|trans }}</h4>
-                {% include 'admin/component/list/logs.html.twig' with {logs: logs} only %}
-            </div>
-        </div>
     </div>
 {% endblock %}

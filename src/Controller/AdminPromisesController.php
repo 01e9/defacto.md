@@ -4,7 +4,6 @@
 namespace App\Controller;
 
 use App\Entity\Promise;
-use App\EventListener\DoctrineLogsListener;
 use App\Form\PromiseDeleteType;
 use App\Form\PromiseType;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -77,8 +76,7 @@ class AdminPromisesController extends AbstractController
     public function editAction(
         Request $request,
         string $id,
-        TranslatorInterface $translator,
-        DoctrineLogsListener $logsListener
+        TranslatorInterface $translator
     ) {
         $promise = $this->getDoctrine()->getRepository('App:Promise')->find($id);
         if (!$promise) {
@@ -87,10 +85,6 @@ class AdminPromisesController extends AbstractController
 
         $originalSources = new ArrayCollection();
         array_map([$originalSources, 'add'], $promise->getSources()->toArray());
-
-        if ($request->isMethod('POST')) {
-            $logsListener->addPromiseDataBefore($promise);
-        }
 
         $actions = $this->getDoctrine()->getRepository('App:Action')->getAdminListByPromise($promise);
 
@@ -128,7 +122,6 @@ class AdminPromisesController extends AbstractController
             'form' => $form->createView(),
             'actions' => $actions,
             'promise' => $promise,
-            'logs' => $this->getDoctrine()->getRepository('App:Log')->findLatestByPromise($promise)
         ]);
     }
 

@@ -4,14 +4,14 @@
             <div class="col-md-6">
                 <h3>{{ 'title.about_project'|trans }}</h3>
                 <p>
-                    Proiectul deFacto este o platformă online, care vine să informeze tinerii despre atribuțiile politicienilor aleși
+                    Proiectul deFacto este o platformă online, care vine să informeze alegătorii despre atribuțiile politicienilor aleși
                     și cum sunt realizate promisiunile făcute de aceștia în campaniile electorale.
                 </p>
             </div>
             <div class="col-md-6">
                 <h3>{{ 'title.why_we_are_doing_this'|trans }}</h3>
                 <p>
-                    Credem că putem ajuta tinerii să-și ajusteze așteptările lor privind competențele pe care le au politicienii aleși.
+                    Credem că putem ajuta alegătorii să-și ajusteze așteptările lor privind competențele pe care le au politicienii aleși.
                     Iar prin monitorizarea promisiunilor, aceștia vor putea face o alegere mai informată.
                 </p>
             </div>
@@ -20,12 +20,11 @@
 </div>
 <div class="container-fluid bg-white pb-5">
     <div class="row">
-        <div class="col text-center about-us-with-photo">
-            <h3 class="h1 text-white pb-4 pb-sm-5">{{ 'title.about_us'|trans }}</h3>
-            <img src="{{ asset('photo/team.jpg') }}" alt="Team" class="d-block mx-auto mw-100">
+        <div class="col text-center">
+            <h3 class="h1 pb-4">{{ 'title.about_us'|trans }}</h3>
         </div>
     </div>
-    <div class="container py-5">
+    <div class="container">
         <div class="row">
             <div class="col">
                 <p>
@@ -44,47 +43,6 @@
                     <a href="https://www.facebook.com/cantarestetivotul/" target="_blank">Cântărește-ți votul</a> și
                     <a href="http://primariamea.md/" target="_blank">Primăria Mea</a>.
                 </p>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col">
-            <div class="team-slider">
-                {% for member in [
-                    {
-                        name: "Cristina Voroneanu",
-                        info: "A absolvit Facultatea de Relații Internaționale, Științe Politice și Administrative. Deși a studiat Relații Internaționale, Cristina este conștientă că deciziile importante se iau acasă, prin participarea egală a politicienilor și a cetățenilor. Din acest motiv, își propune să aducă politicienii mai aproape de oameni, astfel încât prioritățile cetățenilor, dar mai ales a tinerilor să devină prioritățile politicienilor, începând cu primul om politic al țării.",
-                        photo: "cristina-voroneanu.jpg"
-                    },
-                    {
-                        name: "Cristi Mariuța",
-                        info: "Este specialist în relații publice și comunicare, iar de mai mult de 3 ani este implicat în proiecte civice. Este absolvent și arbitru al școlii de dezbateri Challenger, precum și participant  la mai multe campanii de educare a alegătorilor. Crede că gândirea critică și raționamentele bazate pe argumente solide pot ajuta tinerii să aleagă un viitor mai bun pentru țara în care trăiesc.",
-                        photo: "cristi-mariuta.jpg"
-                    },
-                    {
-                        name: "Maria Josan",
-                        info: "Este mereu în căutare de adevăr și în speranța că poate ajuta cetățenii acestui stat să conștientizeze că puterea lor constă în responsabilizarea politicienilor ca să-și respecte promisiunile pentru care au fost aleși.",
-                        photo: "maria-josan.jpg"
-                    },
-                    {
-                        name: "Lia Plămădeală",
-                        info: "Este absolventa Școlii de Gândire critică Challenger și câștigătoarea competiției de dezbateri din cadrul aceleiași școli. Crede că fiecare este responsabil pentru impactul pe care îl produce în societate.",
-                        photo: "lia-plamadeala.jpg"
-                    },
-                    {
-                        name: "Roman Ciumac",
-                        info: "Este proaspăt absolvent al Facultății de Relații Internaționale, Științe Politice și Administrative. Crede că fiecare cetățean trebuie să fie preocupat de viața social-politică și să-și ia angajamentul să contribuie la prosperitatea țării. Este de părere că starea de lucruri din Republica Moldova, depinde, în mare parte, de doi factori: cetățeni informați și implicați și politicieni responsabili.",
-                        photo: "roman-ciumac.jpg"
-                    }
-                ] %}
-                    <div>
-                        <div class="px-2 px-sm-3 px-xl-4">
-                            <h5 class="text-center">{{ member.name }}</h5>
-                            <p><img src="{{ asset('photo/team/' ~ member.photo) }}" alt="{{ member.name }}" class="img-fluid mx-auto"></p>
-                            <p class="text-justify">{{ member.info }}</p>
-                        </div>
-                    </div>
-                {% endfor %}
             </div>
         </div>
     </div>

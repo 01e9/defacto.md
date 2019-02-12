@@ -24,43 +24,43 @@
                 >
             </div>
             <div class="col">
-                <h3>{{ mandate.politician.firstName }} {{ mandate.politician.lastName }}</h3>
+                <h3 class="mb-3">{{ mandate.politician.firstName }} {{ mandate.politician.lastName }}</h3>
 
-                <div class="progress mt-3 bg-light h-auto">
-                    <div class="progress-bar bg-{{ statistics_color }} text-right px-2 py-1"
-                         style="width: {{ mandate.votesPercent }}%;"
-                    >
-                        <div class="row">
-                            <div class="col text-left">
-                                <span class="fa fa-male mr-1"></span>
-                                <samp>
-                                    {{ mandate.votesCount|number_format }}
-                                    <span class="d-none d-sm-inline">{{ 'text.votes'|trans }}</span>
-                                </samp>
-                            </div>
-                            <div class="col text-right">
-                                <samp>{{ mandate.votesPercent }}%</samp>
+                <div class="row">
+                    <div class="col-xl-6">
+                        <div class="progress bg-light h-auto">
+                            <div class="progress-bar bg-{{ statistics_color }} text-right px-2 py-1 w-100">
+                                <div class="row">
+                                    <div class="col text-left">
+                                        <span class="fa fa-male mr-1"></span>
+                                        <samp>
+                                            {{ mandate.votesCount|number_format }}
+                                            <span class="d-none d-sm-inline">{{ 'text.votes'|trans }}</span>
+                                        </samp>
+                                    </div>
+                                    <div class="col text-right">
+                                        <samp>{{ mandate.votesPercent }}%</samp>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-        <div class="row mt-3">
-            <div class="col">
-                <div class="row small">
-                    <div class="col">
-                        <samp class="text-{{ statistics_color }}">{{ mandate.beginDate|date('d.m.Y') }}</samp>
-                    </div>
-                    <div class="col text-right">
-                        <samp class="text-{{ statistics_color }}">{{ mandate.endDate|date('d.m.Y') }}</samp>
-                    </div>
-                </div>
-                <div class="progress thin bg-light mandate-period">
-                    <div class="progress-bar bg-{{ statistics_color }}"
-                         style="width: {{ '' ~ macros.get_date_interval_progress(mandate.beginDate, mandate.endDate) }}%;"
-                    >
-                        <span class="fas fa-clock text-primary bg-white rounded-circle"></span>
+                    <div class="col-xl-6 mt-3 mt-xl-0">
+                        <div class="row small">
+                            <div class="col">
+                                <samp class="text-{{ statistics_color }}">{{ mandate.beginDate|date('d.m.Y') }}</samp>
+                            </div>
+                            <div class="col text-right">
+                                <samp class="text-{{ statistics_color }}">{{ mandate.endDate|date('d.m.Y') }}</samp>
+                            </div>
+                        </div>
+                        <div class="progress thin bg-light mandate-period">
+                            <div class="progress-bar bg-{{ statistics_color }} rounded"
+                                 style="width: {{ '' ~ macros.get_date_interval_progress(mandate.beginDate, mandate.endDate) }}%;"
+                            >
+                                <span class="fas fa-clock text-primary bg-white rounded-circle"></span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -90,7 +90,7 @@
 
                                 <a
                                     href="{{ path('status', {'slug': promise.status is defined ? promise.status.slug : '~'}) }}"
-                                    class="container-fluid status-statistics bg-light"
+                                    class="container-fluid status-statistics bg-light rounded"
                                 >
                                     <span class="row">
                                         <samp class="col-auto count text-body">{{ promise.count }}</samp>
@@ -98,7 +98,7 @@
                                             <span class="{{ spacingClasses }} {{ colorClass }}">
                                                 {{ statusName }}
                                             </span>
-                                            <span class="{{ spacingClasses }} text-white {{ bgColorClass }}" style="width: {{ width }}%;">
+                                            <span class="{{ spacingClasses }} {{ bgColorClass }} text-white rounded" style="width: {{ width }}%;">
                                                 {{ statusName }}
                                             </span>
                                         </b>

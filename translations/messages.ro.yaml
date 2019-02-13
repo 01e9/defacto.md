@@ -195,6 +195,9 @@ title:
         not_found: Pagina nu există
     logs: Jurnal de bord
     contact_information: Date de contact
+    candidates_with_most_chances: Candidați cu șanse de câștig
+    problems_metodology: Metodologia de colectare a problemelor
+    candidates_metodology: Metodologia de selectare a candidaților
 
 placeholder:
     choose_option: Alegeți o opțiune

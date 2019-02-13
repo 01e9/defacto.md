@@ -2,7 +2,7 @@
 
 {% set mapData = [] %}
 {% for constituency in constituencies %}
-    {% if constituency.map.lat|default %}
+    {% if constituency.hasMap() %}
         {% set mapData = mapData|merge([{
             lat: constituency.map.lat,
             lng: constituency.map.lng,

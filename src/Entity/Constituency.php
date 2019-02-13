@@ -217,4 +217,9 @@ class Constituency
 
         return $this;
     }
+
+    public function hasMap() : bool
+    {
+        return $this->map && $this->map['lat'];
+    }
 }

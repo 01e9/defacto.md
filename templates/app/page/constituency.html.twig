@@ -29,11 +29,13 @@
                     <div class="col col-lg-4">
                         <div class="card">
                             <div class="card-body p-0">
+                                {% if constituency.hasMap() %}
                                 <img
-                                    src="https://via.placeholder.com/300x300.png?text=Harta"
-                                    alt="Harta"
+                                    src="https://maps.googleapis.com/maps/api/staticmap?size=300x300&scale=2&center={{ constituency.map.lat }},{{ constituency.map.lng }}&markers=color:%23af2227%7Clabel:{{ constituency.number }}%7C{{ constituency.map.lat }},{{ constituency.map.lng }}&zoom=10&language={{ app.request.locale }}&key={{ google_maps_api_key }}"
+                                    alt="Map"
                                     class="img-fluid w-100"
                                 >
+                                {% endif %}
                             </div>
                             <div class="card-footer p-0">
                                 <a

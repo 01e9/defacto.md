@@ -1,11 +1,14 @@
-import {IMapMarkerData, initGoogleMapWithMarkers} from "./google-maps";
+import { IMapMarkerData, initGoogleMapWithMarkers } from "./google-maps";
 import createGoogleMapsMock from '@wapps/jest-google-maps-mock';
 import { JSDOM } from "jsdom";
+
+jest.mock("../../common/js/markerclusterer");
 
 beforeEach(() => {
     const googleMapsMock = createGoogleMapsMock();
     googleMapsMock.Map.prototype.fitBounds = jest.fn(); // https://github.com/hupe1980/wapps-components/pull/19
     googleMapsMock.LatLngBounds.prototype.extend = jest.fn();
+    googleMapsMock.Marker.prototype.getPosition = jest.fn();
     // @ts-ignore
     global.google = {maps: googleMapsMock};
 });

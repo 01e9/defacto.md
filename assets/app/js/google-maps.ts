@@ -1,4 +1,5 @@
 import { includeGoogleMapsScript } from "../../common/js/google-maps";
+import MarkerClusterer from "../../common/js/markerclusterer";
 
 export interface IMapMarkerData {
     lat: string;
@@ -15,30 +16,32 @@ export const initGoogleMapWithMarkers: (
 ) => Promise<{
     map: google.maps.Map,
     bounds: google.maps.LatLngBounds
-}> = (element, document, markers) => new Promise((resolve, reject) => {
+}> = (element, document, markersData) => new Promise((resolve, reject) => {
     includeGoogleMapsScript(document).then(() => {
         const map = new google.maps.Map(element, {
             mapTypeControlOptions: {mapTypeIds: []},
             streetViewControl: false
         });
-        const bounds = new google.maps.LatLngBounds();
 
-        markers.forEach(markerData => {
-            const position = new google.maps.LatLng(
-                parseFloat(markerData.lat),
-                parseFloat(markerData.lng)
-            );
+        const markers = markersData.map(markerData => {
             const marker = new google.maps.Marker({
                 map,
-                position,
+                position: new google.maps.LatLng(
+                    parseFloat(markerData.lat),
+                    parseFloat(markerData.lng)
+                ),
                 label: String(markerData.label),
                 title: markerData.description,
             });
             marker.addListener('click', () => document.location.assign(markerData.url));
 
-            bounds.extend(position);
+            return marker;
         });
 
+        const markerCluster = new MarkerClusterer(map, markers, {imagePath: '/img/markerclusterer/m'});
+
+        const bounds = new google.maps.LatLngBounds();
+        markers.forEach(marker => bounds.extend(marker.getPosition()));
         map.fitBounds(bounds);
 
         resolve({map, bounds});

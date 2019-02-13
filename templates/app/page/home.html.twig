@@ -4,24 +4,26 @@
 {% block body_class %}bg-transparent{% endblock %}
 
 {% block main %}
-    <div class="container-fluid px-0">
-        <div class="row no-gutters bg-white">
-            <div class="col-12 col-lg-6">
-                {% include 'app/component/section/mandate-statistics.html.twig' with {
-                    mandate: president_mandate.mandate,
-                    promise_statistics: president_mandate.promise_statistics,
-                    power_statistics: president_mandate.power_statistics,
-                } only %}
-            </div>
-            {% if current_election %}
+    <div class="container-fluid px-0 bg-white">
+        <div class="container">
+            <div class="row bg-white">
                 <div class="col-12 col-lg-6">
-                    {% include 'app/component/section/election-statistics.html.twig' with {
-                        election: current_election.election,
-                        mandates: current_election.mandates,
-                        constituencies: current_election.constituencies
+                    {% include 'app/component/block/statistics/mandate.html.twig' with {
+                        mandate: president_mandate.mandate,
+                        promise_statistics: president_mandate.promise_statistics,
+                        power_statistics: president_mandate.power_statistics,
                     } only %}
                 </div>
-            {% endif %}
+                {% if current_election %}
+                    <div class="col-12 col-lg-6 order-first order-lg-last">
+                        {% include 'app/component/block/statistics/election.html.twig' with {
+                            election: current_election.election,
+                            mandates: current_election.mandates,
+                            constituencies: current_election.constituencies
+                        } only %}
+                    </div>
+                {% endif %}
+            </div>
         </div>
     </div>
     {#{% include 'app/component/section/promises.html.twig' with {

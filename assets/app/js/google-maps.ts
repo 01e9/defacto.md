@@ -30,7 +30,7 @@ export const initGoogleMapWithMarkers: (
                     parseFloat(markerData.lat),
                     parseFloat(markerData.lng)
                 ),
-                label: String(markerData.label),
+                label: {text: String(markerData.label), color: "#ffffff", fontWeight: "bold"},
                 title: markerData.description,
             });
             marker.addListener('click', () => document.location.assign(markerData.url));

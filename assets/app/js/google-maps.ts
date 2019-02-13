@@ -1,5 +1,6 @@
 import { includeGoogleMapsScript } from "../../common/js/google-maps";
 import MarkerClusterer from "../../common/js/markerclusterer";
+import styles from "./google-maps-styles";
 
 export interface IMapMarkerData {
     lat: string;
@@ -20,7 +21,9 @@ export const initGoogleMapWithMarkers: (
     includeGoogleMapsScript(document).then(() => {
         const map = new google.maps.Map(element, {
             mapTypeControlOptions: {mapTypeIds: []},
-            streetViewControl: false
+            streetViewControl: false,
+            // @ts-ignore
+            styles
         });
 
         const markers = markersData.map(markerData => {

@@ -26,6 +26,10 @@ class StatusType extends AbstractType
             ->add('namePlural', TextType::class, [
                 'label' => 'label.name_plural',
             ])
+            ->add('description', TextType::class, [
+                'label' => 'label.description',
+                'required' => false,
+            ])
             ->add('slug', TextType::class, [
                 'label' => 'label.slug',
                 'attr' => ['data-slug-from' => 'status[namePlural]'],

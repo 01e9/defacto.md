@@ -59,6 +59,13 @@ class Status
     private $namePlural;
 
     /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     *
+     * @Assert\Length(min=3, max=255)
+     */
+    private $description;
+
+    /**
      * @ORM\Column(type="integer")
      */
     private $effect;
@@ -80,7 +87,7 @@ class Status
         return $this->slug;
     }
 
-    public function setSlug(?string $slug) : Status
+    public function setSlug(?string $slug) : self
     {
         $this->slug = $slug;
 
@@ -92,7 +99,7 @@ class Status
         return $this->name;
     }
 
-    public function setName(?string $name) : Status
+    public function setName(?string $name) : self
     {
         $this->name = $name;
 
@@ -104,9 +111,21 @@ class Status
         return $this->namePlural;
     }
 
-    public function setNamePlural(?string $namePlural) : Status
+    public function setNamePlural(?string $namePlural) : self
     {
         $this->namePlural = $namePlural;
+
+        return $this;
+    }
+
+    public function getDescription() : ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description) : self
+    {
+        $this->description = $description;
 
         return $this;
     }
@@ -116,7 +135,7 @@ class Status
         return $this->effect;
     }
 
-    public function setEffect(?int $effect) : Status
+    public function setEffect(?int $effect) : self
     {
         $this->effect = $effect;
 
@@ -128,7 +147,7 @@ class Status
         return $this->color;
     }
 
-    public function setColor(?string $color) : Status
+    public function setColor(?string $color) : self
     {
         $this->color = $color;
 

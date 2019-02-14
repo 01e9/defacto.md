@@ -18,6 +18,9 @@
                             {{ status ? status.namePlural : 'placeholder.inactive_plural'|trans }}
                         </span>
                     </h1>
+                    {% if status and status.description %}
+                        <div class="mt-5 text-muted">{{ status.description }}</div>
+                    {% endif %}
                 </div>
             </div>
         </div>

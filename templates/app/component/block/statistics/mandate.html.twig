@@ -88,12 +88,14 @@
                                 {% set statusName = promise.count == 1
                                     ? promise.status.name
                                     : promise.status.namePlural %}
+                                {% set statusDescription = promise.status.description %}
                                 {% set bgColorClass = "status-bg-" ~ promise.status.color ~ "-dark" %}
                                 {% set colorClass = "status-color-" ~ promise.status.color %}
                             {% else %}
                                 {% set statusName = promise.count == 1
                                     ? 'placeholder.inactive_singular'|trans
                                     : 'placeholder.inactive_plural'|trans %}
+                                {% set statusDescription = "" %}
                                 {% set bgColorClass = "bg-secondary" %}
                                 {% set colorClass = "text-secondary" %}
                             {% endif %}
@@ -103,6 +105,7 @@
                             <a
                                 href="{{ path('status', {'slug': promise.status is defined ? promise.status.slug : '~'}) }}"
                                 class="container-fluid status-statistics bg-light rounded"
+                                title="{{ statusDescription }}"
                             >
                                     <span class="row">
                                         <samp class="col-auto count text-body">{{ promise.count }}</samp>

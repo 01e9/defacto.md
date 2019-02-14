@@ -75,42 +75,29 @@
                         {{ "text.from"|trans }}
                         {{ candidate.election.date|date }}
                     </h4>
-                    {% if candidate.party %}
-                        <div class="{{ detailClasses.row }}">
-                            <div class="{{ detailClasses.colLabel }}">
-                                <strong>{{ "label.party"|trans }}</strong>
-                            </div>
-                            <div class="{{ detailClasses.colContent }}">
-                                <div class="row align-items-center">
-                                    <div class="col-auto pr-0">
-                                        <div style="width: {{ logoSize }};" class="text-center">
-                                            <img
-                                                src="{{ macros.party_logo_url(candidate.party) }}"
-                                                alt="Logo"
-                                                style="max-width: {{ logoSize }}; max-height: {{ logoSize }};"
-                                                class="rounded"
-                                            >
-                                        </div>
-                                    </div>
-                                    <div class="col">
-                                        {{ candidate.party.name }}
-                                    </div>
-                                </div>
-                            </div>
+                    {% if candidate.constituency %}
+                        <div class="mb-3">
+                            <a
+                                href="{{ path('constituency', {slug: candidate.constituency.slug, electionSlug: candidate.election.slug}) }}"
+                            >{{ candidate.constituency.name }}</a>
                         </div>
                     {% endif %}
-                    {% if candidate.constituency %}
-                        <div class="{{ detailClasses.row }}">
-                            <div class="{{ detailClasses.colLabel }}">
-                                <strong>{{ "label.constituency"|trans }}</strong>
-                            </div>
-                            <div class="{{ detailClasses.colContent }}">
-                                <a
-                                    href="{{ path('constituency', {
-                                        slug: candidate.constituency.slug,
-                                        electionSlug: candidate.election.slug})
-                                    }}"
-                                >{{ candidate.constituency.name }}</a>
+                    {% if candidate.party %}
+                        <div class="mb-3">
+                            <div class="row align-items-center">
+                                <div class="col-auto pr-0">
+                                    <div style="width: {{ logoSize }};" class="text-center">
+                                        <img
+                                            src="{{ macros.party_logo_url(candidate.party) }}"
+                                            alt="Logo"
+                                            style="max-width: {{ logoSize }}; max-height: {{ logoSize }};"
+                                            class="rounded"
+                                        >
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    {{ candidate.party.name }}
+                                </div>
                             </div>
                         </div>
                     {% endif %}

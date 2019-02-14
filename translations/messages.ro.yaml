@@ -57,6 +57,7 @@ label:
     problem: Problemă
     problems: Probleme
     respondents: Respondenți
+    percentage: Procentaj
     number: Numărul
     opinion: Opinia
     institution_title: Funcție
@@ -198,6 +199,7 @@ title:
     candidates_with_most_chances: Candidați cu șanse de câștig
     problems_metodology: Metodologia de colectare a problemelor
     candidates_metodology: Metodologia de selectare a candidaților
+    constituency_problems: Principalele probleme la nivel local și național
 
 placeholder:
     choose_option: Alegeți o opțiune
@@ -223,3 +225,4 @@ text:
     choose_constituency: Alegeți circumscripția
     or_click_on_map: sau faceți click pe hartă.
     duration: durata
+    respondents: respondenți

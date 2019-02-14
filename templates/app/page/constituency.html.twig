@@ -13,7 +13,7 @@
 {% block main %}
     <div class="container-fluid px-0 bg-white">
         {% include 'app/component/after-header-space.html.twig' %}
-        <div class="container">
+        <div class="container pb-4">
             <div class="row mb-3">
                 <div class="col">
                     <h1>{{ constituency.name }}</h1>
@@ -90,59 +90,58 @@
                             <a href='mail&#116;o&#58;&#100;efa&#99;&#37;74o%2E&#109;old%&#54;F&#37;76a&#64;g&#109;ail&#46;co&#109;'>de&#102;acto&#46;&#109;&#111;&#108;d&#111;va&#64;gmail&#46;&#99;om</a>
                         </p>
                     </div>
-                    </div>
                 </div>
             </div>
-        </div>
-        {% for election in elections %}
-            <div class="container">
-                {% if election.problems|default %}
-                    <div class="row pb-5">
-                        <div class="col">
-                            <h2 class="text-center mb-3">Top {{ election.problems|length }} probleme din circumscripție</h2>
-                            <div class="row mb-4 justify-content-around">
-                                {% for problem in election.problems %}
-                                    <div class="col-4">
-                                        <div class="card bg-light">
-                                            <div class="card-body">
-                                                <h5 class="card-title">{{ problem.problem.name }}</h5>
-                                                <p class="card-text">
-                                                    <small class="text-muted">
-                                                        {{ problem.respondents }} respondenți
-                                                    </small>
-                                                </p>
-                                                {% if election.problemOpinions[ problem.problem.id ] is defined %}
-                                                    <hr>
-                                                    <h6 class="text-secondary">Opinii</h6>
-                                                    {% for opinion in election.problemOpinions[ problem.problem.id ] %}
-                                                        <p class="{{ loop.last ? "mb-0" : "mb-1" }}">
-                                                            <strong>
-                                                                {{ opinion.politician.firstName }}
-                                                                {{ opinion.politician.lastName }}
-                                                            </strong>:
-                                                            {{ opinion.opinion }}
-                                                        </p>
-                                                    {% endfor %}
-                                                {% endif %}
-                                            </div>
+            {% if election.problems|default %}
+                <div class="row mt-4">
+                    <div class="col">
+                        <h3 class="mb-3">{{ "title.constituency_problems"|trans }}</h3>
+                        <div class="row mb-4">
+                            {% for problem in election.problems %}
+                                <div class="col-sm-6">
+                                    <div class="card bg-light">
+                                        <div class="card-body">
+                                            <h5 class="card-title">{{ problem.problem.name }}</h5>
+                                            <p class="card-text">
+                                                <small class="text-muted">
+                                                    {% if problem.respondents %}
+                                                        {{ problem.respondents }} {{ "text.respondents"|trans }}
+                                                    {% endif %}
+                                                    {% if problem.percentage %}
+                                                        {% if problem.respondents %}|{% endif %}
+                                                        {{ problem.percentage }}%
+                                                    {% endif %}
+                                                </small>
+                                            </p>
+                                            {% if election.problemOpinions[ problem.problem.id ] is defined %}
+                                                <hr>
+                                                <h6 class="text-secondary">Opinii</h6>
+                                                {% for opinion in election.problemOpinions[ problem.problem.id ] %}
+                                                    <p class="{{ loop.last ? "mb-0" : "mb-1" }}">
+                                                        <strong>
+                                                            {{ opinion.politician.firstName }}
+                                                            {{ opinion.politician.lastName }}
+                                                        </strong>:
+                                                        {{ opinion.opinion }}
+                                                    </p>
+                                                {% endfor %}
+                                            {% endif %}
                                         </div>
                                     </div>
-                                {% endfor %}
-                            </div>
-                            <div class="alert alert-light" role="alert">
-                                <h6 class="alert-heading">{{ "title.problems_metodology"|trans }}</h6>
-                                <p class="mb-0 small">
-                                    Principalele probleme la nivel local și național au fost identificate în cadrul sondajului 5000 de moldoveni au spus, în cadrul căruia au fost chestionați peste 5 mii de cetățeni din circumscripțiile uninominale, cu excepția regiunii transnistriene și a circumscripțiilor din afara țării.
-                                    Sondajul a fost organizat în cadrul proiectului Avem ce votăm, implementat de coaliția următoarelor organizații din Moldova: deFacto, Inițiativa Civică „Pune Umărul”, Școala de Gândire Critică pentru Tineri „Challenger”, Programul „Femei cu Idei”.
-                                </p>
-                            </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <div class="alert alert-dark text-muted" role="alert">
+                            <h6 class="alert-heading">{{ "title.problems_metodology"|trans }}</h6>
+                            <p class="mb-0 small">
+                                Principalele probleme la nivel local și național au fost identificate în cadrul sondajului 5000 de moldoveni au spus, în cadrul căruia au fost chestionați peste 5 mii de cetățeni din circumscripțiile uninominale, cu excepția regiunii transnistriene și a circumscripțiilor din afara țării.
+                                Sondajul a fost organizat în cadrul proiectului Avem ce votăm, implementat de coaliția următoarelor organizații din Moldova: deFacto, Inițiativa Civică „Pune Umărul”, Școala de Gândire Critică pentru Tineri „Challenger”, Programul „Femei cu Idei”.
+                            </p>
                         </div>
                     </div>
-                {% else %}
-                    <div class="pb-5"></div>
-                {% endif %}
-            </div>
-        {% endfor %}
+                </div>
+            {% endif %}
+        </div>
     </div>
     {% include 'app/component/section/footer.html.twig' only %}
 {% endblock %}

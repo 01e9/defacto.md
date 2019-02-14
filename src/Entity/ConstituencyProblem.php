@@ -49,12 +49,20 @@ class ConstituencyProblem
 
     /**
      * @var int
-     * @ORM\Column(type="integer", options={"unsigned"=true})
+     * @ORM\Column(type="integer", options={"unsigned"=true}, nullable=true)
+     *
+     * @Assert\GreaterThanOrEqual(1)
+     */
+    private $respondents;
+
+    /**
+     * @var float
+     * @ORM\Column(type="decimal", precision=5, scale=2, nullable=true)
      *
      * @Assert\NotBlank()
      * @Assert\GreaterThanOrEqual(1)
      */
-    private $respondents;
+    private $percentage;
 
     public function getId(): ?string
     {
@@ -105,6 +113,18 @@ class ConstituencyProblem
     public function setRespondents(?int $respondents): self
     {
         $this->respondents = $respondents;
+
+        return $this;
+    }
+
+    public function getPercentage() : ?float
+    {
+        return $this->percentage;
+    }
+
+    public function setPercentage(?float $percentage) : self
+    {
+        $this->percentage = $percentage;
 
         return $this;
     }

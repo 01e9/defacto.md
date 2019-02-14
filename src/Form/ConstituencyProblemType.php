@@ -34,6 +34,11 @@ class ConstituencyProblemType extends AbstractType
             ])
             ->add('respondents', NumberType::class, [
                 'label' => 'label.respondents',
+                'required' => false,
+            ])
+            ->add('percentage', NumberType::class, [
+                'label' => 'label.percentage',
+                'required' => false,
             ])
         ;
     }

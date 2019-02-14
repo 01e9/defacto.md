@@ -10,6 +10,11 @@
 {% set logoSize = '2rem' %}
 {% set maxImgWidth = '20rem' %}
 {% set emptyHtml = '<p>&nbsp;</p>' %}
+{% set detailClasses = {
+    row: "row mb-3",
+    colLabel: "col-lg-3",
+    colContent: "col-lg-9",
+} %}
 
 {% block main %}
     <div class="container-fluid px-0 bg-white">
@@ -61,6 +66,90 @@
                     {% endif %}
                 </div>
             </div>
+            {% for candidate in politician.candidates %}
+            <div class="row mt-5">
+                <div class="col">
+                    <h4 class="mb-3">
+                        {{ "title.candidate_in"|trans }}
+                        {{ candidate.election.name|lower }}
+                        {{ "text.from"|trans }}
+                        {{ candidate.election.date|date }}
+                    </h4>
+                    {% if candidate.party %}
+                        <div class="{{ detailClasses.row }}">
+                            <div class="{{ detailClasses.colLabel }}">
+                                <strong>{{ "label.party"|trans }}</strong>
+                            </div>
+                            <div class="{{ detailClasses.colContent }}">
+                                <div class="row align-items-center">
+                                    <div class="col-auto pr-0">
+                                        <div style="width: {{ logoSize }};" class="text-center">
+                                            <img
+                                                src="{{ macros.party_logo_url(candidate.party) }}"
+                                                alt="Logo"
+                                                style="max-width: {{ logoSize }}; max-height: {{ logoSize }};"
+                                                class="rounded"
+                                            >
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        {{ candidate.party.name }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% if candidate.constituency %}
+                        <div class="{{ detailClasses.row }}">
+                            <div class="{{ detailClasses.colLabel }}">
+                                <strong>{{ "label.constituency"|trans }}</strong>
+                            </div>
+                            <div class="{{ detailClasses.colContent }}">
+                                <a
+                                    href="{{ path('constituency', {
+                                        slug: candidate.constituency.slug,
+                                        electionSlug: candidate.election.slug})
+                                    }}"
+                                >{{ candidate.constituency.name }}</a>
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% if candidate.registrationDate %}
+                        <div class="{{ detailClasses.row }}">
+                            <div class="{{ detailClasses.colLabel }}">
+                                <strong>{{ "label.registration_date"|trans }}</strong>
+                            </div>
+                            <div class="{{ detailClasses.colContent }}">
+                                {% if candidate.registrationLink %}
+                                    <a
+                                        href="{{ candidate.registrationLink }}"
+                                        target="_blank"
+                                    ><samp>{{ candidate.registrationDate|date }}</samp></a>
+                                {% else %}
+                                    <samp>{{ candidate.registrationDate|date }}</samp>
+                                {% endif %}
+                                {% if candidate.registrationNote %}
+                                    <span class="ml-2">{{ candidate.registrationNote }}</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% if candidate.electoralPlatform and candidate.electoralPlatform != emptyHtml %}
+                        {{ self_macros.detail_block("label.electoral_platform"|trans, candidate.electoralPlatform, "raw") }}
+                    {% endif %}
+                    {% if candidate.electoralPlatformLink %}
+                        <div class="{{ detailClasses.row }}">
+                            <div class="{{ detailClasses.colLabel }}"></div>
+                            <div class="{{ detailClasses.colContent }}">
+                                <a href="{{ candidate.electoralPlatformLink }}" target="_blank">
+                                    {{ "label.electoral_platform_link"|trans }}
+                                </a>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
         </div>
     </div>
     {% include 'app/component/section/footer.html.twig' only %}

@@ -298,4 +298,12 @@ class Politician
 
         return $this;
     }
+
+    /**
+     * @return null|Candidate[]
+     */
+    public function getCandidates()
+    {
+        return $this->candidates;
+    }
 }

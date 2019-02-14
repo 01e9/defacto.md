@@ -54,7 +54,7 @@ label:
     politician: Politician
     party: Partid
     election: Alegeri
-    constituency: Circumscripție
+    constituency: Circumscripția
     problem: Problemă
     problems: Probleme
     respondents: Respondenți
@@ -201,6 +201,7 @@ title:
     problems_metodology: Metodologia de colectare a problemelor
     candidates_metodology: Metodologia de selectare a candidaților
     constituency_problems: Principalele probleme la nivel local și național
+    candidate_in: Candidat în
 
 placeholder:
     choose_option: Alegeți o opțiune
@@ -216,6 +217,7 @@ placeholder:
 
 text:
     at: la
+    from: din
     promise_is_monitored: Promisiunea se monitorizează
     promise_lower: promisiune
     status_unchanged_lower: statut neschimbat

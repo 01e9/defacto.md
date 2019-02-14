@@ -45,7 +45,7 @@
                     <div class="mb-3 row">
                         {% for candidate in election.candidates %}
                             <div class="col-sm-6 col-lg-4">
-                                <div class="card" style="max-width: {{ maxImgWidth }};">
+                                <div class="card mb-3" style="max-width: {{ maxImgWidth }};">
                                     <img
                                         src="{{ macros.politician_photo_url(candidate.politician) }}"
                                         alt="Politician"

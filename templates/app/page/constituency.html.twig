@@ -52,8 +52,10 @@
                                     >
                                     <div class="card-body px-2 pt-3 pb-1">
                                         <h6 class="card-title text-center">
-                                            {{ candidate.politician.firstName }}
-                                            {{ candidate.politician.lastName }}
+                                            <a href="{{ path("politician", {slug: candidate.politician.slug}) }}">
+                                                {{ candidate.politician.firstName }}
+                                                {{ candidate.politician.lastName }}
+                                            </a>
                                         </h6>
                                         {% if candidate.party %}
                                             <div class="row align-items-center">
@@ -118,8 +120,10 @@
                                                 {% for opinion in election.problemOpinions[ problem.problem.id ] %}
                                                     <p class="{{ loop.last ? "mb-0" : "mb-1" }}">
                                                         <strong>
-                                                            {{ opinion.politician.firstName }}
-                                                            {{ opinion.politician.lastName }}
+                                                            <a href="{{ path("politician", {slug: opinion.politician.slug}) }}">
+                                                                {{ opinion.politician.firstName }}
+                                                                {{ opinion.politician.lastName }}
+                                                            </a>
                                                         </strong>:
                                                         {{ opinion.opinion }}
                                                     </p>

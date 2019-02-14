@@ -23,8 +23,8 @@ class PromisesControllerTest extends WebTestCase
         $this->assertNotNull($promisePublished);
         $this->assertNotNull($promiseUnpublished);
 
-        $pathPublished = '/p/'. $promisePublished->getSlug();
-        $pathUnpublished = '/p/'. $promiseUnpublished->getSlug();
+        $pathPublished = '/pr/'. $promisePublished->getSlug();
+        $pathUnpublished = '/pr/'. $promiseUnpublished->getSlug();
 
         // without lang
         foreach ([$pathPublished, $pathUnpublished] as $path) {

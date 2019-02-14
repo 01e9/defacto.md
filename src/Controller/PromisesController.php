@@ -10,7 +10,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class PromisesController extends AbstractController
 {
     /**
-     * @Route(path="/p/{slug}", name="promise", methods={"GET"})
+     * @Route(path="/pr/{slug}", name="promise", methods={"GET"})
      */
     public function viewAction(Request $request, string $slug)
     {

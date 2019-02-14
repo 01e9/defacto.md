@@ -41,6 +41,7 @@ label:
     begin_date: Date de început
     end_date: Date de sfârșit
     birth_date: Data nașterii
+    age: Vârsta
     registration_date: Data înregistrării
     registration_link: Link decizie înregistrare
     registration_note: Notă înregistrare (Conform hotărârii...)
@@ -226,3 +227,4 @@ text:
     or_click_on_map: sau faceți click pe hartă.
     duration: durata
     respondents: respondenți
+    years_n: an|ani|de ani

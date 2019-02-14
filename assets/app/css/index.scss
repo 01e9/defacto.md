@@ -176,6 +176,11 @@
             margin-bottom: 0;
         }
     }
+
+    ul, ol {
+        list-style-position: inside;
+        padding-left: 0;
+    }
 }
 
 .navbar {

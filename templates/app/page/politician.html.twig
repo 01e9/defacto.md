@@ -1,0 +1,90 @@
+{% extends 'app/base.html.twig' %}
+{% import 'macros.html.twig' as macros %}
+{% import _self as self_macros %}
+
+{% block html_class %}bg-dark-pattern{% endblock %}
+{% block body_class %}bg-transparent{% endblock %}
+
+{% block title %}Politician{% endblock %}
+
+{% set logoSize = '2rem' %}
+{% set maxImgWidth = '20rem' %}
+{% set emptyHtml = '<p>&nbsp;</p>' %}
+
+{% block main %}
+    <div class="container-fluid px-0 bg-white">
+        {% include 'app/component/after-header-space.html.twig' %}
+        <div class="container pb-5">
+            <div class="row mb-3">
+                <div class="col">
+                    <h1>{{ politician.firstName }} {{ politician.lastName }}</h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-3 mb-3 mb-lg-0">
+                    <div>
+                        <img
+                            src="{{ macros.politician_photo_url(politician) }}"
+                            alt="Map"
+                            class="img-fluid w-100 rounded"
+                            style="max-width: {{ maxImgWidth }};"
+                        >
+                    </div>
+                </div>
+                <div class="col-lg-9">
+                    {% if politician.birthDate %}
+                        {{ self_macros.detail_block(
+                            "label.age"|trans,
+                            politician.birthDate|age ~ " " ~ "text.years_n"|transchoice(politician.birthDate|age)
+                        ) }}
+                    {% endif %}
+                    {% if politician.profession %}
+                        {{ self_macros.detail_block("label.profession"|trans, politician.profession) }}
+                    {% endif %}
+                    {% if politician.studies and politician.studies != emptyHtml %}
+                        {{ self_macros.detail_block("label.studies"|trans, politician.studies, "raw") }}
+                    {% endif %}
+                    {% if politician.previousTitles and politician.previousTitles != emptyHtml %}
+                        {{ self_macros.detail_block("label.previous_titles"|trans, politician.previousTitles, "raw") }}
+                    {% endif %}
+                    {% if politician.website %}
+                        {{ self_macros.detail_block("label.website"|trans, politician.website, "link") }}
+                    {% endif %}
+                    {% if politician.facebook %}
+                        {{ self_macros.detail_block("label.facebook"|trans, politician.facebook, "link") }}
+                    {% endif %}
+                    {% if politician.email %}
+                        {{ self_macros.detail_block("label.email"|trans, politician.email, "email") }}
+                    {% endif %}
+                    {% if politician.phone %}
+                        {{ self_macros.detail_block("label.phone"|trans, politician.phone, "phone") }}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% include 'app/component/section/footer.html.twig' only %}
+{% endblock %}
+
+{% macro detail_block(label, content, mode) %}
+    <div class="row mb-3">
+        <div class="col-lg-3">
+            <strong>{{ label }}</strong>
+        </div>
+        <div class="col-lg-9{% if mode == "raw" %} raw-html{% endif %}">
+            {% if not mode %}
+                {{ content }}
+            {% elseif mode == "raw" %}
+                {{ content|raw }}
+            {% elseif mode == "link" %}
+                <a href="{{ content }}" target="_blank">{{ content }}</a>
+            {% elseif mode == "email" %}
+                <a href="mailto:{{ content }}"><samp>{{ content }}</samp></a>
+            {% elseif mode == "phone" %}
+                <a href="tel:{{ content }}"><samp>{{ content }}</samp></a>
+            {% else %}
+                {{ content }}
+            {% endif %}
+        </div>
+    </div>
+{% endmacro %}

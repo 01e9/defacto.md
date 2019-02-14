@@ -5,7 +5,6 @@
     {% set maxCount = max(maxCount, promise.count) %}
 {% endfor %}
 
-{% set statistics_color = 'primary' %}
 
 <div class="mandate-statistics pb-5">
     {% include 'app/component/after-header-space.html.twig' %}
@@ -27,13 +26,18 @@
                             >
                         </div>
                         <div class="col">
-                            <h3 class="mb-3">{{ mandate.politician.firstName }} {{ mandate.politician.lastName }}</h3>
+                            <h3 class="mb-3">
+                                <a href="{{ path("politician", {slug: mandate.politician.slug}) }}">
+                                    {{ mandate.politician.firstName }}
+                                    {{ mandate.politician.lastName }}
+                                </a>
+                            </h3>
 
                             <div class="row">
                                 <div class="col-12">
                                     <div class="progress bg-light h-auto">
-                                        <div class="progress-bar bg-{{ statistics_color }} text-right px-2 py-1 w-100">
-                                            <div class="row">
+                                        <div class="progress-bar bg-info text-right px-2 py-1 w-100">
+                                            <div class="row font-weight-bold">
                                                 <div class="col text-left">
                                                     <span class="fa fa-male mr-1"></span>
                                                     <samp>
@@ -51,18 +55,18 @@
                                 <div class="col-12 mt-3">
                                     <div class="row small">
                                         <div class="col">
-                                            <samp class="text-{{ statistics_color }}">{{ mandate.beginDate|date('d.m.Y') }}</samp>
+                                            <samp class="text-body">{{ mandate.beginDate|date('d.m.Y') }}</samp>
                                         </div>
                                         <div class="col-auto"><sup class="text-muted">{{ "text.duration"|trans }}</sup></div>
                                         <div class="col text-right">
-                                            <samp class="text-{{ statistics_color }}">{{ mandate.endDate|date('d.m.Y') }}</samp>
+                                            <samp class="text-body">{{ mandate.endDate|date('d.m.Y') }}</samp>
                                         </div>
                                     </div>
                                     <div class="progress thin bg-light mandate-period">
-                                        <div class="progress-bar bg-{{ statistics_color }} rounded"
+                                        <div class="progress-bar bg-info rounded"
                                              style="width: {{ '' ~ macros.get_date_interval_progress(mandate.beginDate, mandate.endDate) }}%;"
                                         >
-                                            <span class="fas fa-clock text-primary bg-white rounded-circle"></span>
+                                            <span class="fas fa-clock text-info bg-white rounded-circle"></span>
                                         </div>
                                     </div>
                                 </div>

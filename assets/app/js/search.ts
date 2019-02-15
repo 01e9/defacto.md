@@ -40,7 +40,7 @@ function createInstantSearchInstances(types) {
                 cssClasses: {
                     empty: 'text-muted pt-3',
                     root: 'list-group',
-                    item: 'list-group-item px-0'
+                    item: 'list-group-item'
                 }
             })
         );

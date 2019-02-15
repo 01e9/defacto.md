@@ -38,10 +38,18 @@
                 </div>
                 <div class="col-lg-9">
                     {% if politician.birthDate %}
-                        {{ self_macros.detail_block(
-                            "label.age"|trans,
-                            politician.birthDate|age ~ " " ~ "text.years_n"|transchoice(politician.birthDate|age)
-                        ) }}
+                        <div class="{{ detailClasses.row }}">
+                            <div class="{{ detailClasses.colLabel }}">
+                                <strong>{{ "label.birth_date"|trans }}</strong>
+                            </div>
+                            <div class="{{ detailClasses.colContent }}">
+                                <samp>{{ politician.birthDate|date }}</samp>
+                                <small class="text-muted ml-3">
+                                    <samp>{{ politician.birthDate|age }}</samp>
+                                    {{ "text.years_n"|transchoice(politician.birthDate|age) }}
+                                </small>
+                            </div>
+                        </div>
                     {% endif %}
                     {% if politician.profession %}
                         {{ self_macros.detail_block("label.profession"|trans, politician.profession) }}
@@ -52,17 +60,46 @@
                     {% if politician.previousTitles and politician.previousTitles != emptyHtml %}
                         {{ self_macros.detail_block("label.previous_titles"|trans, politician.previousTitles, "raw") }}
                     {% endif %}
-                    {% if politician.website %}
-                        {{ self_macros.detail_block("label.website"|trans, politician.website, "link") }}
-                    {% endif %}
-                    {% if politician.facebook %}
-                        {{ self_macros.detail_block("label.facebook"|trans, politician.facebook, "link") }}
-                    {% endif %}
-                    {% if politician.email %}
-                        {{ self_macros.detail_block("label.email"|trans, politician.email, "email") }}
-                    {% endif %}
-                    {% if politician.phone %}
-                        {{ self_macros.detail_block("label.phone"|trans, politician.phone, "phone") }}
+                    {% if politician.website or politician.facebook or politician.email or politician.phone %}
+                        <div class="card mt-3">
+                            <div class="card-body pb-1">
+                                <h5 class="mb-3">{{ "title.contact_information"|trans }}</h5>
+                                <div class="row">
+                                    {% if politician.website %}
+                                        <div class="col-lg-6">
+                                            <p>
+                                                <span class="fas fa-globe mr-2"></span>
+                                                <a href="{{ politician.website }}" target="_blank">{{ politician.website }}</a>
+                                            </p>
+                                        </div>
+                                    {% endif %}
+                                    {% if politician.facebook %}
+                                        <div class="col-lg-6">
+                                            <p>
+                                                <span class="fab fa-facebook-square mr-2"></span>
+                                                <a href="{{ politician.website }}" target="_blank">{{ "label.facebook"|trans }}</a>
+                                            </p>
+                                        </div>
+                                    {% endif %}
+                                    {% if politician.email %}
+                                        <div class="col-lg-6">
+                                            <p>
+                                                <span class="fas fa-envelope mr-2"></span>
+                                                <a href="mailto:{{ politician.email }}"><samp>{{ politician.email }}</samp></a>
+                                            </p>
+                                        </div>
+                                    {% endif %}
+                                    {% if politician.phone %}
+                                        <div class="col-lg-6">
+                                            <p>
+                                                <span class="fas fa-mobile-alt mr-2"></span>
+                                                <a href="tel:{{ politician.phone }}"><samp>{{ politician.phone }}</samp></a>
+                                            </p>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
                     {% endif %}
                 </div>
             </div>

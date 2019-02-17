@@ -133,8 +133,8 @@
                                                 </small>
                                             </p>
                                         </div>
-                                        <div class="card-body bg-white rounded">
-                                            {% if election.problemOpinions[ problem.problem.id ] is defined %}
+                                        {% if election.problemOpinions[ problem.problem.id ] is defined %}
+                                            <div class="card-body bg-white rounded">
                                                 <h5 class="text-success font-weight-bold">{{ "title.candidates_solutions"|trans }}</h5>
                                                 {% for opinion in election.problemOpinions[ problem.problem.id ] %}
                                                     <p class="{{ loop.last ? "mb-0" : "mb-1" }}">
@@ -148,8 +148,8 @@
                                                         {{ opinion.opinion|nl2br }}
                                                     </p>
                                                 {% endfor %}
-                                            {% endif %}
-                                        </div>
+                                            </div>
+                                        {% endif %}
                                     </div>
                                 </div>
                             {% endfor %}

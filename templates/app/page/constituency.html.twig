@@ -133,7 +133,7 @@
                                                 </small>
                                             </p>
                                         </div>
-                                        <div class="card-body bg-white">
+                                        <div class="card-body bg-white rounded">
                                             {% if election.problemOpinions[ problem.problem.id ] is defined %}
                                                 <h5 class="text-success font-weight-bold">{{ "title.candidates_solutions"|trans }}</h5>
                                                 {% for opinion in election.problemOpinions[ problem.problem.id ] %}

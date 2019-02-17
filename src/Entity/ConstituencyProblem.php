@@ -59,7 +59,6 @@ class ConstituencyProblem
      * @var float
      * @ORM\Column(type="decimal", precision=5, scale=2, nullable=true)
      *
-     * @Assert\NotBlank()
      * @Assert\GreaterThanOrEqual(1)
      */
     private $percentage;

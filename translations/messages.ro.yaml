@@ -204,8 +204,9 @@ title:
     candidates_with_most_chances: Candidați cu șanse de câștig
     problems_metodology: Metodologia de colectare a problemelor
     candidates_metodology: Metodologia de selectare a candidaților
-    constituency_problems: Principalele probleme la nivel local și național
+    constituency_problems: Cele mai mari probleme după opinia localnicilor
     candidate_in: Candidat în
+    candidates_solutions: Soluțiile candidaților
 
 placeholder:
     choose_option: Alegeți o opțiune
@@ -233,5 +234,6 @@ text:
     choose_constituency: Alegeți circumscripția
     or_click_on_map: sau faceți click pe hartă.
     duration: durata
-    respondents: respondenți
+    respondents_n: respondent|respondenți|de respondenți
+    of_respondents: din respondenți
     years_n: an|ani|de ani

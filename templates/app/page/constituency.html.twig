@@ -103,33 +103,49 @@
                         <h3 class="mb-3">{{ "title.constituency_problems"|trans }}</h3>
                         <div class="row mb-4">
                             {% for problem in election.problems %}
-                                <div class="col-sm-6">
-                                    <div class="card bg-light">
-                                        <div class="card-body">
-                                            <h5 class="card-title">{{ problem.problem.name }}</h5>
+                                <div class="col-lg-6">
+                                    <div class="card bg-danger">
+                                        <div class="card-body text-white">
+                                            <h5 class="card-title mb-1">{{ problem.problem.name }}</h5>
                                             <p class="card-text">
-                                                <small class="text-muted">
+                                                {% if problem.type %}
+                                                    <span class="badge badge-warning mr-3 mb-2 mb-lg-0">
+                                                        {{ "title.problem"|trans }}
+                                                        {{ ("label.problem_types." ~ problem.type)|trans|lower }}
+                                                    </span>
+                                                    <br class="d-lg-none">
+                                                {% endif %}
+
+                                                <span class="fa fa-male mr-1"></span>
+                                                <small>
                                                     {% if problem.respondents %}
-                                                        {{ problem.respondents }} {{ "text.respondents"|trans }}
+                                                        <samp class="font-weight-bold">{{ problem.respondents }}</samp>
+                                                        {{ "text.respondents_n"|transchoice(problem.respondents) }}
                                                     {% endif %}
                                                     {% if problem.percentage %}
-                                                        {% if problem.respondents %}|{% endif %}
-                                                        {{ problem.percentage }}%
+                                                        {% if problem.respondents %}
+                                                            <span class="text-white-50 mx-2 d-none d-lg-inline">•</span>
+                                                            <br class="d-lg-none">
+                                                        {% endif %}
+                                                        <samp class="font-weight-bold">{{ problem.percentage }}</samp>%
+                                                        {{ "text.of_respondents"|trans }}
                                                     {% endif %}
                                                 </small>
                                             </p>
+                                        </div>
+                                        <div class="card-body bg-white">
                                             {% if election.problemOpinions[ problem.problem.id ] is defined %}
-                                                <hr>
-                                                <h6 class="text-secondary">Opinii</h6>
+                                                <h5 class="text-success font-weight-bold">{{ "title.candidates_solutions"|trans }}</h5>
                                                 {% for opinion in election.problemOpinions[ problem.problem.id ] %}
                                                     <p class="{{ loop.last ? "mb-0" : "mb-1" }}">
-                                                        <strong>
-                                                            <a href="{{ path("politician", {slug: opinion.politician.slug}) }}">
-                                                                {{ opinion.politician.firstName }}
-                                                                {{ opinion.politician.lastName }}
-                                                            </a>
-                                                        </strong>:
-                                                        {{ opinion.opinion }}
+
+                                                        <a
+                                                            href="{{ path("politician", {slug: opinion.politician.slug}) }}"
+                                                            class="font-weight-bold"
+                                                        >
+                                                            {{- opinion.politician.firstName }} {{ opinion.politician.lastName -}}
+                                                        </a>:
+                                                        {{ opinion.opinion|nl2br }}
                                                     </p>
                                                 {% endfor %}
                                             {% endif %}

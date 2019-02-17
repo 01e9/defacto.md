@@ -40,6 +40,15 @@ class ConstituencyProblemType extends AbstractType
                 'label' => 'label.percentage',
                 'required' => false,
             ])
+            ->add('type', ChoiceType::class, [
+                'label' => 'label.problem_type',
+                'placeholder' => 'placeholder.no_type',
+                'choices' => [
+                    "label.problem_types.local" => "local",
+                    "label.problem_types.national" => "national",
+                ],
+                'required' => false,
+            ])
         ;
     }
 

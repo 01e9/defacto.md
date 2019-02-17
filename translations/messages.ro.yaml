@@ -57,6 +57,10 @@ label:
     constituency: Circumscripția
     problem: Problemă
     problems: Probleme
+    problem_type: Tipul
+    problem_types:
+        local: Locală
+        national: Națională
     respondents: Respondenți
     percentage: Procentaj
     number: Numărul
@@ -214,6 +218,7 @@ placeholder:
     no_mandate_politician: Neales încă
     no_constituency: Fără circumscripție
     no_party: Independent
+    no_type: Fără tip
 
 text:
     at: la

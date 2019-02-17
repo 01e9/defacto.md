@@ -13,12 +13,12 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *     uniqueConstraints={
  *      @ORM\UniqueConstraint(
  *          name="constituency_problems_unique_composite",
- *          columns={"constituency_id", "election_id", "problem_id"}
+ *          columns={"constituency_id", "election_id", "problem_id", "type"}
  *      )
  *     }
  * )
  *
- * @UniqueEntity(fields={"constituency", "election", "problem"}, errorPath="problem")
+ * @UniqueEntity(fields={"constituency", "election", "problem", "type"}, errorPath="problem")
  */
 class ConstituencyProblem
 {
@@ -63,6 +63,13 @@ class ConstituencyProblem
      * @Assert\GreaterThanOrEqual(1)
      */
     private $percentage;
+
+    /**
+     * @ORM\Column(type="string", length=30, nullable=true)
+     *
+     * @Assert\Choice({"local", "national"})
+     */
+    private $type;
 
     public function getId(): ?string
     {
@@ -125,6 +132,18 @@ class ConstituencyProblem
     public function setPercentage(?float $percentage) : self
     {
         $this->percentage = $percentage;
+
+        return $this;
+    }
+
+    public function getType() : ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(?string $type) : self
+    {
+        $this->type = $type;
 
         return $this;
     }

@@ -34,7 +34,9 @@ function createInstantSearchInstances(types) {
             Hits({
                 container: selectors.$hits(type.id).get(0),
                 templates: {
-                    item: '<a href="/'+ LANG +'/'+ type.path +'">{{{_highlightResult.name.value}}}</a>',
+                    item: type.id == "politicians"
+                        ? '<a href="/'+ LANG +'/'+ type.path +'">{{{_highlightResult.firstName.value}}} {{{_highlightResult.lastName.value}}}</a>'
+                        : '<a href="/'+ LANG +'/'+ type.path +'">{{{_highlightResult.name.value}}}</a>',
                     empty: '<span class="fa fa-minus-circle"></span>'
                 },
                 cssClasses: {

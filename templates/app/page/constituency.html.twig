@@ -45,7 +45,7 @@
                         {{ election.election.date|date }}
                     </h6>
                     <h3 class="mb-3">{{ "title.candidates_with_most_chances"|trans }}<small class="text-muted">*</small></h3>
-                    <div class="mb-3 row">
+                    <div class="row">
                         {% for candidate in election.candidates %}
                             <div class="col-sm-6 col-lg-4">
                                 <div class="card mb-3" style="max-width: {{ maxImgWidth }};">
@@ -101,10 +101,10 @@
                 <div class="row mt-4">
                     <div class="col">
                         <h3 class="mb-3">{{ "title.constituency_problems"|trans }}</h3>
-                        <div class="row mb-4">
+                        <div class="row">
                             {% for problem in election.problems %}
                                 <div class="col-lg-6">
-                                    <div class="card bg-danger">
+                                    <div class="card bg-danger mb-3">
                                         <div class="card-body text-white">
                                             <h5 class="card-title mb-1">{{ problem.problem.name }}</h5>
                                             <p class="card-text">

@@ -5,7 +5,6 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\StatusRepository")
@@ -13,14 +12,12 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *     name="statuses",
  *     uniqueConstraints={
  *      @ORM\UniqueConstraint(name="status_unique_slug", columns={"slug"}),
- *      @ORM\UniqueConstraint(name="status_unique_effect", columns={"effect"}),
- *      @ORM\UniqueConstraint(name="status_unique_color", columns={"color"})
+ *      @ORM\UniqueConstraint(name="status_unique_effect", columns={"effect"})
  *     }
  * )
  *
  * @UniqueEntity(fields={"slug"})
  * @UniqueEntity(fields={"effect"})
- * @UniqueEntity(fields={"color"})
  */
 class Status
 {
@@ -33,7 +30,6 @@ class Status
 
     /**
      * @ORM\Column(type="string", length=50)
-     * @Groups({"searchable"})
      *
      * @Assert\NotBlank()
      * @Assert\Length(min=3, max=50)
@@ -51,7 +47,6 @@ class Status
 
     /**
      * @ORM\Column(type="string", length=50)
-     * @Groups({"searchable"})
      *
      * @Assert\NotBlank()
      * @Assert\Length(min=3, max=50)

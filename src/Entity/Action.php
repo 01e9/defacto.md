@@ -5,7 +5,6 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ActionRepository")
@@ -32,7 +31,6 @@ class Action
 
     /**
      * @ORM\Column(type="string", length=120)
-     * @Groups({"searchable"})
      *
      * @Assert\NotBlank()
      * @Assert\Length(min=3, max=120)
@@ -41,7 +39,6 @@ class Action
 
     /**
      * @ORM\Column(name="slug", type="string", length=120)
-     * @Groups({"searchable"})
      *
      * @Assert\NotBlank()
      * @Assert\Length(min=3, max=120)

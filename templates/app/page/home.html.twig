@@ -31,5 +31,27 @@
         container_class: 'bg-transparent'
     } only %}#}
     {% include 'app/component/section/about-us.html.twig' only %}
+    <div class="container-fluid bg-white">
+        <div class="container py-4">
+            <div class="row">
+                <div class="col text-center">
+                    <h3>{{ "title.partners"|trans }}</h3>
+                    <div class="mt-3">
+                        <a href="https://avemcevotam.md/" target="_blank"><img
+                                src="{{ asset('img/partners/avem-ce-votam.png') }}"
+                                style="max-height: 6rem"
+                                class="d-inline-block"
+                                alt="avemcevotam.md" ></a>
+                        <div class="p-2 d-block d-lg-inline"></div>
+                        <a href="https://5000.md/" target="_blank"><img
+                                src="{{ asset('img/partners/5000.png') }}"
+                                style="max-height: 6rem"
+                                class="d-inline-block"
+                                alt="5000.md" ></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     {% include 'app/component/section/footer.html.twig' only %}
 {% endblock %}

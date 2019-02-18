@@ -138,7 +138,6 @@
                                                 <h5 class="text-success font-weight-bold">{{ "title.candidates_solutions"|trans }}</h5>
                                                 {% for opinion in election.problemOpinions[ problem.problem.id ] %}
                                                     <p class="{{ loop.last ? "mb-0" : "mb-1" }}">
-
                                                         <a
                                                             href="{{ path("politician", {slug: opinion.politician.slug}) }}"
                                                             class="font-weight-bold"
@@ -157,8 +156,16 @@
                         <div class="alert alert-dark text-muted" role="alert">
                             <h6 class="alert-heading">{{ "title.problems_metodology"|trans }}</h6>
                             <p class="mb-0 small">
-                                Principalele probleme la nivel local și național au fost identificate în cadrul sondajului 5000 de moldoveni au spus, în cadrul căruia au fost chestionați peste 5 mii de cetățeni din circumscripțiile uninominale, cu excepția regiunii transnistriene și a circumscripțiilor din afara țării.
-                                Sondajul a fost organizat în cadrul proiectului Avem ce votăm, implementat de coaliția următoarelor organizații din Moldova: deFacto, Inițiativa Civică „Pune Umărul”, Școala de Gândire Critică pentru Tineri „Challenger”, Programul „Femei cu Idei”.
+                                Principalele probleme la nivel local și național au fost identificate în cadrul sondajului
+                                <a href="https://5000.md/" target="_blank">5000 de moldoveni au spus</a>,
+                                în cadrul căruia au fost chestionați peste 5 mii de cetățeni din circumscripțiile uninominale,
+                                cu excepția regiunii transnistriene și a circumscripțiilor din afara țării.
+                                Sondajul a fost organizat în cadrul proiectului <a href="https://avemcevotam.md/" target="_blank">Avem ce votăm</a>,
+                                implementat de coaliția următoarelor organizații din Moldova:
+                                deFacto,
+                                Inițiativa Civică <a href="http://puneumarul.md/" target="_blank">„Pune Umărul”</a>,
+                                Școala de Gândire Critică pentru Tineri <a href="http://www.challenger.md/" target="_blank">„Challenger”</a>,
+                                Programul <a href="http://puneumarul.md/lansarea-programului-femei-cu-idei/">„Femei cu Idei”</a>.
                             </p>
                         </div>
                     </div>

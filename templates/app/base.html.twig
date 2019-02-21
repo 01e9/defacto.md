@@ -3,6 +3,7 @@
 {% block head_meta %}
     {{ parent() }}
     <meta name="robots" content="noindex">
+    <meta name="og:image" content="{{ asset("img/logo-big.png") }}">
 {% endblock %}
 
 {% block stylesheets %}
@@ -29,4 +30,13 @@
     {% block body_end %}
         {% include 'app/component/flash-messages.html.twig' %}
     {% endblock %}
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-109582556-2"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'UA-109582556-2');
+</script>
+
 {% endblock %}

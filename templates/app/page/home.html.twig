@@ -3,6 +3,11 @@
 {% block html_class %}bg-dark-pattern{% endblock %}
 {% block body_class %}bg-transparent{% endblock %}
 
+{% block head_meta %}
+    {{ parent() }}
+    <meta name="description" content="Platformă de monitorizare a promisiunilor electorale">
+{% endblock %}
+
 {% block main %}
     <div class="container-fluid px-0 bg-white">
         <div class="container">

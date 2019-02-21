@@ -3,7 +3,7 @@
 {% block head_meta %}
     {{ parent() }}
     <meta name="robots" content="noindex">
-    <meta name="og:image" content="{{ asset("img/logo-big.png") }}">
+    <meta name="og:image" content="{{ app.request.getSchemeAndHttpHost ~ asset("img/logo-big.png") }}">
 {% endblock %}
 
 {% block stylesheets %}

@@ -1,0 +1,9 @@
+{% set line %}
+    <div class="bg-{{ lineColor|default("primary") }} px-1 h-100 position-relative"></div>
+{% endset %}
+
+{% include "app/component/block/timeline/layout.html.twig" with {
+    line: line,
+    header: header|default,
+    content: content|default
+} %}

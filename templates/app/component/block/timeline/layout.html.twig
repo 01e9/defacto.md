@@ -1,0 +1,18 @@
+<div class="row">
+    <div class="col-auto d-lg-none px-2">
+        {{ line }}
+    </div>
+    <div class="col pl-0 pl-lg-3">
+        <div class="row">
+            <div class="col-lg-2 text-lg-right">
+                {{ header|default }}
+            </div>
+            <div class="d-none d-lg-block col-lg-auto px-1">
+                {{ line }}
+            </div>
+            <div class="col">
+                {{ content|default }}
+            </div>
+        </div>
+    </div>
+</div>

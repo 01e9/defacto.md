@@ -10,131 +10,149 @@
 {% set has_categories = promise.categories is not empty %}
 
 {% block main %}
-    <div class="bg-light-pattern">
+    <div class="bg-white">
         {% include 'app/component/after-header-space.html.twig' %}
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-5 col-xl-4 mb-3 mb-lg-0">
-                    <div class="row promise-made-by">
-                        <div class="col">
-                            <div class="d-lg-flex align-items-center text-center">
-                                <img class="rounded-circle img-fluid mr-0 mr-lg-3 mb-3 mb-lg-0"
-                                     src="{{ macros.politician_photo_url(promise.politician) }}"
-                                     alt="Politician">
-                                <h1 class="h4">
-                                    <strong>
-                                        {{- promise.politician.firstName }}
-                                        {{ promise.politician.lastName -}}
-                                    </strong>
-                                    <br>
-                                    {{ 'title._promised'|trans }}
-                                </h1>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-7 col-xl-8">
-                    {% include 'app/component/item/promise.html.twig' with {promise: promise, is_main: true} only %}
+
+        {% set header %}
+            <p>
+                <samp
+                    data-toggle="tooltip"
+                    data-placement="right"
+                    title="{{ promise.madeTime|ago }}"
+                    class="badge badge-primary align-top"
+                >{{ promise.madeTime|date }}</samp>
+            </p>
+            <p class="h5 mb-3">
+                <img
+                    class="rounded-circle mb-2"
+                    style="max-height: 3em"
+                    src="{{ macros.politician_photo_url(promise.politician) }}"
+                    alt="Politician"><br>
+                <a
+                    href="{{ path("politician", {slug: promise.politician.slug}) }}"
+                ><strong>{{ promise.politician.firstName }} {{ promise.politician.lastName }}</strong></a><br>
+                <strong>{{ 'title._promised'|trans }}</strong>
+            </p>
+        {% endset %}
+        {% set content %}
+            <h1 class="h2">{{ promise.name }}</h1>
+            <div class="position-relative">
+                <div class="py-5 py-lg-0">
+                    {% if promise.status %}
+                        <div class="status-stamp status-color-{{ promise.status.color }}">{{ promise.status.name }}</div>
+                    {% else %}
+                        <div class="status-stamp text-muted">{{ "placeholder.inactive_plural"|trans }}</div>
+                    {% endif %}
                 </div>
             </div>
-            {% if has_categories %}
-                <div class="row mt-3">
-                    <div class="offset-lg-5 offset-xl-4 col-lg-7 col-xl-8">
+            <div class="py-2">
+                {% if has_categories %}
+                    <div>
                         {% for category in promise.categories %}
-                            <span class="badge badge-info{% if not loop.first %} ml-3{% endif %}">
-                                {{- category.name -}}
-                            </span>
+                            <span
+                                class="badge badge-info{% if not loop.first %} ml-3{% endif %}"
+                            >{{ category.name }}</span>
                         {% endfor %}
                     </div>
-                </div>
-            {% endif %}
-
-            {% if has_description %}
-            <div class="row">
-                <div class="col">
-                    <div class="card bg-light {% if has_categories %}mt-3{% else %} mt-5{% endif %}">
-                        <div class="card-body raw-html">{{ promise.description|raw }}</div>
-                    </div>
-                </div>
+                {% endif %}
+                {% if promise.sources is not empty %}
+                    <section class="mt-2">
+                        {{ self_macros.sources(promise.sources) }}
+                    </section>
+                {% endif %}
             </div>
+            {% if has_description %}
+                <div class="my-3 raw-html">{{ promise.description|raw }}</div>
             {% endif %}
+            <div class="mb-5"></div>
+        {% endset %}
+        <div class="container promise-page-header">
+            {% include "app/component/block/timeline/begin.html.twig" with {
+                header: header,
+                content: content
+            } only %}
+        </div>
+    </div>
+    <div class="bg-light">
+        <div class="container">
+            {% set content %}
+                {% if promise.promiseUpdates is empty %}
+                    <h3 class="mt-5 mb-3 text-muted">{{ 'title.promise_no_actions'|trans }}</h3>
+                    <p class="mb-5 text-muted">
+                        <span class="fa fa-search h3 mr-2"></span>
+                        {{ 'text.promise_is_monitored'|trans }}
+                    </p>
+                {% else %}
+                    <h3 class="my-4">{{ 'title.promise_actions'|trans }}</h3>
+                {% endif %}
+            {% endset %}
+            {% include "app/component/block/timeline/segment.html.twig" with {
+                content: content,
+                lineColor: "secondary"
+            } only %}
+        </div>
+    </div>
+    <div class="bg-white">
+        <div class="container">
+            {% if promise.promiseUpdates is not empty %}
+                {% set content %}<div class="pt-3"></div>{% endset %}
+                {% include "app/component/block/timeline/segment.html.twig" with {
+                    content: content
+                } only %}
 
-            {% if promise.sources is not empty %}
-                <section class="mt-3">
-                    {{ self_macros.sources(promise.sources) }}
-                </section>
-            {% endif %}
-        </div>
-        {% include 'app/component/after-header-space.html.twig' %}
-    </div>
-    <div class="container mt-5">
-        <div class="row">
-            {% if promise.promiseUpdates is empty %}
-                <div class="col text-center text-light">
-                    <h2 class="h3 text-danger-light">{{ 'title.promise_no_actions'|trans }}</h2>
-                    <p class="h3 mt-5"><span class="fa fa-search"></span></p>
-                    <p class="mb-0">{{ 'text.promise_is_monitored'|trans }}</p>
-                </div>
-            {% else %}
-                <div class="col">
-                    <h2 class="h3 text-light text-center">{{ 'title.promise_actions'|trans }}</h2>
-                    <div class="mt-5">
-                        {% for promiseUpdate in promise.publishedPromiseUpdatesSortedByActionDate %}
-                            <div class="row align-items-md-center{% if not loop.last %} mb-3 mb-lg-5{% endif %}">
-                                <div class="col">
-                                    <div class="card bg-light">
-                                        <div class="card-header">
-                                            <div class="row">
-                                                <div class="col-sm-6">
-                                                        <span class="text-muted d-inline-block pr-1"
-                                                              data-toggle="tooltip" data-placement="right"
-                                                              title="{{ promiseUpdate.action.occurredTime|date }}"
-                                                        >{{ promiseUpdate.action.occurredTime|ago }}</span>
-                                                    {% if promiseUpdate.action.usedPowers is not empty %}
-                                                        {% for power in promiseUpdate.action.usedPowers %}
-                                                            <span class="badge badge-primary">{{ power.name }}</span>
-                                                        {% endfor %}
-                                                    {% endif %}
-                                                </div>
-                                                <div class="col-sm-6 text-sm-right">
-                                                    {% if promiseUpdate.status %}
-                                                        <span class="text-muted">{{ 'text.promise_lower'|trans }}</span>
-                                                        <span class="text-uppercase badge text-white status-bg-{{ promiseUpdate.status.color }}"
-                                                        >{{ promiseUpdate.status.name }}</span>
-                                                    {% else %}
-                                                        <span class="text-muted">{{ 'text.status_unchanged_lower'|trans }}</span>
-                                                    {% endif %}
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="card-body">
-                                            {% set has_description = (
-                                                promiseUpdate.action.description|trim is not empty
-                                                and
-                                                promiseUpdate.action.description != '<p>&nbsp;</p>'
-                                                ) %}
-                                            <h4 class="mb-{{ has_description ? '3' : '0' }}">
-                                                {{- promiseUpdate.action.name -}}
-                                            </h4>
-                                            {% if has_description %}
-                                                <div class="raw-html">{{ promiseUpdate.action.description|raw }}</div>
-                                            {% endif %}
-                                        </div>
-                                        {% if promiseUpdate.action.sources is not empty %}
-                                            <div class="card-footer bg-light">
-                                                {{ self_macros.sources(promiseUpdate.action.sources) }}
-                                            </div>
-                                        {% endif %}
-                                    </div>
+                {% for promiseUpdate in promise.publishedPromiseUpdatesSortedByActionDate %}
+                    {% set header %}
+                        <p>
+                            <samp
+                                data-toggle="tooltip"
+                                data-placement="right"
+                                title="{{ promiseUpdate.action.occurredTime|ago }}"
+                                class="badge badge-primary align-bottom"
+                            >{{ promiseUpdate.action.occurredTime|date }}</samp>
+                        </p>
+                        <div>
+                            {% if promiseUpdate.status %}
+                                <div class="my-4">
+                                    <span class="status-stamp status-color-{{ promiseUpdate.status.color }}"
+                                    >{{ promiseUpdate.status.name }}</span>
                                 </div>
+                            {% else %}
+                                <small class="text-muted">{{ 'text.status_unchanged_lower'|trans }}</small>
+                            {% endif %}
+                        </div>
+                    {% endset %}
+                    {% set content %}
+                        <h4 class="mb-{{ has_description ? '3' : '0' }}">{{ promiseUpdate.action.name }}</h4>
+                        <div>
+                            {% if promiseUpdate.action.usedPowers is not empty %}
+                                {% for power in promiseUpdate.action.usedPowers %}
+                                    <span class="badge badge-info align-top mb-3">{{ power.name }}</span>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                        {% set has_description = (
+                            promiseUpdate.action.description|trim is not empty
+                            and promiseUpdate.action.description != '<p>&nbsp;</p>')
+                        %}
+                        {% if has_description %}
+                            <div class="raw-html">{{ promiseUpdate.action.description|raw }}</div>
+                        {% endif %}
+                        {% if promiseUpdate.action.sources is not empty %}
+                            <div class="mt-3">
+                                {{ self_macros.sources(promiseUpdate.action.sources) }}
                             </div>
-                        {% endfor %}
-                    </div>
-                </div>
+                        {% endif %}
+                        <div class="py-5"></div>
+                    {% endset %}
+                    {% include "app/component/block/timeline/segment-dot.html.twig" with {
+                        header: header,
+                        content: content
+                    } only %}
+                {% endfor %}
             {% endif %}
         </div>
     </div>
-    {% include 'app/component/section/footer.html.twig' with {delimiter: true} only %}
+    {% include 'app/component/section/footer.html.twig' with {} only %}
 {% endblock %}
 
 {% macro sources(list) %}

@@ -241,7 +241,7 @@ class Promise
                 if ($a->getAction()->getOccurredTime() == $b->getAction()->getOccurredTime()) {
                     return 0;
                 }
-                return ($a->getAction()->getOccurredTime() > $b->getAction()->getOccurredTime()) ? -1 : 1;
+                return ($a->getAction()->getOccurredTime() < $b->getAction()->getOccurredTime()) ? -1 : 1;
             });
         }
 

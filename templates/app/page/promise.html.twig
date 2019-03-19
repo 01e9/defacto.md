@@ -39,7 +39,12 @@
             <div class="position-relative">
                 <div class="py-5 py-lg-0">
                     {% if promise.status %}
-                        <div class="status-stamp status-color-{{ promise.status.color }}">{{ promise.status.name }}</div>
+                        <div
+                            class="status-stamp status-color-{{ promise.status.color }}"
+                            data-toggle="tooltip"
+                            data-placement="left"
+                            title="{{ promise.status.description }}"
+                        >{{ promise.status.name }}</div>
                     {% else %}
                         <div class="status-stamp text-muted">{{ "placeholder.inactive_plural"|trans }}</div>
                     {% endif %}
@@ -113,7 +118,11 @@
                         <div>
                             {% if promiseUpdate.status %}
                                 <div class="my-4">
-                                    <span class="status-stamp status-color-{{ promiseUpdate.status.color }}"
+                                    <span
+                                        class="status-stamp status-color-{{ promiseUpdate.status.color }}"
+                                        data-toggle="tooltip"
+                                        data-placement="right"
+                                        title="{{ promiseUpdate.status.description }}"
                                     >{{ promiseUpdate.status.name }}</span>
                                 </div>
                             {% else %}

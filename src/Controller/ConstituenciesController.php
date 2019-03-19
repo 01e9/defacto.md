@@ -30,6 +30,11 @@ class ConstituenciesController extends AbstractController
             throw $this->createNotFoundException();
         }
 
+        $mandate = $this->getDoctrine()->getRepository('App:Mandate')->findOneBy([
+            'constituency' => $constituency,
+            'election' => $election,
+        ]);
+
         $elections = [];
         foreach ($constituency->getCandidates() as $candidate) {
             $el = $candidate->getElection();
@@ -50,6 +55,7 @@ class ConstituenciesController extends AbstractController
         return $this->render('app/page/constituency.html.twig', [
             'constituency' => $constituency,
             'election' => $elections[ $election->getId() ],
+            'mandate' => $mandate,
         ]);
     }
 }

@@ -101,6 +101,14 @@ class Mandate
      */
     private $votesPercent;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     *
+     * @Assert\Length(max=255)
+     * @Assert\Url()
+     */
+    private $decisionLink;
+
     public function getId() : ?string
     {
         return $this->id;
@@ -198,6 +206,18 @@ class Mandate
     public function setVotesPercent(?float $percent) : self
     {
         $this->votesPercent = $percent;
+
+        return $this;
+    }
+
+    public function getDecisionLink() : ?string
+    {
+        return $this->decisionLink;
+    }
+
+    public function setDecisionLink(?string $decisionLink) : self
+    {
+        $this->decisionLink = $decisionLink;
 
         return $this;
     }

@@ -3,8 +3,12 @@
 {{ form_start(form) }}
 
 <div class="row">
-    <div class="col-6">
+    <div class="col-4">
         {{ form_row(form.politician) }}
+    </div>
+    <div class="col-2">
+        <div class="p-md-3"></div>
+        {{ form_row(form.hasPrerogatives) }}
     </div>
     <div class="col-6">
         {{ form_row(form.election) }}

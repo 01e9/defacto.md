@@ -91,6 +91,11 @@ class Promise
     private $published;
 
     /**
+     * @ORM\Column(type="boolean", options={"default":false})
+     */
+    private $hasPrerogatives;
+
+    /**
      * @ORM\OneToMany(targetEntity="PromiseUpdate", mappedBy="promise")
      * @ORM\JoinColumn(nullable=false)
      *
@@ -109,6 +114,7 @@ class Promise
     public function __construct()
     {
         $this->published = false;
+        $this->hasPrerogatives = false;
         $this->categories = new ArrayCollection();
         $this->promiseUpdates = new ArrayCollection();
         $this->sources = new ArrayCollection();
@@ -124,7 +130,7 @@ class Promise
         return $this->election;
     }
 
-    public function setElection(?Election $election) : Promise
+    public function setElection(?Election $election) : self
     {
         $this->election = $election;
 
@@ -136,7 +142,7 @@ class Promise
         return $this->politician;
     }
 
-    public function setPolitician(?Politician $politician) : Promise
+    public function setPolitician(?Politician $politician) : self
     {
         $this->politician = $politician;
 
@@ -148,7 +154,7 @@ class Promise
         return $this->status;
     }
 
-    public function setStatus(?Status $status) : Promise
+    public function setStatus(?Status $status) : self
     {
         $this->status = $status;
 
@@ -160,9 +166,21 @@ class Promise
         return $this->published;
     }
 
-    public function setPublished(?bool $published) : Promise
+    public function setPublished(?bool $published) : self
     {
         $this->published = $published;
+
+        return $this;
+    }
+
+    public function getHasPrerogatives() : ?bool
+    {
+        return $this->hasPrerogatives;
+    }
+
+    public function setHasPrerogatives(?bool $hasPrerogatives) : self
+    {
+        $this->hasPrerogatives = $hasPrerogatives;
 
         return $this;
     }
@@ -172,7 +190,7 @@ class Promise
         return $this->name;
     }
 
-    public function setName(?string $name) : Promise
+    public function setName(?string $name) : self
     {
         $this->name = $name;
 
@@ -184,7 +202,7 @@ class Promise
         return $this->slug;
     }
 
-    public function setSlug(?string $slug) : Promise
+    public function setSlug(?string $slug) : self
     {
         $this->slug = $slug;
 
@@ -208,7 +226,7 @@ class Promise
         return $this->madeTime;
     }
 
-    public function setMadeTime(?\DateTime $date) : Promise
+    public function setMadeTime(?\DateTime $date) : self
     {
         $this->madeTime = $date;
 
@@ -220,7 +238,7 @@ class Promise
         return $this->categories;
     }
 
-    public function setCategories($categories) : Promise
+    public function setCategories($categories) : self
     {
         $this->categories = $categories;
 

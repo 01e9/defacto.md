@@ -68,6 +68,10 @@ class PromiseType extends AbstractType
                 'label' => 'label.published',
                 'required' => false,
             ])
+            ->add('hasPrerogatives', CheckboxType::class, [
+                'label' => 'label.hasPrerogatives',
+                'required' => false,
+            ])
             ->add('sources', CollectionType::class, [
                 'label' => 'label.sources',
                 'allow_add' => true,

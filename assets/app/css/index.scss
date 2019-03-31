@@ -217,12 +217,12 @@
 
 .card.elected {
     border-color: $success;
-    box-shadow: 0 0 0pt $card-border-radius $success;
+    box-shadow: 0 0 0 $card-border-radius $success;
 
     .elected-label {
         position: absolute;
-        bottom: -0.8em;
-        left: 0.8em;
-        right: 0.8em;
+        bottom: -0.5em;
+        left: 0;
+        width: 100%;
     }
 }

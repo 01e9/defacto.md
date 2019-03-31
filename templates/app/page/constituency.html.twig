@@ -47,8 +47,8 @@
                     <h3 class="mb-3">{{ "title.candidates_with_most_chances"|trans }}<small class="text-muted">*</small></h3>
                     <div class="row">
                         {% for candidate in election.candidates %}
-                            {% set isElected = mandate and mandate.politician.id == candidate.politician.id %}
-                            <div class="col-sm-6 col-lg-4">
+                            {% set isElected = mandate and mandate.politician and mandate.politician.id == candidate.politician.id %}
+                            <div class="col-sm-6 col-lg-4 {{ isElected ? "order-first" : "" }}">
                                 <div
                                     class="card mb-3 {{ isElected ? "elected" : "" }}"
                                     style="max-width: {{ maxImgWidth }};"
@@ -60,8 +60,8 @@
                                             class="img-fluid w-100 card-img-top"
                                         >
                                         {% if isElected %}
-                                            <div class="elected-label bg-white text-center rounded-top p-1">
-                                                <h6 class="mb-0 bg-success text-white py-2 rounded-top">
+                                            <div class="elected-label text-center bg-success text-white py-2">
+                                                <h6 class="mb-0">
                                                     <span class="fa fa-vote-yea"></span>
                                                     <span class="mx-1">{{ "text.elected"|trans }}</span>
                                                     {{ mandate.institutionTitle.title.name }}

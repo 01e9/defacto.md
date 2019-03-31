@@ -47,18 +47,28 @@
                     <h3 class="mb-3">{{ "title.candidates_with_most_chances"|trans }}<small class="text-muted">*</small></h3>
                     <div class="row">
                         {% for candidate in election.candidates %}
+                            {% set isElected = mandate and mandate.politician.id == candidate.politician.id %}
                             <div class="col-sm-6 col-lg-4">
-                                {% if mandate and mandate.politician.id == candidate.politician.id %}
-                                    {% set cardClass = "border-success" %}
-                                {% else %}
-                                    {% set cardClass = "" %}
-                                {% endif %}
-                                <div class="card mb-3 {{ cardClass }}" style="max-width: {{ maxImgWidth }};">
-                                    <img
-                                        src="{{ macros.politician_photo_url(candidate.politician) }}"
-                                        alt="Politician"
-                                        class="img-fluid w-100 card-img-top"
-                                    >
+                                <div
+                                    class="card mb-3 {{ isElected ? "elected" : "" }}"
+                                    style="max-width: {{ maxImgWidth }};"
+                                >
+                                    <div class="position-relative">
+                                        <img
+                                            src="{{ macros.politician_photo_url(candidate.politician) }}"
+                                            alt="Politician"
+                                            class="img-fluid w-100 card-img-top"
+                                        >
+                                        {% if isElected %}
+                                            <div class="elected-label bg-success text-white py-1 text-center rounded">
+                                                <h6 class="mb-0">
+                                                    <span class="fa fa-vote-yea"></span>
+                                                    <span class="mx-1">{{ "text.elected"|trans }}</span>
+                                                    {{ mandate.institutionTitle.title.name }}
+                                                </h6>
+                                            </div>
+                                        {% endif %}
+                                    </div>
                                     <div class="card-body px-2 pt-3 pb-1">
                                         <h6 class="card-title text-center">
                                             <a href="{{ path("politician", {slug: candidate.politician.slug}) }}">

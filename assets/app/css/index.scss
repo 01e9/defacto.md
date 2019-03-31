@@ -214,3 +214,15 @@
         }
     }
 }
+
+.card.elected {
+    border-color: $success;
+    box-shadow: 0 0 0pt $card-border-radius $success;
+
+    .elected-label {
+        position: absolute;
+        bottom: -0.5em;
+        left: 0.5em;
+        right: 0.5em;
+    }
+}

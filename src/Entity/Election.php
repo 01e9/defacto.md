@@ -56,12 +56,12 @@ class Election
     private $date;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Mandate", mappedBy="election")
+     * @ORM\OneToMany(targetEntity="Mandate", mappedBy="election")
      */
     private $mandates;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\ConstituencyProblem", mappedBy="election")
+     * @ORM\OneToMany(targetEntity="ConstituencyProblem", mappedBy="election")
      */
     private $constituencyProblems;
 

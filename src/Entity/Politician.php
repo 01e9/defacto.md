@@ -132,7 +132,7 @@ class Politician
     private $previousTitles;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Mandate", mappedBy="politician")
+     * @ORM\OneToMany(targetEntity="Mandate", mappedBy="politician")
      */
     private $mandates;
 

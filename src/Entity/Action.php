@@ -54,7 +54,7 @@ class Action
     private $description;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Mandate")
+     * @ORM\ManyToOne(targetEntity="Mandate")
      * @ORM\JoinColumn(nullable=false)
      */
     private $mandate;
@@ -73,7 +73,7 @@ class Action
     private $promiseUpdates;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Power", cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity="Power", cascade={"persist"})
      */
     private $usedPowers;
 

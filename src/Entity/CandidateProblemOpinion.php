@@ -30,25 +30,25 @@ class CandidateProblemOpinion
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Politician")
+     * @ORM\ManyToOne(targetEntity="Politician")
      * @ORM\JoinColumn(nullable=false)
      */
     private $politician;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Election")
+     * @ORM\ManyToOne(targetEntity="Election")
      * @ORM\JoinColumn(nullable=false)
      */
     private $election;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Constituency", inversedBy="candidateProblemOpinions")
+     * @ORM\ManyToOne(targetEntity="Constituency", inversedBy="candidateProblemOpinions")
      * @ORM\JoinColumn(nullable=false)
      */
     private $constituency;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Problem")
+     * @ORM\ManyToOne(targetEntity="Problem")
      * @ORM\JoinColumn(nullable=false)
      */
     private $problem;

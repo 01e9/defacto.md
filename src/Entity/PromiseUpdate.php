@@ -29,13 +29,13 @@ class PromiseUpdate
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Action", inversedBy="promiseUpdates")
+     * @ORM\ManyToOne(targetEntity="Action", inversedBy="promiseUpdates")
      * @ORM\JoinColumn(nullable=false)
      */
     private $action;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Promise", inversedBy="promiseUpdates")
+     * @ORM\ManyToOne(targetEntity="Promise", inversedBy="promiseUpdates")
      * @ORM\JoinColumn(nullable=false)
      */
     private $promise;

@@ -26,7 +26,7 @@ class InstitutionTitle
 
     /**
      * @ORM\ManyToOne(
-     *     targetEntity="App\Entity\Institution",
+     *     targetEntity="Institution",
      *     inversedBy="titles",
      *     fetch="EAGER"
      * )
@@ -36,7 +36,7 @@ class InstitutionTitle
 
     /**
      * @ORM\ManyToOne(
-     *     targetEntity="App\Entity\Title",
+     *     targetEntity="Title",
      *     fetch="EAGER"
      * )
      * @ORM\JoinColumn(nullable=false)

@@ -63,12 +63,12 @@ class Constituency
     private $map;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Mandate", mappedBy="constituency")
+     * @ORM\OneToMany(targetEntity="Mandate", mappedBy="constituency")
      */
     private $mandates;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\ConstituencyProblem", mappedBy="constituency", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="ConstituencyProblem", mappedBy="constituency", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      *
      * @Assert\Valid()
@@ -84,7 +84,7 @@ class Constituency
     private $candidates;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\CandidateProblemOpinion", mappedBy="constituency", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="CandidateProblemOpinion", mappedBy="constituency", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      *
      * @Assert\Valid()

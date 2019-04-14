@@ -26,7 +26,7 @@ class Promise
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Election")
+     * @ORM\ManyToOne(targetEntity="Election")
      * @ORM\JoinColumn(nullable=false)
      *
      * @Assert\NotBlank()
@@ -34,7 +34,7 @@ class Promise
     private $election;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Politician")
+     * @ORM\ManyToOne(targetEntity="Politician")
      * @ORM\JoinColumn(nullable=false)
      *
      * @Assert\NotBlank()
@@ -48,7 +48,7 @@ class Promise
     private $status;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Category")
+     * @ORM\ManyToMany(targetEntity="Category")
      */
     private $categories;
 

@@ -48,7 +48,7 @@ class Problem
     private $slug;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\ConstituencyProblem", mappedBy="problem")
+     * @ORM\OneToMany(targetEntity="ConstituencyProblem", mappedBy="problem")
      */
     private $constituencyProblems;
 

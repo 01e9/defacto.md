@@ -45,7 +45,7 @@ class Institution
     private $name;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\InstitutionTitle", mappedBy="institution")
+     * @ORM\OneToMany(targetEntity="InstitutionTitle", mappedBy="institution")
      */
     private $titles;
 

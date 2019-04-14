@@ -30,19 +30,19 @@ class ConstituencyProblem
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Constituency", inversedBy="problems")
+     * @ORM\ManyToOne(targetEntity="Constituency", inversedBy="problems")
      * @ORM\JoinColumn(nullable=false)
      */
     private $constituency;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Election", inversedBy="constituencyProblems")
+     * @ORM\ManyToOne(targetEntity="Election", inversedBy="constituencyProblems")
      * @ORM\JoinColumn(nullable=false)
      */
     private $election;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Problem", inversedBy="constituencyProblems")
+     * @ORM\ManyToOne(targetEntity="Problem", inversedBy="constituencyProblems")
      * @ORM\JoinColumn(nullable=false)
      */
     private $problem;

@@ -53,7 +53,7 @@ class Mandate
 
     /**
      * @var Election
-     * @ORM\ManyToOne(targetEntity="App\Entity\Election", inversedBy="mandates", fetch="EAGER")
+     * @ORM\ManyToOne(targetEntity="Election", inversedBy="mandates", fetch="EAGER")
      * @ORM\JoinColumn(name="election_id", nullable=false)
      *
      * @Assert\NotBlank()
@@ -62,21 +62,21 @@ class Mandate
 
     /**
      * @var Constituency
-     * @ORM\ManyToOne(targetEntity="App\Entity\Constituency", inversedBy="mandates")
+     * @ORM\ManyToOne(targetEntity="Constituency", inversedBy="mandates")
      * @ORM\JoinColumn(name="constituency_id", nullable=true)
      */
     private $constituency;
 
     /**
      * @var Politician
-     * @ORM\ManyToOne(targetEntity="App\Entity\Politician", inversedBy="mandates", fetch="EAGER")
+     * @ORM\ManyToOne(targetEntity="Politician", inversedBy="mandates", fetch="EAGER")
      * @ORM\JoinColumn(name="politician_id", nullable=true)
      */
     private $politician;
 
     /**
      * @var InstitutionTitle
-     * @ORM\ManyToOne(targetEntity="App\Entity\InstitutionTitle")
+     * @ORM\ManyToOne(targetEntity="InstitutionTitle")
      * @ORM\JoinColumn(name="institution_title_id", nullable=false)
      *
      * @Assert\NotBlank()

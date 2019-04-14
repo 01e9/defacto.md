@@ -45,7 +45,7 @@ class Title
     private $name;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Power", cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity="Power", cascade={"persist"})
      * @ORM\OrderBy({"name"="ASC"})
      */
     private $powers;

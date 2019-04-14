@@ -12,272 +12,230 @@ class AdminPoliticiansControllerTest extends WebTestCase
 {
     use TestCaseTrait;
 
+    //region List
+
     public function testIndexAction()
     {
-        $client = static::createClient();
-        $client->insulate();
-        $this->assertTrue(self::onlyAdminCanAccess('/admin/politicians', $client));
+        $this->assertOnlyAdminCanAccess('/admin/politicians');
     }
+
+    //endregion
+
+    //region Add
 
     public function testAddActionAccess()
     {
-        $client = static::createClient();
-        $client->insulate();
-        $this->assertTrue(self::onlyAdminCanAccess('/admin/politicians/add', $client));
+        $this->assertOnlyAdminCanAccess('/admin/politicians/add');
     }
 
-    public function testAddActionSubmit()
+    public function testAddActionSubmitInvalidData()
     {
-        $client = static::createClient();
-        $client->insulate();
-        $client->followRedirects(false);
-        self::logInClientAsRole($client, 'ROLE_ADMIN');
+        $client = self::createAdminClient();
+        $locale = self::getLocale($client);
 
-        $em = $client->getContainer()->get('doctrine.orm.default_entity_manager');
-        $router = $client->getContainer()->get('router');
+        $form = $client
+            ->request('GET', "/${locale}/admin/politicians/add")
+            ->filter('form')->form();
+        $client->submit($form, []);
+
+        $this->assertHasFormErrors($client->getResponse());
+    }
+
+    public function testAddActionSubmitValidData()
+    {
+        $client = self::createAdminClient();
+        $em = self::getDoctrine($client);
+        $locale = self::getLocale($client);
+        $random = self::randomNumber();
 
         $formData = [
-            'politician[firstName]' => 'Test',
-            'politician[lastName]' => 'Test',
-            'politician[slug]' => 'test',
+            'politician[firstName]' => "Foo",
+            'politician[lastName]' => "Bar",
+            'politician[slug]' => "tes-${random}",
         ];
 
-        foreach (self::getLangs() as $lang) {
-            (function () use (&$client, &$lang) {
-                $form = $client
-                    ->request('GET', '/'. $lang .'/admin/politicians/add')
-                    ->filter('form')->form();
-                $client->submit($form, []);
-                $response = $client->getResponse();
+        $form = $client
+            ->request('GET', "/${locale}/admin/politicians/add")
+            ->filter('form')->form();
+        $client->submit($form, $formData);
+        $route = $this->assertRedirectsToRoute($client->getResponse(), 'admin_politician_edit');
 
-                $this->assertEquals(200, $response->getStatusCode());
-                $this->assertContains('is-invalid', $response->getContent());
-            })();
+        /** @var Politician $politician */
+        $politician = $em->getRepository('App:Politician')->find($route['id']);
 
-            (function () use (&$client, &$lang, &$em, &$router, &$formData) {
-                $form = $client
-                    ->request('GET', '/'. $lang .'/admin/politicians/add')
-                    ->filter('form')->form();
-                $client->submit($form, $formData);
-                $response = $client->getResponse();
-
-                $this->assertEquals(302, $response->getStatusCode());
-
-                $route = $router->match($response->getTargetUrl());
-                $this->assertEquals('admin_politician_edit', $route['_route']);
-                $this->assertEquals($lang, $route['_locale']);
-
-                /** @var Politician $politician */
-                $politician = $em->getRepository('App:Politician')->find($route['id']);
-
-                $this->assertNotNull($politician);
-                $this->assertEquals($formData['politician[firstName]'], $politician->getFirstName());
-
-                $em->remove($politician);
-                $em->flush();
-            })();
-
-            (function () use (&$client, &$lang, &$em, &$router, &$formData) {
-                $photo = new UploadedFile(self::getTestsRootDir() . '/files/test.jpg', 'test.jpg');
-
-                $form = $client
-                    ->request('GET', '/'. $lang .'/admin/politicians/add')
-                    ->filter('form')->form();
-                $client->insulate(false);
-                $client->submit($form, array_merge($formData, [
-                    'politician[photo]' => $photo,
-                ]));
-                $client->insulate(true);
-                $response = $client->getResponse();
-
-                $this->assertEquals(302, $response->getStatusCode());
-
-                $route = $router->match($response->getTargetUrl());
-                $this->assertEquals('admin_politician_edit', $route['_route']);
-                $this->assertEquals($lang, $route['_locale']);
-
-                /** @var Politician $politician */
-                $politician = $em->getRepository('App:Politician')->find($route['id']);
-                $em->refresh($politician); // fix lifecycle callbacks call
-
-                $this->assertNotNull($politician);
-                $this->assertEquals($photo->getMimeType(), $politician->getPhoto()->getMimeType());
-
-                $em->remove($politician);
-                $em->flush();
-            })();
-        }
-
-        $em->close();
-        $em = null;
-        static::$kernel->shutdown();
+        $this->assertNotNull($politician);
+        $this->assertEquals($formData['politician[slug]'], $politician->getSlug());
     }
+
+    public function testAddActionSubmitUploadPhoto()
+    {
+        $client = self::createAdminClient();
+        $locale = self::getLocale($client);
+        $random = self::randomNumber();
+
+        $formData = [
+            'politician[firstName]' => "Foo",
+            'politician[lastName]' => "Bar",
+            'politician[slug]' => "tes-${random}",
+        ];
+
+        $photo = new UploadedFile(self::getTestsRootDir() . '/files/test.jpg', 'test.jpg');
+
+        $form = $client
+            ->request('GET', "/${locale}/admin/politicians/add")
+            ->filter('form')->form();
+        $client->insulate(false);
+        $client->submit($form, array_merge($formData, ['politician[photo]' => $photo,]));
+        $route = $this->assertRedirectsToRoute($client->getResponse(), 'admin_politician_edit');
+
+        $client = self::createAdminClient();
+        $em = self::getDoctrine($client);
+
+        /** @var Politician $politician */
+        $politician = $em->getRepository('App:Politician')->find($route['id']);
+        $em->refresh($politician); // fix lifecycle callbacks
+
+        $this->assertNotNull($politician);
+        $this->assertEquals($photo->getMimeType(), $politician->getPhoto()->getMimeType());
+
+        self::cleanup($em);
+    }
+
+    //endregion
+
+    //region Edit
 
     public function testEditActionAccess()
     {
         $client = static::createClient();
         $client->insulate();
 
-        /** @var ObjectManager $manager */
-        $manager = $client->getContainer()->get('doctrine')->getManager();
-        $politician = $manager->getRepository('App:Politician')->findOneBy([]);
+        $em = self::getDoctrine($client);
+        $politician = self::makePolitician($em);
 
-        $this->assertTrue(self::onlyAdminCanAccess('/admin/politicians/'. $politician->getId(), $client));
+        $this->assertOnlyAdminCanAccess("/admin/politicians/{$politician->getId()}", $client);
     }
 
-    public function testEditActionSubmit()
+    public function testEditActionSubmitInvalidData()
     {
-        $client = static::createClient();
-        $client->insulate();
-        $client->followRedirects(false);
-        self::logInClientAsRole($client, 'ROLE_ADMIN');
+        $client = self::createAdminClient();
+        $em = self::getDoctrine($client);
+        $locale = self::getLocale($client);
 
-        $em = $client->getContainer()->get('doctrine.orm.default_entity_manager');
-        $router = $client->getContainer()->get('router');
+        $politician = $this->makePolitician($em);
 
-        $createPolitician = function() use (&$em) : Politician {
-            $politician = new Politician();
-            $politician
-                ->setFirstName('Test')
-                ->setLastName('Test')
-                ->setSlug('test');
-            $em->persist($politician);
-            $em->flush();
+        $form = $client
+            ->request('GET', "/${locale}/admin/politicians/{$politician->getId()}")
+            ->filter('form')->form();
+        $client->submit($form, ['politician[firstName]' => '?',]);
 
-            return $politician;
-        };
+        $this->assertHasFormErrors($client->getResponse());
+    }
+
+    public function testEditActionSubmitValidData()
+    {
+        $client = self::createAdminClient();
+        $em = self::getDoctrine($client);
+        $locale = self::getLocale($client);
+        $random = self::randomNumber();
 
         $formData = [
-            'politician[firstName]' => 'Test',
-            'politician[lastName]' => 'Test',
-            'politician[slug]' => 'test',
+            'politician[firstName]' => "Foo",
+            'politician[lastName]' => "Bar",
+            'politician[slug]' => "tes-${random}",
         ];
 
-        foreach (self::getLangs() as $lang) {
-            (function () use (&$lang, &$client, &$createPolitician, &$em) {
-                $politician = $createPolitician();
-                $form = $client
-                    ->request('GET', '/'. $lang .'/admin/politicians/'. $politician->getId())
-                    ->filter('form')->form();
-                $client->submit($form, [
-                    'politician[firstName]' => '?',
-                ]);
-                $response = $client->getResponse();
+        $politician = $this->makePolitician($em);
 
-                $this->assertEquals(200, $response->getStatusCode());
-                $this->assertContains('is-invalid', $response->getContent());
+        $form = $client
+            ->request('GET', "/${locale}/admin/politicians/{$politician->getId()}")
+            ->filter('form')->form();
+        $client->submit($form, $formData);
+        $this->assertRedirectsToRoute($client->getResponse(), 'admin_politician_edit');
 
-                $em->remove($politician);
-                $em->flush();
-            })();
+        $em->clear('App:Politician');
+        $politician = $em->getRepository('App:Politician')->find($politician->getId());
 
-            (function () use (&$lang, &$client, &$createPolitician, &$em, &$formData, &$router) {
-                $politician = $createPolitician();
-                $form = $client
-                    ->request('GET', '/'. $lang .'/admin/politicians/'. $politician->getId())
-                    ->filter('form')->form();
-                $client->submit($form, $formData);
-                $response = $client->getResponse();
-
-                $this->assertEquals(302, $response->getStatusCode());
-
-                $route = $router->match($response->getTargetUrl());
-                $this->assertEquals('admin_politician_edit', $route['_route']);
-                $this->assertEquals($lang, $route['_locale']);
-
-                $em->remove($politician);
-                $em->flush();
-            })();
-
-            (function () use (&$lang, &$client, &$createPolitician, &$em, &$formData, &$router) {
-                $photo = new UploadedFile(self::getTestsRootDir() . '/files/test.gif', 'test.gif');
-
-                $politician = $createPolitician();
-                $form = $client
-                    ->request('GET', '/'. $lang .'/admin/politicians/'. $politician->getId())
-                    ->filter('form')->form();
-                $client->insulate(false);
-                $client->submit($form, array_merge($formData, [
-                    'politician[photo]' => $photo,
-                ]));
-                $client->insulate(true);
-                $response = $client->getResponse();
-                $this->assertEquals(302, $response->getStatusCode());
-
-                $route = $router->match($response->getTargetUrl());
-                $this->assertEquals('admin_politician_edit', $route['_route']);
-                $this->assertEquals($lang, $route['_locale']);
-
-                $politician = $em->getRepository('App:Politician')->find($politician->getId());
-
-                $this->assertNotNull($politician);
-
-                $em->refresh($politician);
-
-                $this->assertEquals($photo->getMimeType(), $politician->getPhoto()->getMimeType());
-
-                $em->remove($politician);
-                $em->flush();
-            })();
-        }
-
-        $em->close();
-        $em = null;
-        static::$kernel->shutdown();
+        $this->assertNotNull($politician);
+        $this->assertEquals($formData['politician[slug]'], $politician->getSlug());
     }
+
+    public function testEditActionSubmitUploadPhoto()
+    {
+        $client = self::createAdminClient();
+        $em = self::getDoctrine($client);
+        $locale = self::getLocale($client);
+        $random = self::randomNumber();
+
+        $formData = [
+            'politician[firstName]' => "Foo",
+            'politician[lastName]' => "Bar",
+            'politician[slug]' => "tes-${random}",
+        ];
+        $photo = new UploadedFile(self::getTestsRootDir() . '/files/test.gif', 'test.gif');
+
+        $politician = $this->makePolitician($em);
+
+        $form = $client
+            ->request('GET', "/${locale}/admin/politicians/{$politician->getId()}")
+            ->filter('form')->form();
+        $client->insulate(false);
+        $client->submit($form, array_merge($formData, ['politician[photo]' => $photo,]));
+        $this->assertRedirectsToRoute($client->getResponse(), 'admin_politician_edit');
+
+        $client = self::createAdminClient();
+        $em = self::getDoctrine($client);
+
+        $em->clear('App:Politician');
+        $politician = $em->getRepository('App:Politician')->find($politician->getId());
+
+        $this->assertNotNull($politician);
+        $em->refresh($politician); // fix lifecycle callbacks
+
+        $this->assertEquals($photo->getMimeType(), $politician->getPhoto()->getMimeType());
+
+        self::cleanup($em);
+    }
+
+    //endregion
+
+    //region Delete
 
     public function testDeleteActionAccess()
     {
         $client = static::createClient();
         $client->insulate();
 
-        /** @var ObjectManager $manager */
-        $manager = $client->getContainer()->get('doctrine')->getManager();
-        $politician = $this->createPolitician($manager);
+        $em = self::getDoctrine($client);
+        $politician = $this->makePolitician($em);
 
-        $this->assertTrue(self::onlyAdminCanAccess('/admin/politicians/'. $politician->getId() .'/d', $client));
+        $this->assertOnlyAdminCanAccess("/admin/politicians/{$politician->getId()}/d", $client);
 
-        $manager->remove($politician);
-        $manager->flush();
-        $manager = null;
-        $politician = null;
-        static::$kernel->shutdown();
+        self::cleanup($em);
     }
 
     public function testDeleteActionSubmit()
     {
-        $client = static::createClient();
-        $client->insulate();
-        $client->followRedirects(false);
-        self::logInClientAsRole($client, 'ROLE_ADMIN');
+        $client = self::createAdminClient();
+        $em = self::getDoctrine($client);
+        $locale = self::getLocale($client);
 
-        /** @var ObjectManager $manager */
-        $manager = $client->getContainer()->get('doctrine')->getManager();
-        $router = $client->getContainer()->get('router');
+        $politician = $this->makePolitician($em);
 
-        foreach (self::getLangs() as $lang) {
-            $politician = $this->createPolitician($manager);
+        $form = $client
+            ->request('GET', "/${locale}/admin/politicians/{$politician->getId()}/d")
+            ->filter('form')->form();
+        $client->submit($form);
+        $this->assertRedirectsToRoute($client->getResponse(), 'admin_politicians');
 
-            $form = $client
-                ->request('GET', '/'. $lang .'/admin/politicians/'. $politician->getId() .'/d')
-                ->filter('form')->form();
-            $client->submit($form);
-            $response = $client->getResponse();
-            $this->assertEquals(302, $response->getStatusCode());
+        $em->clear('App:Politician');
+        /** @var Politician $politician */
+        $politician = $em->getRepository('App:Politician')->find($politician->getId());
 
-            $route = $router->match($response->getTargetUrl());
-            $this->assertEquals('admin_politicians', $route['_route']);
-            $this->assertEquals($lang, $route['_locale']);
+        $this->assertNull($politician);
 
-            $manager->clear('App:Politician');
-
-            /** @var Politician $politician */
-            $politician = $manager->getRepository('App:Politician')->find($politician->getId());
-
-            $this->assertNull($politician);
-        }
-
-        $manager = null;
-        static::$kernel->shutdown();
+        self::cleanup($em);
     }
+
+    //endregion
 }

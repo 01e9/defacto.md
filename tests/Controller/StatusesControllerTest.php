@@ -14,43 +14,34 @@ class StatusesControllerTest extends WebTestCase
         $client = static::createClient();
         $client->insulate();
 
-        $status = $client->getContainer()->get('doctrine.orm.default_entity_manager')
-            ->getRepository('App:Status')->findOneBy([]);
+        $em = self::getDoctrine($client);
+        $locale = self::getLocale($client);
 
-        $this->assertNotNull($status);
+        $status = self::makeStatus($em);
 
-        $path = '/st/'. $status->getSlug();
-        $pathInactive = '/st/~';
+        $path = "/st/{$status->getSlug()}";
 
-        // without lang
-        (function () use (&$client, &$path) {
-            $client->restart();
-            $client->request('GET', $path);
-            $response = $client->getResponse();
+        $crawler = $client->request('GET', "/${locale}${path}");
+        $response = $client->getResponse();
 
-            $this->assertEquals(302, $response->getStatusCode());
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals(1, $crawler->filter('body')->count());
+    }
 
-            $redirectPath = parse_url($response->headers->get('location'), PHP_URL_PATH);
-            $this->assertEquals('/'. current(self::getLangs()) . $path, $redirectPath);
-        })();
+    public function testViewActionInactive()
+    {
+        $client = static::createClient();
+        $client->insulate();
 
-        foreach (self::getLangs() as $lang) {
-            (function () use (&$client, &$lang, &$path) {
-                $client->restart();
-                $crawler = $client->request('GET', '/'. $lang . $path);
-                $response = $client->getResponse();
+        $em = self::getDoctrine($client);
+        $locale = self::getLocale($client);
 
-                $this->assertEquals(200, $response->getStatusCode());
-                $this->assertEquals(1, $crawler->filter('body')->count());
-            })();
-            (function () use (&$client, &$lang, &$pathInactive) {
-                $client->restart();
-                $crawler = $client->request('GET', '/'. $lang . $pathInactive);
-                $response = $client->getResponse();
+        $path = "/st/~";
 
-                $this->assertEquals(200, $response->getStatusCode());
-                $this->assertEquals(1, $crawler->filter('body')->count());
-            })();
-        }
+        $crawler = $client->request('GET', "/${locale}${path}");
+        $response = $client->getResponse();
+
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals(1, $crawler->filter('body')->count());
     }
 }

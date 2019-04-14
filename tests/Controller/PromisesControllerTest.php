@@ -9,54 +9,45 @@ class PromisesControllerTest extends WebTestCase
 {
     use TestCaseTrait;
 
-    public function testViewAction()
+    public function testViewActionPublished()
     {
         $client = static::createClient();
         $client->insulate();
 
-        $repository = $client->getContainer()->get('doctrine.orm.default_entity_manager')
-            ->getRepository('App:Promise');
+        $em = self::getDoctrine($client);
+        $promise = self::makePromise($em);
+        $locale = self::getLocale($client);
 
-        $promisePublished = $repository->findOneBy(['published' => true]);
-        $promiseUnpublished = $repository->findOneBy(['published' => false]);
+        $promise->setPublished(true);
+        $em->flush($promise);
 
-        $this->assertNotNull($promisePublished);
-        $this->assertNotNull($promiseUnpublished);
+        $path = "/pr/{$promise->getSlug()}";
 
-        $pathPublished = '/pr/'. $promisePublished->getSlug();
-        $pathUnpublished = '/pr/'. $promiseUnpublished->getSlug();
+        $crawler = $client->request('GET', "/${locale}${path}");
+        $response = $client->getResponse();
 
-        // without lang
-        foreach ([$pathPublished, $pathUnpublished] as $path) {
-            (function () use (&$client, &$path) {
-                $client->restart();
-                $client->request('GET', $path);
-                $response = $client->getResponse();
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals(1, $crawler->filter('body')->count());
+    }
 
-                $this->assertEquals(302, $response->getStatusCode());
+    public function testViewActionNotPublished()
+    {
+        $client = static::createClient();
+        $client->insulate();
 
-                $redirectPath = parse_url($response->headers->get('location'), PHP_URL_PATH);
-                $this->assertEquals('/'. current(self::getLangs()) . $path, $redirectPath);
-            })();
-        }
+        $em = self::getDoctrine($client);
+        $promise = self::makePromise($em);
+        $locale = self::getLocale($client);
 
-        foreach (self::getLangs() as $lang) {
-            (function () use (&$client, &$lang, &$pathPublished) {
-                $client->restart();
-                $crawler = $client->request('GET', '/'. $lang . $pathPublished);
-                $response = $client->getResponse();
+        $promise->setPublished(false);
+        $em->flush($promise);
 
-                $this->assertEquals(200, $response->getStatusCode());
-                $this->assertEquals(1, $crawler->filter('body')->count());
-            })();
-            (function () use (&$client, &$lang, &$pathUnpublished) {
-                $client->restart();
-                $crawler = $client->request('GET', '/'. $lang . $pathUnpublished);
-                $response = $client->getResponse();
+        $path = "/pr/{$promise->getSlug()}";
 
-                $this->assertEquals(404, $response->getStatusCode());
-                $this->assertEquals(1, $crawler->filter('body')->count());
-            })();
-        }
+        $crawler = $client->request('GET', "/${locale}${path}");
+        $response = $client->getResponse();
+
+        $this->assertEquals(404, $response->getStatusCode());
+        $this->assertEquals(1, $crawler->filter('body')->count());
     }
 }

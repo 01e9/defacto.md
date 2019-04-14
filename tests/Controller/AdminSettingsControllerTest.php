@@ -13,56 +13,41 @@ class AdminSettingsControllerTest extends WebTestCase
 
     public function testIndexActionAccess()
     {
-        $client = static::createClient();
-        $client->insulate();
-        $this->assertTrue(self::onlyAdminCanAccess('/admin/settings', $client));
+        $this->assertOnlyAdminCanAccess('/admin/settings');
     }
 
     public function testEditActionAccess()
     {
         $client = static::createClient();
+        $em = self::getDoctrine($client);
+        $setting = $em->getRepository('App:Setting')->findOneBy([]);
 
-        /** @var ObjectManager $manager */
-        $manager = $client->getContainer()->get('doctrine')->getManager();
-        $setting = $manager->getRepository('App:Setting')->findOneBy([]);
-
-        $this->assertTrue(self::onlyAdminCanAccess('/admin/settings/'. $setting->getId(), $client));
+        $this->assertOnlyAdminCanAccess("/admin/settings/{$setting->getId()}", $client);
     }
 
     public function testEditActionSubmit()
     {
-        $client = static::createClient();
-        $client->insulate();
-        $client->followRedirects(false);
-        self::logInClientAsRole($client, 'ROLE_ADMIN');
+        $client = self::createAdminClient();
+        $em = self::getDoctrine($client);
 
-        $em = $client->getContainer()->get('doctrine.orm.default_entity_manager');
-        $router = $client->getContainer()->get('router');
-
-        $this->createElection($em);
+        $this->makeElection($em);
 
         foreach (SettingRepository::getWhiteList() as $settingId => $setting) {
-            foreach (self::getLangs() as $lang) {
-                (function () use (&$settingId, &$setting, &$lang, &$client, &$em, &$router) {
+            foreach (self::langs() as $locale) {
+                (function () use (&$settingId, &$setting, &$locale, &$client, &$em) {
                     $form = $client
-                        ->request('GET', '/'. $lang .'/admin/settings/'. $settingId)
+                        ->request('GET', "/${locale}/admin/settings/${settingId}")
                         ->filter('form')->form();
                     $client->submit($form, ['setting[value]' => '']);
-                    $response = $client->getResponse();
 
                     if (is_null($setting['default'])) {
-                        $this->assertEquals(200, $response->getStatusCode());
-                        $this->assertContains('is-invalid', $response->getContent());
+                        $this->assertHasFormErrors($client->getResponse());
                     } else {
-                        $this->assertEquals(302, $response->getStatusCode());
-
-                        $route = $router->match($response->getTargetUrl());
-                        $this->assertEquals('admin_settings', $route['_route']);
-                        $this->assertEquals($lang, $route['_locale']);
+                        $this->assertRedirectsToRoute($client->getResponse(), 'admin_settings');
                     }
                 })();
 
-                (function () use (&$settingId, &$setting, &$lang, &$client, &$em, &$router) {
+                (function () use (&$settingId, &$setting, &$locale, &$client, &$em) {
                     $formData = ['setting[value]' => ''];
                     switch ($setting['type']) {
                         case 'App:InstitutionTitle':
@@ -74,24 +59,16 @@ class AdminSettingsControllerTest extends WebTestCase
                     }
 
                     $form = $client
-                        ->request('GET', '/'. $lang .'/admin/settings/'. $settingId)
+                        ->request('GET', "/${locale}/admin/settings/${settingId}")
                         ->filter('form')->form();
                     $client->submit($form, $formData);
-                    $response = $client->getResponse();
-
-                    $this->assertEquals(302, $response->getStatusCode());
-
-                    $route = $router->match($response->getTargetUrl());
-                    $this->assertEquals('admin_settings', $route['_route']);
-                    $this->assertEquals($lang, $route['_locale']);
+                    $this->assertRedirectsToRoute($client->getResponse(), 'admin_settings');
 
                     $this->assertNotNull($em->getRepository('App:Setting')->get($settingId));
                 })();
             }
         }
 
-        $em->close();
-        $em = null;
-        static::$kernel->shutdown();
+        self::cleanup($em);
     }
 }

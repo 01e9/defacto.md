@@ -4,7 +4,11 @@ namespace App\Tests\Controller;
 
 use App\Consts;
 use App\Entity\Action;
+use App\Entity\ActionSource;
+use App\Entity\Mandate;
+use App\Entity\Power;
 use App\Entity\PromiseUpdate;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use App\Tests\TestCaseTrait;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -13,96 +17,138 @@ class AdminActionsControllerTest extends WebTestCase
 {
     use TestCaseTrait;
 
-    public function testAddActionAccess()
+    //region Add
+
+    private function createAddFormData(Mandate $mandate)
     {
-        $client = static::createClient();
-        $client->insulate();
-        $this->assertTrue(self::onlyAdminCanAccess('/admin/actions/add', $client));
-    }
+        $random = self::randomNumber();
 
-    public function testAddActionSubmit()
-    {
-        $client = static::createClient();
-        $client->insulate();
-        $client->followRedirects(false);
-        self::logInClientAsRole($client, 'ROLE_ADMIN');
-
-        $em = $client->getContainer()->get('doctrine.orm.default_entity_manager');
-        $router = $client->getContainer()->get('router');
-
-        $formData = [
-            'action[name]' => 'Test',
-            'action[slug]' => 'test',
-            'action[description]' => 'Test',
+        return [
+            'action[name]' => "Test ${random}",
+            'action[slug]' => "test-${random}",
+            'action[description]' => "Test ${random}",
             'action[occurredTime]' => (new \DateTime())->format(Consts::DATE_FORMAT_PHP),
             'action[published]' => true,
-            'action[mandate]' => $em->getRepository('App:Mandate')->findOneBy([])->getId(),
+            'action[mandate]' => $mandate->getId(),
+        ];
+    }
+
+    public function testAddActionAccess()
+    {
+        $this->assertOnlyAdminCanAccess('/admin/actions/add');
+    }
+
+    public function testAddActionSubmitEmptyData()
+    {
+        $client = self::createAdminClient();
+        $locale = self::getLocale($client);
+        $form = $client
+            ->request('GET', "/{$locale}/admin/actions/add")
+            ->filter('form')->form();
+        $client->submit($form, []);
+        $this->assertHasFormErrors($client->getResponse());
+    }
+
+    public function testAddActionSubmitValidData()
+    {
+        $client = self::createAdminClient();
+        $em = self::getDoctrine($client);
+
+        $mandate = $this->makeMandate($em);
+
+        $locale = self::getLocale($client);
+        $form = $client
+            ->request('GET', "/${locale}/admin/actions/add")
+            ->filter('form')->form();
+        $client->submit($form, $this->createAddFormData($mandate));
+        $route = $this->assertRedirectsToRoute($client->getResponse(), 'admin_action_edit');
+
+        $action = $em->getRepository('App:Action')->find($route['id']);
+
+        $this->assertNotNull($action);
+
+        self::cleanup($em);
+    }
+
+    public function testAddActionSubmitValidDataWithPromiseQueryParam()
+    {
+        $client = self::createAdminClient();
+        $em = self::getDoctrine($client);
+        $locale = self::getLocale($client);
+
+        $mandate = $this->makeMandate($em);
+
+        $promise = $this->makePromise($em);
+        $promise->setPolitician($mandate->getPolitician());
+        $promise->setElection($mandate->getElection());
+
+        $form = $client
+            ->request(
+                'GET',
+                "/${locale}/admin/actions/add?". http_build_query(['promise' => $promise->getId()])
+            )
+            ->filter('form')->form();
+        $client->submit($form, $this->createAddFormData($mandate));
+        $route = $this->assertRedirectsToRoute($client->getResponse(), 'admin_action_edit');
+
+        $action = $em->getRepository('App:Action')->find($route['id']);
+
+        $this->assertNotNull($action);
+        $this->assertNotEmpty($action->getPromiseUpdates());
+        $this->assertEquals($promise->getId(), $action->getPromiseUpdates()->first()->getPromise()->getId());
+
+        self::cleanup($em);
+    }
+
+    //endregion
+
+    //region Edit
+
+    private function createEditFormData(Action $action) : array
+    {
+        $data = [
+            'action[name]' => $action->getName(),
+            'action[slug]' => $action->getSlug(),
+            'action[description]' => $action->getDescription(),
+            'action[occurredTime]' => $action->getOccurredTime()->format(Consts::DATE_FORMAT_PHP),
+            'action[published]' => $action->getPublished(),
+            'action[mandate]' => $action->getMandate()->getId(),
         ];
 
-        foreach (self::getLangs() as $lang) {
-            (function () use (&$em, &$client, &$lang) {
-                $form = $client
-                    ->request('GET', '/'. $lang .'/admin/actions/add')
-                    ->filter('form')->form();
-                $client->submit($form, []);
-                $response = $client->getResponse();
-
-                $this->assertEquals(200, $response->getStatusCode());
-                $this->assertContains('is-invalid', $response->getContent());
-            })();
-
-            (function () use (&$em, &$client, &$lang, &$formData, &$router) {
-                $form = $client
-                    ->request('GET', '/'. $lang .'/admin/actions/add')
-                    ->filter('form')->form();
-                $client->submit($form, $formData);
-                $response = $client->getResponse();
-                $this->assertEquals(302, $response->getStatusCode());
-
-                $route = $router->match($response->getTargetUrl());
-                $this->assertEquals('admin_action_edit', $route['_route']);
-                $this->assertEquals($lang, $route['_locale']);
-
-                $action = $em->getRepository('App:Action')->find($route['id']);
-
-                $this->assertNotNull($action);
-
-                $em->remove($action);
-                $em->flush();
-            })();
-
-            (function () use (&$em, &$client, &$lang, &$formData, &$router) {
-                $promise = $em->getRepository('App:Promise')->findOneBy([]);
-                $this->assertNotNull($promise);
-
-                $form = $client
-                    ->request('GET', '/'. $lang .'/admin/actions/add?'. http_build_query([
-                            'promise' => $promise->getId(),
-                        ])
-                    )
-                    ->filter('form')->form();
-                $client->submit($form, $formData);
-                $response = $client->getResponse();
-                $this->assertEquals(302, $response->getStatusCode());
-
-                $route = $router->match($response->getTargetUrl());
-                $this->assertEquals('admin_action_edit', $route['_route']);
-                $this->assertEquals($lang, $route['_locale']);
-
-                $action = $em->getRepository('App:Action')->find($route['id']);
-
-                $this->assertNotNull($action);
-                $this->assertNotEmpty($action->getPromiseUpdates());
-                $this->assertEquals($promise->getId(), $action->getPromiseUpdates()->first()->getPromise()->getId());
-
-                $em->remove($action);
-                $em->flush();
-            })();
+        if (!$action->getUsedPowers()->isEmpty()) {
+            $data['action[usedPowers]'] = array_map(
+                function (Power $power) {
+                    return $power->getId();
+                },
+                $action->getUsedPowers()->toArray()
+            );
+        }
+        if (!$action->getPromiseUpdates()->isEmpty()) {
+            $data['action[promiseUpdates]'] = array_map(
+                function (PromiseUpdate $promiseUpdate) {
+                    return [
+                        'action' => $promiseUpdate->getAction()->getId(),
+                        'promise' => $promiseUpdate->getPromise()->getId(),
+                        'status' => $promiseUpdate->getStatus() ? $promiseUpdate->getStatus()->getId() : '',
+                    ];
+                },
+                $action->getPromiseUpdates()->toArray()
+            );
+        }
+        if (!$action->getSources()->isEmpty()) {
+            $data['action[sources]'] = array_map(
+                function (ActionSource $source) {
+                    return [
+                        'action' => $source->getAction()->getId(),
+                        'name' => $source->getName(),
+                        'link' => $source->getLink(),
+                    ];
+                },
+                $action->getSources()->toArray()
+            );
         }
 
-        $em->close();
-        $em = null;
-        static::$kernel->shutdown();
+        return $data;
     }
 
     public function testEditActionAccess()
@@ -112,168 +158,287 @@ class AdminActionsControllerTest extends WebTestCase
 
         /** @var ObjectManager $manager */
         $manager = $client->getContainer()->get('doctrine')->getManager();
-        $action = $manager->getRepository('App:Action')->findOneBy([]);
+        $action = $this->makeAction($manager);
 
-        $this->assertTrue(self::onlyAdminCanAccess('/admin/actions/'. $action->getId(), $client));
+        $this->assertOnlyAdminCanAccess("/admin/actions/{$action->getId()}", $client);
     }
 
-    public function testEditActionSubmit()
+    public function testEditActionSubmitEmptyData()
     {
-        $client = static::createClient();
-        $client->insulate();
-        $client->followRedirects(false);
-        self::logInClientAsRole($client, 'ROLE_ADMIN');
+        $client = self::createAdminClient();
+        $em = self::getDoctrine($client);
+        $locale = self::getLocale($client);
+        $formData = ['action[name]' => ''];
 
-        $em = $client->getContainer()->get('doctrine.orm.default_entity_manager');
-        $router = $client->getContainer()->get('router');
+        $action = $this->makeAction($em);
+        $form = $client
+            ->request('GET', "/${locale}/admin/actions/{$action->getId()}")
+            ->filter('form')->form();
+        $client->submit($form, $formData);
 
-        $createAction = function () use (&$em) : Action {
-            $action = new Action();
-            $action
-                ->setName('Test')
-                ->setSlug('test')
-                ->setDescription('Test')
-                ->setOccurredTime(new \DateTime())
-                ->setPublished(true)
-                ->setMandate($em->getRepository('App:Mandate')->findOneBy([]));
-            $em->persist($action);
+        $this->assertHasFormErrors($client->getResponse());
+
+        $em->remove($action);
+        $em->flush();
+
+        self::cleanup($em);
+    }
+
+    public function testEditActionSubmitSameData()
+    {
+        $client = self::createAdminClient();
+        $em = self::getDoctrine($client);
+        $locale = self::getLocale($client);
+        $action = $this->makeAction($em);
+        $formData = $this->createEditFormData($action);
+
+        $form = $client
+            ->request('GET', "/${locale}/admin/actions/{$action->getId()}")
+            ->filter('form')->form();
+        $client->submit($form, $formData);
+
+        $this->assertRedirectsToRoute($client->getResponse(), 'admin_action_edit');
+
+        self::cleanup($em);
+    }
+
+    public function testEditActionSubmitPromiseUpdatesAdded()
+    {
+        $client = self::createAdminClient();
+
+        $em = self::getDoctrine($client);
+        $locale = self::getLocale($client);
+
+        $action = $this->makeAction($em);
+        $this->assertCount(0, $action->getPromiseUpdates());
+
+        $form = $client
+            ->request('GET', "/${locale}/admin/actions/{$action->getId()}")
+            ->filter('form')->form();
+
+        $formPhpValues = $form->getPhpValues();
+
+        {
+            $promise1 = $this->makePromise($em);
+            $promise1->setElection($action->getMandate()->getElection());
+            $promise1->setPolitician($action->getMandate()->getPolitician());
+            $em->flush($promise1);
+
+            $promise2 = $this->makePromise($em);
+            $promise2->setElection($action->getMandate()->getElection());
+            $promise2->setPolitician($action->getMandate()->getPolitician());
+            $em->flush($promise2);
+
+            $status = $this->makeStatus($em);
+        }
+        $formPhpValues['action']['promiseUpdates'] = [
+            [
+                'action' => $action->getId(),
+                'promise' => $promise1->getId(),
+                'status' => '',
+            ],
+            [
+                'action' => $action->getId(),
+                'promise' => $promise2->getId(),
+                'status' => $status->getId(),
+            ],
+        ];
+
+        $client->request($form->getMethod(), $form->getUri(), $formPhpValues);
+        $this->assertRedirectsToRoute($client->getResponse(), 'admin_action_edit');
+
+        $em->clear('App:Action');
+        $action = $em->getRepository('App:Action')->find($action->getId());
+
+        $this->assertNotNull($action);
+        $this->assertCount(2, $action->getPromiseUpdates());
+
+        self::cleanup($em);
+    }
+
+    public function testEditActionSubmitPromiseUpdatesRemoved()
+    {
+        $client = self::createAdminClient();
+
+        $em = self::getDoctrine($client);
+        $locale = self::getLocale($client);
+
+        $action = $this->makeAction($em);
+
+        $action->setPromiseUpdates(new ArrayCollection([$this->makePromiseUpdate($em, $action)]));
+        $em->flush();
+
+        $form = $client
+            ->request('GET', "/${locale}/admin/actions/{$action->getId()}")
+            ->filter('form')->form();
+
+        $formPhpValues = $form->getPhpValues();
+        unset($formPhpValues['action']['promiseUpdates']);
+
+        $client->request($form->getMethod(), $form->getUri(), $formPhpValues);
+        $this->assertRedirectsToRoute($client->getResponse(), 'admin_action_edit');
+
+        $em->clear('App:Action');
+        $action = $em->getRepository('App:Action')->find($action->getId());
+
+        $this->assertNotNull($action);
+        $this->assertCount(0, $action->getPromiseUpdates());
+
+        self::cleanup($em);
+    }
+
+    public function testEditActionSubmitSourcesAdded()
+    {
+        $client = self::createAdminClient();
+
+        $em = self::getDoctrine($client);
+        $locale = self::getLocale($client);
+
+        $action = $this->makeAction($em);
+        $this->assertCount(0, $action->getSources());
+
+        $form = $client
+            ->request('GET', "/${locale}/admin/actions/{$action->getId()}")
+            ->filter('form')->form();
+
+        $formPhpValues = $form->getPhpValues();
+
+        $formPhpValues['action']['sources'] = [
+            [
+                'action' => $action->getId(),
+                'name' => 'Foo',
+                'link' => 'http://foo.test',
+            ],
+            [
+                'action' => $action->getId(),
+                'name' => 'Bar',
+                'link' => 'http://bar.test',
+            ],
+        ];
+
+        $client->request($form->getMethod(), $form->getUri(), $formPhpValues);
+        $this->assertRedirectsToRoute($client->getResponse(), 'admin_action_edit');
+
+        $em->clear('App:Action');
+        /** @var Action $action */
+        $action = $em->getRepository('App:Action')->find($action->getId());
+
+        $this->assertNotNull($action);
+        $this->assertCount(2, $action->getSources());
+
+        self::cleanup($em);
+    }
+
+    public function testEditActionSubmitSourcesRemoved()
+    {
+        $client = self::createAdminClient();
+
+        $em = self::getDoctrine($client);
+        $locale = self::getLocale($client);
+
+        $source = $this->makeActionSource($em);
+        $action = $source->getAction();
+
+        $this->assertCount(1, $action->getSources());
+
+        $form = $client
+            ->request('GET', "/${locale}/admin/actions/{$action->getId()}")
+            ->filter('form')->form();
+
+        $formPhpValues = $form->getPhpValues();
+        unset($formPhpValues['action']['sources']);
+
+        $client->request($form->getMethod(), $form->getUri(), $formPhpValues);
+        $this->assertRedirectsToRoute($client->getResponse(), 'admin_action_edit');
+
+        $em->clear('App:Action');
+        $action = $em->getRepository('App:Action')->find($action->getId());
+
+        $this->assertNotNull($action);
+        $this->assertCount(0, $action->getSources());
+
+        self::cleanup($em);
+    }
+
+    public function testEditActionSubmitUsedPowersAdded()
+    {
+        $client = self::createAdminClient();
+
+        $em = self::getDoctrine($client);
+        $locale = self::getLocale($client);
+
+        $action = $this->makeAction($em);
+        $this->assertCount(0, $action->getUsedPowers());
+
+        {
+            $power1 = $this->makePower($em);
+            $power2 = $this->makePower($em);
+
+            $action->getMandate()->getInstitutionTitle()->getTitle()->setPowers(new ArrayCollection([$power1, $power2]));
             $em->flush();
-
-            return $action;
-        };
-
-        $createFormData = function (Action $action) use (&$em) {
-            $promises = $em->getRepository('App:Promise')->findBy([
-                'politician' => $action->getMandate()->getPolitician()->getId(),
-                'election' => $action->getMandate()->getElection()->getId(),
-            ], null, 2);
-            $this->assertCount(2, $promises);
-
-            $powers = $action->getMandate()->getInstitutionTitle()->getTitle()->getPowers();
-            $this->assertGreaterThanOrEqual(2, count($powers));
-
-            return [
-                'action[name]' => 'Updated',
-                'action[slug]' => 'updated',
-                'action[description]' => 'Updated',
-                'action[occurredTime]' => (new \DateTime())->format(Consts::DATE_FORMAT_PHP),
-                'action[published]' => true,
-                'action[mandate]' => $action->getMandate()->getId(),
-                'action[usedPowers]' => [
-                    $powers[0]->getId(),
-                    $powers[1]->getId(),
-                ],
-                'action[promiseUpdates]' => [
-                    [
-                        'action' => $action->getId(),
-                        'promise' => $promises[0]->getId(),
-                        'status' => $em->getRepository('App:Status')->findOneBy([])->getId(),
-                    ],
-                    [
-                        'action' => $action->getId(),
-                        'promise' => $promises[1]->getId(),
-                        'status' => '',
-                    ],
-                ],
-                'action[sources]' => [
-                    [
-                        'action' => $action->getId(),
-                        'name' => 'Test source',
-                        'link' => 'https://test.link',
-                    ],
-                ],
-            ];
-        };
-
-        foreach (self::getLangs() as $lang) {
-            (function () use (&$em, &$client, &$lang, &$createAction) {
-                $action = $createAction();
-                $form = $client
-                    ->request('GET', '/'. $lang .'/admin/actions/'. $action->getId())
-                    ->filter('form')->form();
-                $client->submit($form, ['action[name]' => '']);
-                $response = $client->getResponse();
-
-                $this->assertEquals(200, $response->getStatusCode());
-                $this->assertContains('is-invalid', $response->getContent());
-
-                $em->remove($action);
-                $em->flush();
-            })();
-
-            (function () use (&$em, &$client, &$lang, &$createAction, &$createFormData, &$router) {
-                $action = $createAction();
-                $formData = $createFormData($action);
-                $form = $client
-                    ->request('GET', '/'. $lang .'/admin/actions/'. $action->getId())
-                    ->filter('form')->form();
-                $client->submit($form, array_diff_key($formData, [
-                    'action[promiseUpdates]' => false,
-                    'action[sources]' => false,
-                ]));
-                $response = $client->getResponse();
-
-                $this->assertEquals(302, $response->getStatusCode());
-
-                $route = $router->match($response->getTargetUrl());
-                $this->assertEquals('admin_action_edit', $route['_route']);
-                $this->assertEquals($lang, $route['_locale']);
-
-                $action = $em->getRepository('App:Action')->find($action->getId());
-
-                $this->assertNotNull($action);
-
-                $em->refresh($action);
-
-                $this->assertEquals('Updated', $action->getName());
-                $this->assertCount(0, $action->getPromiseUpdates());
-
-                $em->remove($action);
-                $em->flush();
-            })();
-
-            (function () use (&$em, &$client, &$lang, &$createAction, &$createFormData, &$router) {
-                $action = $createAction();
-                $formData = $createFormData($action);
-                $form = $client
-                    ->request('GET', '/'. $lang .'/admin/actions/'. $action->getId())
-                    ->filter('form')->form();
-                $formPhpValues = $form->getPhpValues();
-                $formPhpValues['action']['promiseUpdates'] = $formData['action[promiseUpdates]'];
-                $formPhpValues['action']['sources'] = $formData['action[sources]'];
-
-                $client->request($form->getMethod(), $form->getUri(), $formPhpValues);
-                $response = $client->getResponse();
-
-                $this->assertEquals(302, $response->getStatusCode());
-
-                $route = $router->match($response->getTargetUrl());
-                $this->assertEquals('admin_action_edit', $route['_route']);
-                $this->assertEquals($lang, $route['_locale']);
-
-                $action = $em->getRepository('App:Action')->find($action->getId());
-
-                $this->assertNotNull($action);
-
-                $em->refresh($action);
-
-                $this->assertCount(count($formData['action[promiseUpdates]']), $action->getPromiseUpdates());
-                $this->assertCount(count($formData['action[sources]']), $action->getSources());
-
-                array_map(function (PromiseUpdate $promiseUpdate) use (&$em) {
-                    $em->remove($promiseUpdate);
-                    $em->flush();
-                }, $action->getPromiseUpdates()->toArray());
-
-                $em->remove($action);
-                $em->flush();
-            })();
         }
 
-        $em->close();
-        $em = null;
-        static::$kernel->shutdown();
+        $form = $client
+            ->request('GET', "/${locale}/admin/actions/{$action->getId()}")
+            ->filter('form')->form();
+
+        $formPhpValues = $form->getPhpValues();
+        $formPhpValues['action']['usedPowers'] = [$power1->getId(), $power2->getId()];
+
+        $client->request($form->getMethod(), $form->getUri(), $formPhpValues);
+        $this->assertRedirectsToRoute($client->getResponse(), 'admin_action_edit');
+
+        $em->clear('App:Action');
+        /** @var Action $action */
+        $action = $em->getRepository('App:Action')->find($action->getId());
+
+        $this->assertNotNull($action);
+        $this->assertCount(2, $action->getUsedPowers());
+
+        self::cleanup($em);
     }
+
+    public function testEditActionSubmitUsedPowersRemoved()
+    {
+        $client = self::createAdminClient();
+
+        $em = self::getDoctrine($client);
+        $locale = self::getLocale($client);
+
+        $action = $this->makeAction($em);
+        $this->assertCount(0, $action->getUsedPowers());
+
+        {
+            $usedPowers = new ArrayCollection([$this->makePower($em)]);
+            $action->getMandate()->getInstitutionTitle()->getTitle()->setPowers($usedPowers);
+            $action->setUsedPowers($usedPowers);
+            $em->flush();
+        }
+
+        $this->assertCount(1, $action->getUsedPowers());
+
+        $form = $client
+            ->request('GET', "/${locale}/admin/actions/{$action->getId()}")
+            ->filter('form')->form();
+
+        $formPhpValues = $form->getPhpValues();
+        unset($formPhpValues['action']['usedPowers']);
+
+        $client->request($form->getMethod(), $form->getUri(), $formPhpValues);
+        $this->assertRedirectsToRoute($client->getResponse(), 'admin_action_edit');
+
+        $em->clear('App:Action');
+        $action = $em->getRepository('App:Action')->find($action->getId());
+
+        $this->assertNotNull($action);
+        $this->assertCount(0, $action->getUsedPowers());
+
+        self::cleanup($em);
+    }
+
+    //endregion
+
+    //region Delete
 
     public function testDeleteActionAccess()
     {
@@ -282,51 +447,42 @@ class AdminActionsControllerTest extends WebTestCase
 
         /** @var ObjectManager $manager */
         $manager = $client->getContainer()->get('doctrine')->getManager();
-        $action = $this->createAction($manager);
+        $action = $this->makeAction($manager);
 
-        $this->assertTrue(self::onlyAdminCanAccess('/admin/actions/'. $action->getId() .'/d', $client));
+        $this->assertOnlyAdminCanAccess("/admin/actions/{$action->getId()}/d", $client);
 
         $manager->remove($action);
         $manager->flush();
-        $manager = null;
-        $action = null;
-        static::$kernel->shutdown();
+
+        self::cleanup($manager);
     }
 
     public function testDeleteActionSubmit()
     {
-        $client = static::createClient();
-        $client->insulate();
-        $client->followRedirects(false);
-        self::logInClientAsRole($client, 'ROLE_ADMIN');
+        $client = self::createAdminClient();
 
         /** @var ObjectManager $manager */
         $manager = $client->getContainer()->get('doctrine')->getManager();
-        $router = $client->getContainer()->get('router');
+        $locale = self::getLocale($client);
 
-        foreach (self::getLangs() as $lang) {
-            $action = $this->createAction($manager);
+        $action = $this->makeAction($manager);
 
-            $form = $client
-                ->request('GET', '/'. $lang .'/admin/actions/'. $action->getId() .'/d')
-                ->filter('form')->form();
-            $client->submit($form);
-            $response = $client->getResponse();
-            $this->assertEquals(302, $response->getStatusCode());
+        $form = $client
+            ->request('GET', "/${locale}/admin/actions/{$action->getId()}/d")
+            ->filter('form')->form();
+        $client->submit($form);
+        $this->assertRedirectsToRoute($client->getResponse(), 'admin_promises');
 
-            $route = $router->match($response->getTargetUrl());
-            $this->assertEquals('admin_promises', $route['_route']);
-            $this->assertEquals($lang, $route['_locale']);
+        $manager->clear('App:Action');
 
-            $manager->clear('App:Action');
+        /** @var Status $action */
+        $action = $manager->getRepository('App:Action')->find($action->getId());
 
-            /** @var Status $action */
-            $action = $manager->getRepository('App:Action')->find($action->getId());
-
-            $this->assertNull($action);
-        }
+        $this->assertNull($action);
 
         $manager = null;
         static::$kernel->shutdown();
     }
+
+    //endregion
 }

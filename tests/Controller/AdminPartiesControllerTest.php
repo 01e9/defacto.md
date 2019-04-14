@@ -12,269 +12,229 @@ class AdminPartiesControllerTest extends WebTestCase
 {
     use TestCaseTrait;
 
+    //region List
+
     public function testIndexAction()
     {
-        $client = static::createClient();
-        $client->insulate();
-        $this->assertTrue(self::onlyAdminCanAccess('/admin/parties', $client));
+        $this->assertOnlyAdminCanAccess('/admin/parties');
     }
+
+    //endregion
+
+    //region Add
 
     public function testAddActionAccess()
     {
-        $client = static::createClient();
-        $client->insulate();
-        $this->assertTrue(self::onlyAdminCanAccess('/admin/parties/add', $client));
+        $this->assertOnlyAdminCanAccess('/admin/parties/add');
     }
 
-    public function testAddActionSubmit()
+    public function testAddActionSubmitInvalidData()
     {
-        $client = static::createClient();
-        $client->insulate();
-        $client->followRedirects(false);
-        self::logInClientAsRole($client, 'ROLE_ADMIN');
+        $client = self::createAdminClient();
+        $locale = self::getLocale($client);
 
-        $em = $client->getContainer()->get('doctrine.orm.default_entity_manager');
-        $router = $client->getContainer()->get('router');
+        $form = $client
+            ->request('GET', "/${locale}/admin/parties/add")
+            ->filter('form')->form();
+        $client->submit($form, []);
+
+        $this->assertHasFormErrors($client->getResponse());
+    }
+
+    public function testAddActionSubmitValidData()
+    {
+        $client = self::createAdminClient();
+        $em = self::getDoctrine($client);
+        $locale = self::getLocale($client);
+        $random = self::randomNumber();
 
         $formData = [
-            'party[name]' => 'Test',
-            'party[slug]' => 'test',
+            'party[name]' => "Test ${random}",
+            'party[slug]' => "test-${random}",
         ];
 
-        foreach (self::getLangs() as $lang) {
-            (function () use (&$client, &$lang) {
-                $form = $client
-                    ->request('GET', '/'. $lang .'/admin/parties/add')
-                    ->filter('form')->form();
-                $client->submit($form, []);
-                $response = $client->getResponse();
+        $form = $client
+            ->request('GET', "/${locale}/admin/parties/add")
+            ->filter('form')->form();
+        $client->submit($form, $formData);
 
-                $this->assertEquals(200, $response->getStatusCode());
-                $this->assertContains('is-invalid', $response->getContent());
-            })();
+        $route = $this->assertRedirectsToRoute($client->getResponse(), 'admin_party_edit');
 
-            (function () use (&$client, &$lang, &$em, &$router, &$formData) {
-                $form = $client
-                    ->request('GET', '/'. $lang .'/admin/parties/add')
-                    ->filter('form')->form();
-                $client->submit($form, $formData);
-                $response = $client->getResponse();
+        $em->clear('App:Party');
+        /** @var Party $party */
+        $party = $em->getRepository('App:Party')->find($route['id']);
 
-                $this->assertEquals(302, $response->getStatusCode());
+        $this->assertNotNull($party);
+        $this->assertEquals($formData['party[name]'], $party->getName());
 
-                $route = $router->match($response->getTargetUrl());
-                $this->assertEquals('admin_party_edit', $route['_route']);
-                $this->assertEquals($lang, $route['_locale']);
-
-                /** @var Party $party */
-                $party = $em->getRepository('App:Party')->find($route['id']);
-
-                $this->assertNotNull($party);
-                $this->assertEquals($formData['party[name]'], $party->getName());
-
-                $em->remove($party);
-                $em->flush();
-            })();
-
-            (function () use (&$client, &$lang, &$em, &$router, &$formData) {
-                $logo = new UploadedFile(self::getTestsRootDir() . '/files/test.jpg', 'test.jpg');
-
-                $form = $client
-                    ->request('GET', '/'. $lang .'/admin/parties/add')
-                    ->filter('form')->form();
-                $client->insulate(false);
-                $client->submit($form, array_merge($formData, [
-                    'party[logo]' => $logo,
-                ]));
-                $client->insulate(true);
-                $response = $client->getResponse();
-
-                $this->assertEquals(302, $response->getStatusCode());
-
-                $route = $router->match($response->getTargetUrl());
-                $this->assertEquals('admin_party_edit', $route['_route']);
-                $this->assertEquals($lang, $route['_locale']);
-
-                /** @var Party $party */
-                $party = $em->getRepository('App:Party')->find($route['id']);
-                $em->refresh($party); // fix lifecycle callbacks call
-
-                $this->assertNotNull($party);
-                $this->assertEquals($logo->getMimeType(), $party->getLogo()->getMimeType());
-
-                $em->remove($party);
-                $em->flush();
-            })();
-        }
-
-        $em->close();
-        $em = null;
-        static::$kernel->shutdown();
+        self::cleanup($em);
     }
+
+    public function testAddActionSubmitUploadLogo()
+    {
+        $client = self::createAdminClient();
+        $em = self::getDoctrine($client);
+        $locale = self::getLocale($client);
+        $random = self::randomNumber();
+
+        $formData = [
+            'party[name]' => "Test ${random}",
+            'party[slug]' => "test-${random}",
+        ];
+
+        $logo = new UploadedFile(self::getTestsRootDir() . '/files/test.jpg', 'test.jpg');
+
+        $form = $client
+            ->request('GET', "/${locale}/admin/parties/add")
+            ->filter('form')->form();
+        $client->insulate(false);
+        $client->submit($form, array_merge($formData, [
+            'party[logo]' => $logo,
+        ]));
+        $route = $this->assertRedirectsToRoute($client->getResponse(), 'admin_party_edit');
+
+        $client = self::createAdminClient();
+        $em = $this->getDoctrine($client);
+
+        /** @var Party $party */
+        $party = $em->getRepository('App:Party')->find($route['id']);
+        $em->refresh($party); // fix lifecycle callbacks
+
+        $this->assertNotNull($party);
+        $this->assertEquals($logo->getMimeType(), $party->getLogo()->getMimeType());
+
+        self::cleanup($em);
+    }
+
+    //endregion
+
+    //region Edit
 
     public function testEditActionAccess()
     {
         $client = static::createClient();
         $client->insulate();
+        $em = self::getDoctrine($client);
+        $party = $this->makeParty($em);
 
-        /** @var ObjectManager $manager */
-        $manager = $client->getContainer()->get('doctrine')->getManager();
-        $party = $this->createParty($manager);
-
-        $this->assertTrue(self::onlyAdminCanAccess('/admin/parties/'. $party->getId(), $client));
+        $this->assertOnlyAdminCanAccess("/admin/parties/{$party->getId()}", $client);
     }
 
-    public function testEditActionSubmit()
+    public function testEditActionSubmitInvalidData()
     {
-        $client = static::createClient();
-        $client->insulate();
-        $client->followRedirects(false);
-        self::logInClientAsRole($client, 'ROLE_ADMIN');
+        $client = self::createAdminClient();
+        $em = self::getDoctrine($client);
+        $locale = self::getLocale($client);
 
-        $em = $client->getContainer()->get('doctrine.orm.default_entity_manager');
-        $router = $client->getContainer()->get('router');
+        $party = $this->makeParty($em);
+        $form = $client
+            ->request('GET', "/${locale}/admin/parties/{$party->getId()}")
+            ->filter('form')->form();
+        $client->submit($form, [
+            'party[name]' => '?',
+        ]);
 
-        $createParty = function() use (&$em) : Party {
-            $party = new Party();
-            $party
-                ->setName('Test')
-                ->setSlug('test');
-            $em->persist($party);
-            $em->flush();
+        $this->assertHasFormErrors($client->getResponse());
 
-            return $party;
-        };
+        self::cleanup($em);
+    }
+
+    public function testEditActionSubmitValidData()
+    {
+        $client = self::createAdminClient();
+        $em = self::getDoctrine($client);
+        $locale = self::getLocale($client);
+        $random = self::randomNumber();
 
         $formData = [
-            'party[name]' => 'Test',
-            'party[slug]' => 'test',
+            'party[name]' => "Test ${random}",
+            'party[slug]' => "test-${random}",
         ];
 
-        foreach (self::getLangs() as $lang) {
-            (function () use (&$lang, &$client, &$createParty, &$em) {
-                $party = $createParty();
-                $form = $client
-                    ->request('GET', '/'. $lang .'/admin/parties/'. $party->getId())
-                    ->filter('form')->form();
-                $client->submit($form, [
-                    'party[name]' => '?',
-                ]);
-                $response = $client->getResponse();
+        $party = $this->makeParty($em);
+        $form = $client
+            ->request('GET', "/${locale}/admin/parties/{$party->getId()}")
+            ->filter('form')->form();
+        $client->submit($form, $formData);
 
-                $this->assertEquals(200, $response->getStatusCode());
-                $this->assertContains('is-invalid', $response->getContent());
+        $this->assertRedirectsToRoute($client->getResponse(), 'admin_party_edit');
 
-                $em->remove($party);
-                $em->flush();
-            })();
-
-            (function () use (&$lang, &$client, &$createParty, &$em, &$formData, &$router) {
-                $party = $createParty();
-                $form = $client
-                    ->request('GET', '/'. $lang .'/admin/parties/'. $party->getId())
-                    ->filter('form')->form();
-                $client->submit($form, $formData);
-                $response = $client->getResponse();
-
-                $this->assertEquals(302, $response->getStatusCode());
-
-                $route = $router->match($response->getTargetUrl());
-                $this->assertEquals('admin_party_edit', $route['_route']);
-                $this->assertEquals($lang, $route['_locale']);
-
-                $em->remove($party);
-                $em->flush();
-            })();
-
-            (function () use (&$lang, &$client, &$createParty, &$em, &$formData, &$router) {
-                $logo = new UploadedFile(self::getTestsRootDir() . '/files/test.gif', 'test.gif');
-
-                $party = $createParty();
-                $form = $client
-                    ->request('GET', '/'. $lang .'/admin/parties/'. $party->getId())
-                    ->filter('form')->form();
-                $client->insulate(false);
-                $client->submit($form, array_merge($formData, [
-                    'party[logo]' => $logo,
-                ]));
-                $client->insulate(true);
-                $response = $client->getResponse();
-                $this->assertEquals(302, $response->getStatusCode());
-
-                $route = $router->match($response->getTargetUrl());
-                $this->assertEquals('admin_party_edit', $route['_route']);
-                $this->assertEquals($lang, $route['_locale']);
-
-                $party = $em->getRepository('App:Party')->find($party->getId());
-
-                $this->assertNotNull($party);
-
-                $em->refresh($party);
-
-                $this->assertEquals($logo->getMimeType(), $party->getLogo()->getMimeType());
-
-                $em->remove($party);
-                $em->flush();
-            })();
-        }
-
-        $em->close();
-        $em = null;
-        static::$kernel->shutdown();
+        self::cleanup($em);
     }
+
+    public function testEditActionSubmitUploadLogo()
+    {
+        $client = self::createAdminClient();
+        $em = self::getDoctrine($client);
+        $locale = self::getLocale($client);
+        $random = self::randomNumber();
+
+        $formData = [
+            'party[name]' => "Test ${random}",
+            'party[slug]' => "test-${random}",
+        ];
+
+        $party = $this->makeParty($em);
+        $logo = new UploadedFile(self::getTestsRootDir() . '/files/test.gif', 'test.gif');
+        $form = $client
+            ->request('GET', "/${locale}/admin/parties/{$party->getId()}")
+            ->filter('form')->form();
+        $client->insulate(false);
+        $client->submit($form, array_merge($formData, ['party[logo]' => $logo,]));
+        $this->assertRedirectsToRoute($client->getResponse(), 'admin_party_edit');
+
+        $client = self::createAdminClient();
+        $em = $this->getDoctrine($client);
+
+        $party = $em->getRepository('App:Party')->find($party->getId());
+
+        $this->assertNotNull($party);
+        $em->refresh($party); // fix lifecycle callbacks
+
+        $this->assertEquals($logo->getMimeType(), $party->getLogo()->getMimeType());
+
+        self::cleanup($em);
+    }
+
+    //endregion
+
+    //region Delete
 
     public function testDeleteActionAccess()
     {
         $client = static::createClient();
         $client->insulate();
 
-        /** @var ObjectManager $manager */
-        $manager = $client->getContainer()->get('doctrine')->getManager();
-        $party = $this->createParty($manager);
+        $em = self::getDoctrine($client);
+        $party = $this->makeParty($em);
 
-        $this->assertTrue(self::onlyAdminCanAccess('/admin/parties/'. $party->getId() .'/d', $client));
+        $this->assertOnlyAdminCanAccess("/admin/parties/{$party->getId()}/d", $client);
 
-        $manager->remove($party);
-        $manager->flush();
-        $manager = null;
-        $party = null;
-        static::$kernel->shutdown();
+        self::cleanup($em);
     }
 
     public function testDeleteActionSubmit()
     {
-        $client = static::createClient();
-        $client->insulate();
-        $client->followRedirects(false);
-        self::logInClientAsRole($client, 'ROLE_ADMIN');
+        $client = self::createAdminClient();
+        $em = self::getDoctrine($client);
+        $locale = self::getLocale($client);
 
-        /** @var ObjectManager $manager */
-        $manager = $client->getContainer()->get('doctrine')->getManager();
-        $router = $client->getContainer()->get('router');
+        $party = $this->makeParty($em);
 
-        foreach (self::getLangs() as $lang) {
-            $party = $this->createParty($manager);
+        $form = $client
+            ->request('GET', "/${locale}/admin/parties/{$party->getId()}/d")
+            ->filter('form')->form();
+        $client->submit($form);
+        $this->assertRedirectsToRoute($client->getResponse(), 'admin_parties');
 
-            $form = $client
-                ->request('GET', '/'. $lang .'/admin/parties/'. $party->getId() .'/d')
-                ->filter('form')->form();
-            $client->submit($form);
-            $response = $client->getResponse();
-            $this->assertEquals(302, $response->getStatusCode());
+        $em->clear('App:Party');
+        /** @var Party $party */
+        $party = $em->getRepository('App:Party')->find($party->getId());
 
-            $route = $router->match($response->getTargetUrl());
-            $this->assertEquals('admin_parties', $route['_route']);
-            $this->assertEquals($lang, $route['_locale']);
+        $this->assertNull($party);
 
-            $manager->clear('App:Party');
-
-            /** @var Party $party */
-            $party = $manager->getRepository('App:Party')->find($party->getId());
-
-            $this->assertNull($party);
-        }
-
-        $manager = null;
-        static::$kernel->shutdown();
+        self::cleanup($em);
     }
+
+    //endregion
 }

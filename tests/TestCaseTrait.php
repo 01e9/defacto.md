@@ -2,22 +2,11 @@
 
 namespace App\Tests;
 
-use App\Entity\Action;
-use App\Entity\Candidate;
-use App\Entity\Constituency;
-use App\Entity\Election;
-use App\Entity\Institution;
-use App\Entity\InstitutionTitle;
-use App\Entity\Mandate;
-use App\Entity\Party;
-use App\Entity\Politician;
-use App\Entity\Problem;
-use App\Entity\Promise;
-use App\Entity\Status;
-use App\Entity\Title;
 use App\Entity\User;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\StringInput;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\BrowserKit\CookieJar;
@@ -26,19 +15,19 @@ use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use App\Tests\traits\FactoryTrait;
 
 trait TestCaseTrait
 {
-    private static $application;
+    use FactoryTrait;
 
-    private static $increments = [
-        Election::class => 0,
-        Politician::class => 0,
-        Party::class => 0,
-        Constituency::class => 0,
-    ];
+    private static $consoleApplication;
 
     protected function setUp()
+    {
+    }
+
+    protected static function resetDb()
     {
         self::runCommand('doctrine:schema:drop --force');
         self::runCommand('doctrine:schema:create');
@@ -49,22 +38,23 @@ trait TestCaseTrait
     {
         $command = sprintf('%s --quiet', $command);
 
-        return self::getApplication()->run(new StringInput($command));
+        return self::getConsoleApplication()->run(new StringInput($command));
     }
 
-    protected static function getApplication()
+    protected static function getConsoleApplication()
     {
-        if (null === self::$application) {
-            $client = static::createClient();
+        if (null === self::$consoleApplication) {
+            $client = self::createClient();
+            $client->insulate();
 
-            self::$application = new Application($client->getKernel());
-            self::$application->setAutoExit(false);
+            self::$consoleApplication = new Application($client->getKernel());
+            self::$consoleApplication->setAutoExit(false);
         }
 
-        return self::$application;
+        return self::$consoleApplication;
     }
 
-    protected static function getLangs() : array
+    protected static function langs() : array
     {
         return ['ro'];
     }
@@ -78,6 +68,31 @@ trait TestCaseTrait
     {
         return __DIR__;
     }
+
+    protected static function cleanup(EntityManagerInterface $em = null)
+    {
+        if ($em) {
+            $em->close();
+            $em = null;
+        }
+        static::$kernel->shutdown();
+    }
+
+    //region Shortcuts
+
+    protected static function getDoctrine(Client $client): EntityManagerInterface
+    {
+        return $client->getContainer()->get('doctrine.orm.default_entity_manager');
+    }
+
+    protected static function getLocale(Client $client): string
+    {
+        return $client->getContainer()->getParameter('locale');
+    }
+
+    //endregion
+
+    //region User utils
 
     protected static function logInClientAsRole(Client $client, string $role) : void
     {
@@ -121,224 +136,84 @@ trait TestCaseTrait
         return $user;
     }
 
-    protected static function onlyAdminCanAccess(string $pathWithoutLang, Client $client) : bool
+    protected static function createAdminClient(): Client
     {
+        $client = self::createClient();
+        $client->insulate();
+        $client->followRedirects(false);
+        self::logInClientAsRole($client, 'ROLE_ADMIN');
+        return $client;
+    }
+
+    //endregion
+
+    //region Assertions
+
+    protected static function assertOnlyAdminCanAccess(string $pathWithoutLang, Client $client = null)
+    {
+        $isPassed = true;
+
+        if (!$client) {
+            $client = self::createClient();
+            $client->insulate();
+        }
+
         $rolesExpectations = [
             '' => false,
             'ROLE_USER' => false,
             'ROLE_ADMIN' => true,
         ];
         foreach ($rolesExpectations as $role => $expectSuccess) {
-            foreach (self::getLangs() as $lang) {
+            foreach (self::langs() as $lang) {
                 $client->restart();
                 if ($role) {
                     self::logInClientAsRole($client, $role);
                 }
 
-                $client->request('GET', '/'. $lang . $pathWithoutLang);
+                $client->request('GET', "/${lang}${pathWithoutLang}");
                 $response = $client->getResponse();
 
                 if ($expectSuccess) {
                     if (200 !== $response->getStatusCode()) {
-                        return false;
+                        $isPassed = false;
+                        break 2;
                     }
                 } elseif ($role) {
                     if (403 !== $response->getStatusCode()) {
-                        return false;
+                        $isPassed = false;
+                        break 2;
                     }
                 } else {
                     $redirectPath = parse_url($response->headers->get('location'), PHP_URL_PATH);
 
-                    if (302 !== $response->getStatusCode() || '/' . $lang . '/login' !== $redirectPath) {
-                        return false;
+                    if (302 !== $response->getStatusCode() || "/${lang}/login" !== $redirectPath) {
+                        $isPassed = false;
+                        break 2;
                     }
                 }
             }
         }
 
-        return true;
+        static::assertThat($isPassed, static::isTrue(), "Only admin can access ${pathWithoutLang}");
     }
 
-    protected function createStatus(ObjectManager $objectManager) : Status
+    protected static function assertHasFormErrors(Response $response)
     {
-        $status = new Status();
-        $status->setColor('blue');
-        $status->setEffect(73);
-        $status->setName("Test");
-        $status->setNamePlural("Tests");
-        $status->setSlug("test");
-
-        $objectManager->persist($status);
-        $objectManager->flush();
-
-        return $status;
+        self::assertEquals(200, $response->getStatusCode());
+        self::assertContains('is-invalid', $response->getContent());
     }
 
-    protected function createInstitution(ObjectManager $objectManager) : Institution
+    protected static function assertRedirectsToRoute(Response $response, string $routeName) : array
     {
-        $institution = new Institution();
-        $institution->setName("Test");
-        $institution->setSlug("test");
+        self::assertEquals(302, $response->getStatusCode());
 
-        $objectManager->persist($institution);
-        $objectManager->flush();
+        $router = self::createClient()->getContainer()->get("router");
+        $route = $router->match($response->getTargetUrl());
 
-        return $institution;
+        self::assertEquals($routeName, $route['_route']);
+
+        return $route;
     }
 
-    protected function createTitle(ObjectManager $objectManager) : Title
-    {
-        $title = new Title();
-        $title->setName("Test");
-        $title->setSlug("test");
-
-        $objectManager->persist($title);
-        $objectManager->flush();
-
-        return $title;
-    }
-
-    protected function createInstitutionTitle(ObjectManager $objectManager) : InstitutionTitle
-    {
-        $institutionTitle = new InstitutionTitle();
-        $institutionTitle->setTitle($this->createTitle($objectManager));
-        $institutionTitle->setInstitution($this->createInstitution($objectManager));
-
-        $objectManager->persist($institutionTitle);
-        $objectManager->flush();
-
-        return $institutionTitle;
-    }
-
-    protected function createElection(ObjectManager $objectManager) : Election
-    {
-        $increment = ++self::$increments[Election::class];
-
-        $election = new Election();
-        $election->setName("Test election ". $increment);
-        $election->setSlug("test-election-". $increment);
-        $election->setDate(new \DateTime());
-
-        $objectManager->persist($election);
-        $objectManager->flush();
-
-        return $election;
-    }
-
-    protected function createCandidate(ObjectManager $objectManager) : Candidate
-    {
-        $candidate = new Candidate();
-        $candidate->setElection($this->createElection($objectManager));
-        $candidate->setPolitician($this->createPolitician($objectManager));
-        $candidate->setConstituency($this->createConstituency($objectManager));
-
-        $objectManager->persist($candidate);
-        $objectManager->flush();
-
-        return $candidate;
-    }
-
-    protected function createConstituency(ObjectManager $objectManager) : Constituency
-    {
-        $constituency = new Constituency();
-        $constituency->setName("Test constituency");
-        $constituency->setSlug("test-constituency");
-        $constituency->setLink("http://constituency.test");
-        $constituency->setNumber(++self::$increments[Constituency::class]);
-
-        $objectManager->persist($constituency);
-        $objectManager->flush();
-
-        return $constituency;
-    }
-
-    protected function createProblem(ObjectManager $objectManager) : Problem
-    {
-        $problem = new Problem();
-        $problem->setName("Test problem");
-        $problem->setSlug("test-problem");
-
-        $objectManager->persist($problem);
-        $objectManager->flush();
-
-        return $problem;
-    }
-
-    protected function createPolitician(ObjectManager $objectManager) : Politician
-    {
-        $increment = ++self::$increments[Politician::class];
-
-        $politician = new Politician();
-        $politician->setFirstName("Foo");
-        $politician->setLastName("Bar");
-        $politician->setSlug("foo-bar-". $increment);
-
-        $objectManager->persist($politician);
-        $objectManager->flush();
-
-        return $politician;
-    }
-
-    protected function createParty(ObjectManager $objectManager) : Party
-    {
-        $increment = ++self::$increments[Party::class];
-
-        $party = new Party();
-        $party->setName("Foo Bar");
-        $party->setSlug("foo-bar-". $increment);
-
-        $objectManager->persist($party);
-        $objectManager->flush();
-
-        return $party;
-    }
-
-    protected function createMandate(ObjectManager $objectManager) : Mandate
-    {
-        $mandate = new Mandate();
-        $mandate->setBeginDate(new \DateTime("-2 years"));
-        $mandate->setEndDate(new \DateTime("+2 years"));
-        $mandate->setVotesCount(1000000);
-        $mandate->setVotesPercent(73);
-        $mandate->setInstitutionTitle($this->createInstitutionTitle($objectManager));
-        $mandate->setPolitician($this->createPolitician($objectManager));
-        $mandate->setElection($this->createElection($objectManager));
-        $mandate->setConstituency($this->createConstituency($objectManager));
-
-        $objectManager->persist($mandate);
-        $objectManager->flush();
-
-        return $mandate;
-    }
-
-    protected function createPromise(ObjectManager $objectManager) : Promise
-    {
-        $promise = new Promise();
-        $promise->setName("Test");
-        $promise->setSlug("test");
-        $promise->setPublished(true);
-        $promise->setPolitician($this->createPolitician($objectManager));
-        $promise->setElection($this->createElection($objectManager));
-        $promise->setMadeTime(new \DateTime("-3 days"));
-
-        $objectManager->persist($promise);
-        $objectManager->flush();
-
-        return $promise;
-    }
-
-    protected function createAction(ObjectManager $objectManager) : Action
-    {
-        $action = new Action();
-        $action->setName("Test");
-        $action->setSlug("test");
-        $action->setPublished(true);
-        $action->setMandate($this->createMandate($objectManager));
-        $action->setOccurredTime(new \DateTime());
-
-        $objectManager->persist($action);
-        $objectManager->flush();
-
-        return $action;
-    }
+    //endregion
 }

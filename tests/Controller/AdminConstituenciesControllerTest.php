@@ -2,7 +2,9 @@
 
 namespace App\Tests\Controller;
 
+use App\Consts;
 use App\Entity\Constituency;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use App\Tests\TestCaseTrait;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -11,69 +13,67 @@ class AdminConstituenciesControllerTest extends WebTestCase
 {
     use TestCaseTrait;
 
+    //region List
+
+    public function testIndexActionAccess()
+    {
+        $this->assertOnlyAdminCanAccess('/admin/constituencies');
+    }
+
+    //endregion
+
+    //region Add
+
     public function testAddActionAccess()
     {
-        $client = static::createClient();
-        $client->insulate();
-        $this->assertTrue(self::onlyAdminCanAccess('/admin/constituencies/add', $client));
+        $this->assertOnlyAdminCanAccess('/admin/constituencies/add');
     }
 
-    public function testAddActionSubmit()
+    public function testAddActionSubmitAddEmptyForm()
     {
-        $client = static::createClient();
-        $client->insulate();
-        $client->followRedirects(false);
-        self::logInClientAsRole($client, 'ROLE_ADMIN');
+        $client = self::createAdminClient();
+        $locale = self::getLocale($client);
 
-        $em = $client->getContainer()->get('doctrine.orm.default_entity_manager');
-        $router = $client->getContainer()->get('router');
+        $form = $client
+            ->request('GET', "/${locale}/admin/constituencies/add")
+            ->filter('form')->form();
+        $client->submit($form, []);
+        $this->assertHasFormErrors($client->getResponse());
+    }
+
+    public function testAddActionSubmitAddValidData()
+    {
+        $client = self::createAdminClient();
+        $locale = self::getLocale($client);
+        $em = self::getDoctrine($client);
+        $random = self::randomNumber();
 
         $formData = [
-            'constituency[name]' => 'Test',
-            'constituency[slug]' => 'tests',
-            'constituency[link]' => 'https://test.test/test',
-            'constituency[number]' => '1',
+            'constituency[name]' => "Test ${random}",
+            'constituency[slug]' => "test-${random}",
+            'constituency[link]' => "https://test.test/test-${random}",
+            'constituency[number]' => "${random}",
         ];
 
-        foreach (self::getLangs() as $lang) {
-            (function () use (&$client, &$lang) {
-                $form = $client
-                    ->request('GET', '/'. $lang .'/admin/constituencies/add')
-                    ->filter('form')->form();
-                $client->submit($form, []);
-                $response = $client->getResponse();
-                $this->assertEquals(200, $response->getStatusCode());
-                $this->assertContains('is-invalid', $response->getContent());
-            })();
+        $form = $client
+            ->request('GET', "/${locale}/admin/constituencies/add")
+            ->filter('form')->form();
+        $client->submit($form, $formData);
+        $route = $this->assertRedirectsToRoute($client->getResponse(), 'admin_constituency_edit');
 
-            (function () use (&$client, &$lang, &$formData, &$router, &$em) {
-                $form = $client
-                    ->request('GET', '/'. $lang .'/admin/constituencies/add')
-                    ->filter('form')->form();
-                $client->submit($form, $formData);
-                $response = $client->getResponse();
-                $this->assertEquals(302, $response->getStatusCode());
+        /** @var Constituency $constituency */
+        $constituency = $em->getRepository('App:Constituency')->find($route['id']);
 
-                $route = $router->match($response->getTargetUrl());
-                $this->assertEquals('admin_constituency_edit', $route['_route']);
-                $this->assertEquals($lang, $route['_locale']);
+        $this->assertNotNull($constituency);
+        $this->assertEquals($formData['constituency[name]'], $constituency->getName());
+        $this->assertEquals($formData['constituency[slug]'], $constituency->getSlug());
 
-                /** @var Constituency $constituency */
-                $constituency = $em->getRepository('App:Constituency')->find($route['id']);
-
-                $this->assertNotNull($constituency);
-                $this->assertEquals($formData['constituency[name]'], $constituency->getName());
-                $this->assertEquals($formData['constituency[slug]'], $constituency->getSlug());
-
-                $em->remove($constituency);
-                $em->flush();
-            })();
-        }
-
-        $em->close();
-        $em = null;
-        static::$kernel->shutdown();
+        self::cleanup($em);
     }
+
+    //endregion
+
+    //region Edit
 
     public function testEditActionAccess()
     {
@@ -82,198 +82,368 @@ class AdminConstituenciesControllerTest extends WebTestCase
 
         /** @var ObjectManager $manager */
         $manager = $client->getContainer()->get('doctrine')->getManager();
-        $constituency = $this->createConstituency($manager);
+        $constituency = $this->makeConstituency($manager);
 
-        $this->assertTrue(self::onlyAdminCanAccess('/admin/constituencies/'. $constituency->getId(), $client));
+        $this->assertOnlyAdminCanAccess("/admin/constituencies/{$constituency->getId()}", $client);
     }
 
-    public function testEditActionSubmit()
+    public function testEditActionSubmitInvalidData()
     {
-        $client = static::createClient();
-        $client->insulate();
-        $client->followRedirects(false);
-        self::logInClientAsRole($client, 'ROLE_ADMIN');
+        $client = self::createAdminClient();
+        $em = self::getDoctrine($client);
+        $locale = self::getLocale($client);
 
-        $em = $client->getContainer()->get('doctrine.orm.default_entity_manager');
-        $router = $client->getContainer()->get('router');
+        $constituency = $this->makeConstituency($em);
+        $form = $client
+            ->request('GET', "/${locale}/admin/constituencies/{$constituency->getId()}")
+            ->filter('form')->form();
+        $client->submit($form, ['constituency[name]' => '?',]);
+
+        $this->assertHasFormErrors($client->getResponse());
+    }
+
+    public function testEditActionSubmitNoAddableFields()
+    {
+        $client = self::createAdminClient();
+        $em = self::getDoctrine($client);
+        $locale = self::getLocale($client);
+        $random = self::randomNumber();
 
         $formData = [
-            'constituency[name]' => 'Test constituency name',
-            'constituency[slug]' => 'test-constituency-name',
-            'constituency[link]' => 'https://test.test/test',
+            'constituency[name]' => "Test ${random}",
+            'constituency[slug]' => "test-${random}",
+            'constituency[link]' => "https://test.test/test-${random}",
         ];
 
-        foreach (self::getLangs() as $lang) {
-            (function () use (&$client, &$lang, &$em) {
-                $constituency = $this->createConstituency($em);
-                $form = $client
-                    ->request('GET', '/'. $lang .'/admin/constituencies/'. $constituency->getId())
-                    ->filter('form')->form();
-                $client->submit($form, [
-                    'constituency[name]' => '?',
-                ]);
-                $response = $client->getResponse();
+        $constituency = $this->makeConstituency($em);
+        $form = $client
+            ->request('GET', "/${locale}/admin/constituencies/{$constituency->getId()}")
+            ->filter('form')->form();
+        $client->submit($form, $formData);
 
-                $this->assertEquals(200, $response->getStatusCode());
-                $this->assertContains('is-invalid', $response->getContent());
+        $this->assertRedirectsToRoute($client->getResponse(), 'admin_constituency_edit');
 
-                $em->remove($constituency);
-                $em->flush();
-            })();
+        $em->clear('App:Constituency');
+        /** @var Constituency $constituency */
+        $constituency = $em->getRepository('App:Constituency')->find($constituency->getId());
 
-            (function () use (&$client, &$lang, &$formData, &$em, &$router) {
-                $constituency = $this->createConstituency($em);
-                $form = $client
-                    ->request('GET', '/'. $lang .'/admin/constituencies/'. $constituency->getId())
-                    ->filter('form')->form();
-                $client->submit($form, $formData);
-                $response = $client->getResponse();
-                $this->assertEquals(302, $response->getStatusCode());
+        $this->assertNotNull($constituency);
+        $this->assertEquals($constituency->getName(), $formData['constituency[name]']);
+    }
 
-                $route = $router->match($response->getTargetUrl());
-                $this->assertEquals('admin_constituency_edit', $route['_route']);
-                $this->assertEquals($lang, $route['_locale']);
+    public function testEditActionSubmitAddProblems()
+    {
+        $client = self::createAdminClient();
+        $em = self::getDoctrine($client);
+        $locale = self::getLocale($client);
 
-                /** @var Constituency $constituency */
-                $constituency = $em->getRepository('App:Constituency')->find($constituency->getId());
+        $constituency = $this->makeConstituency($em);
+        $this->assertCount(0, $constituency->getProblems());
 
-                $this->assertNotNull($constituency);
+        $form = $client
+            ->request('GET', "/${locale}/admin/constituencies/{$constituency->getId()}")
+            ->filter('form')->form();
 
-                $em->refresh($constituency);
+        $formPhpValues = $form->getPhpValues();
 
-                $this->assertEquals($formData['constituency[name]'], $constituency->getName());
-                $this->assertEquals($formData['constituency[slug]'], $constituency->getSlug());
+        {
+            $election1 = $this->makeElection($em);
+            $election2 = $this->makeElection($em);
+            $problem1 = $this->makeProblem($em);
+            $problem2 = $this->makeProblem($em);
 
-                $em->remove($constituency);
-                $em->flush();
-            })();
-
-            (function () use (&$client, &$lang, &$formData, &$em, &$router) {
-                $constituency = $this->createConstituency($em);
-                $form = $client
-                    ->request('GET', '/'. $lang .'/admin/constituencies/'. $constituency->getId())
-                    ->filter('form')->form();
-
-                $electionId = $this->createElection($em)->getId();
-                $problemId = $this->createProblem($em)->getId();
-                $politicianId = $this->createPolitician($em)->getId();
-
-                $formPhpValues = $form->getPhpValues();
-                $formPhpValues['constituency']['problems'] = [
-                    [
-                        'constituency' => $constituency->getId(),
-                        'election' => $electionId,
-                        'problem' => $problemId,
-                        'respondents' => 123,
-                    ],
-                ];
-                $formPhpValues['constituency']['candidates'] = [
-                    [
-                        'constituency' => $constituency->getId(),
-                        'election' => $electionId,
-                        'politician' => $politicianId,
-                    ],
-                ];
-                $formPhpValues['constituency']['candidateProblemOpinions'] = [
-                    [
-                        'constituency' => $constituency->getId(),
-                        'politician' => $politicianId,
-                        'election' => $electionId,
-                        'problem' => $problemId,
-                        'opinion' => 'I can solve this!'
-                    ],
-                ];
-
-                $client->request($form->getMethod(), $form->getUri(), $formPhpValues);
-                $response = $client->getResponse();
-                $this->assertEquals(302, $response->getStatusCode());
-
-                $route = $router->match($response->getTargetUrl());
-                $this->assertEquals('admin_constituency_edit', $route['_route']);
-                $this->assertEquals($lang, $route['_locale']);
-
-                /** @var Constituency $constituency */
-                $constituency = $em->getRepository('App:Constituency')->find($constituency->getId());
-
-                $this->assertNotNull($constituency);
-
-                $em->refresh($constituency);
-
-                $this->assertEquals(
-                    $formPhpValues['constituency']['problems'][0]['respondents'],
-                    $constituency->getProblems()->first()->getRespondents()
-                );
-                $this->assertEquals(
-                    $formPhpValues['constituency']['candidates'][0]['politician'],
-                    $constituency->getCandidates()->first()->getPolitician()->getId()
-                );
-                $this->assertEquals(
-                    $formPhpValues['constituency']['candidateProblemOpinions'][0]['opinion'],
-                    'I can solve this!'
-                );
-
-                $em->remove($constituency);
-                $em->flush();
-            })();
+            $formPhpValues['constituency']['problems'] = [
+                [
+                    'constituency' => $constituency->getId(),
+                    'election' => $election1->getId(),
+                    'problem' => $problem1->getId(),
+                ],
+                [
+                    'constituency' => $constituency->getId(),
+                    'election' => $election2->getId(),
+                    'problem' => $problem1->getId(),
+                    'type' => 'national',
+                ],
+                [
+                    'constituency' => $constituency->getId(),
+                    'election' => $election1->getId(),
+                    'problem' => $problem2->getId(),
+                    'respondents' => 123,
+                    'percentage' => 67,
+                    'type' => 'local',
+                ],
+            ];
         }
 
-        $em->close();
-        $em = null;
-        static::$kernel->shutdown();
+        $client->request($form->getMethod(), $form->getUri(), $formPhpValues);
+
+        $this->assertRedirectsToRoute($client->getResponse(), 'admin_constituency_edit');
+
+        $em->clear('App:Constituency');
+        /** @var Constituency $constituency */
+        $constituency = $em->getRepository('App:Constituency')->find($constituency->getId());
+
+        $this->assertNotNull($constituency);
+        $this->assertCount(3, $constituency->getProblems());
     }
+
+    public function testEditActionSubmitRemoveProblems()
+    {
+        $client = self::createAdminClient();
+        $em = self::getDoctrine($client);
+        $locale = self::getLocale($client);
+
+        $constituency = $this->makeConstituency($em);
+        $constituency->setProblems(new ArrayCollection([$this->makeConstituencyProblem($em, $constituency)]));
+        $em->flush($constituency);
+
+        $form = $client
+            ->request('GET', "/${locale}/admin/constituencies/{$constituency->getId()}")
+            ->filter('form')->form();
+
+        $formPhpValues = $form->getPhpValues();
+        $this->assertCount(1, $formPhpValues['constituency']['problems']);
+        $formPhpValues['constituency']['problems'] = [];
+
+        $client->request($form->getMethod(), $form->getUri(), $formPhpValues);
+
+        $this->assertRedirectsToRoute($client->getResponse(), 'admin_constituency_edit');
+
+        $em->clear('App:Constituency');
+        /** @var Constituency $constituency */
+        $constituency = $em->getRepository('App:Constituency')->find($constituency->getId());
+
+        $this->assertNotNull($constituency);
+        $this->assertCount(0, $constituency->getProblems());
+    }
+
+    public function testEditActionSubmitAddCandidates()
+    {
+        $client = self::createAdminClient();
+        $em = self::getDoctrine($client);
+        $locale = self::getLocale($client);
+
+        $constituency = $this->makeConstituency($em);
+        $this->assertCount(0, $constituency->getCandidates());
+
+        $form = $client
+            ->request('GET', "/${locale}/admin/constituencies/{$constituency->getId()}")
+            ->filter('form')->form();
+
+        $formPhpValues = $form->getPhpValues();
+
+        {
+            $election1 = $this->makeElection($em);
+            $election2 = $this->makeElection($em);
+            $politician1 = $this->makePolitician($em);
+            $politician2 = $this->makePolitician($em);
+            $party1 = $this->makeParty($em);
+
+            $formPhpValues['constituency']['candidates'] = [
+                [
+                    'constituency' => $constituency->getId(),
+                    'election' => $election1->getId(),
+                    'politician' => $politician1->getId(),
+                ],
+                [
+                    'constituency' => $constituency->getId(),
+                    'election' => $election1->getId(),
+                    'politician' => $politician2->getId(),
+                    'party' => $party1->getId(),
+                    'registrationDate' => (new \DateTime())->format(Consts::DATE_FORMAT_PHP),
+                    'registrationNote' => 'Test note',
+                    'registrationLink' => 'http://test.link/registration',
+                    'electoralPlatform' => 'Test platform',
+                    'electoralPlatformLink' => 'http://test.link/platform',
+                ],
+                [
+                    'constituency' => $constituency->getId(),
+                    'election' => $election2->getId(),
+                    'politician' => $politician2->getId(),
+                ],
+            ];
+        }
+
+        $client->request($form->getMethod(), $form->getUri(), $formPhpValues);
+
+        $this->assertRedirectsToRoute($client->getResponse(), 'admin_constituency_edit');
+
+        $em->clear('App:Constituency');
+        /** @var Constituency $constituency */
+        $constituency = $em->getRepository('App:Constituency')->find($constituency->getId());
+
+        $this->assertNotNull($constituency);
+        $this->assertCount(3, $constituency->getCandidates());
+    }
+
+    public function testEditActionSubmitRemoveCandidates()
+    {
+        $client = self::createAdminClient();
+        $em = self::getDoctrine($client);
+        $locale = self::getLocale($client);
+
+        $constituency = $this->makeConstituency($em);
+        $constituency->setCandidates(new ArrayCollection([$this->makeConstituencyCandidate($em, $constituency)]));
+        $em->flush($constituency);
+
+        $form = $client
+            ->request('GET', "/${locale}/admin/constituencies/{$constituency->getId()}")
+            ->filter('form')->form();
+
+        $formPhpValues = $form->getPhpValues();
+        $this->assertCount(1, $formPhpValues['constituency']['candidates']);
+        $formPhpValues['constituency']['candidates'] = [];
+
+        $client->request($form->getMethod(), $form->getUri(), $formPhpValues);
+
+        $this->assertRedirectsToRoute($client->getResponse(), 'admin_constituency_edit');
+
+        $em->clear('App:Constituency');
+        /** @var Constituency $constituency */
+        $constituency = $em->getRepository('App:Constituency')->find($constituency->getId());
+
+        $this->assertNotNull($constituency);
+        $this->assertCount(0, $constituency->getCandidates());
+    }
+
+    public function testEditActionSubmitAddCandidateProblemOpinions()
+    {
+        $client = self::createAdminClient();
+        $em = self::getDoctrine($client);
+        $locale = self::getLocale($client);
+
+        $constituency = $this->makeConstituency($em);
+        $this->assertCount(0, $constituency->getCandidateProblemOpinions());
+
+        $form = $client
+            ->request('GET', "/${locale}/admin/constituencies/{$constituency->getId()}")
+            ->filter('form')->form();
+
+        $formPhpValues = $form->getPhpValues();
+
+        {
+            $election1 = $this->makeElection($em);
+            $election2 = $this->makeElection($em);
+            $politician1 = $this->makePolitician($em);
+            $politician2 = $this->makePolitician($em);
+            $problem1 = $this->makeProblem($em);
+            $problem2 = $this->makeProblem($em);
+
+            $formPhpValues['constituency']['candidateProblemOpinions'] = [
+                [
+                    'constituency' => $constituency->getId(),
+                    'politician' => $politician1->getId(),
+                    'election' => $election1->getId(),
+                    'problem' => $problem1->getId(),
+                    'opinion' => 'Foo'
+                ],
+                [
+                    'constituency' => $constituency->getId(),
+                    'politician' => $politician1->getId(),
+                    'election' => $election1->getId(),
+                    'problem' => $problem2->getId(),
+                    'opinion' => 'Bar'
+                ],
+                [
+                    'constituency' => $constituency->getId(),
+                    'politician' => $politician2->getId(),
+                    'election' => $election1->getId(),
+                    'problem' => $problem1->getId(),
+                    'opinion' => 'Baz'
+                ],
+                [
+                    'constituency' => $constituency->getId(),
+                    'politician' => $politician2->getId(),
+                    'election' => $election2->getId(),
+                    'problem' => $problem2->getId(),
+                    'opinion' => 'Test'
+                ],
+            ];
+        }
+
+        $client->request($form->getMethod(), $form->getUri(), $formPhpValues);
+
+        $this->assertRedirectsToRoute($client->getResponse(), 'admin_constituency_edit');
+
+        $em->clear('App:Constituency');
+        /** @var Constituency $constituency */
+        $constituency = $em->getRepository('App:Constituency')->find($constituency->getId());
+
+        $this->assertNotNull($constituency);
+        $this->assertCount(4, $constituency->getCandidateProblemOpinions());
+    }
+
+    public function testEditActionSubmitRemoveCandidateProblemOpinions()
+    {
+        $client = self::createAdminClient();
+        $em = self::getDoctrine($client);
+        $locale = self::getLocale($client);
+
+        $constituency = $this->makeConstituency($em);
+        $constituency->setCandidateProblemOpinions(
+            new ArrayCollection([$this->makeConstituencyCandidateProblemOpinion($em, $constituency)])
+        );
+        $em->flush($constituency);
+
+        $form = $client
+            ->request('GET', "/${locale}/admin/constituencies/{$constituency->getId()}")
+            ->filter('form')->form();
+
+        $formPhpValues = $form->getPhpValues();
+        $this->assertCount(1, $formPhpValues['constituency']['candidateProblemOpinions']);
+        $formPhpValues['constituency']['candidateProblemOpinions'] = [];
+
+        $client->request($form->getMethod(), $form->getUri(), $formPhpValues);
+
+        $this->assertRedirectsToRoute($client->getResponse(), 'admin_constituency_edit');
+
+        $em->clear('App:Constituency');
+        /** @var Constituency $constituency */
+        $constituency = $em->getRepository('App:Constituency')->find($constituency->getId());
+
+        $this->assertNotNull($constituency);
+        $this->assertCount(0, $constituency->getCandidateProblemOpinions());
+    }
+
+    //endregion
+
+    //region Delete
 
     public function testDeleteActionAccess()
     {
         $client = static::createClient();
         $client->insulate();
 
-        /** @var ObjectManager $manager */
-        $manager = $client->getContainer()->get('doctrine')->getManager();
-        $constituency = $this->createConstituency($manager);
+        $em = self::getDoctrine($client);
+        $constituency = $this->makeConstituency($em);
 
-        $this->assertTrue(self::onlyAdminCanAccess('/admin/constituencies/'. $constituency->getId() .'/d', $client));
+        $this->assertOnlyAdminCanAccess("/admin/constituencies/{$constituency->getId()}/d", $client);
 
-        $manager->remove($constituency);
-        $manager->flush();
-        $manager = null;
-        $constituency = null;
-        static::$kernel->shutdown();
+        self::cleanup($em);
     }
 
     public function testDeleteActionSubmit()
     {
-        $client = static::createClient();
-        $client->insulate();
-        $client->followRedirects(false);
-        self::logInClientAsRole($client, 'ROLE_ADMIN');
+        $client = self::createAdminClient();
+        $em = self::getDoctrine($client);
+        $locale = self::getLocale($client);
 
-        /** @var ObjectManager $manager */
-        $manager = $client->getContainer()->get('doctrine')->getManager();
-        $router = $client->getContainer()->get('router');
+        $constituency = $this->makeConstituency($em);
 
-        foreach (self::getLangs() as $lang) {
-            $constituency = $this->createConstituency($manager);
+        $form = $client
+            ->request('GET', "/${locale}/admin/constituencies/{$constituency->getId()}/d")
+            ->filter('form')->form();
+        $client->submit($form);
+        $this->assertRedirectsToRoute($client->getResponse(), 'admin_constituencies');
 
-            $form = $client
-                ->request('GET', '/'. $lang .'/admin/constituencies/'. $constituency->getId() .'/d')
-                ->filter('form')->form();
-            $client->submit($form);
-            $response = $client->getResponse();
-            $this->assertEquals(302, $response->getStatusCode());
+        $em->clear('App:Constituency');
+        /** @var Constituency $constituency */
+        $constituency = $em->getRepository('App:Constituency')->find($constituency->getId());
 
-            $route = $router->match($response->getTargetUrl());
-            $this->assertEquals('admin_constituencies', $route['_route']);
-            $this->assertEquals($lang, $route['_locale']);
+        $this->assertNull($constituency);
 
-            $manager->clear('App:Constituency');
-
-            /** @var Constituency $constituency */
-            $constituency = $manager->getRepository('App:Constituency')->find($constituency->getId());
-
-            $this->assertNull($constituency);
-        }
-
-        $manager = null;
-        static::$kernel->shutdown();
+        self::cleanup($em);
     }
+
+    //endregion
 }

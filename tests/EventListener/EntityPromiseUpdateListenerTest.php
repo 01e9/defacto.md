@@ -6,13 +6,18 @@ use App\Entity\Promise;
 use App\Entity\PromiseUpdate;
 use App\Repository\ActionRepository;
 use App\Repository\PromiseRepository;
+use App\Tests\TestCaseTrait;
 use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class EntityPromiseUpdateListenerTest extends KernelTestCase
+class EntityPromiseUpdateListenerTest extends WebTestCase
 {
+    use TestCaseTrait;
+
     public function testPromiseUpdates()
     {
+        self::resetDb();
+
         /** @var ObjectManager $em */
         $em = self::bootKernel()->getContainer()->get('doctrine.orm.default_entity_manager');
         /** @var PromiseRepository $promiseRepo */

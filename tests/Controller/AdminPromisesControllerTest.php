@@ -4,6 +4,8 @@ namespace App\Tests\Controller;
 
 use App\Consts;
 use App\Entity\Promise;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use App\Tests\TestCaseTrait;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -12,339 +14,382 @@ class AdminPromisesControllerTest extends WebTestCase
 {
     use TestCaseTrait;
 
+    //region Index
+
     public function testIndexAction()
     {
-        $client = static::createClient();
-        $client->insulate();
-        $this->assertTrue(self::onlyAdminCanAccess('/admin/promises', $client));
+        $this->assertOnlyAdminCanAccess('/admin/promises');
     }
+
+    //endregion
+
+    //region Add
 
     public function testAddActionAccess()
     {
-        $client = static::createClient();
-        $client->insulate();
-        $this->assertTrue(self::onlyAdminCanAccess('/admin/promises/add', $client));
+        $this->assertOnlyAdminCanAccess('/admin/promises/add');
     }
 
-    public function testAddActionSubmit()
+    public function testAddActionSubmitInvalidData()
     {
-        $client = static::createClient();
-        $client->insulate();
-        $client->followRedirects(false);
-        self::logInClientAsRole($client, 'ROLE_ADMIN');
+        $client = self::createAdminClient();
+        $locale = self::getLocale($client);
 
-        $em = $client->getContainer()->get('doctrine.orm.default_entity_manager');
-        $router = $client->getContainer()->get('router');
+        $form = $client
+            ->request('GET', "/${locale}/admin/promises/add")
+            ->filter('form')->form();
+        $client->submit($form, []);
+
+        $this->assertHasFormErrors($client->getResponse());
+    }
+
+    public function testAddActionSubmitValidDataWithoutCategories()
+    {
+        $client = self::createAdminClient();
+        $locale = self::getLocale($client);
+        $em = self::getDoctrine($client);
+        $random = self::randomNumber();
 
         $formData = [
-            'promise[name]' => 'Test',
-            'promise[slug]' => 'test',
-            'promise[description]' => 'Test',
+            'promise[name]' => "Test ${random}",
+            'promise[slug]' => "test-${random}",
+            'promise[description]' => "Testing ${random}",
             'promise[madeTime]' => (new \DateTime())->format(Consts::DATE_FORMAT_PHP),
-            'promise[status]' => $em->getRepository('App:Status')->findOneBy([])->getId(),
-            'promise[election]' => $this->createElection($em)->getId(),
-            'promise[politician]' => $this->createPolitician($em)->getId(),
-            'promise[categories]' => [
-                $em->getRepository('App:Category')->findOneBy([])->getId()
-            ],
+            'promise[status]' => self::makeStatus($em)->getId(),
+            'promise[election]' => self::makeElection($em)->getId(),
+            'promise[politician]' => self::makePolitician($em)->getId(),
+            'promise[categories]' => [],
             'promise[published]' => true,
         ];
 
-        foreach (self::getLangs() as $lang) {
-            (function () use (&$client, &$lang) {
-                $form = $client
-                    ->request('GET', '/'. $lang .'/admin/promises/add')
-                    ->filter('form')->form();
-                $client->submit($form, []);
-                $response = $client->getResponse();
+        $form = $client
+            ->request('GET', "/${locale}/admin/promises/add")
+            ->filter('form')->form();
+        $client->submit($form, $formData);
 
-                $this->assertEquals(200, $response->getStatusCode());
-                $this->assertContains('is-invalid', $response->getContent());
-            })();
+        $route = $this->assertRedirectsToRoute($client->getResponse(), 'admin_promise_edit');
 
-            (function () use (&$client, &$lang, &$formData, &$router, &$em) {
-                $form = $client
-                    ->request('GET', '/'. $lang .'/admin/promises/add')
-                    ->filter('form')->form();
-                $client->submit($form, $formData);
-                $response = $client->getResponse();
+        /** @var Promise $promise */
+        $promise = $em->getRepository('App:Promise')->find($route['id']);
 
-                $this->assertEquals(302, $response->getStatusCode());
-
-                $route = $router->match($response->getTargetUrl());
-                $this->assertEquals('admin_promise_edit', $route['_route']);
-                $this->assertEquals($lang, $route['_locale']);
-
-                /** @var Promise $promise */
-                $promise = $em->getRepository('App:Promise')->find($route['id']);
-
-                $this->assertNotNull($promise);
-                $this->assertEquals(1, $promise->getCategories()->count());
-                $this->assertEquals($formData['promise[categories]'][0], $promise->getCategories()->first()->getId());
-                $this->assertEquals($formData['promise[status]'], $promise->getStatus()->getId());
-
-                $em->remove($promise);
-                $em->flush();
-            })();
-
-            (function () use (&$client, &$lang, &$formData, &$router, &$em) {
-                $form = $client
-                    ->request('GET', '/'. $lang .'/admin/promises/add')
-                    ->filter('form')->form();
-                $client->submit($form, array_merge($formData, [
-                    'promise[status]' => '',
-                ]));
-                $response = $client->getResponse();
-                $this->assertEquals(302, $response->getStatusCode());
-
-                $route = $router->match($response->getTargetUrl());
-                $this->assertEquals('admin_promise_edit', $route['_route']);
-                $this->assertEquals($lang, $route['_locale']);
-
-                $promise = $em->getRepository('App:Promise')->find($route['id']);
-
-                $this->assertNotNull($promise);
-                $this->assertEquals(null, $promise->getStatus());
-
-                $em->remove($promise);
-                $em->flush();
-            })();
-        }
-
-        $em->close();
-        $em = null;
-        static::$kernel->shutdown();
+        $this->assertNotNull($promise);
+        $this->assertEquals($formData['promise[status]'], $promise->getStatus()->getId());
+        $this->assertCount(0, $promise->getCategories());
     }
+
+    public function testAddActionSubmitValidDataWithCategories()
+    {
+        $client = self::createAdminClient();
+        $locale = self::getLocale($client);
+        $em = self::getDoctrine($client);
+        $random = self::randomNumber();
+
+        $form = $client
+            ->request('GET', "/${locale}/admin/promises/add")
+            ->filter('form')->form();
+
+        $formPhpValues = $form->getPhpValues();
+        $formPhpValues['promise'] = array_merge($formPhpValues['promise'], [
+            'name' => "Test ${random}",
+            'slug' => "test-${random}",
+            'description' => "Testing ${random}",
+            'madeTime' => (new \DateTime())->format(Consts::DATE_FORMAT_PHP),
+            'status' => self::makeStatus($em)->getId(),
+            'election' => self::makeElection($em)->getId(),
+            'politician' => self::makePolitician($em)->getId(),
+            'published' => true,
+            'hasPrerogatives' => true,
+            'categories' => [self::makeCategory($em)->getId()],
+        ]);
+
+        $client->request($form->getMethod(), $form->getUri(), $formPhpValues);
+
+        $route = $this->assertRedirectsToRoute($client->getResponse(), 'admin_promise_edit');
+
+        /** @var Promise $promise */
+        $promise = $em->getRepository('App:Promise')->find($route['id']);
+
+        $this->assertNotNull($promise);
+        $this->assertCount(1, $promise->getCategories());
+        $this->assertTrue($promise->getHasPrerogatives());
+        $this->assertTrue($promise->getPublished());
+    }
+
+    public function testAddActionSubmitValidDataWithoutStatus()
+    {
+        $client = self::createAdminClient();
+        $locale = self::getLocale($client);
+        $em = self::getDoctrine($client);
+        $random = self::randomNumber();
+
+        $formData = [
+            'promise[name]' => "Test ${random}",
+            'promise[slug]' => "test-${random}",
+            'promise[description]' => "Testing ${random}",
+            'promise[madeTime]' => (new \DateTime())->format(Consts::DATE_FORMAT_PHP),
+            'promise[status]' => '',
+            'promise[election]' => self::makeElection($em)->getId(),
+            'promise[politician]' => self::makePolitician($em)->getId(),
+            'promise[categories]' => [],
+            'promise[published]' => false,
+            'promise[hasPrerogatives]' => false,
+        ];
+
+        $form = $client
+            ->request('GET', "/${locale}/admin/promises/add")
+            ->filter('form')->form();
+        $client->submit($form, $formData);
+
+        $route = $this->assertRedirectsToRoute($client->getResponse(), 'admin_promise_edit');
+
+        /** @var Promise $promise */
+        $promise = $em->getRepository('App:Promise')->find($route['id']);
+
+        $this->assertNotNull($promise);
+        $this->assertNull($promise->getStatus());
+        $this->assertFalse($promise->getHasPrerogatives());
+        $this->assertFalse($promise->getPublished());
+    }
+
+    //endregion
+
+    //region Edit
 
     public function testEditActionAccess()
     {
         $client = static::createClient();
         $client->insulate();
 
-        /** @var ObjectManager $manager */
-        $manager = $client->getContainer()->get('doctrine')->getManager();
-        $promise = $manager->getRepository('App:Promise')->findOneBy([]);
+        $em = self::getDoctrine($client);
+        $promise = self::makePromise($em);
 
-        $this->assertTrue(self::onlyAdminCanAccess('/admin/promises/'. $promise->getId(), $client));
+        $this->assertOnlyAdminCanAccess("/admin/promises/{$promise->getId()}", $client);
     }
 
-    public function testEditActionSubmit()
+    public function testEditActionSubmitInvalidData()
     {
-        $client = static::createClient();
-        $client->insulate();
-        $client->followRedirects(false);
-        self::logInClientAsRole($client, 'ROLE_ADMIN');
+        $client = self::createAdminClient();
+        $em = self::getDoctrine($client);
+        $locale = self::getLocale($client);
 
-        $em = $client->getContainer()->get('doctrine.orm.default_entity_manager');
-        $router = $client->getContainer()->get('router');
+        $promise = self::makePromise($em);
 
-        $createPromise = function () use (&$em) : Promise {
-            $promise = new Promise();
-            $promise
-                ->setName('Test')
-                ->setSlug('test')
-                ->setDescription('Test')
-                ->setMadeTime(new \DateTime())
-                ->setStatus(null)
-                ->setElection($this->createElection($em))
-                ->setPolitician($this->createPolitician($em))
-                ->setPublished(true);
-            $em->persist($promise);
-            $em->flush();
+        $form = $client
+            ->request('GET', "/${locale}/admin/promises/{$promise->getId()}")
+            ->filter('form')->form();
+        $client->submit($form, ['promise[name]' => '',]);
 
-            return $promise;
-        };
+        $this->assertHasFormErrors($client->getResponse());
 
-        $createFormData = function (Promise $promise) use (&$em) {
-            return [
-                'promise[name]' => 'Test',
-                'promise[slug]' => 'test',
-                'promise[description]' => 'Test',
-                'promise[madeTime]' => (new \DateTime())->format(Consts::DATE_FORMAT_PHP),
-                'promise[status]' => $em->getRepository('App:Status')->findOneBy([])->getId(),
-                'promise[election]' => $this->createElection($em)->getId(),
-                'promise[politician]' => $this->createPolitician($em)->getId(),
-                'promise[categories]' => [
-                    $em->getRepository('App:Category')->findOneBy([])->getId()
-                ],
-                'promise[published]' => true,
-                'promise[sources]' => [
-                    [
-                        'promise' => $promise->getId(),
-                        'name' => 'Source name',
-                        'link' => 'https://source.link'
-                    ],
-                ],
-            ];
-        };
-
-        foreach (self::getLangs() as $lang) {
-            (function () use (&$client, &$lang, &$createPromise, &$em) {
-                $promise = $createPromise();
-                $form = $client
-                    ->request('GET', '/'. $lang .'/admin/promises/'. $promise->getId())
-                    ->filter('form')->form();
-                $client->submit($form, [
-                    'promise[name]' => '',
-                ]);
-                $response = $client->getResponse();
-
-                $this->assertEquals(200, $response->getStatusCode());
-                $this->assertContains('is-invalid', $response->getContent());
-
-                $em->remove($promise);
-                $em->flush();
-            })();
-
-            (function () use (&$client, &$lang, &$createPromise, &$createFormData, &$router, &$em) {
-                $promise = $createPromise();
-                $formData = $createFormData($promise);
-                $form = $client
-                    ->request('GET', '/'. $lang .'/admin/promises/'. $promise->getId())
-                    ->filter('form')->form();
-                $client->submit($form, array_diff_key($formData, ['promise[sources]' => false]));
-                $response = $client->getResponse();
-
-                $this->assertEquals(302, $response->getStatusCode());
-
-                $route = $router->match($response->getTargetUrl());
-                $this->assertEquals('admin_promise_edit', $route['_route']);
-                $this->assertEquals($lang, $route['_locale']);
-
-                /** @var Promise $promise */
-                $promise = $em->getRepository('App:Promise')->find($promise->getId());
-
-                $this->assertNotNull($promise);
-
-                $em->refresh($promise);
-
-                $this->assertEquals(1, $promise->getCategories()->count());
-                $this->assertEquals($formData['promise[categories]'][0], $promise->getCategories()->first()->getId());
-                $this->assertEquals($formData['promise[status]'], $promise->getStatus()->getId());
-
-                $em->remove($promise);
-                $em->flush();
-            })();
-
-            (function () use (&$client, &$lang, &$createPromise, &$createFormData, &$router, &$em) {
-                $promise = $createPromise();
-                $formData = $createFormData($promise);
-                $form = $client
-                    ->request('GET', '/'. $lang .'/admin/promises/'. $promise->getId())
-                    ->filter('form')->form();
-                $formPhpValues = $form->getPhpValues();
-                $formPhpValues['promise']['sources'] = $formData['promise[sources]'];
-                $formPhpValues['promise']['politician'] = $formData['promise[politician]']; // fixme: why it's empty?
-
-                $client->request($form->getMethod(), $form->getUri(), $formPhpValues);
-                $response = $client->getResponse();
-
-                $this->assertEquals(302, $response->getStatusCode());
-
-                $route = $router->match($response->getTargetUrl());
-                $this->assertEquals('admin_promise_edit', $route['_route']);
-                $this->assertEquals($lang, $route['_locale']);
-
-                /** @var Promise $promise */
-                $promise = $em->getRepository('App:Promise')->find($promise->getId());
-
-                $this->assertNotNull($promise);
-
-                $em->refresh($promise);
-
-                $this->assertCount(count($formData['promise[sources]']), $promise->getSources());
-
-                $em->remove($promise);
-                $em->flush();
-            })();
-
-            (function () use (&$client, &$lang, &$createPromise, &$createFormData, &$router, &$em) {
-                $promise = $createPromise();
-                $formData = $createFormData($promise);
-                $form = $client
-                    ->request('GET', '/'. $lang .'/admin/promises/'. $promise->getId())
-                    ->filter('form')->form();
-                $client->submit($form, array_merge(array_diff_key($formData, ['promise[sources]' => false]), [
-                    'promise[status]' => '',
-                ]));
-                $response = $client->getResponse();
-                $this->assertEquals(302, $response->getStatusCode());
-
-                $route = $router->match($response->getTargetUrl());
-                $this->assertEquals('admin_promise_edit', $route['_route']);
-                $this->assertEquals($lang, $route['_locale']);
-
-                /** @var Promise $promise */
-                $promise = $em->getRepository('App:Promise')->find($promise->getId());
-
-                $this->assertNotNull($promise);
-
-                $em->refresh($promise);
-
-                $this->assertEquals(null, $promise->getStatus());
-
-                $em->remove($promise);
-                $em->flush();
-            })();
-        }
-
-        $em->close();
-        $em = null;
-        static::$kernel->shutdown();
+        self::cleanup($em);
     }
+
+    public function testEditActionSubmitAddCategories()
+    {
+        $client = self::createAdminClient();
+        $em = self::getDoctrine($client);
+        $locale = self::getLocale($client);
+
+        $promise = self::makePromise($em);
+        $this->assertCount(0, $promise->getCategories());
+
+        $form = $client
+            ->request('GET', "/${locale}/admin/promises/{$promise->getId()}")
+            ->filter('form')->form();
+
+        $formPhpValues = $form->getPhpValues();
+        $formPhpValues['promise']['categories'] = [self::makeCategory($em)->getId()];
+
+        $client->request($form->getMethod(), $form->getUri(), $formPhpValues);
+
+        $this->assertRedirectsToRoute($client->getResponse(), 'admin_promise_edit');
+
+        $em->clear('App:Promise');
+        /** @var Promise $promise */
+        $promise = $em->getRepository('App:Promise')->find($promise->getId());
+
+        $this->assertNotNull($promise);
+
+        $this->assertCount(1, $promise->getCategories());
+
+        self::cleanup($em);
+    }
+
+    public function testEditActionSubmitRemoveCategories()
+    {
+        $client = self::createAdminClient();
+        $em = self::getDoctrine($client);
+        $locale = self::getLocale($client);
+
+        $promise = self::makePromise($em);
+        $promise->setCategories(new ArrayCollection([self::makeCategory($em)]));
+        $em->flush($promise);
+
+        $form = $client
+            ->request('GET', "/${locale}/admin/promises/{$promise->getId()}")
+            ->filter('form')->form();
+
+        $formPhpValues = $form->getPhpValues();
+        $this->assertCount(1, $formPhpValues['promise']['categories']);
+        $formPhpValues['promise']['categories'] = [];
+
+        $client->request($form->getMethod(), $form->getUri(), $formPhpValues);
+
+        $this->assertRedirectsToRoute($client->getResponse(), 'admin_promise_edit');
+
+        $em->clear('App:Promise');
+        /** @var Promise $promise */
+        $promise = $em->getRepository('App:Promise')->find($promise->getId());
+
+        $this->assertNotNull($promise);
+
+        $this->assertCount(0, $promise->getCategories());
+
+        self::cleanup($em);
+    }
+
+    public function testEditActionSubmitEmptyStatus()
+    {
+        $client = self::createAdminClient();
+        $em = self::getDoctrine($client);
+        $locale = self::getLocale($client);
+
+        $promise = self::makePromise($em);
+        $promise->setStatus(self::makeStatus($em));
+        $em->flush($promise);
+
+        $form = $client
+            ->request('GET', "/${locale}/admin/promises/{$promise->getId()}")
+            ->filter('form')->form();
+
+        $formPhpValues = $form->getPhpValues();
+        $this->assertNotEmpty($formPhpValues['promise']['status']);
+        $formPhpValues['promise']['status'] = '';
+
+        $client->request($form->getMethod(), $form->getUri(), $formPhpValues);
+
+        $this->assertRedirectsToRoute($client->getResponse(), 'admin_promise_edit');
+
+        $em->clear('App:Promise');
+        /** @var Promise $promise */
+        $promise = $em->getRepository('App:Promise')->find($promise->getId());
+
+        $this->assertNotNull($promise);
+
+        $this->assertNull($promise->getStatus());
+
+        self::cleanup($em);
+    }
+
+    public function testEditActionSubmitAddSources()
+    {
+        $client = self::createAdminClient();
+        $em = self::getDoctrine($client);
+        $locale = self::getLocale($client);
+        $random = self::randomNumber();
+
+        $promise = self::makePromise($em);
+        $this->assertCount(0, $promise->getSources());
+
+        $form = $client
+            ->request('GET', "/${locale}/admin/promises/{$promise->getId()}")
+            ->filter('form')->form();
+
+        $formPhpValues = $form->getPhpValues();
+        $formPhpValues['promise']['sources'] = [
+            [
+                'promise' => $promise->getId(),
+                'name' => "Test ${random}",
+                'link' => "http://source.link/${random}",
+            ]
+        ];
+
+        $client->request($form->getMethod(), $form->getUri(), $formPhpValues);
+
+        $this->assertRedirectsToRoute($client->getResponse(), 'admin_promise_edit');
+
+        $em->clear('App:Promise');
+        /** @var Promise $promise */
+        $promise = $em->getRepository('App:Promise')->find($promise->getId());
+
+        $this->assertNotNull($promise);
+
+        $this->assertCount(1, $promise->getSources());
+
+        self::cleanup($em);
+    }
+
+    public function testEditActionSubmitRemoveSources()
+    {
+        $client = self::createAdminClient();
+        $em = self::getDoctrine($client);
+        $locale = self::getLocale($client);
+
+        $source = self::makePromiseSource($em);
+        $promise = $source->getPromise();
+
+        $form = $client
+            ->request('GET', "/${locale}/admin/promises/{$promise->getId()}")
+            ->filter('form')->form();
+
+        $formPhpValues = $form->getPhpValues();
+        $this->assertCount(1, $formPhpValues['promise']['sources']);
+        $formPhpValues['promise']['sources'] = [];
+
+        $client->request($form->getMethod(), $form->getUri(), $formPhpValues);
+
+        $this->assertRedirectsToRoute($client->getResponse(), 'admin_promise_edit');
+
+        $em->clear('App:Promise');
+        /** @var Promise $promise */
+        $promise = $em->getRepository('App:Promise')->find($promise->getId());
+
+        $this->assertNotNull($promise);
+
+        $this->assertCount(0, $promise->getSources());
+
+        self::cleanup($em);
+    }
+
+    //endregion
+
+    //region Delete
 
     public function testDeleteActionAccess()
     {
         $client = static::createClient();
         $client->insulate();
 
-        /** @var ObjectManager $manager */
-        $manager = $client->getContainer()->get('doctrine')->getManager();
-        $promise = $this->createPromise($manager);
+        $em = self::getDoctrine($client);
+        $promise = $this->makePromise($em);
 
-        $this->assertTrue(self::onlyAdminCanAccess('/admin/promises/'. $promise->getId() .'/d', $client));
+        $this->assertOnlyAdminCanAccess("/admin/promises/{$promise->getId()}/d", $client);
 
-        $manager->remove($promise);
-        $manager->flush();
-        $manager = null;
-        $promise = null;
-        static::$kernel->shutdown();
+        self::cleanup($em);
     }
 
     public function testDeleteActionSubmit()
     {
-        $client = static::createClient();
-        $client->insulate();
-        $client->followRedirects(false);
-        self::logInClientAsRole($client, 'ROLE_ADMIN');
+        $client = self::createAdminClient();
+        $em = self::getDoctrine($client);
+        $locale = self::getLocale($client);
 
-        /** @var ObjectManager $manager */
-        $manager = $client->getContainer()->get('doctrine')->getManager();
-        $router = $client->getContainer()->get('router');
+        $promise = $this->makePromise($em);
 
-        foreach (self::getLangs() as $lang) {
-            $promise = $this->createPromise($manager);
+        $form = $client
+            ->request('GET', "/${locale}/admin/promises/{$promise->getId()}/d")
+            ->filter('form')->form();
+        $client->submit($form);
+        $this->assertRedirectsToRoute($client->getResponse(), 'admin_promises');
 
-            $form = $client
-                ->request('GET', '/'. $lang .'/admin/promises/'. $promise->getId() .'/d')
-                ->filter('form')->form();
-            $client->submit($form);
-            $response = $client->getResponse();
-            $this->assertEquals(302, $response->getStatusCode());
+        $em->clear('App:Promise');
+        /** @var Promise $promise */
+        $promise = $em->getRepository('App:Promise')->find($promise->getId());
 
-            $route = $router->match($response->getTargetUrl());
-            $this->assertEquals('admin_promises', $route['_route']);
-            $this->assertEquals($lang, $route['_locale']);
+        $this->assertNull($promise);
 
-            $manager->clear('App:Promise');
-
-            /** @var Promise $promise */
-            $promise = $manager->getRepository('App:Promise')->find($promise->getId());
-
-            $this->assertNull($promise);
-        }
-
-        $manager = null;
-        static::$kernel->shutdown();
+        self::cleanup($em);
     }
+
+    //endregion
 }

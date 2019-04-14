@@ -6,228 +6,173 @@ use App\Consts;
 use App\Entity\Mandate;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use App\Tests\TestCaseTrait;
-use Doctrine\Common\Persistence\ObjectManager;
 
 class AdminMandatesControllerTest extends WebTestCase
 {
     use TestCaseTrait;
 
-    public function testAddActionAccess()
+    //region List
+
+    public function testIndexActionAccess()
     {
-        $client = static::createClient();
-        $client->insulate();
-        $this->assertTrue(self::onlyAdminCanAccess('/admin/mandates/add', $client));
+        $this->assertOnlyAdminCanAccess('/admin/mandates');
     }
 
-    public function testAddActionSubmit()
-    {
-        $client = static::createClient();
-        $client->insulate();
-        $client->followRedirects(false);
-        self::logInClientAsRole($client, 'ROLE_ADMIN');
+    //endregion
 
-        $em = $client->getContainer()->get('doctrine.orm.default_entity_manager');
-        $router = $client->getContainer()->get('router');
+    //region Add
+
+    public function testAddActionAccess()
+    {
+        $this->assertOnlyAdminCanAccess('/admin/mandates/add');
+    }
+
+    public function testAddActionSubmitEmptyForm()
+    {
+        $client = self::createAdminClient();
+        $locale = self::getLocale($client);
+
+        $form = $client
+            ->request('GET', "/${locale}/admin/mandates/add")
+            ->filter('form')->form();
+        $client->submit($form, []);
+
+        $this->assertHasFormErrors($client->getResponse());
+    }
+
+    public function testAddActionSubmitValidData()
+    {
+        $client = self::createAdminClient();
+        $em = self::getDoctrine($client);
+        $locale = self::getLocale($client);
 
         $formData = [
             'mandate[votesCount]' => 1000000,
             'mandate[votesPercent]' => 51,
             'mandate[beginDate]' => (new \DateTime('-2 years'))->format(Consts::DATE_FORMAT_PHP),
             'mandate[endDate]' => (new \DateTime('+2 years'))->format(Consts::DATE_FORMAT_PHP),
-            'mandate[election]' => $em->getRepository('App:Election')->findOneBy([])->getId(),
-            'mandate[politician]' => $em->getRepository('App:Politician')->findOneBy([])->getId(),
-            'mandate[institutionTitle]' => $em->getRepository('App:InstitutionTitle')->findOneBy([])->getId(),
+            'mandate[election]' => $this->makeElection($em)->getId(),
+            'mandate[politician]' => $this->makePolitician($em)->getId(),
+            'mandate[institutionTitle]' => $this->makeInstitutionTitle($em)->getId(),
         ];
 
-        foreach (self::getLangs() as $lang) {
-            (function () use (&$client, &$lang) {
-                $form = $client
-                    ->request('GET', '/'. $lang .'/admin/mandates/add')
-                    ->filter('form')->form();
-                $client->submit($form, []);
-                $response = $client->getResponse();
+        $form = $client
+            ->request('GET', "/${locale}/admin/mandates/add")
+            ->filter('form')->form();
+        $client->submit($form, $formData);
+        $route = $this->assertRedirectsToRoute($client->getResponse(), 'admin_mandate_edit');
 
-                $this->assertEquals(200, $response->getStatusCode());
-                $this->assertContains('is-invalid', $response->getContent());
-            })();
+        $em->clear('App:Mandate');
+        /** @var Mandate $mandate */
+        $mandate = $em->getRepository('App:Mandate')->find($route['id']);
 
-            (function () use (&$client, &$lang, &$formData, &$em, &$router) {
-                $form = $client
-                    ->request('GET', '/'. $lang .'/admin/mandates/add')
-                    ->filter('form')->form();
-                $client->submit($form, $formData);
-                $response = $client->getResponse();
+        $this->assertNotNull($mandate);
+        $this->assertEquals($formData['mandate[politician]'], $mandate->getPolitician()->getId());
 
-                $this->assertEquals(302, $response->getStatusCode());
-
-                $route = $router->match($response->getTargetUrl());
-                $this->assertEquals('admin_mandate_edit', $route['_route']);
-                $this->assertEquals($lang, $route['_locale']);
-
-                /** @var Mandate $mandate */
-                $mandate = $em->getRepository('App:Mandate')->find($route['id']);
-
-                $this->assertNotNull($mandate);
-                $this->assertEquals($formData['mandate[politician]'], $mandate->getPolitician()->getId());
-
-                $em->remove($mandate);
-                $em->flush();
-            })();
-        }
-
-        $em->close();
-        $em = null;
-        static::$kernel->shutdown();
+        self::cleanup($em);
     }
+
+    //endregion
+
+    //region Edit
 
     public function testEditActionAccess()
     {
         $client = static::createClient();
         $client->insulate();
+        $em = self::getDoctrine($client);
 
-        /** @var ObjectManager $manager */
-        $manager = $client->getContainer()->get('doctrine')->getManager();
-        $mandate = $manager->getRepository('App:Mandate')->findOneBy([]);
+        $mandate = $em->getRepository('App:Mandate')->findOneBy([]);
 
-        $this->assertTrue(self::onlyAdminCanAccess('/admin/mandates/'. $mandate->getId(), $client));
+        $this->assertOnlyAdminCanAccess("/admin/mandates/{$mandate->getId()}", $client);
     }
 
-    public function testEditActionSubmit()
+    public function testEditActionSubmitInvalidData()
     {
-        $client = static::createClient();
-        $client->insulate();
-        $client->followRedirects(false);
-        self::logInClientAsRole($client, 'ROLE_ADMIN');
+        $client = self::createAdminClient();
+        $em = self::getDoctrine($client);
+        $locale = self::getLocale($client);
 
-        $em = $client->getContainer()->get('doctrine.orm.default_entity_manager');
-        $router = $client->getContainer()->get('router');
+        $mandate = self::makeMandate($em);
+        $form = $client
+            ->request('GET', "/${locale}/admin/mandates/{$mandate->getId()}")
+            ->filter('form')->form();
+        $client->submit($form, ['mandate[votesCount]' => '?']);
 
-        $createMandate = function() use (&$em) : Mandate {
-            $mandate = new Mandate();
-            $mandate
-                ->setVotesCount(1000000)
-                ->setVotesPercent(51)
-                ->setBeginDate(new \DateTime('-2 years'))
-                ->setEndDate(new \DateTime('+2 years'))
-                ->setElection($em->getRepository('App:Election')->findOneBy([]))
-                ->setPolitician($em->getRepository('App:Politician')->findOneBy([]))
-                ->setInstitutionTitle($em->getRepository('App:InstitutionTitle')->findOneBy([]));
-            $em->persist($mandate);
-            $em->flush();
+        $this->assertHasFormErrors($client->getResponse());
+    }
 
-            return $mandate;
-        };
+    public function testEditActionSubmitValidData()
+    {
+        $client = self::createAdminClient();
+        $em = self::getDoctrine($client);
+        $locale = self::getLocale($client);
 
         $formData = [
-            'mandate[votesCount]' => 1000001,
+            'mandate[votesCount]' => self::randomNumber(),
             'mandate[votesPercent]' => 51,
             'mandate[beginDate]' => (new \DateTime('-2 years'))->format(Consts::DATE_FORMAT_PHP),
             'mandate[endDate]' => (new \DateTime('+2 years'))->format(Consts::DATE_FORMAT_PHP),
-            'mandate[election]' => $em->getRepository('App:Election')->findOneBy([])->getId(),
-            'mandate[politician]' => $em->getRepository('App:Politician')->findOneBy([])->getId(),
-            'mandate[institutionTitle]' => $em->getRepository('App:InstitutionTitle')->findOneBy([])->getId(),
+            'mandate[election]' => self::makeElection($em)->getId(),
+            'mandate[politician]' => self::makePolitician($em)->getId(),
+            'mandate[institutionTitle]' => self::makeInstitutionTitle($em)->getId(),
         ];
 
-        foreach (self::getLangs() as $lang) {
-            (function () use (&$createMandate, &$lang, &$client, &$em) {
-                $mandate = $createMandate();
-                $form = $client
-                    ->request('GET', '/'. $lang .'/admin/mandates/'. $mandate->getId())
-                    ->filter('form')->form();
-                $client->submit($form, ['mandate[votesCount]' => '?']);
-                $response = $client->getResponse();
+        $mandate = self::makeMandate($em);
+        $form = $client
+            ->request('GET', "/${locale}/admin/mandates/{$mandate->getId()}")
+            ->filter('form')->form();
+        $client->submit($form, $formData);
+        $this->assertRedirectsToRoute($client->getResponse(), 'admin_mandate_edit');
 
-                $this->assertEquals(200, $response->getStatusCode());
-                $this->assertContains('is-invalid', $response->getContent());
+        $em->clear('App:Mandate');
+        /** @var Mandate $mandate */
+        $mandate = $em->getRepository('App:Mandate')->find($mandate->getId());
 
-                $em->remove($mandate);
-                $em->flush();
-            })();
+        $this->assertNotNull($mandate);
+        $this->assertEquals($formData['mandate[votesCount]'], $mandate->getVotesCount());
 
-            (function () use (&$createMandate, &$lang, &$client, &$em, &$formData, &$router) {
-                $mandate = $createMandate();
-                $form = $client
-                    ->request('GET', '/'. $lang .'/admin/mandates/'. $mandate->getId())
-                    ->filter('form')->form();
-                $client->submit($form, $formData);
-                $response = $client->getResponse();
-
-                $this->assertEquals(302, $response->getStatusCode());
-
-                $route = $router->match($response->getTargetUrl());
-                $this->assertEquals('admin_mandate_edit', $route['_route']);
-                $this->assertEquals($lang, $route['_locale']);
-
-                $mandate = $em->getRepository('App:Mandate')->find($mandate->getId());
-
-                $this->assertNotNull($mandate);
-
-                $em->refresh($mandate);
-
-                $this->assertEquals($formData['mandate[votesCount]'], $mandate->getVotesCount());
-
-                $em->remove($mandate);
-                $em->flush();
-            })();
-        }
-
-        $em->close();
-        $em = null;
-        static::$kernel->shutdown();
+        self::cleanup($em);
     }
+
+    //endregion
+
+    //region Delete
 
     public function testDeleteActionAccess()
     {
         $client = static::createClient();
         $client->insulate();
+        $em = self::getDoctrine($client);
+        $mandate = $this->makeMandate($em);
 
-        /** @var ObjectManager $manager */
-        $manager = $client->getContainer()->get('doctrine')->getManager();
-        $mandate = $this->createMandate($manager);
+        $this->assertOnlyAdminCanAccess("/admin/mandates/{$mandate->getId()}/d", $client);
 
-        $this->assertTrue(self::onlyAdminCanAccess('/admin/mandates/'. $mandate->getId() .'/d', $client));
-
-        $manager->remove($mandate);
-        $manager->flush();
-        $manager = null;
-        $mandate = null;
-        static::$kernel->shutdown();
+        self::cleanup($em);
     }
 
     public function testDeleteActionSubmit()
     {
-        $client = static::createClient();
-        $client->insulate();
-        $client->followRedirects(false);
-        self::logInClientAsRole($client, 'ROLE_ADMIN');
+        $client = self::createAdminClient();
+        $em = self::getDoctrine($client);
+        $locale = self::getLocale($client);
 
-        /** @var ObjectManager $manager */
-        $manager = $client->getContainer()->get('doctrine')->getManager();
-        $router = $client->getContainer()->get('router');
+        $mandate = $this->makeMandate($em);
 
-        foreach (self::getLangs() as $lang) {
-            $mandate = $this->createMandate($manager);
+        $form = $client
+            ->request('GET', "/${locale}/admin/mandates/{$mandate->getId()}/d")
+            ->filter('form')->form();
+        $client->submit($form);
+        $this->assertRedirectsToRoute($client->getResponse(), 'admin_mandates');
 
-            $form = $client
-                ->request('GET', '/'. $lang .'/admin/mandates/'. $mandate->getId() .'/d')
-                ->filter('form')->form();
-            $client->submit($form);
-            $response = $client->getResponse();
-            $this->assertEquals(302, $response->getStatusCode());
+        $em->clear('App:Mandate');
+        /** @var Mandate $mandate */
+        $mandate = $em->getRepository('App:Mandate')->find($mandate->getId());
 
-            $route = $router->match($response->getTargetUrl());
-            $this->assertEquals('admin_mandates', $route['_route']);
-            $this->assertEquals($lang, $route['_locale']);
+        $this->assertNull($mandate);
 
-            $manager->clear('App:Mandate');
-
-            /** @var Politician $mandate */
-            $mandate = $manager->getRepository('App:Mandate')->find($mandate->getId());
-
-            $this->assertNull($mandate);
-        }
-
-        $manager = null;
-        static::$kernel->shutdown();
+        self::cleanup($em);
     }
+
+    //endregion
 }

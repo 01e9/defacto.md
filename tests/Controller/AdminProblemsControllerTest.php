@@ -11,198 +11,165 @@ class AdminProblemsControllerTest extends WebTestCase
 {
     use TestCaseTrait;
 
+    //region Index
+
+    public function testIndexActionAccess()
+    {
+        $this->assertOnlyAdminCanAccess('/admin/problems');
+    }
+
+    //endregion
+
+    //region Add
+
     public function testAddActionAccess()
     {
-        $client = static::createClient();
-        $client->insulate();
-        $this->assertTrue(self::onlyAdminCanAccess('/admin/problems/add', $client));
+        $this->assertOnlyAdminCanAccess('/admin/problems/add');
     }
 
-    public function testAddActionSubmit()
+    public function testAddActionSubmitInvalidData()
     {
-        $client = static::createClient();
-        $client->insulate();
-        $client->followRedirects(false);
-        self::logInClientAsRole($client, 'ROLE_ADMIN');
+        $client = self::createAdminClient();
+        $locale = self::getLocale($client);
 
-        $em = $client->getContainer()->get('doctrine.orm.default_entity_manager');
-        $router = $client->getContainer()->get('router');
+        $form = $client
+            ->request('GET', "/${locale}/admin/problems/add")
+            ->filter('form')->form();
+        $client->submit($form, []);
+
+        $this->assertHasFormErrors($client->getResponse());
+    }
+
+    public function testAddActionSubmitValidData()
+    {
+        $client = self::createAdminClient();
+        $em = self::getDoctrine($client);
+        $locale = self::getLocale($client);
+        $random = self::randomNumber();
 
         $formData = [
-            'problem[name]' => 'Test',
-            'problem[slug]' => 'tests',
+            'problem[name]' => "Test ${random}",
+            'problem[slug]' => "test-${random}",
         ];
 
-        foreach (self::getLangs() as $lang) {
-            (function () use (&$client, &$lang) {
-                $form = $client
-                    ->request('GET', '/'. $lang .'/admin/problems/add')
-                    ->filter('form')->form();
-                $client->submit($form, []);
-                $response = $client->getResponse();
-                $this->assertEquals(200, $response->getStatusCode());
-                $this->assertContains('is-invalid', $response->getContent());
-            })();
+        $form = $client
+            ->request('GET', "/${locale}/admin/problems/add")
+            ->filter('form')->form();
+        $client->submit($form, $formData);
+        $route = $this->assertRedirectsToRoute($client->getResponse(), 'admin_problem_edit');
 
-            (function () use (&$client, &$lang, &$formData, &$router, &$em) {
-                $form = $client
-                    ->request('GET', '/'. $lang .'/admin/problems/add')
-                    ->filter('form')->form();
-                $client->submit($form, $formData);
-                $response = $client->getResponse();
-                $this->assertEquals(302, $response->getStatusCode());
+        $em->clear('App:Problem');
+        /** @var Problem $problem */
+        $problem = $em->getRepository('App:Problem')->find($route['id']);
 
-                $route = $router->match($response->getTargetUrl());
-                $this->assertEquals('admin_problem_edit', $route['_route']);
-                $this->assertEquals($lang, $route['_locale']);
+        $this->assertNotNull($problem);
+        $this->assertEquals($formData['problem[name]'], $problem->getName());
+        $this->assertEquals($formData['problem[slug]'], $problem->getSlug());
 
-                /** @var Problem $problem */
-                $problem = $em->getRepository('App:Problem')->find($route['id']);
-
-                $this->assertNotNull($problem);
-                $this->assertEquals($formData['problem[name]'], $problem->getName());
-                $this->assertEquals($formData['problem[slug]'], $problem->getSlug());
-
-                $em->remove($problem);
-                $em->flush();
-            })();
-        }
-
-        $em->close();
-        $em = null;
-        static::$kernel->shutdown();
+        self::cleanup($em);
     }
+
+    //endregion
+
+    //region Edit
 
     public function testEditActionAccess()
     {
         $client = static::createClient();
         $client->insulate();
 
-        /** @var ObjectManager $manager */
-        $manager = $client->getContainer()->get('doctrine')->getManager();
-        $problem = $this->createProblem($manager);
+        $em = self::getDoctrine($client);
+        $problem = $this->makeProblem($em);
 
-        $this->assertTrue(self::onlyAdminCanAccess('/admin/problems/'. $problem->getId(), $client));
+        $this->assertOnlyAdminCanAccess("/admin/problems/{$problem->getId()}", $client);
     }
 
-    public function testEditActionSubmit()
+    public function testEditActionSubmitInvalidData()
     {
-        $client = static::createClient();
-        $client->insulate();
-        $client->followRedirects(false);
-        self::logInClientAsRole($client, 'ROLE_ADMIN');
+        $client = static::createAdminClient();
+        $em = self::getDoctrine($client);
+        $locale = self::getLocale($client);
 
-        $em = $client->getContainer()->get('doctrine.orm.default_entity_manager');
-        $router = $client->getContainer()->get('router');
+        $problem = $this->makeProblem($em);
+        $form = $client
+            ->request('GET', "/${locale}/admin/problems/{$problem->getId()}")
+            ->filter('form')->form();
+        $client->submit($form, ['problem[name]' => '?',]);
+
+        $this->assertHasFormErrors($client->getResponse());
+
+        self::cleanup($em);
+    }
+
+    public function testEditActionSubmitValidData()
+    {
+        $client = static::createAdminClient();
+        $em = self::getDoctrine($client);
+        $locale = self::getLocale($client);
+        $random = self::randomNumber();
 
         $formData = [
-            'problem[name]' => 'Test problem name',
-            'problem[slug]' => 'test-problem-name',
+            'problem[name]' => "Test ${random}",
+            'problem[slug]' => "test-${random}",
         ];
 
-        foreach (self::getLangs() as $lang) {
-            (function () use (&$client, &$lang, &$em) {
-                $problem = $this->createProblem($em);
-                $form = $client
-                    ->request('GET', '/'. $lang .'/admin/problems/'. $problem->getId())
-                    ->filter('form')->form();
-                $client->submit($form, [
-                    'problem[name]' => '?',
-                ]);
-                $response = $client->getResponse();
+        $problem = $this->makeProblem($em);
+        $form = $client
+            ->request('GET', "/${locale}/admin/problems/{$problem->getId()}")
+            ->filter('form')->form();
+        $client->submit($form, $formData);
+        $this->assertRedirectsToRoute($client->getResponse(), 'admin_problem_edit');
 
-                $this->assertEquals(200, $response->getStatusCode());
-                $this->assertContains('is-invalid', $response->getContent());
+        $em->clear('App:Problem');
+        /** @var Problem $problem */
+        $problem = $em->getRepository('App:Problem')->find($problem->getId());
 
-                $em->remove($problem);
-                $em->flush();
-            })();
+        $this->assertNotNull($problem);
+        $this->assertEquals($formData['problem[name]'], $problem->getName());
+        $this->assertEquals($formData['problem[slug]'], $problem->getSlug());
 
-            (function () use (&$client, &$lang, &$formData, &$em, &$router) {
-                $problem = $this->createProblem($em);
-                $form = $client
-                    ->request('GET', '/'. $lang .'/admin/problems/'. $problem->getId())
-                    ->filter('form')->form();
-                $client->submit($form, $formData);
-                $response = $client->getResponse();
-                $this->assertEquals(302, $response->getStatusCode());
-
-                $route = $router->match($response->getTargetUrl());
-                $this->assertEquals('admin_problem_edit', $route['_route']);
-                $this->assertEquals($lang, $route['_locale']);
-
-                /** @var Problem $problem */
-                $problem = $em->getRepository('App:Problem')->find($problem->getId());
-
-                $this->assertNotNull($problem);
-
-                $em->refresh($problem);
-
-                $this->assertEquals($formData['problem[name]'], $problem->getName());
-                $this->assertEquals($formData['problem[slug]'], $problem->getSlug());
-
-                $em->remove($problem);
-                $em->flush();
-            })();
-        }
-
-        $em->close();
-        $em = null;
-        static::$kernel->shutdown();
+        self::cleanup($em);
     }
+
+    //endregion
+
+    //region Delete
 
     public function testDeleteActionAccess()
     {
         $client = static::createClient();
         $client->insulate();
 
-        /** @var ObjectManager $manager */
-        $manager = $client->getContainer()->get('doctrine')->getManager();
-        $problem = $this->createProblem($manager);
+        $em = self::getDoctrine($client);
+        $problem = $this->makeProblem($em);
 
-        $this->assertTrue(self::onlyAdminCanAccess('/admin/problems/'. $problem->getId() .'/d', $client));
+        $this->assertOnlyAdminCanAccess("/admin/problems/{$problem->getId()}/d", $client);
 
-        $manager->remove($problem);
-        $manager->flush();
-        $manager = null;
-        $problem = null;
-        static::$kernel->shutdown();
+        self::cleanup($em);
     }
 
     public function testDeleteActionSubmit()
     {
-        $client = static::createClient();
-        $client->insulate();
-        $client->followRedirects(false);
-        self::logInClientAsRole($client, 'ROLE_ADMIN');
+        $client = self::createAdminClient();
+        $em = self::getDoctrine($client);
+        $locale = self::getLocale($client);
 
-        /** @var ObjectManager $manager */
-        $manager = $client->getContainer()->get('doctrine')->getManager();
-        $router = $client->getContainer()->get('router');
+        $problem = $this->makeProblem($em);
 
-        foreach (self::getLangs() as $lang) {
-            $problem = $this->createProblem($manager);
+        $form = $client
+            ->request('GET', "/${locale}/admin/problems/{$problem->getId()}/d")
+            ->filter('form')->form();
+        $client->submit($form);
+        $this->assertRedirectsToRoute($client->getResponse(), 'admin_problems');
 
-            $form = $client
-                ->request('GET', '/'. $lang .'/admin/problems/'. $problem->getId() .'/d')
-                ->filter('form')->form();
-            $client->submit($form);
-            $response = $client->getResponse();
-            $this->assertEquals(302, $response->getStatusCode());
+        $em->clear('App:Problem');
+        /** @var Problem $problem */
+        $problem = $em->getRepository('App:Problem')->find($problem->getId());
 
-            $route = $router->match($response->getTargetUrl());
-            $this->assertEquals('admin_problems', $route['_route']);
-            $this->assertEquals($lang, $route['_locale']);
+        $this->assertNull($problem);
 
-            $manager->clear('App:Problem');
-
-            /** @var Problem $problem */
-            $problem = $manager->getRepository('App:Problem')->find($problem->getId());
-
-            $this->assertNull($problem);
-        }
-
-        $manager = null;
-        static::$kernel->shutdown();
+        self::cleanup($em);
     }
+
+    //endregion
 }

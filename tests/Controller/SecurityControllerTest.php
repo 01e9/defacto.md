@@ -24,10 +24,10 @@ class SecurityControllerTest extends WebTestCase
             $this->assertEquals(302, $response->getStatusCode());
 
             $redirectPath = parse_url($response->headers->get('location'), PHP_URL_PATH);
-            $this->assertEquals('/'. current(self::getLangs()) . $path, $redirectPath);
+            $this->assertEquals('/'. current(self::langs()) . $path, $redirectPath);
         }
 
-        foreach (self::getLangs() as $lang) {
+        foreach (self::langs() as $lang) {
             $client->restart();
             $crawler = $client->request('GET', '/'. $lang . $path);
             $response = $client->getResponse();

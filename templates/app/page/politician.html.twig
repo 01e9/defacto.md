@@ -46,7 +46,7 @@
                                 <samp>{{ politician.birthDate|date }}</samp>
                                 <small class="text-muted ml-3">
                                     <samp>{{ politician.birthDate|age }}</samp>
-                                    {{ "text.years_n"|transchoice(politician.birthDate|age) }}
+                                    {{ "text.years_n"|trans({'%count%': politician.birthDate|age}) }}
                                 </small>
                             </div>
                         </div>

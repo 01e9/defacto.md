@@ -135,7 +135,7 @@
                                                 <small>
                                                     {% if problem.respondents %}
                                                         <samp class="font-weight-bold">{{ problem.respondents }}</samp>
-                                                        {{ "text.respondents_n"|transchoice(problem.respondents) }}
+                                                        {{ "text.respondents_n"|trans({'%count%': problem.respondents}) }}
                                                     {% endif %}
                                                     {% if problem.percentage %}
                                                         {% if problem.respondents %}

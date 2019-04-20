@@ -48,3 +48,7 @@ a.no-underline:hover {
         background-color: $gray-100;
     }
 }
+
+.input-group > .input-group-prepend > .input-group-text > label {
+    margin-bottom: 0;
+}

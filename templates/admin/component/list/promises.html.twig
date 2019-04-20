@@ -1,5 +1,5 @@
 <div class="list-group list-group-flush">
-    {% for promise in promises %}
+    {% for promise in pagination %}
         <a class="list-group-item list-group-item-action" href="{{ path('admin_promise_edit', {id: promise.id}) }}">
             <p class="mb-1">
                 {% include 'admin/component/widget/politician-name.html.twig' with {politician: promise.politician} only %}
@@ -23,4 +23,6 @@
             </small>
         </a>
     {% endfor %}
+
+    <div class="mt-4">{{ knp_pagination_render(pagination) }}</div>
 </div>

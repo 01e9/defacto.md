@@ -1,11 +1,13 @@
 <?php
 
-
 namespace App\Controller;
 
 use App\Entity\Promise;
 use App\Form\PromiseDeleteType;
+use App\Form\PromisesFilterType;
 use App\Form\PromiseType;
+use App\Repository\ActionRepository;
+use App\Repository\PromiseRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -20,18 +22,30 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  */
 class AdminPromisesController extends AbstractController
 {
+    private $promiseRepository;
+    private $actionRepository;
+
+    public function __construct(PromiseRepository $promiseRepository, ActionRepository $actionRepository)
+    {
+        $this->promiseRepository = $promiseRepository;
+        $this->actionRepository = $actionRepository;
+    }
+
     /**
      * @Route(path="", name="admin_promises")
-     * @return Response
      */
-    public function indexAction(Request $request)
+    public function indexAction(Request $request): Response
     {
-        $promises = $this->getDoctrine()->getRepository('App:Promise')->getAdminList($request);
-        $orphanActions = $this->getDoctrine()->getRepository('App:Action')->getAdminOrphanList();
+        $filterForm = $this->createForm(PromisesFilterType::class);
+        $filterForm->handleRequest($request);
+        $filterData = ($filterForm->isSubmitted() && $filterForm->isValid()) ? $filterForm->getData() : null;
+
+        $pagination = $this->promiseRepository->getAdminListPaginated($request, $filterData);
 
         return $this->render('admin/page/promise/index.html.twig', [
-            'promises' => $promises,
-            'orphanActions' => $orphanActions,
+            'pagination' => $pagination,
+            'orphanActions' => $this->actionRepository->getAdminOrphanList(),
+            'filterForm' => $filterForm->createView(),
         ]);
     }
 
@@ -73,11 +87,8 @@ class AdminPromisesController extends AbstractController
      * @Route(path="/{id}", name="admin_promise_edit")
      * @return Response
      */
-    public function editAction(
-        Request $request,
-        string $id,
-        TranslatorInterface $translator
-    ) {
+    public function editAction(Request $request, string $id, TranslatorInterface $translator)
+    {
         $promise = $this->getDoctrine()->getRepository('App:Promise')->find($id);
         if (!$promise) {
             throw $this->createNotFoundException();

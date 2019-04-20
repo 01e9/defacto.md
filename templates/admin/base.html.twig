@@ -2,6 +2,8 @@
 
 {% if form is defined %}
     {% form_theme form 'admin/form-theme.html.twig' %}
+{% elseif filterForm is defined %}
+    {% form_theme filterForm 'admin/form-theme.html.twig' %}
 {% endif %}
 
 {% block stylesheets %}

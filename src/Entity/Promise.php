@@ -12,7 +12,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(
  *     name="promises",
  *     uniqueConstraints={
- *      @ORM\UniqueConstraint(name="promise_unique_slug", columns={"slug"})
+ *      @ORM\UniqueConstraint(name="promise_unique_slug", columns={"slug"}),
+ *      @ORM\UniqueConstraint(name="promise_unique_code", columns={"code"})
  *     }
  * )
  */
@@ -58,6 +59,13 @@ class Promise
      * @ORM\Column(type="date")
      */
     private $madeTime;
+
+    /**
+     * @ORM\Column(type="string", length=10, nullable=true)
+     *
+     * @Assert\Length(max=10)
+     */
+    private $code;
 
     /**
      * @ORM\Column(type="string", length=120)
@@ -193,6 +201,18 @@ class Promise
     public function setName(?string $name) : self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getCode() : ?string
+    {
+        return $this->code;
+    }
+
+    public function setCode(?string $code) : self
+    {
+        $this->code = $code;
 
         return $this;
     }

@@ -6,6 +6,9 @@
                 <span>{{ promise.madeTime|date }}</span>
             </p>
             <h5 {% if not promise.published %}class="text-muted font-italic"{% endif %}>
+                {% if promise.code %}
+                    <b class="mr-1">{{ promise.code }}</b>
+                {% endif %}
                 {{ promise.name }}
             </h5>
             <p class="mb-1">

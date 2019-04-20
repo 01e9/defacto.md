@@ -21,6 +21,10 @@ class PromiseType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('code', TextType::class, [
+                'label' => 'label.code',
+                'required' => false,
+            ])
             ->add('name', TextType::class, [
                 'label' => 'label.title',
             ])

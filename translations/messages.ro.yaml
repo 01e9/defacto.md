@@ -67,6 +67,7 @@ label:
     number: Numărul
     opinion: Opinia
     institution_title: Funcție
+    code: Cod
     title: Titlu
     description: Descriere
     studies: Studii

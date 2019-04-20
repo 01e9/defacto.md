@@ -8,7 +8,7 @@
 @import "~slick-carousel/slick/slick.css";
 @import "../../common/css/status_colors";
 @import "../../common/css/utils";
-@import url("https://fonts.googleapis.com/css?family=Merriweather:400,700");
+@import url("https://fonts.googleapis.com/css?family=Merriweather|Crete+Round:400,700");
 
 @each $color, $value in $theme-colors {
     .text-#{$color}-light { color: lighten($value, $app-color-lighten-amount); }

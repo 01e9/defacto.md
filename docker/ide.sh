@@ -9,13 +9,11 @@ CMD=${@}
 
 SCRIPT_DIR=$(dirname $(readlink -f "$0"))
 PROJECT_DIR=$(dirname ${SCRIPT_DIR})
-IMAGE='defacto_php'
+IMAGE='01e9/ide:php'
 NETWORK='defacto_default'
 HOST='defacto.local'
 
 cd ${SCRIPT_DIR}
-
-docker build -t ${IMAGE} .
 
 docker-compose up -d
 
@@ -26,10 +24,7 @@ x11docker \
     --stdout --stderr \
     --cap-default \
     --workdir ${PROJECT_DIR} \
-    --runasroot "echo 'Installing GUI libraries...' && apt-get update && apt-get install -y \
-        libgtk2.0-0 libcanberra-gtk-module libxext-dev libxrender-dev \
-        libxtst-dev libxslt-dev dmz-cursor-theme \
-        git wget htop zip unzip nano iputils-ping gnupg2 \
+    --runasroot "apt-get update && apt-get install -y \
         && (curl -sL https://deb.nodesource.com/setup_10.x | bash -) && apt-get install -y nodejs" \
     -- "--cap-add=SYS_PTRACE --publish=80:8080 --network ${NETWORK} --hostname ${HOST}" \
     ${IMAGE} ${CMD}

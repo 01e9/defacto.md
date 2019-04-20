@@ -9,16 +9,19 @@
         {% if current is defined %}
             <li class="breadcrumb-item active" aria-current="page">{{ current.title }}</li>
         {% endif %}
-        {% if add is defined %}
         <li class="ml-auto">
-            <a
-                class="no-underline"
-                href="{{ add.link }}"
-            >
-                <span class="fa fa-plus-square"></span>
-                <span class="d-none d-md-inline ml-1">{{ add.text|default('action.add'|trans) }}</span>
-            </a>
+            {% if frontendLink is defined %}
+                <a class="no-underline mr-5" href="{{ frontendLink }}">
+                    <span class="fa fa-external-link-alt"></span>
+                    <span class="d-none d-md-inline ml-1">{{ "action.view_on_site"|trans }}</span>
+                </a>
+            {% endif %}
+            {% if add is defined %}
+                <a class="no-underline" href="{{ add.link }}">
+                    <span class="fa fa-plus-square"></span>
+                    <span class="d-none d-md-inline ml-1">{{ add.text|default('action.add'|trans) }}</span>
+                </a>
+            {% endif %}
         </li>
-        {% endif %}
     </ol>
 </nav>

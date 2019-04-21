@@ -117,6 +117,19 @@
                                 {{ mandate.institutionTitle.title.name }}
                                 {{ "text.in_elections_from"|trans }}
                                 {{ candidate.election.date|date }}
+
+                                {% if mandate.decisionLink %}
+                                    <small>
+                                        <small>
+                                            <small>
+                                                <a
+                                                    href="{{ mandate.decisionLink }}"
+                                                    target="_blank"
+                                                >{{ "action.view_decision"|trans }}</a>
+                                            </small>
+                                        </small>
+                                    </small>
+                                {% endif %}
                             {% else %}
                                 <span class="fa fa-child text-secondary mr-2"></span>
 

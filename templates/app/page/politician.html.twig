@@ -103,90 +103,117 @@
                     {% endif %}
                 </div>
             </div>
-            {% for candidate in politician.candidates %}
-            <div class="row mt-5">
-                <div class="col">
-                    <h4 class="mb-3">
-                        {{ "title.candidate_in"|trans }}
-                        {{ candidate.election.name|lower }}
-                        {{ "text.from"|trans }}
-                        {{ candidate.election.date|date }}
-                    </h4>
-                    {% if candidate.constituency %}
-                        <div class="mb-3">
-                            <a
-                                href="{{ path('constituency', {slug: candidate.constituency.slug, electionSlug: candidate.election.slug}) }}"
-                            >{{ candidate.constituency.name }}</a>
-                        </div>
-                    {% endif %}
-                    {% if candidate.party %}
-                        <div class="mb-3">
-                            <div class="row align-items-center">
-                                <div class="col-auto pr-0">
-                                    <div style="width: {{ logoSize }};" class="text-center">
-                                        <img
-                                            src="{{ macros.party_logo_url(candidate.party) }}"
-                                            alt="Logo"
-                                            style="max-width: {{ logoSize }}; max-height: {{ logoSize }};"
-                                            class="rounded"
-                                        >
+            {% for candidate in candidates %}
+                {% set mandate = mandatesByElection[candidate.election.id]|default(null) %}
+                {% set promises = promisesByElection[candidate.election.id]|default([]) %}
+
+                <div class="row mt-5">
+                    <div class="col">
+                        <h4 class="mb-3">
+                            {% if mandate %}
+                                <span class="fa fa-vote-yea text-success mr-2"></span>
+
+                                {{ "title.elected"|trans }}
+                                {{ mandate.institutionTitle.title.name }}
+                                {{ "text.in_elections_from"|trans }}
+                                {{ candidate.election.date|date }}
+                            {% else %}
+                                <span class="fa fa-child text-secondary mr-2"></span>
+
+                                {{ "title.candidate_in"|trans }}
+                                {{ candidate.election.name|lower }}
+                                {{ "text.from"|trans }}
+                                {{ candidate.election.date|date }}
+                            {% endif %}
+                        </h4>
+                        {% if candidate.constituency %}
+                            <div class="mb-3">
+                                <a
+                                    href="{{ path('constituency', {slug: candidate.constituency.slug, electionSlug: candidate.election.slug}) }}"
+                                >{{ candidate.constituency.name }}</a>
+                            </div>
+                        {% endif %}
+                        {% if candidate.party %}
+                            <div class="mb-3">
+                                <div class="row align-items-center">
+                                    <div class="col-auto pr-0">
+                                        <div style="width: {{ logoSize }};" class="text-center">
+                                            <img
+                                                src="{{ macros.party_logo_url(candidate.party) }}"
+                                                alt="Logo"
+                                                style="max-width: {{ logoSize }}; max-height: {{ logoSize }};"
+                                                class="rounded"
+                                            >
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        {{ candidate.party.name }}
                                     </div>
                                 </div>
-                                <div class="col">
-                                    {{ candidate.party.name }}
+                            </div>
+                        {% endif %}
+                        {% if candidate.registrationDate %}
+                            <div class="{{ detailClasses.row }}">
+                                <div class="{{ detailClasses.colLabel }}">
+                                    <strong>{{ "label.registration_date"|trans }}</strong>
+                                </div>
+                                <div class="{{ detailClasses.colContent }}">
+                                    {% if candidate.registrationLink %}
+                                        <a
+                                            href="{{ candidate.registrationLink }}"
+                                            target="_blank"
+                                        ><samp>{{ candidate.registrationDate|date }}</samp></a>
+                                    {% else %}
+                                        <samp>{{ candidate.registrationDate|date }}</samp>
+                                    {% endif %}
+                                    {% if candidate.registrationNote %}
+                                        <span class="ml-2">{{ candidate.registrationNote }}</span>
+                                    {% endif %}
                                 </div>
                             </div>
-                        </div>
-                    {% endif %}
-                    {% if candidate.registrationDate %}
-                        <div class="{{ detailClasses.row }}">
-                            <div class="{{ detailClasses.colLabel }}">
-                                <strong>{{ "label.registration_date"|trans }}</strong>
-                            </div>
-                            <div class="{{ detailClasses.colContent }}">
-                                {% if candidate.registrationLink %}
-                                    <a
-                                        href="{{ candidate.registrationLink }}"
-                                        target="_blank"
-                                    ><samp>{{ candidate.registrationDate|date }}</samp></a>
-                                {% else %}
-                                    <samp>{{ candidate.registrationDate|date }}</samp>
-                                {% endif %}
-                                {% if candidate.registrationNote %}
-                                    <span class="ml-2">{{ candidate.registrationNote }}</span>
-                                {% endif %}
-                            </div>
-                        </div>
-                    {% endif %}
-                    {% if candidate.electoralPlatform and candidate.electoralPlatform != emptyHtml %}
-                        {{ self_macros.detail_block("label.electoral_platform"|trans, candidate.electoralPlatform, "raw") }}
-                    {% elseif not candidate.electoralPlatformLink %}
-                        <div class="{{ detailClasses.row }}">
-                            <div class="{{ detailClasses.colLabel }}">{{ "label.electoral_platform"|trans }}</div>
-                            <div class="{{ detailClasses.colContent }}">
-                                <div class="alert alert-dark text-muted">
-                                    <small>
-                                        Informația nu este disponibilă.
-                                        Informația a fost cercetată din 3 surse diferite, conform metodologiei elaborate de deFacto.md.
-                                        Îndemnăm candidații să furnizeze informația lipsă la
-                                        <a href='mail&#116;o&#58;&#100;efa&#99;&#37;74o%2E&#109;old%&#54;F&#37;76a&#64;g&#109;ail&#46;co&#109;'>de&#102;acto&#46;&#109;&#111;&#108;d&#111;va&#64;gmail&#46;&#99;om</a>
-                                    </small>
+                        {% endif %}
+                        {% if candidate.electoralPlatform and candidate.electoralPlatform != emptyHtml %}
+                            {{ self_macros.detail_block("label.electoral_platform"|trans, candidate.electoralPlatform, "raw") }}
+                        {% elseif not candidate.electoralPlatformLink %}
+                            <div class="{{ detailClasses.row }}">
+                                <div class="{{ detailClasses.colLabel }}">{{ "label.electoral_platform"|trans }}</div>
+                                <div class="{{ detailClasses.colContent }}">
+                                    <div class="alert alert-dark text-muted">
+                                        <small>
+                                            Informația nu este disponibilă.
+                                            Informația a fost cercetată din 3 surse diferite, conform metodologiei elaborate de deFacto.md.
+                                            Îndemnăm candidații să furnizeze informația lipsă la
+                                            <a href='mail&#116;o&#58;&#100;efa&#99;&#37;74o%2E&#109;old%&#54;F&#37;76a&#64;g&#109;ail&#46;co&#109;'>de&#102;acto&#46;&#109;&#111;&#108;d&#111;va&#64;gmail&#46;&#99;om</a>
+                                        </small>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    {% endif %}
-                    {% if candidate.electoralPlatformLink %}
-                        <div class="{{ detailClasses.row }}">
-                            <div class="{{ detailClasses.colLabel }}"></div>
-                            <div class="{{ detailClasses.colContent }}">
-                                <a href="{{ candidate.electoralPlatformLink }}" target="_blank">
-                                    {{ "label.electoral_platform_link"|trans }}
-                                </a>
+                        {% endif %}
+                        {% if candidate.electoralPlatformLink %}
+                            <div class="{{ detailClasses.row }}">
+                                <div class="{{ detailClasses.colLabel }}"></div>
+                                <div class="{{ detailClasses.colContent }}">
+                                    <a href="{{ candidate.electoralPlatformLink }}" target="_blank">
+                                        {{ "label.electoral_platform_link"|trans }}
+                                    </a>
+                                </div>
                             </div>
-                        </div>
-                    {% endif %}
+                        {% endif %}
+                        {% if mandate and promises|length %}
+                            <h4>{{ "title.promises"|trans }}</h4>
+                            <div class="row">
+                                {% for promise in promises %}
+                                    <div class="col-lg-6 mb-3">
+                                        {% include 'app/component/item/promise.html.twig' with {promise: promise} only %}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
                 </div>
-            </div>
+                {% if not loop.last %}
+                    <hr>
+                {% endif %}
             {% endfor %}
         </div>
     </div>

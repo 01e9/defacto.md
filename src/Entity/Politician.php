@@ -300,10 +300,33 @@ class Politician
     }
 
     /**
-     * @return null|Candidate[]
+     * @return ArrayCollection
      */
     public function getCandidates()
     {
         return $this->candidates;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getMandates()
+    {
+        return $this->mandates;
+    }
+
+    /**
+     * @return Candidate[]
+     */
+    public function getSortedCandidates()
+    {
+        $candidates = $this->getCandidates()->toArray();
+
+        uasort($candidates, function(Candidate $a, Candidate $b) {
+            return ($a->getElection()->getDate() === $b->getElection()->getDate()) ? 0
+                : ($a->getElection()->getDate() > $b->getElection()->getDate() ? -1 : 1);
+        });
+
+        return $candidates;
     }
 }

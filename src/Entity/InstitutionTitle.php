@@ -25,20 +25,13 @@ class InstitutionTitle
     private $id;
 
     /**
-     * @ORM\ManyToOne(
-     *     targetEntity="Institution",
-     *     inversedBy="titles",
-     *     fetch="EAGER"
-     * )
+     * @ORM\ManyToOne(targetEntity="Institution", inversedBy="titles", fetch="EAGER")
      * @ORM\JoinColumn(nullable=false)
      */
     private $institution;
 
     /**
-     * @ORM\ManyToOne(
-     *     targetEntity="Title",
-     *     fetch="EAGER"
-     * )
+     * @ORM\ManyToOne(targetEntity="Title", fetch="EAGER")
      * @ORM\JoinColumn(nullable=false)
      */
     private $title;

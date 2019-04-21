@@ -213,6 +213,7 @@ title:
     candidate_in: Candidat în
     candidates_solutions: Soluțiile candidaților
     partners: Parteneri
+    elected: Ales
 
 placeholder:
     choose_option: Alegeți o opțiune
@@ -244,3 +245,5 @@ text:
     of_respondents: din respondenți
     years_n: an|ani|de ani
     elected: ales
+    in: în
+    in_elections_from: în alegerile din

@@ -68,32 +68,6 @@ class PromiseRepository extends ServiceEntityRepository
         );
     }
 
-    public function getListByStatusGroupByPolitician(?Status $status)
-    {
-        $promises = [];
-
-        foreach (
-            $this->findBy(
-                ['status' => $status, 'published' => true],
-                ['madeTime' => 'DESC']
-            )
-            as $promise /** @var Promise $promise */
-        ) {
-            $politician = $promise->getPolitician();
-
-            if (empty($promises[$politician->getId()])) {
-                $promises[$politician->getId()] = [
-                    'politician' => $politician,
-                    'promises' => [],
-                ];
-            }
-
-            $promises[$politician->getId()]['promises'][] = $promise;
-        }
-
-        return $promises;
-    }
-
     public function hasConnections(string $id) : bool
     {
         return (

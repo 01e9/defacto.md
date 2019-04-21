@@ -161,6 +161,8 @@ title:
     statuses: Statuturi
     status: Statut
     promises: Promisiuni
+    the_promises: Promisiunile
+    all_promises: Toate promisiunile
     promise: Promisiune
     promise_add: Adăugare promisiune
     promise_edit: Redactare promisiune
@@ -197,7 +199,7 @@ title:
     promise_actions: Acțiuni întreprinse
     promise_no_actions: Nici o acțiune întreprinsă
     no_primises_by_status: Nu sunt promisiuni cu acest statut
-    no_inactive_primises: Nu sunt promisiuni inactive
+    no_inactive_primises: Nu sunt promisiuni fără statut
     used_powers: Atribuții folosite
     sources: Surse
     source: Sursa
@@ -247,3 +249,8 @@ text:
     elected: ales
     in: în
     in_elections_from: în alegerile din
+    in_elections_for: în alegerile pentru
+    click_on_status: click pe statut
+    or: sau
+    see_all: vezi toate
+    made_by: făcute de

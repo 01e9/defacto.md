@@ -1,7 +1,6 @@
 {% extends 'app/base.html.twig' %}
 {% import 'app/macros.html.twig' as app_macros %}
-
-{% set politiciansPromises = app_repo_promise.getListByStatusGroupByPolitician(status) %}
+{% import 'macros.html.twig' as macros %}
 
 {% block html_class %}bg-dark-pattern{% endblock %}
 {% block body_class %}bg-transparent{% endblock %}
@@ -9,45 +8,81 @@
 {% block main %}
     <div class="container-fluid bg-light-pattern">
         <div class="container">
-            <div class="row">
-                <div class="col text-center py-5">
-                    <h1>
-                        {{ 'title.promises'|trans }}
-                        <br class="d-block d-md-none">
-                        <span class="ml-md-4 mt-5 mt-md-0 status-stamp {{ status ? "status-color-" ~ status.color : "text-muted" }}">
-                            {{ status ? status.namePlural : 'placeholder.inactive_plural'|trans }}
-                        </span>
-                    </h1>
-                    {% if status and status.description %}
-                        <div class="mt-5 text-muted">{{ status.description }}</div>
+            <div class="row py-5 text-center justify-content-center">
+                <div class="col-lg-6">
+                    {% if status is same as(false) %}
+                        <h1>{{ "title.all_promises"|trans }}</h1>
+                    {% else %}
+                        <h1>
+                            {{ 'title.the_promises'|trans }}
+                            <br class="d-block d-md-none">
+                            <span class="ml-md-4 mt-5 mt-md-0 status-stamp {{ status ? "status-color-" ~ status.color : "text-muted" }}">
+                                {{ status ? status.namePlural : 'placeholder.inactive_plural'|trans }}
+                            </span>
+                        </h1>
+                        {% if status and status.description %}
+                            <div class="mt-5 text-muted">{{ status.description }}</div>
+                        {% endif %}
                     {% endif %}
                 </div>
+                {% if politician or election %}
+                    <div class="col-lg-6 mt-3 mt-lg-0">
+                        {% if politician %}
+                            <h5>{{ "text.made_by"|trans|capitalize }}</h5>
+                            <h3>
+                                <img src="{{ macros.politician_photo_url(politician) }}"
+                                     alt="Politician"
+                                     class="rounded-circle img-fluid mr-1 align-bottom"
+                                     style="max-width: 2rem;"
+                                >
+                                <a
+                                    href="{{ path('politician', {'slug': politician.slug}) }}"
+                                >{{ politician.firstName }} {{ politician.lastName }}</a>
+                            </h3>
+                        {% endif %}
+                        {% if election %}
+                            <h5>
+                                {{ "text.in"|trans }}
+                                {{ election.name|lower }}
+                                {{ "text.from"|trans }}
+                                {{ election.date|date }}
+                            </h5>
+                        {% endif %}
+                    </div>
+                {% endif %}
             </div>
         </div>
     </div>
     <div class="container-fluid mb-5">
-        {% if politiciansPromises is empty %}
-        <div class="row">
-            <div class="col text-center text-light">
-                <h2 class="h3 mt-5">
-                    {{ status ? 'title.no_primises_by_status'|trans : 'title.no_inactive_primises'|trans }}
-                </h2>
-                <p class="h3 mt-4"><span class="fa fa-hourglass-half"></span></p>
-            </div>
-        </div>
-        {% else %}
-            {% for politicianData in politiciansPromises %}
-                <div class="row mt-2 justify-content-md-center">
-                    {% for promise in politicianData.promises %}
-                        <div class="{{ app_macros.card_list_item_col_classes() }}">
-                            {% include 'app/component/item/promise.html.twig' with {
-                                promise: promise,
-                                show_status: false
-                            } only %}
-                        </div>
-                    {% endfor %}
+        {% if promises is empty %}
+            <div class="row">
+                <div class="col text-center text-light">
+                    <h2 class="h3 mt-5">
+                        {{ status ? 'title.no_primises_by_status'|trans : 'title.no_inactive_primises'|trans }}
+                    </h2>
+                    <p class="h3 mt-4"><span class="fa fa-surprise"></span></p>
                 </div>
-            {% endfor %}
+            </div>
+        {% else %}
+            <div class="row mt-2 justify-content-md-center">
+                {% for promise in promises %}
+                    <div class="{{ app_macros.card_list_item_col_classes() }}">
+                        {% include 'app/component/item/promise.html.twig' with {
+                            promise: promise,
+                            show_status: status is same as(false)
+                        } only %}
+                    </div>
+                {% endfor %}
+            </div>
+            {% if promises.getPaginationData()['pageCount'] > 1 %}
+                <div class="row mt-5">
+                    <div class="col text-center">
+                        <div class="d-inline-block pagination-wrapper">
+                            {{ knp_pagination_render(promises) }}
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
         {% endif %}
     </div>
     {% include 'app/component/section/footer.html.twig' with {delimiter: true} only %}

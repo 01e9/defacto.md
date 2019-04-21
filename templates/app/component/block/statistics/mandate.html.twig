@@ -108,7 +108,9 @@
                                 title="{{ statusDescription }}"
                             >
                                     <span class="row">
-                                        <samp class="col-auto count text-body">{{ promise.count }}</samp>
+                                        <samp class="col-auto count text-body">
+                                            {% if promise.count < 10 %}&nbsp;{% endif %}{{ promise.count }}
+                                        </samp>
                                         <b class="col percentage">
                                             <span class="{{ spacingClasses }} {{ colorClass }}">
                                                 {{ statusName }}

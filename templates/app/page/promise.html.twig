@@ -187,7 +187,12 @@
     </h6>
     <div class="d-inline-block mb-0 h6">
         {% for source in list %}
-            <a href="{{ source.link }}" target="_blank" rel="nofollow" class="badge badge-light">{{ source.name }}</a>
+            <a
+                href="{{ source.link }}"
+                target="_blank"
+                rel="nofollow"
+                class="badge badge-light badge-wrap"
+            >{{ source.name }}</a>
         {% endfor %}
     </div>
 {% endmacro %}

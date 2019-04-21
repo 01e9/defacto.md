@@ -69,6 +69,23 @@
             {% if has_description %}
                 <div class="my-3 raw-html text-border">{{ promise.description|raw }}</div>
             {% endif %}
+            {% if mandate %}
+                <div class="py-1 px-2 alert alert-{{ promise.hasPrerogatives ? "success" : "warning" }}">
+                    <small>
+                        <em>
+                            {{ (promise.hasPrerogatives ? "text.has_prerogatives" : "text.no_prerogatives")|trans({
+                                '%title%': mandate.institutionTitle.title.name
+                            }) }}
+                            {% if mandate.institutionTitle.prerogativesLink %}
+                                <a
+                                    href="{{ mandate.institutionTitle.prerogativesLink }}"
+                                    target="_blank"
+                                >{{ "action.see_the_prerogatives"|trans }}</a>
+                            {% endif %}
+                        </em>
+                    </small>
+                </div>
+            {% endif %}
             <div class="mb-5"></div>
         {% endset %}
         <div class="container promise-page-header">

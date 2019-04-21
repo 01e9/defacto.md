@@ -146,6 +146,7 @@ action:
     edit_setting: Modifică setare
     filter: Filtrează
     view_on_site: Vezi pe site
+    see_the_prerogatives: Vezi prerogativele
 
 title:
     politicians: Politicieni
@@ -254,3 +255,5 @@ text:
     or: sau
     see_all: vezi toate
     made_by: făcute de
+    has_prerogatives: "%title% deține prerogative pentru realizarea promisiunii."
+    no_prerogatives: "%title% nu deține prerogative pentru realizarea promisiunii."

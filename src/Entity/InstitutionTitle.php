@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\InstitutionTitleRepository")
@@ -36,6 +37,14 @@ class InstitutionTitle
      */
     private $title;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     *
+     * @Assert\Length(max=255)
+     * @Assert\Url()
+     */
+    private $prerogativesLink;
+
     public function getId() : ?string
     {
         return $this->id;
@@ -61,6 +70,18 @@ class InstitutionTitle
     public function setTitle(?Title $title) : InstitutionTitle
     {
         $this->title = $title;
+
+        return $this;
+    }
+
+    public function getPrerogativesLink() : ?string
+    {
+        return $this->prerogativesLink;
+    }
+
+    public function setPrerogativesLink(?string $prerogativesLink) : self
+    {
+        $this->prerogativesLink = $prerogativesLink;
 
         return $this;
     }

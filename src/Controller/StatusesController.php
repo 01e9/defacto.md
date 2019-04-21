@@ -54,7 +54,7 @@ class StatusesController extends AbstractController
         switch ($slug) {
             case '~':
                 $status = null;
-                $promisesQuery->andWhere('p.status = :status')->setParameter('status', $status);
+                $promisesQuery->andWhere('p.status IS NULL');
                 break;
             case '*':
                 $status = false;

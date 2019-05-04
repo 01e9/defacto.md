@@ -2,6 +2,7 @@
 
 namespace App\EventListener;
 
+use App\Entity\BlogPost;
 use App\Entity\Party;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -25,6 +26,12 @@ class EntityFileFieldsListener
             [
                 'name' => 'logo',
                 'dir' => '/parties',
+            ]
+        ],
+        BlogPost::class => [
+            [
+                'name' => 'image',
+                'dir' => '/blog',
             ]
         ],
     ];

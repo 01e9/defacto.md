@@ -6,6 +6,7 @@ use App\Consts;
 use App\Entity\BlogPost;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -34,6 +35,10 @@ class BlogPostType extends AbstractType
                 'format' => Consts::DATE_FORMAT_INTL,
                 'required' => false,
                 'help' => 'text.leave_blank_to_not_publish',
+            ])
+            ->add('image', FileType::class, [
+                'label' => 'label.image',
+                'required' => false,
             ]);
     }
 

@@ -40,6 +40,7 @@ label:
     name_plural: Denumirea la plural
     effect: Ordinea/Impactul
     photo: Foto
+    image: Imagine
     logo: Logo
     begin_date: Date de început
     end_date: Date de sfârșit

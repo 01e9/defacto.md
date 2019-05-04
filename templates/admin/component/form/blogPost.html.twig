@@ -33,6 +33,15 @@
     </div>
 </div>
 
+<div class="row">
+    <div class="col-lg-2">
+        {% include 'admin/component/form/field/photo.html.twig' with {
+            field: form.image,
+            imageDir: '/uploads/blog/'
+        } only %}
+    </div>
+</div>
+
 {% include "admin/component/form/widget/submit-delete-buttons.html.twig" with {
     submitText: id ? 'action.edit_blog_post'|trans : 'action.add_blog_post'|trans,
     delete: id ? {text: 'action.delete_blog_post'|trans, link: path('admin_blog_post_delete', {id: id})} : false

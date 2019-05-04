@@ -5,6 +5,7 @@ namespace App\Tests\Controller;
 use App\Entity\BlogPost;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use App\Tests\TestCaseTrait;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class AdminBlogPostsControllerTest extends WebTestCase
 {
@@ -69,6 +70,41 @@ class AdminBlogPostsControllerTest extends WebTestCase
         self::cleanup($em);
     }
 
+    public function testAddActionSubmitUploadPhoto()
+    {
+        $client = self::createAdminClient();
+        $locale = self::getLocale($client);
+        $random = self::randomNumber();
+
+        $formData = [
+            'blog_post[title]' => "Test ${random}",
+            'blog_post[slug]' => "test-${random}",
+            'blog_post[publishTime]' => '11.12.2010',
+            'blog_post[content]' => "Test ${random} ". str_repeat("Hello World ", 10),
+        ];
+
+        $photo = new UploadedFile(self::getTestsRootDir() . '/files/test.jpg', 'test.jpg');
+
+        $form = $client
+            ->request('GET', "/${locale}/admin/blog-posts/add")
+            ->filter('form')->form();
+        $client->insulate(false);
+        $client->submit($form, array_merge($formData, ['blog_post[image]' => $photo,]));
+        $route = $this->assertRedirectsToRoute($client->getResponse(), 'admin_blog_post_edit');
+
+        $client = self::createAdminClient();
+        $em = self::getDoctrine($client);
+
+        /** @var BlogPost $blogPost */
+        $blogPost = $em->getRepository('App:BlogPost')->find($route['id']);
+        $em->refresh($blogPost); // fix lifecycle callbacks
+
+        $this->assertNotNull($blogPost);
+        $this->assertEquals($photo->getMimeType(), $blogPost->getImage()->getMimeType());
+
+        self::cleanup($em);
+    }
+
     //endregion
 
     //region Edit
@@ -129,6 +165,44 @@ class AdminBlogPostsControllerTest extends WebTestCase
         $this->assertNotNull($blogPost);
         $this->assertEquals($formData['blog_post[title]'], $blogPost->getTitle());
         $this->assertEquals($formData['blog_post[slug]'], $blogPost->getSlug());
+
+        self::cleanup($em);
+    }
+
+    public function testEditActionSubmitUploadPhoto()
+    {
+        $client = self::createAdminClient();
+        $em = self::getDoctrine($client);
+        $locale = self::getLocale($client);
+        $random = self::randomNumber();
+
+        $formData = [
+            'blog_post[title]' => "Test ${random}",
+            'blog_post[slug]' => "test-${random}",
+            'blog_post[content]' => "Test ${random} ". str_repeat("Hello World ", 10),
+            'blog_post[publishTime]' => '01.12.2010',
+        ];
+        $photo = new UploadedFile(self::getTestsRootDir() . '/files/test.gif', 'test.gif');
+
+        $blogPost = $this->makeBlogPost($em);
+
+        $form = $client
+            ->request('GET', "/${locale}/admin/blog-posts/{$blogPost->getId()}")
+            ->filter('form')->form();
+        $client->insulate(false);
+        $client->submit($form, array_merge($formData, ['blog_post[image]' => $photo,]));
+        $this->assertRedirectsToRoute($client->getResponse(), 'admin_blog_post_edit');
+
+        $client = self::createAdminClient();
+        $em = self::getDoctrine($client);
+
+        $em->clear('App:BlogPost');
+        $blogPost = $em->getRepository('App:BlogPost')->find($blogPost->getId());
+
+        $this->assertNotNull($blogPost);
+        $em->refresh($blogPost); // fix lifecycle callbacks
+
+        $this->assertEquals($photo->getMimeType(), $blogPost->getImage()->getMimeType());
 
         self::cleanup($em);
     }

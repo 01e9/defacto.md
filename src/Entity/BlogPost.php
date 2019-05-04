@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\Groups;
 
@@ -62,6 +63,13 @@ class BlogPost
      */
     private $content;
 
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     *
+     * @Assert\File(mimeTypes={"image/jpeg", "image/png", "image/gif"})
+     */
+    private $image;
+
     public function getId(): ?string
     {
         return $this->id;
@@ -111,6 +119,21 @@ class BlogPost
     public function setPublishTime(?\DateTime $date) : self
     {
         $this->publishTime = $date;
+
+        return $this;
+    }
+
+    /**
+     * @return File
+     */
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+    public function setImage($image) : self
+    {
+        $this->image = $image;
 
         return $this;
     }

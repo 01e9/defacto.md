@@ -4,6 +4,7 @@ namespace App\Tests\traits;
 
 use App\Entity\Action;
 use App\Entity\ActionSource;
+use App\Entity\BlogPost;
 use App\Entity\Candidate;
 use App\Entity\CandidateProblemOpinion;
 use App\Entity\Category;
@@ -359,5 +360,21 @@ trait FactoryTrait
         $em->refresh($promiseSource->getPromise());
 
         return $promiseSource;
+    }
+
+    protected static function makeBlogPost(ObjectManager $em) : BlogPost
+    {
+        $random = self::randomNumber();
+
+        $blogPost = new BlogPost();
+        $blogPost->setTitle("Test problem ${random}");
+        $blogPost->setSlug("test-problem-${random}");
+        $blogPost->setContent("Test ${random}". str_repeat(" Hello World", 10));
+        $blogPost->setPublishTime(new \DateTime("-1 day"));
+
+        $em->persist($blogPost);
+        $em->flush($blogPost);
+
+        return $blogPost;
     }
 }

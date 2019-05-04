@@ -1,0 +1,11 @@
+<div class="list-group list-group-flush">
+    {% for blogPost in pagination %}
+        <a class="list-group-item list-group-item-action" href="{{ path('admin_blog_post_edit', {id: blogPost.id}) }}">
+            <h5 {% if not blogPost.publishTime %}class="text-muted font-italic"{% endif %}>
+                {{ blogPost.title }}
+            </h5>
+        </a>
+    {% endfor %}
+
+    <div class="mt-4">{{ knp_pagination_render(pagination) }}</div>
+</div>

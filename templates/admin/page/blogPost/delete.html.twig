@@ -1,0 +1,29 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block main %}
+    <div class="container">
+        {% include 'admin/component/breadcrumb.html.twig' with {
+            items: [
+                {title: 'title.blog'|trans, link: path('admin_blog_posts')}
+            ],
+            current: {title: 'title.blog_post_delete'|trans},
+            add: {link: path('admin_blog_post_add'), text: 'action.add_blog_post'|trans}
+        } only %}
+
+        {{ form_start(form) }}
+        <div class="row">
+            <div class="col">
+                <h3>{{ blogPost.title }}</h3>
+                {{ form_errors(form) }}
+                <p>
+                    <button type="submit" class="btn btn-danger">
+                        <span class="fa fa-trash-alt"></span>
+                        {{ 'action.delete_blog_post'|trans }}
+                    </button>
+                </p>
+            </div>
+        </div>
+        {{ form_rest(form) }}
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

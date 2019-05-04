@@ -24,6 +24,9 @@ flash:
     problem_created: Problema a fost creată
     problem_updated: Problema a fost modificată
     problem_deleted: Problema a fost ștearsă
+    blog_post_created: Postarea a fost creată
+    blog_post_updated: Postarea a fost modificată
+    blog_post_deleted: Postarea a fost ștearsă
     setting_updated: Setarea a fost modificată
     error_404: Pagina nu există
 
@@ -70,9 +73,11 @@ label:
     code: Cod
     title: Titlu
     description: Descriere
+    content: Conținut
     studies: Studii
     previous_titles: Funcții anterioare
     made_date: Făcut(ă) pe data
+    published_date: Data publicării
     mandate: Mandat
     status: Statut
     published: Publicat(ă)
@@ -148,6 +153,9 @@ action:
     view_on_site: Vezi pe site
     see_the_prerogatives: Vezi prerogativele
     view_decision: Vezi hotărârea
+    add_blog_post: Adaugă postare
+    edit_blog_post: Modifică postare
+    delete_blog_post: Șterge postare
 
 title:
     politicians: Politicieni
@@ -169,6 +177,10 @@ title:
     promise_add: Adăugare promisiune
     promise_edit: Redactare promisiune
     promise_delete: Ștergere promisiune
+    blog_posts: Postări
+    blog_post_add: Adăugare postare
+    blog_post_edit: Redactare postare
+    blog_post_delete: Ștergere postare
     actions: Acțiuni
     orphan_actions: Acțiuni orfane
     action: Acțiune
@@ -258,3 +270,4 @@ text:
     made_by: făcute de
     has_prerogatives: "%title% deține prerogative pentru realizarea promisiunii."
     no_prerogatives: "%title% nu deține prerogative pentru realizarea promisiunii."
+    leave_blank_to_not_publish: Lasă gol pentru a nu publica pe site

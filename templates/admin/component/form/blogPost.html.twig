@@ -1,0 +1,43 @@
+{% set id = form.vars.value|default({id:0}).id %}
+
+{{ form_start(form) }}
+
+<div class="row">
+    <div class="col-lg-9">
+        <div class="row">
+            <div class="col">
+                {{ form_row(form.title) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                {{ form_row(form.slug) }}
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3">
+        <div class="row">
+            <div class="col">
+                {{ form_row(form.publishTime, {
+                    'type': 'text',
+                    'attr': {'class': 'datepicker-input'}
+                }) }}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col">
+        {{ form_row(form.content) }}
+    </div>
+</div>
+
+{% include "admin/component/form/widget/submit-delete-buttons.html.twig" with {
+    submitText: id ? 'action.edit_blog_post'|trans : 'action.add_blog_post'|trans,
+    delete: id ? {text: 'action.delete_blog_post'|trans, link: path('admin_blog_post_delete', {id: id})} : false
+} only %}
+
+{{ form_rest(form) }}
+
+{{ form_end(form) }}

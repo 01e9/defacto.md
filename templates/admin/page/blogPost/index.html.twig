@@ -1,0 +1,22 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block main %}
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                {% include 'admin/component/breadcrumb.html.twig' with {
+                    current: {title: 'title.blog_posts'|trans},
+                    add: {link: path('admin_blog_post_add'), text: 'action.add_blog_post'|trans}
+                } only %}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                {% include 'admin/component/list/blogPosts.html.twig' with {
+                    pagination: pagination
+                } only %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

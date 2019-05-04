@@ -5,7 +5,6 @@ namespace App\Repository;
 use App\Data\Filter\PromisesFilterData;
 use App\Entity\Promise;
 use App\Entity\Mandate;
-use App\Entity\Status;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Knp\Component\Pager\Pagination\AbstractPagination;
 use Knp\Component\Pager\PaginatorInterface;

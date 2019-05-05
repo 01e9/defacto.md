@@ -36,7 +36,16 @@
         {% endset %}
         {% set content %}
             {% if mandate and mandate.constituency %}
-                <div><sup>{{ mandate.constituency.name }}</sup></div>
+                <div>
+                    <sup>
+                        <a
+                            href="{{ path('constituency', {
+                                electionSlug: promise.election.slug,
+                                slug: mandate.constituency.slug
+                            }) }}"
+                        >{{ mandate.constituency.name }}</a>
+                    </sup>
+                </div>
             {% endif %}
             <h1 class="h2">{{ promise.name }}</h1>
             <div class="position-relative">

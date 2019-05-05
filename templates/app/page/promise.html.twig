@@ -35,6 +35,9 @@
             </p>
         {% endset %}
         {% set content %}
+            {% if mandate and mandate.constituency %}
+                <div><sup>{{ mandate.constituency.name }}</sup></div>
+            {% endif %}
             <h1 class="h2">{{ promise.name }}</h1>
             <div class="position-relative">
                 <div class="py-5 py-lg-0">

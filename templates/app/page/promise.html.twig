@@ -70,7 +70,7 @@
                 <div class="my-3 raw-html text-border">{{ promise.description|raw }}</div>
             {% endif %}
             {% if mandate %}
-                <div class="py-1 px-3 alert alert-{{ promise.hasPrerogatives ? "success" : "warning" }}">
+                <div class="py-1 px-3 d-inline-block alert alert-{{ promise.hasPrerogatives ? "success" : "warning" }}">
                     <small>
                         <em>
                             {{ (promise.hasPrerogatives ? "text.has_prerogatives" : "text.no_prerogatives")|trans({

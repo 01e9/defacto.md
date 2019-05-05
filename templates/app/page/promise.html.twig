@@ -74,7 +74,7 @@
                     <small>
                         <em>
                             {{ (promise.hasPrerogatives ? "text.has_prerogatives" : "text.no_prerogatives")|trans({
-                                '%title%': mandate.institutionTitle.title.name
+                                '%title%': mandate.institutionTitle.title.theName
                             }) }}
                             {% if mandate.institutionTitle.prerogativesLink %}
                                 <a

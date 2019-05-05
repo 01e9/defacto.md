@@ -45,6 +45,14 @@ class Title
     private $name;
 
     /**
+     * @ORM\Column(type="string", length=50)
+     *
+     * @Assert\NotBlank()
+     * @Assert\Length(min=3, max=50)
+     */
+    private $theName;
+
+    /**
      * @ORM\ManyToMany(targetEntity="Power", cascade={"persist"})
      * @ORM\OrderBy({"name"="ASC"})
      */
@@ -80,6 +88,18 @@ class Title
     public function setName(?string $name) : Title
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getTheName() : ?string
+    {
+        return $this->theName;
+    }
+
+    public function setTheName(?string $theName) : Title
+    {
+        $this->theName = $theName;
 
         return $this;
     }

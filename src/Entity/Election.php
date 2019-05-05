@@ -43,6 +43,15 @@ class Election
      *
      * @Assert\NotBlank()
      * @Assert\Length(min=3, max=120)
+     */
+    private $theName;
+
+    /**
+     * @ORM\Column(type="string", length=120)
+     * @Groups({"searchable"})
+     *
+     * @Assert\NotBlank()
+     * @Assert\Length(min=3, max=120)
      * @Assert\Regex(pattern="/^[\p{L}\d]+(\-[\p{L}\d]+)*$/u", message="invalid.slug")
      */
     private $slug;
@@ -90,6 +99,18 @@ class Election
     public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getTheName(): ?string
+    {
+        return $this->theName;
+    }
+
+    public function setTheName(string $theName): self
+    {
+        $this->theName = $theName;
 
         return $this;
     }

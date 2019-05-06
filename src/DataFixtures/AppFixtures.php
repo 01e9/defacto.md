@@ -35,6 +35,7 @@ class AppFixtures extends Fixture
         $title = new Title();
         $title
             ->setName('Președintele Republicii Moldova')
+            ->setTheName('Președintele Republicii Moldova')
             ->setSlug('președintele-republicii-moldova')
             ->setPowers($powers);
         $manager->persist($title);
@@ -58,6 +59,7 @@ class AppFixtures extends Fixture
         $election = new Election();
         $election
             ->setName('Demo election')
+            ->setTheName('Demo election')
             ->setSlug('demo-election')
             ->setDate(new \DateTime());
         $manager->persist($election);

@@ -23,7 +23,7 @@
                                         >
                                     </div>
                                 {% endif %}
-                                <div class="card-body px-lg-5 pb-lg-5">
+                                <div class="card-body px-lg-5 pb-lg-5 {% if not blogPost.image %}pt-lg-5{% endif %}">
                                     <h2><a href="javascript:void(0)">{{ blogPost.title }}</a></h2>
                                     <p><small>{{ blogPost.publishTime|date }}</small></p>
                                     <div class="raw-html">{{ blogPost.content|raw }}</div>

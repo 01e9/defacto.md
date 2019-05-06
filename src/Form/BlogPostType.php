@@ -39,6 +39,7 @@ class BlogPostType extends AbstractType
             ->add('image', FileType::class, [
                 'label' => 'label.image',
                 'required' => false,
+                'help' => 'text.recommended_image_ratio_16_9',
             ]);
     }
 

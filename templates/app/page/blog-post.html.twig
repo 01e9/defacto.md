@@ -1,0 +1,39 @@
+{% extends 'app/base.html.twig' %}
+{% import 'app/macros.html.twig' as app_macros %}
+{% import 'macros.html.twig' as macros %}
+
+{% block html_class %}bg-dark-pattern{% endblock %}
+{% block body_class %}bg-transparent{% endblock %}
+
+{% block main %}
+    <div class="container-fluid bg-light-pattern pb-5 px-0">
+        {% include 'app/component/after-header-space.html.twig' %}
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 offset-lg-2">
+                    <div class="row">
+                        <div class="col">
+                            <div class="card mb-3">
+                                {% if blogPost.image %}
+                                    <div class="ratio-16-9 overflow-hidden">
+                                        <img
+                                            src="{{ macros.blog_image_url(blogPost) }}"
+                                            alt="Image"
+                                            class="content-no-height rounded-top d-block"
+                                        >
+                                    </div>
+                                {% endif %}
+                                <div class="card-body px-lg-5 pb-lg-5">
+                                    <h2><a href="javascript:void(0)">{{ blogPost.title }}</a></h2>
+                                    <p><small>{{ blogPost.publishTime|date }}</small></p>
+                                    <div class="raw-html">{{ blogPost.content|raw }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% include 'app/component/section/footer.html.twig' with {} only %}
+{% endblock %}

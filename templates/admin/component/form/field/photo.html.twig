@@ -13,9 +13,10 @@
         >{{ changeText|default('action.change_photo'|trans) }}</button>
 
         <div
-            class="collapse multi-collapse pt-3 {% if not field.vars.valid %}show{% endif %}"
+            class="collapse multi-collapse pt-2 {% if not field.vars.valid %}show{% endif %}"
             id="{{ id }}"
         >
+            <p>{{ form_help(field) }}</p>
             {{ form_widget(field) }}
         </div>
     </div>

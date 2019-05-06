@@ -67,6 +67,7 @@ trait FactoryTrait
 
         $title = new Title();
         $title->setName("Test ${random}");
+        $title->setTheName("Test ${random}");
         $title->setSlug("test-${random}");
 
         $em->persist($title);
@@ -93,6 +94,7 @@ trait FactoryTrait
 
         $election = new Election();
         $election->setName("Test election ${random}");
+        $election->setTheName("Test election ${random}");
         $election->setSlug("test-election-${random}");
         $election->setDate(new \DateTime());
 

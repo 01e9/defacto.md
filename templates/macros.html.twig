@@ -30,3 +30,11 @@
     : asset('img/no-image.png')
     -}}
 {% endmacro %}
+
+{% macro blog_image_url(post) %}
+    {{-
+    post.image
+    ? asset('uploads/blog/' ~ post.image.filename)
+    : asset('img/no-image.png')
+    -}}
+{% endmacro %}

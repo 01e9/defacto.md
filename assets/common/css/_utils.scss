@@ -13,3 +13,23 @@
     height: 100%;
   }
 }
+
+.ratio-16-9 {
+  position: relative;
+
+  &:after {
+    content: "";
+    display: block;
+    padding-bottom: 56.25%;
+  }
+
+  .content-no-height {
+    position: absolute;
+    width: 100%;
+  }
+
+  .content {
+    @extend .content-no-height;
+    height: 100%;
+  }
+}

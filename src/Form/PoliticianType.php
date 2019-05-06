@@ -30,6 +30,7 @@ class PoliticianType extends AbstractType
             ->add('photo', FileType::class, [
                 'label' => 'label.photo',
                 'required' => false,
+                'help' => 'text.recommended_image_ratio_1_1',
             ])
             ->add('birthDate', DateType::class, [
                 'label' => 'label.birth_date',

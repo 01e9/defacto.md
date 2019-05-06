@@ -24,6 +24,7 @@ class PartyType extends AbstractType
             ->add('logo', FileType::class, [
                 'label' => 'label.logo',
                 'required' => false,
+                'help' => 'text.recommended_image_ratio_1_1',
             ])
         ;
     }

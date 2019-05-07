@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     }
  * )
  *
- * @UniqueEntity(fields={"institution", "title"})
+ * @UniqueEntity(fields={"institution", "title"}, errorPath="title")
  */
 class InstitutionTitle
 {

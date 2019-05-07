@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\PromiseSourceRepository")
@@ -13,6 +14,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *      @ORM\UniqueConstraint(name="promise_source_unique_name", columns={"promise_id", "name"})
  *     }
  * )
+ *
+ * @UniqueEntity(fields={"promise", "name"}, errorPath="name")
  */
 class PromiseSource
 {

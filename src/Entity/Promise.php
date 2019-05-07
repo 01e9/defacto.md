@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\PromiseRepository")
@@ -16,6 +17,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  *      @ORM\UniqueConstraint(name="promise_unique_code", columns={"code"})
  *     }
  * )
+ *
+ * @UniqueEntity(fields={"slug"})
+ * @UniqueEntity(fields={"code"})
  */
 class Promise
 {
@@ -43,7 +47,7 @@ class Promise
     private $politician;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Status", fetch="EAGER")
+     * @ORM\ManyToOne(targetEntity="Status")
      * @ORM\JoinColumn(nullable=true)
      */
     private $status;

@@ -10,7 +10,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class ConstituenciesController extends AbstractController
 {
     /**
-     * @Route("/c/{slug}/{electionSlug}", name="constituency")
+     * @Route("/constituency/{slug}/{electionSlug}", name="constituency")
      */
     public function viewAction(string $slug, string $electionSlug)
     {

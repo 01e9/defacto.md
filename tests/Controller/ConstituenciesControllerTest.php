@@ -18,7 +18,7 @@ class ConstituenciesControllerTest extends WebTestCase
         $candidate = $this->makeCandidate($em);
         $locale = self::getLocale($client);
 
-        $path = "/c/{$candidate->getConstituency()->getSlug()}/{$candidate->getElection()->getSlug()}";
+        $path = "/constituency/{$candidate->getConstituency()->getSlug()}/{$candidate->getElection()->getSlug()}";
 
         $crawler = $client->request('GET', "/${locale}${path}");
         $response = $client->getResponse();

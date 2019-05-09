@@ -18,7 +18,7 @@ class PoliticiansControllerTest extends WebTestCase
         $politician = $this->makePolitician($em);
         $locale = self::getLocale($client);
 
-        $path = "/po/{$politician->getSlug()}";
+        $path = "/politician/{$politician->getSlug()}";
 
         $crawler = $client->request('GET', "/${locale}${path}");
         $response = $client->getResponse();

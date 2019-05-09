@@ -22,7 +22,7 @@ class PoliticiansController extends AbstractController
     }
 
     /**
-     * @Route("/po/{slug}", name="politician")
+     * @Route("/politician/{slug}", name="politician")
      */
     public function viewAction(string $slug)
     {

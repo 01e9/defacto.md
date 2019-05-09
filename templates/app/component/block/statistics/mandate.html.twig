@@ -82,7 +82,7 @@
             <div class="col">
                 <h3 class="mb-3 text-center">
                     <a
-                        href="{{ path("status", {
+                        href="{{ path("promises", {
                             'politicianSlug': mandate.politician.slug,
                             'electionSlug': mandate.election.slug
                         }) }}"
@@ -110,8 +110,8 @@
                             {% set width = promise.count * 100 / maxCount %}
 
                             <a
-                                href="{{ path('status', {
-                                    'slug': promise.status is defined ? promise.status.slug : '~',
+                                href="{{ path('promises', {
+                                    'statusSlug': promise.status is defined ? promise.status.slug : '~',
                                     'politicianSlug': mandate.politician.slug,
                                     'electionSlug': mandate.election.slug
                                 }) }}"

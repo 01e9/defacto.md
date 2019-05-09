@@ -39,11 +39,17 @@
                 </div>
                 <div class="row">
                     <div class="col px-0">
-                        <h5 {% if not promise.published %}class="text-muted font-italic"{% endif %}>
+                        <h5>
                             {% if promise.code %}
                                 <small class="mr-1 text-monospace text-muted">{{ promise.code }}</small>
                             {% endif %}
-                            <a href="{{ path('admin_promise_edit', {id: promise.id}) }}">{{ promise.name }}</a>
+                            <a
+                                href="{{ path('admin_promise_edit', {id: promise.id}) }}"
+                                class="{{ promise.published ? "" : "text-muted" }}"
+                            >{{ promise.name }}</a>
+                            {% if not promise.published %}
+                                <small class="fa fa-eye-slash text-muted ml-1"></small>
+                            {% endif %}
                         </h5>
                     </div>
                     <div class="col-auto pr-0">

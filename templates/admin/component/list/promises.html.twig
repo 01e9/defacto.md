@@ -1,27 +1,92 @@
+{% import 'macros.html.twig' as macros %}
+
+{% set photoSize = '1rem' %}
+
 <div class="list-group list-group-flush">
     {% for promise in pagination %}
-        <a class="list-group-item list-group-item-action" href="{{ path('admin_promise_edit', {id: promise.id}) }}">
-            <p class="mb-1">
-                {% include 'admin/component/widget/politician-name.html.twig' with {politician: promise.politician} only %}
-                <span>{{ promise.madeTime|date }}</span>
-            </p>
-            <h5 {% if not promise.published %}class="text-muted font-italic"{% endif %}>
-                {% if promise.code %}
-                    <b class="mr-1">{{ promise.code }}</b>
-                {% endif %}
-                {{ promise.name }}
-            </h5>
-            <p class="mb-1">
-                <span>{{ promise.election.name }} {{ promise.election.date|date }}</span>
-            </p>
-            <span>{{ promise.status.name|default('placeholder.no_status'|trans) }}</span>
-            <small class="ml-3">
-                {% for category in promise.categories %}
-                    {{ category.name }}
-                    {% if not loop.last %}&middot;{% endif %}
-                {% endfor %}
-            </small>
-        </a>
+        <div class="list-group-item">
+            <div class="container-fluid px-0">
+                <div class="row mb-2">
+                    <div class="col px-0">
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <div class="row">
+                                    <div class="col-auto pr-1">
+                                        <div style="width: {{ photoSize }};" class="text-center">
+                                            <img
+                                                src="{{ macros.politician_photo_url(promise.politician) }}"
+                                                alt="Photo"
+                                                style="max-width: {{ photoSize }}; max-height: {{ photoSize }};"
+                                                class="rounded-circle"
+                                            >
+                                        </div>
+                                    </div>
+                                    <div class="col pl-2">
+                                        <a
+                                            href="{{ path('admin_politician_edit', {id: promise.politician.id}) }}"
+                                        >{{ promise.politician.firstName }} {{ promise.politician.lastName }}</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-2">
+                                <small><samp>{{ promise.madeTime|date }}</samp></small>
+                            </div>
+                            <div class="col-lg-auto">
+                                <small>{{ promise.election.theName }} {{ "text.from"|trans }} {{ promise.election.date|date }}</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col px-0">
+                        <h5 {% if not promise.published %}class="text-muted font-italic"{% endif %}>
+                            {% if promise.code %}
+                                <small class="mr-1 text-monospace text-muted">{{ promise.code }}</small>
+                            {% endif %}
+                            <a href="{{ path('admin_promise_edit', {id: promise.id}) }}">{{ promise.name }}</a>
+                        </h5>
+                    </div>
+                    <div class="col-auto pr-0">
+                        <a
+                            href="{{ path('promise', {slug: promise.slug}) }}"
+                            class="no-underline"
+                        ><small><span class="fa fa-external-link-alt"></span> {{ "action.view_on_site"|trans }}</small></a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col px-0">
+                        <div class="row">
+                            <div class="col-lg-2">
+                                <span class="badge {{ promise.status ? "text-white status-bg-" ~ promise.status.color : "text-muted badge-light" }}">
+                                    {{ promise.status.name|default('placeholder.no_status'|trans) }}
+                                </span>
+                            </div>
+                            <div class="col-lg-1">
+                                <small>
+                                    {{ "text.actions_count"|trans({'%count%': promise.promiseUpdates|length}) }}
+                                </small>
+                            </div>
+                            <div class="col-lg-2">
+                                <small class="{{ promise.hasPrerogatives ? "text-success" : "text-danger" }}">
+                                    <span class="fa {{ promise.hasPrerogatives ? "fa-check" : "fa-times" }}"></span>
+                                    {{ promise.hasPrerogatives ? "label.hasPrerogatives"|trans : "label.doesNotHavePrerogatives"|trans }}
+                                </small>
+                            </div>
+                            <div class="col-auto">
+                                {% if promise.categories is not empty %}
+                                    <small class="text-muted">
+                                        {% for category in promise.categories %}
+                                            {{ category.name }}
+                                            {% if not loop.last %}&middot;{% endif %}
+                                        {% endfor %}
+                                    </small>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     {% endfor %}
 
     <div class="mt-4">{{ knp_pagination_render(pagination) }}</div>

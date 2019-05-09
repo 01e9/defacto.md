@@ -55,6 +55,7 @@ class PromisesFilterType extends AbstractType
             'method' => "GET",
             'csrf_protection' => false,
             'data_class' => PromisesFilterData::class,
+            'allow_extra_fields' => true,
         ]);
     }
 

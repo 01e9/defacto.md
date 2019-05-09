@@ -55,10 +55,12 @@
                                 </h5>
                             </div>
                             <div class="col-12 col-lg-auto">
-                                <a
-                                    href="{{ path('promise', {slug: promise.slug}) }}"
-                                    class="no-underline"
-                                ><small><span class="fa fa-external-link-alt"></span> {{ "action.view_on_site"|trans }}</small></a>
+                                {% if promise.published %}
+                                    <a
+                                        href="{{ path('promise', {slug: promise.slug}) }}"
+                                        class="no-underline"
+                                    ><small><span class="fa fa-external-link-alt"></span> {{ "action.view_on_site"|trans }}</small></a>
+                                {% endif %}
                             </div>
                         </div>
                     </div>

@@ -39,24 +39,28 @@
                 </div>
                 <div class="row">
                     <div class="col px-0">
-                        <h5>
-                            {% if promise.code %}
-                                <small class="mr-1 text-monospace text-muted">{{ promise.code }}</small>
-                            {% endif %}
-                            <a
-                                href="{{ path('admin_promise_edit', {id: promise.id}) }}"
-                                class="{{ promise.published ? "" : "text-muted" }}"
-                            >{{ promise.name }}</a>
-                            {% if not promise.published %}
-                                <small class="fa fa-eye-slash text-muted ml-1"></small>
-                            {% endif %}
-                        </h5>
-                    </div>
-                    <div class="col-auto pr-0">
-                        <a
-                            href="{{ path('promise', {slug: promise.slug}) }}"
-                            class="no-underline"
-                        ><small><span class="fa fa-external-link-alt"></span> {{ "action.view_on_site"|trans }}</small></a>
+                        <div class="row">
+                            <div class="col">
+                                <h5>
+                                    {% if promise.code %}
+                                        <small class="mr-1 text-monospace text-muted">{{ promise.code }}</small>
+                                    {% endif %}
+                                    <a
+                                        href="{{ path('admin_promise_edit', {id: promise.id}) }}"
+                                        class="{{ promise.published ? "" : "text-muted" }}"
+                                    >{{ promise.name }}</a>
+                                    {% if not promise.published %}
+                                        <small class="fa fa-eye-slash text-muted ml-1"></small>
+                                    {% endif %}
+                                </h5>
+                            </div>
+                            <div class="col-12 col-lg-auto">
+                                <a
+                                    href="{{ path('promise', {slug: promise.slug}) }}"
+                                    class="no-underline"
+                                ><small><span class="fa fa-external-link-alt"></span> {{ "action.view_on_site"|trans }}</small></a>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="row">

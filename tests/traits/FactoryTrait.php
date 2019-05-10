@@ -95,6 +95,7 @@ trait FactoryTrait
         $election = new Election();
         $election->setName("Test election ${random}");
         $election->setTheName("Test election ${random}");
+        $election->setTheElectedName("Test election ${random}");
         $election->setSlug("test-election-${random}");
         $election->setDate(new \DateTime());
 

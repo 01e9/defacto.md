@@ -17,7 +17,7 @@
     {% include 'app/component/after-header-space.html.twig' %}
     <div class="row">
         <div class="col">
-            <h2 class="text-center mb-3">{{ election.name }}</h2>
+            <h2 class="text-center mb-3">{{ election.date < date() ? election.theElectedName : election.theName }}</h2>
             <div class="alert alert-info" role="alert">
                 <select
                     class="form-control form-control-sm d-inline-block w-auto mr-2"

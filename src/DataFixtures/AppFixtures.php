@@ -60,6 +60,7 @@ class AppFixtures extends Fixture
         $election
             ->setName('Demo election')
             ->setTheName('Demo election')
+            ->setTheElectedName('Demo election')
             ->setSlug('demo-election')
             ->setDate(new \DateTime());
         $manager->persist($election);

@@ -38,7 +38,7 @@ class PoliticiansController extends AbstractController
         }
 
         $promisesByElection = [];
-        foreach ($this->promiseRepository->findBy(['politician' => $politician]) as $promise) { /** @var Promise $promise */
+        foreach ($this->promiseRepository->findBy(['politician' => $politician, 'published' => true]) as $promise) { /** @var Promise $promise */
             $promisesByElection[ $promise->getElection()->getId() ][] = $promise;
         }
         foreach ($promisesByElection as $electionId => $promises) {

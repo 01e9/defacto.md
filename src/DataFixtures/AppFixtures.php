@@ -27,7 +27,7 @@ class AppFixtures extends Fixture
         $institution = new Institution();
         $institution
             ->setName('Președinția Republicii Moldova')
-            ->setSlug('președinția-republicii-moldova');
+            ->setSlug('presedintia-republicii-moldova');
         $manager->persist($institution);
 
         $powers = $this->createPowers($manager);
@@ -36,7 +36,7 @@ class AppFixtures extends Fixture
         $title
             ->setName('Președintele Republicii Moldova')
             ->setTheName('Președintele Republicii Moldova')
-            ->setSlug('președintele-republicii-moldova')
+            ->setSlug('presedintele-republicii-moldova')
             ->setPowers($powers);
         $manager->persist($title);
 
@@ -94,7 +94,7 @@ class AppFixtures extends Fixture
             ->setElection($election)
             ->setStatus(null)
             ->setName('Demo promisiune fără statut')
-            ->setSlug('demo-promisiune-fără-statut')
+            ->setSlug('demo-promisiune-fara-statut')
             ->setDescription('Demo descriere')
             ->setMadeTime(new \DateTime('-10 days'))
             ->setPublished(true);
@@ -106,7 +106,7 @@ class AppFixtures extends Fixture
             ->setElection($election)
             ->setStatus(null)
             ->setName('Demo promisiune nepublicată')
-            ->setSlug('demo-promisiune-nepublicată')
+            ->setSlug('demo-promisiune-nepublicata')
             ->setDescription('Demo descriere')
             ->setMadeTime(new \DateTime('-10 days'))
             ->setPublished(false);
@@ -116,7 +116,7 @@ class AppFixtures extends Fixture
         $action
             ->setMandate($mandate)
             ->setName('Demo acțiune')
-            ->setSlug('demo-acțiune')
+            ->setSlug('demo-actiune')
             ->setDescription('Demo descriere')
             ->setOccurredTime(new \DateTime())
             ->setPublished(true);
@@ -126,7 +126,7 @@ class AppFixtures extends Fixture
         $action2
             ->setMandate($mandate)
             ->setName('Demo altă acțiune')
-            ->setSlug('demo-altă-acțiune')
+            ->setSlug('demo-alta-actiune')
             ->setDescription('Demo descriere')
             ->setOccurredTime(new \DateTime())
             ->setPublished(true);
@@ -148,9 +148,9 @@ class AppFixtures extends Fixture
 
         foreach ([
             'economie' => 'Economie',
-            'educație' => 'Educație',
-            'politică-externă' => 'Politică externă',
-            'politică-internă' => 'Politică internă',
+            'educatie' => 'Educație',
+            'politica-externa' => 'Politică externă',
+            'politica-interna' => 'Politică internă',
             'social' => 'Social',
         ] as $slug => $name) {
             $category = new Category();
@@ -170,9 +170,9 @@ class AppFixtures extends Fixture
         $powers = new ArrayCollection();
 
         foreach ([
-            'inițiativă-legislativă' => 'Inițiativă legislativă',
+            'initiativa-legislativa' => 'Inițiativă legislativă',
             'promulgarea-abrogarea-legilor' => 'Promulgarea/Abrogarea legilor',
-            'mesaje-adresate-instituțiilor' => 'Mesaje adresate instituțiilor',
+            'mesaje-adresate-institutiilor' => 'Mesaje adresate instituțiilor',
         ] as $powerSlug => $powerName) {
             $power = new Power();
             $power
@@ -191,19 +191,19 @@ class AppFixtures extends Fixture
         $statuses = [];
 
         foreach ([
-            'declarații' => [
+            'declaratii' => [
                 'name' => 'Declarație',
                 'name_plural' => 'Declarații',
                 'effect' => 0,
                 'color' => 'violet',
             ],
-            'în-proces' => [
+            'in-proces' => [
                 'name' => 'În proces',
                 'name_plural' => 'În proces',
                 'effect' => 1,
                 'color' => 'orange',
             ],
-            'îndeplinite' => [
+            'indeplinite' => [
                 'name' => 'Îndeplinită',
                 'name_plural' => 'Îndeplinite',
                 'effect' => 2,
@@ -215,7 +215,7 @@ class AppFixtures extends Fixture
                 'effect' => -2,
                 'color' => 'red',
             ],
-            'nemăsurabile' => [
+            'nemasurabile' => [
                 'name' => 'Nemăsurabilă',
                 'name_plural' => 'Nemăsurabile',
                 'effect' => -1,

@@ -1,5 +1,5 @@
 invalid:
-    slug: "Se permit doar litere, cifre și cratimă (exemplu: ion-mustață-al-2-lea)"
+    slug: "Se permit doar litere mici, cifre și cratimă (exemplu: buna-ziua-123)"
     date_range: "Date de sfârșit trebuie să fie mai mare decât cea de început"
     color: "Codul culorii este incorect"
     map: "Coordonatele poziției pe hartă sunt incorecte"

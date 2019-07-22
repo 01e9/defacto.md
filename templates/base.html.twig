@@ -6,6 +6,10 @@
     {% block head_meta %}
         <meta name="google-maps-api-key" content="{{ google_maps_api_key }}">
     {% endblock %}
+    <meta
+        name="og:image"
+        content="{% block head_meta_og_image %}{{ app.request.getSchemeAndHttpHost ~ asset("img/logo-big.png") }}{% endblock %}"
+    >
     <title>{% block title %}deFACTO{% endblock %}</title>
     {% block stylesheets %}{% endblock %}
 </head>

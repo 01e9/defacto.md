@@ -8,6 +8,7 @@ use App\Form\BlogPostType;
 use App\Repository\BlogPostRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -73,10 +74,14 @@ class AdminBlogPostsController extends AbstractController
      */
     public function editAction(Request $request, string $id, TranslatorInterface $translator)
     {
+        /** @var BlogPost $blogPost */
         $blogPost = $this->getDoctrine()->getRepository('App:BlogPost')->find($id);
         if (!$blogPost) {
             throw $this->createNotFoundException();
         }
+
+        /** @var File $initialImage */
+        $initialImage = $blogPost->getImage();
 
         $form = $this->createForm(BlogPostType::class, $blogPost, []);
         $form->handleRequest($request);
@@ -84,6 +89,10 @@ class AdminBlogPostsController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var BlogPost $blogPost */
             $blogPost = $form->getData();
+
+            if (!$blogPost->getImage()) {
+                $blogPost->setImage($initialImage);
+            }
 
             $em = $this->getDoctrine()->getManager();
 

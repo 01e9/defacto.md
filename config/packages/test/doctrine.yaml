@@ -1,6 +1,0 @@
-parameters:
-    env(TEST_DATABASE_URL): 'pgsql://defacto:defacto@defacto_pg:5432/defacto_test'
-
-doctrine:
-    dbal:
-        url: '%env(resolve:TEST_DATABASE_URL)%'

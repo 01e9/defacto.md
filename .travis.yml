@@ -9,12 +9,12 @@ cache:
 env:
   global:
     - SYMFONY_PHPUNIT_DIR="$HOME/symfony-bridge/.phpunit"
-    - TEST_DATABASE_URL=pgsql://postgres:@localhost:5432/defacto_test
+    - DATABASE_URL=pgsql://postgres:@localhost:5432/defacto_test
 
 matrix:
   fast_finish: true
   include:
-    - php: 7.2
+    - php: 7.3
 
 services:
   - postgresql

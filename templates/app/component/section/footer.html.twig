@@ -12,13 +12,23 @@
     <div class="row justify-content-md-center">
         <div class="col text-sm-center">
             <h5 class="mb-3">Ne găsiți pe</h5>
-            <ul class="list-unstyled">
+            <ul class="list-unstyled d-inline-block text-left">
                 {% for item in [
                     {
                         name: 'Facebook',
-                        link: 'https://www.facebook.com/defacto.md/',
+                        link: 'https://facebook.com/defacto.md/',
                         icon: 'fab fa-facebook-square'
-                    }
+                    },
+                    {
+                        name: 'Instagram',
+                        link: 'https://instagram.com/defacto.md/',
+                        icon: 'fab fa-instagram'
+                    },
+                    {
+                        name: 'Linkedin',
+                        link: 'https://www.linkedin.com/company/defactomd/',
+                        icon: 'fab fa-linkedin'
+                    },
                 ] %}
                 <li class="h6">
                     <span class="{{ item.icon }} mr-2"></span>

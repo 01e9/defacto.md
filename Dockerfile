@@ -27,13 +27,13 @@ RUN apt-get update \
     && apt-get install -y \
         libzip-dev libfreetype6-dev libjpeg62-turbo-dev libmcrypt-dev libpng-dev libicu-dev libpq-dev \
     && docker-php-ext-install -j$(nproc) zip mbstring json gd iconv pcntl intl pdo pdo_pgsql \
-    && wget https://github.com/composer/composer/releases/download/${COMPOSER_VERSION}/composer.phar \
-            -O /usr/local/bin/composer \
-        && chmod +x /usr/local/bin/composer \
     && apt-get install -y nginx \
         && ln -sf /dev/stdout /var/log/nginx/access.log \
         && ln -sf /dev/stderr /var/log/nginx/error.log \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+ADD https://github.com/composer/composer/releases/download/${COMPOSER_VERSION}/composer.phar /usr/local/bin/composer
+RUN chmod +x /usr/local/bin/composer
 
 ADD https://github.com/krallin/tini/releases/download/v${TINI_VERSION}/tini /tini
 RUN chmod +x /tini

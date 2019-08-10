@@ -38,20 +38,28 @@ RUN chmod +x /usr/local/bin/composer
 ADD https://github.com/krallin/tini/releases/download/v${TINI_VERSION}/tini /tini
 RUN chmod +x /tini
 
-COPY docker/image-configs/nginx.conf /etc/nginx/sites-enabled/default
+COPY docker-image/nginx.conf /etc/nginx/sites-enabled/default
 
 RUN mkdir -p /sock
 RUN rm /usr/local/etc/php-fpm.d/*
-COPY docker/image-configs/php.conf /usr/local/etc/php-fpm.d/
+COPY docker-image/php.conf /usr/local/etc/php-fpm.d/
 
 RUN composer install && bin/console cache:clear --no-warmup
 
-RUN mkdir -p var/cache var/log \
-    && chown -R www-data:www-data var/*
+RUN mkdir -p var/cache var/log && chown www-data:www-data var/*
 
-RUN chown -R www-data:www-data uploads/*
+RUN chown www-data:www-data uploads/*
 
 RUN echo "APP_ENV=prod" > .env
+
+VOLUME [ \
+    "/project/var/cache", \
+    "/project/var/log", \
+    "/project/uploads/blog", \
+    "/project/uploads/editor", \
+    "/project/uploads/parties", \
+    "/project/uploads/politicians" \
+]
 
 EXPOSE 80
 

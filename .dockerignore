@@ -11,9 +11,7 @@ bin/*
 !composer.json
 !composer.lock
 
-!docker/
-docker/*
-!docker/image-configs/
+!docker-image/
 
 !public/
 public/bundles/

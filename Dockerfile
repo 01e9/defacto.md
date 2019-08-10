@@ -53,8 +53,6 @@ RUN chown www-data:www-data uploads/*
 RUN echo "APP_ENV=prod" > .env
 
 VOLUME [ \
-    "/project/var/cache", \
-    "/project/var/log", \
     "/project/uploads/blog", \
     "/project/uploads/editor", \
     "/project/uploads/parties", \

@@ -6,31 +6,36 @@
 {% endfor %}
 
 
-<div class="mandate-statistics pb-5">
+<section class="mandate-statistics pb-5" itemscope itemtype="https://schema.org/WinAction">
     {% include 'app/component/after-header-space.html.twig' %}
-    <div class="row">
+    <header class="row">
         <div class="col">
-            <h2 class="text-center mb-3">{{ mandate.institutionTitle.title.theName }}</h2>
+            <h2 class="text-center mb-3" itemprop="name">{{ mandate.institutionTitle.title.theName }}</h2>
         </div>
-    </div>
+    </header>
+    <meta itemprop="startTime" content="{{ mandate.beginDate|date('Y-m-d') }}">
+    <meta itemprop="endTime" content="{{ mandate.endDate|date('Y-m-d') }}">
     <div class="row">
         <div class="col">
             <div class="card">
-                <div class="card-body">
+                <div class="card-body" itemprop="participant" itemscope itemtype="https://schema.org/Person">
                     <div class="row">
                         <div class="col-auto pr-0 d-none d-sm-block">
                             <img src="{{ macros.politician_photo_url(mandate.politician) }}"
                                  alt="Politician"
                                  class="rounded-circle img-fluid"
                                  style="max-width: 5rem;"
+                                 itemprop="image"
                             >
                         </div>
                         <div class="col">
                             <h3 class="mb-3">
-                                <a href="{{ path("politician", {slug: mandate.politician.slug}) }}">
+                                <a
+                                    href="{{ path("politician", {slug: mandate.politician.slug}) }}"
+                                ><span itemprop="name">
                                     {{ mandate.politician.firstName }}
                                     {{ mandate.politician.lastName }}
-                                </a>
+                                </span></a>
                             </h3>
 
                             <div class="row">
@@ -82,11 +87,12 @@
             <div class="col">
                 <h3 class="mb-3 text-center">
                     <a
+                        itemprop="url"
                         href="{{ path("promises", {
                             'politicianSlug': mandate.politician.slug,
                             'electionSlug': mandate.election.slug
                         }) }}"
-                    >{{ 'title.promises'|trans }}</a>
+                    ><span itemprop="instrument">{{ 'title.promises'|trans }}</span></a>
                 </h3>
                 {% for promise in promise_statistics %}
                     <div class="{% if not loop.last %}mb-3{% endif %}">
@@ -138,7 +144,7 @@
             </div>
         </div>
     {% endif %}
-</div>
+</section>
 
 {#<div>
     <div>

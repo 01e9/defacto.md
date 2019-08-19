@@ -1,45 +1,55 @@
-<div class="container-fluid bg-light-pattern py-5">
+<section class="container-fluid bg-light-pattern py-5" itemscope itemtype="https://schema.org/AboutPage">
     <div class="container">
         <div class="row">
             <div class="col-md-6">
-                <h3>{{ 'title.about_project'|trans }}</h3>
-                <p>
-                    Proiectul deFacto este o platformă online, care vine să informeze alegătorii despre atribuțiile politicienilor aleși
-                    și cum sunt realizate promisiunile făcute de aceștia în campaniile electorale.
-                </p>
+                <header>
+                    <h3 itemprop="name">{{ 'title.about_project'|trans }}</h3>
+                </header>
+                <div itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                    <p itemprop="description">
+                        Proiectul deFacto este o platformă online, care vine să informeze alegătorii despre atribuțiile politicienilor aleși
+                        și cum sunt realizate promisiunile făcute de aceștia în campaniile electorale.
+                    </p>
+                </div>
             </div>
             <div class="col-md-6">
-                <h3>{{ 'title.why_we_are_doing_this'|trans }}</h3>
-                <p>
+                <div>
+                    <h3>{{ 'title.why_we_are_doing_this'|trans }}</h3>
+                </div>
+                <p itemprop="educationalUse">
                     Credem că putem ajuta alegătorii să-și ajusteze așteptările lor privind competențele pe care le au politicienii aleși.
                     Iar prin monitorizarea promisiunilor, aceștia vor putea face o alegere mai informată.
                 </p>
             </div>
         </div>
         <div class="row">
-            <div class="col text-lg-center">
-                <h3 class="h1 mb-3">{{ 'title.about_us'|trans }}</h3>
-            </div>
-        </div>
-        <div class="row">
             <div class="col">
-                <p>
-                    Echipa s-a constituit în urma campaniei civice <a href="http://avemcevotam.md/" target="_blank">AVEM CE VOTĂM</a>,
-                    care a avut drept scop încurajarea tinerilor să participe la alegerile prezidenţiale din anul 2016.
-                    Prin intermediul campaniei s-au identificat cele mai importante probleme ale tinerilor,
-                    iar candidaţii la funcția de președinte au fost întrebați cum îşi propun rezolvarea acestora.
-                </p>
-                <p>
-                    Campania a fost organizată de grupul de inițiativă neafiliat politic <a href="http://www.challenger.md/" target="_blank">CHALLENGER</a>,
-                    care promovează participarea democratică a cetățenilor și a politicienilor în procesul decizional.
-                    Credem că democrația este un efort continuu, care nu se limitează doar la ziua votării,
-                    iar comunicarea sistematică între politicieni și cetățeni este un element fundamental al acesteia.
-                    Alte proiecte CHALLENGER:
-                    <a href="http://daeuvotez.challenger.md/" target="_blank">DA' EU VOTEZ</a>,
-                    <a href="https://www.facebook.com/cantarestetivotul/" target="_blank">Cântărește-ți votul</a> și
-                    <a href="http://primariamea.md/" target="_blank">Primăria Mea</a>.
-                </p>
+                <div class="row">
+                    <div class="col text-lg-center">
+                        <h3 class="h1 mb-3">{{ 'title.about_us'|trans }}</h3>
+                    </div>
+                </div>
+                <div class="row" itemprop="author" itemscope itemtype="https://schema.org/Thing">
+                    <div class="col" itemprop="description">
+                        <p>
+                            Echipa s-a constituit în urma campaniei civice <a href="http://avemcevotam.md/" target="_blank">AVEM CE VOTĂM</a>,
+                            care a avut drept scop încurajarea tinerilor să participe la alegerile prezidenţiale din anul 2016.
+                            Prin intermediul campaniei s-au identificat cele mai importante probleme ale tinerilor,
+                            iar candidaţii la funcția de președinte au fost întrebați cum îşi propun rezolvarea acestora.
+                        </p>
+                        <p>
+                            Campania a fost organizată de grupul de inițiativă neafiliat politic <a href="http://www.challenger.md/" target="_blank">CHALLENGER</a>,
+                            care promovează participarea democratică a cetățenilor și a politicienilor în procesul decizional.
+                            Credem că democrația este un efort continuu, care nu se limitează doar la ziua votării,
+                            iar comunicarea sistematică între politicieni și cetățeni este un element fundamental al acesteia.
+                            Alte proiecte CHALLENGER:
+                            <a href="http://daeuvotez.challenger.md/" target="_blank">DA' EU VOTEZ</a>,
+                            <a href="https://www.facebook.com/cantarestetivotul/" target="_blank">Cântărește-ți votul</a> și
+                            <a href="http://primariamea.md/" target="_blank">Primăria Mea</a>.
+                        </p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</div>
+</section>

@@ -9,54 +9,66 @@
 {% endblock %}
 
 {% block main %}
-    <div class="container-fluid px-0 bg-white">
-        <div class="container">
-            <div class="row bg-white">
-                <div class="col-12 col-lg-6">
-                    {% include 'app/component/block/statistics/mandate.html.twig' with {
-                        mandate: president_mandate.mandate,
-                        promise_statistics: president_mandate.promise_statistics,
-                        power_statistics: president_mandate.power_statistics,
-                    } only %}
-                </div>
-                {% if current_election %}
-                    <div class="col-12 col-lg-6 order-first order-lg-last">
-                        {% include 'app/component/block/statistics/election.html.twig' with {
-                            election: current_election.election,
-                            mandates: current_election.mandates,
-                            constituencies: current_election.constituencies
+    <main>
+        <div class="container-fluid px-0 bg-white">
+            <div class="container">
+                <div class="row bg-white">
+                    <div class="col-12 col-lg-6">
+                        {% include 'app/component/block/statistics/mandate.html.twig' with {
+                            mandate: president_mandate.mandate,
+                            promise_statistics: president_mandate.promise_statistics,
+                            power_statistics: president_mandate.power_statistics,
                         } only %}
                     </div>
-                {% endif %}
+                    {% if current_election %}
+                        <div class="col-12 col-lg-6 order-first order-lg-last">
+                            {% include 'app/component/block/statistics/election.html.twig' with {
+                                election: current_election.election,
+                                mandates: current_election.mandates,
+                                constituencies: current_election.constituencies
+                            } only %}
+                        </div>
+                    {% endif %}
+                </div>
             </div>
         </div>
-    </div>
-    {#{% include 'app/component/section/promises.html.twig' with {
-        promises: president_mandate.promises,
-        container_class: 'bg-transparent'
-    } only %}#}
-    {% include 'app/component/section/about-us.html.twig' only %}
-    <div class="container-fluid bg-white">
-        <div class="container py-4">
-            <div class="row">
-                <div class="col text-center">
-                    <h3>{{ "title.partners"|trans }}</h3>
-                    <div class="mt-3">
-                        <a href="https://avemcevotam.md/" target="_blank"><img
+        {#{% include 'app/component/section/promises.html.twig' with {
+            promises: president_mandate.promises,
+            container_class: 'bg-transparent'
+        } only %}#}
+        {% include 'app/component/section/about-us.html.twig' only %}
+        <section class="container-fluid bg-white" itemscope itemtype="https://schema.org/Role">
+            <div class="container py-4">
+                <div class="row">
+                    <div class="col text-center">
+                        <h3 itemprop="roleName">{{ "title.partners"|trans }}</h3>
+                        <div class="mt-3">
+                            <a
+                                href="https://avemcevotam.md/"
+                                target="_blank"
+                                itemprop="url"
+                            ><img
                                 src="{{ asset('img/partners/avem-ce-votam.png') }}"
                                 style="max-height: 6rem"
                                 class="d-inline-block"
-                                alt="avemcevotam.md" ></a>
-                        <div class="p-2 d-block d-lg-inline"></div>
-                        <a href="https://5000.md/" target="_blank"><img
+                                alt="avemcevotam.md"
+                                ></a>
+                            <div class="p-2 d-block d-lg-inline"></div>
+                            <a
+                                href="https://5000.md/"
+                                target="_blank"
+                                itemprop="url"
+                            ><img
                                 src="{{ asset('img/partners/5000.png') }}"
                                 style="max-height: 6rem"
                                 class="d-inline-block"
-                                alt="5000.md" ></a>
+                                alt="5000.md"
+                                ></a>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
+        </section>
+    </main>
     {% include 'app/component/section/footer.html.twig' only %}
 {% endblock %}

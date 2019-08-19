@@ -1,10 +1,5 @@
 {% extends 'base.html.twig' %}
 
-{% block head_meta %}
-    {{ parent() }}
-    <meta name="robots" content="noindex">
-{% endblock %}
-
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('build/app/styles.css') }}">

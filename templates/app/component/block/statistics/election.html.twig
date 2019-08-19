@@ -13,11 +13,15 @@
     {% endif %}
 {% endfor %}
 
-<div class="election-statistics pb-5">
+<section class="election-statistics pb-5" itemscope itemtype="https://schema.org/VoteAction">
     {% include 'app/component/after-header-space.html.twig' %}
     <div class="row">
         <div class="col">
-            <h2 class="text-center mb-3">{{ election.date < date() ? election.theElectedName : election.theName }}</h2>
+            <h2
+                class="text-center mb-3"
+                itemprop="name"
+            >{{ election.date < date() ? election.theElectedName : election.theName }}</h2>
+            <meta itemprop="startTime" content="{{ election.date|date('Y-m-d') }}">
             <div class="alert alert-info" role="alert">
                 <select
                     class="form-control form-control-sm d-inline-block w-auto mr-2"
@@ -43,4 +47,4 @@
             </div>
         </div>
     </div>
-</div>
+</section>

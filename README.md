@@ -31,7 +31,7 @@ This project is shipped as a [docker](https://www.docker.com/) image [`01e9/defa
         --name defacto \
         --network docker_default \
         -p 80:80 \
-        01e9/defacto.md
+        01e9/defacto.md:dev
     ```
 
 * Prepare the database

@@ -232,6 +232,7 @@ title:
     candidates_solutions: Soluțiile candidaților
     partners: Parteneri
     elected: Ales
+    none: Nu sunt
 
 placeholder:
     choose_option: Alegeți o opțiune
@@ -276,3 +277,8 @@ text:
     recommended_image_ratio_16_9: "Proporția recomandată 16:9"
     recommended_image_ratio_1_1: "Proporția recomandată 1:1"
     actions_count: "%count% acțiune|%count% acțiuni|%count% de acțiuni"
+    view_promises_count: "Vezi %count% promisiune|Vezi %count% promisiuni|Vezi %count% de promisiuni"
+
+meta_description:
+    main: "Platformă de monitorizare a promisiunilor electorale"
+    politician: "Promisiuni făcute, date de contact, studii, profesie, candidat în alegeri"

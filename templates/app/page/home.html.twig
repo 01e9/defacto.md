@@ -5,7 +5,7 @@
 
 {% block head_meta %}
     {{ parent() }}
-    <meta name="description" content="Platformă de monitorizare a promisiunilor electorale">
+    <meta name="description" content="{{ 'meta_description.main'|trans }}">
 {% endblock %}
 
 {% block main %}
@@ -32,10 +32,6 @@
                 </div>
             </div>
         </div>
-        {#{% include 'app/component/section/promises.html.twig' with {
-            promises: president_mandate.promises,
-            container_class: 'bg-transparent'
-        } only %}#}
         {% include 'app/component/section/about-us.html.twig' only %}
         <section class="container-fluid bg-white" itemscope itemtype="https://schema.org/Role">
             <div class="container py-4">

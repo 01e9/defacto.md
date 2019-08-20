@@ -17,23 +17,32 @@
                     {
                         name: 'Facebook',
                         link: 'https://facebook.com/defacto.md/',
-                        icon: 'fab fa-facebook-square'
+                        icon: 'fab fa-facebook-square',
+                        raw:  false
                     },
                     {
                         name: 'Instagram',
                         link: 'https://instagram.com/defacto.md/',
-                        icon: 'fab fa-instagram'
+                        icon: 'fab fa-instagram',
+                        raw:  false
                     },
                     {
                         name: 'Linkedin',
                         link: 'https://www.linkedin.com/company/defactomd/',
-                        icon: 'fab fa-linkedin'
+                        icon: 'fab fa-linkedin',
+                        raw:  false
+                    },
+                    {
+                        name: 'Email',
+                        link: 'mai&#108;to&#58;&#101;&#099;&#104;&#105;&#112;&#097;&#064;&#100;&#101;&#102;&#097;&#099;&#116;&#111;&#046;&#109;&#100;',
+                        icon: 'fa fa-at',
+                        raw:  true
                     },
                 ] %}
                 <li class="h6">
                     <span class="{{ item.icon }} mr-2"></span>
-                    <a href="{{ item.link }}"
-                       target="_blank"
+                    <a href="{{ item.raw ? item.link|raw : item.link }}"
+                       {% if not item.raw %}target="_blank"{% endif %}
                        class="text-primary-light">{{ item.name }}</a>
                 </li>
                 {% endfor %}

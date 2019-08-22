@@ -11,7 +11,7 @@
     {% else %}
         {{ "title.the_promises"|trans }}
         {% if status is not same as(false) %}
-            {{ 'title.promises'|trans }} {{ status ? status.namePlural : 'placeholder.inactive_plural'|trans }}
+            {{ status ? status.namePlural : 'placeholder.inactive_plural'|trans }}
         {% endif %}
         {% if politician or election %}
             {% if politician %}

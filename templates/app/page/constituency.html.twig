@@ -25,7 +25,7 @@
 {% block main %}
     <main class="container-fluid px-0 bg-white">
         {% include 'app/component/after-header-space.html.twig' %}
-        <div class="container pb-4">
+        <section class="container pb-4">
             <div
                 class="row mb-3"
                 itemscope
@@ -33,9 +33,9 @@
                 itemref="constituency-image constituency-link"
                 itemid="#constituency"
             >
-                <div class="col">
+                <header class="col">
                     <h1 itemprop="name">{{ constituency.name }}</h1>
-                </div>
+                </header>
             </div>
             <div class="row">
                 <div class="col-lg-3 mb-3 mb-lg-0">
@@ -64,16 +64,18 @@
                 </div>
                 <section class="col-lg-9" itemscope itemtype="https://schema.org/VoteAction">
                     <link itemprop="location" href="#constituency"/>
-                    <h6 class="mb-3 text-secondary">
-                        <span itemprop="name">{{ election.election.name }}</span>
-                        {{ "text.from"|trans }}
-                        <time itemprop="startTime" datetime="{{ election.election.date|date('Y-m-d') }}">
-                            {{ election.election.date|date }}
-                        </time>
-                    </h6>
-                    <h3 class="mb-3" itemprop="description">
-                        {{ "title.candidates_with_most_chances"|trans }}<small class="text-muted">*</small>
-                    </h3>
+                    <header>
+                        <h6 class="mb-3 text-secondary">
+                            <span itemprop="name">{{ election.election.name }}</span>
+                            {{ "text.from"|trans }}
+                            <time itemprop="startTime" datetime="{{ election.election.date|date('Y-m-d') }}">
+                                {{ election.election.date|date }}
+                            </time>
+                        </h6>
+                        <h3 class="mb-3" itemprop="description">
+                            {{ "title.candidates_with_most_chances"|trans }}<small class="text-muted">*</small>
+                        </h3>
+                    </header>
                     <div class="row">
                         {% for candidate in election.candidates %}
                             {% set isElected = mandate and mandate.politician and mandate.politician.id == candidate.politician.id %}
@@ -140,7 +142,7 @@
                             </div>
                         {% endfor %}
                     </div>
-                    <div class="alert alert-dark text-muted" role="alert">
+                    <footer class="alert alert-dark text-muted" role="alert">
                         <h6 class="alert-heading">{{ "title.candidates_metodology"|trans }}</h6>
                         <p class="mb-0 small">
                             Platforma deFacto.md monitorizează și prezintă programele electorale ale candidaților uninominali
@@ -151,16 +153,18 @@
                             Orice sugestie în privința listei restrânse a candidaților poate fi expediată la adresa:
                             <a href='mai&#108;to&#58;ech&#105;pa&#64;&#100;ef&#97;c&#116;&#37;6&#70;&#46;md'>ec&#104;ipa&#64;defact&#111;&#46;&#109;&#100;</a>
                         </p>
-                    </div>
+                    </footer>
                 </section>
             </div>
             {% if election.problems|default %}
                 <section class="row mt-4">
                     <div class="col">
-                        <h3 class="mb-3">{{ "title.constituency_problems"|trans }}</h3>
+                        <header>
+                            <h3 class="mb-3">{{ "title.constituency_problems"|trans }}</h3>
+                        </header>
                         <div class="row">
                             {% for problem in election.problems %}
-                                <div
+                                <article
                                     class="col-lg-6"
                                     itemscope
                                     itemtype="https://schema.org/DislikeAction"
@@ -230,10 +234,10 @@
                                             </div>
                                         {% endif %}
                                     </div>
-                                </div>
+                                </article>
                             {% endfor %}
                         </div>
-                        <div class="alert alert-dark text-muted" role="alert">
+                        <footer class="alert alert-dark text-muted" role="alert">
                             <h6 class="alert-heading">{{ "title.problems_metodology"|trans }}</h6>
                             <p class="mb-0 small">
                                 Principalele probleme la nivel local și național au fost identificate în cadrul sondajului
@@ -247,11 +251,11 @@
                                 Școala de Gândire Critică pentru Tineri <a href="http://www.challenger.md/" target="_blank">„Challenger”</a>,
                                 Programul <a href="http://puneumarul.md/lansarea-programului-femei-cu-idei/">„Femei cu Idei”</a>.
                             </p>
-                        </div>
+                        </footer>
                     </div>
-                </div>
+                </section>
             {% endif %}
-        </div>
+        </section>
     </main>
     {% include 'app/component/section/footer.html.twig' only %}
 {% endblock %}

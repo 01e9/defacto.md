@@ -1,22 +1,39 @@
-{% set is_main = is_main is defined and is_main %}
-<div class="card p-3 promise-item{% if not is_main %} bg-light{% endif %}">
-    <blockquote class="blockquote mb-0 card-body p-0 p-md-3">
-        {% if is_main %}
-            <h1 class="h5 promise-name">{{ promise.name }}</h1>
-        {% else %}
-            <p><a href="{{ path('promise', {'slug': promise.slug}) }}"
-                  class="promise-name">{{ promise.name }}</a></p>
-        {% endif %}
+<div class="card p-3 promise-item bg-light">
+    <blockquote
+        class="blockquote mb-0 card-body p-0 p-md-3"
+        itemscope
+        itemtype="https://schema.org/PlanAction"
+    >
+        <p>
+            <a
+                href="{{ path('promise', {'slug': promise.slug}) }}"
+                class="promise-name"
+                itemprop="url"
+            ><span itemprop="name">{{ promise.name }}</span></a>
+        </p>
         <footer class="blockquote-footer">
-            <small class="text-muted pr-1"
-                   data-toggle="tooltip" data-placement="right"
-                   title="{{ promise.madeTime|date }}">{{ promise.madeTime|ago }}</small>
+            <small
+                class="text-muted pr-1"
+                data-toggle="tooltip" data-placement="right"
+                title="{{ promise.madeTime|date }}"
+            >
+                <time
+                    itemprop="startTime"
+                    datetime="{{ promise.madeTime|date('Y-m-d') }}"
+                >{{ promise.madeTime|ago }}</time>
+            </small>
         </footer>
         {% if (show_status is not defined or show_status) %}
             {% if promise.status %}
-                <div class="status status-color-{{ promise.status.color }}">{{ promise.status.name }}</div>
+                <div
+                    class="status status-color-{{ promise.status.color }}"
+                    itemprop="description"
+                >{{ promise.status.name }}</div>
             {% else %}
-                <div class="status text-muted">{{ "placeholder.inactive_plural"|trans }}</div>
+                <div
+                    class="status text-muted"
+                    itemprop="description"
+                >{{ "placeholder.inactive_plural"|trans }}</div>
             {% endif %}
         {% endif %}
     </blockquote>

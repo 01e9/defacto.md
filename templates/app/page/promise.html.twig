@@ -245,6 +245,22 @@
                     {% endif %}
                 </div>
             </div>
+            {% if promise.promiseUpdates is not empty %}
+                <footer class="bg-light">
+                    <div class="container">
+                        {% set content %}
+                            <p class="my-5 text-muted">
+                                <span class="h3"><span class="fa fa-search mr-2"></span></span>
+                                {{ 'text.promise_is_monitored'|trans }}
+                            </p>
+                        {% endset %}
+                        {% include "app/component/block/timeline/segment.html.twig" with {
+                            content: content,
+                            lineColor: "secondary"
+                        } only %}
+                    </div>
+                </footer>
+            {% endif %}
         </section>
     </main>
     {% include 'app/component/section/footer.html.twig' with {} only %}

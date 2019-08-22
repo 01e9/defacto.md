@@ -243,3 +243,29 @@
 .badge-wrap {
     white-space: initial;
 }
+
+.timeline-circle {
+    position: absolute;
+    top: .5rem;
+    left: -50%;
+
+    &.begin {
+        top: -0.5rem;
+    }
+
+    .arrow-down {
+        position: absolute;
+        left: 0;
+        width: 100%;
+        text-align: center;
+        top: 100%;
+        color: #fff;
+        font-size: 1.4em;
+        font-family: serif;
+        line-height: 0.4;
+
+        &:before {
+            content: "↓";
+        }
+    }
+}

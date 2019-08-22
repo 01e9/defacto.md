@@ -9,187 +9,244 @@
 {% set has_description = (promise.description|trim is not empty and promise.description != '<p>&nbsp;</p>') %}
 {% set has_categories = promise.categories is not empty %}
 
-{% block main %}
-    <div class="bg-white">
-        {% include 'app/component/after-header-space.html.twig' %}
+{% block title %}{{ promise.name }}{% endblock %}
+{% block head_meta_og_image %}{{ app.request.getSchemeAndHttpHost ~ macros.politician_photo_url(promise.politician) }}{% endblock %}
 
-        {% set header %}
-            <p>
-                <samp
-                    data-toggle="tooltip"
-                    data-placement="right"
-                    title="{{ promise.madeTime|ago }}"
-                    class="badge badge-primary align-top"
-                >{{ promise.madeTime|date }}</samp>
-            </p>
-            <p class="h5 mb-3">
-                <img
-                    class="rounded-circle mb-2"
-                    style="max-height: 3em"
-                    src="{{ macros.politician_photo_url(promise.politician) }}"
-                    alt="Politician"><br>
-                <a
-                    href="{{ path("politician", {slug: promise.politician.slug}) }}"
-                ><strong>{{ promise.politician.firstName }} {{ promise.politician.lastName }}</strong></a><br>
-                <strong>{{ 'title._promised'|trans }}</strong>
-            </p>
-        {% endset %}
-        {% set content %}
-            {% if mandate and mandate.constituency %}
-                <div>
-                    <sup>
-                        <a
-                            href="{{ path('constituency', {
-                                electionSlug: promise.election.slug,
-                                slug: mandate.constituency.slug
-                            }) }}"
-                        >{{ mandate.constituency.name }}</a>
-                    </sup>
-                </div>
-            {% endif %}
-            <h1 class="h2">{{ promise.name }}</h1>
-            <div class="position-relative">
-                <div class="py-5 py-lg-0">
-                    {% if promise.status %}
-                        <div
-                            class="status-stamp status-color-{{ promise.status.color }}"
+{% block head_meta %}
+    {{ parent() }}
+    <meta
+        name="description"
+        content="{{ 'meta_description.promise'|trans({'%politician%': promise.politician.firstName ~ " " ~ promise.politician.lastName}) }}"
+    >
+{% endblock %}
+
+{% block main %}
+    <main>
+        <section
+            class="bg-white"
+            itemscope
+            itemtype="https://schema.org/PlanAction"
+            itemid="#promise"
+        >
+            {% include 'app/component/after-header-space.html.twig' %}
+
+            {% set header %}
+                <header>
+                    <p>
+                        <samp
                             data-toggle="tooltip"
-                            data-placement="left"
-                            title="{{ promise.status.description }}"
-                        >{{ promise.status.name }}</div>
-                    {% else %}
-                        <div class="status-stamp text-muted">{{ "placeholder.inactive_plural"|trans }}</div>
+                            data-placement="right"
+                            title="{{ promise.madeTime|ago }}"
+                            class="badge badge-primary align-top"
+                        >
+                            <time itemprop="startTime" datetime="{{ promise.madeTime|date('Y-m-d') }}">
+                                {{ promise.madeTime|date }}
+                            </time>
+                        </samp>
+                    </p>
+                    <p
+                        class="h5 mb-3"
+                        itemprop="agent"
+                        itemscope
+                        itemtype="https://schema.org/Person"
+                    >
+                        <img
+                            class="rounded-circle mb-2"
+                            style="max-height: 3em"
+                            src="{{ macros.politician_photo_url(promise.politician) }}"
+                            alt="Politician"
+                            itemprop="image"
+                        >
+                        <br>
+                        <a
+                            href="{{ path("politician", {slug: promise.politician.slug}) }}"
+                            itemprop="url"
+                        >
+                            {{- "" -}}
+                            <span itemprop="givenName">{{ promise.politician.firstName }}</span>
+                            <span itemprop="familyName">{{ promise.politician.lastName }}</span>
+                            {{- "" -}}
+                        </a><br>
+                        <span>{{ 'title._promised'|trans }}</span>
+                    </p>
+                </header>
+            {% endset %}
+            {% set content %}
+                {% if mandate and mandate.constituency %}
+                    <div itemprop="location" itemscope itemtype="https://schema.org/AdministrativeArea">
+                        <sup>
+                            <a
+                                href="{{ path('constituency', {
+                                    electionSlug: promise.election.slug,
+                                    slug: mandate.constituency.slug
+                                }) }}"
+                                itemprop="url"
+                            ><span itemprop="name">{{ mandate.constituency.name }}</span></a>
+                        </sup>
+                    </div>
+                {% endif %}
+                <h1 class="h2" itemprop="name">{{ promise.name }}</h1>
+                <div class="position-relative">
+                    <div class="py-5 py-lg-0">
+                        {% if promise.status %}
+                            <div
+                                class="status-stamp status-color-{{ promise.status.color }}"
+                                data-toggle="tooltip"
+                                data-placement="left"
+                                title="{{ promise.status.description }}"
+                            >{{ promise.status.name }}</div>
+                        {% else %}
+                            <div class="status-stamp text-muted">{{ "placeholder.inactive_plural"|trans }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="py-2">
+                    {% if has_categories %}
+                        <div>
+                            {% for category in promise.categories %}
+                                <span
+                                    class="badge badge-info{% if not loop.first %} ml-3{% endif %}"
+                                >{{ category.name }}</span>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    {% if promise.sources is not empty %}
+                        <section class="mt-2">
+                            {{ self_macros.sources(promise.sources) }}
+                        </section>
+                    {% endif %}
+                </div>
+                {% if has_description %}
+                    <div class="my-3 raw-html text-border" itemprop="description">{{ promise.description|raw }}</div>
+                {% endif %}
+                {% if mandate %}
+                    <div class="py-1 px-3 d-inline-block alert alert-{{ promise.hasPrerogatives ? "success" : "warning" }}">
+                        <small>
+                            <em>
+                                {{ (promise.hasPrerogatives ? "text.has_prerogatives" : "text.no_prerogatives")|trans({
+                                    '%title%': mandate.institutionTitle.title.theName
+                                }) }}
+                                {% if mandate.institutionTitle.prerogativesLink %}
+                                    <a
+                                        href="{{ mandate.institutionTitle.prerogativesLink }}"
+                                        target="_blank"
+                                    >{{ "action.see_the_prerogatives"|trans }}</a>
+                                {% endif %}
+                            </em>
+                        </small>
+                    </div>
+                {% endif %}
+                <div class="mb-5"></div>
+            {% endset %}
+            <div class="container promise-page-header">
+                {% include "app/component/block/timeline/begin.html.twig" with {
+                    header: header,
+                    content: content
+                } only %}
+            </div>
+        </section>
+        <section>
+            <header class="bg-light">
+                <div class="container">
+                    {% set content %}
+                        {% if promise.promiseUpdates is empty %}
+                            <h3 class="mt-5 mb-3 text-muted">{{ 'title.promise_no_actions'|trans }}</h3>
+                            <p class="mb-5 text-muted">
+                                <span class="h3"><span class="fa fa-search mr-2"></span></span>
+                                {{ 'text.promise_is_monitored'|trans }}
+                            </p>
+                        {% else %}
+                            <h3 class="my-4">{{ 'title.promise_actions'|trans }}</h3>
+                        {% endif %}
+                    {% endset %}
+                    {% include "app/component/block/timeline/segment.html.twig" with {
+                        content: content,
+                        lineColor: "secondary"
+                    } only %}
+                </div>
+            </header>
+            <div class="bg-white">
+                <div class="container">
+                    {% if promise.promiseUpdates is not empty %}
+                        {% set content %}<div class="pt-3"></div>{% endset %}
+                        {% include "app/component/block/timeline/segment.html.twig" with {
+                            content: content
+                        } only %}
+
+                        {% for promiseUpdate in promise.publishedPromiseUpdatesSortedByActionDate %}
+                            {% set header %}
+                                <header>
+                                    <p>
+                                        <samp
+                                            data-toggle="tooltip"
+                                            data-placement="right"
+                                            title="{{ promiseUpdate.action.occurredTime|ago }}"
+                                            class="badge badge-primary align-bottom"
+                                        >
+                                            <time
+                                                itemprop="startTime"
+                                                datetime="{{ promiseUpdate.action.occurredTime|date('Y-m-d') }}"
+                                            >{{ promiseUpdate.action.occurredTime|date }}</time>
+                                        </samp>
+                                    </p>
+                                    <div>
+                                        {% if promiseUpdate.status %}
+                                            <div class="my-4">
+                                                <span
+                                                    class="status-stamp status-color-{{ promiseUpdate.status.color }}"
+                                                    data-toggle="tooltip"
+                                                    data-placement="right"
+                                                    title="{{ promiseUpdate.status.description }}"
+                                                >{{ promiseUpdate.status.name }}</span>
+                                            </div>
+                                        {% else %}
+                                            <small class="text-muted">{{ 'text.status_unchanged_lower'|trans }}</small>
+                                        {% endif %}
+                                    </div>
+                                </header>
+                            {% endset %}
+                            {% set content %}
+                                <h4
+                                    class="mb-{{ has_description ? '3' : '0' }}"
+                                    itemprop="name"
+                                >{{ promiseUpdate.action.name }}</h4>
+                                <div>
+                                    {% if promiseUpdate.action.usedPowers is not empty %}
+                                        {% for power in promiseUpdate.action.usedPowers %}
+                                            <span class="badge badge-info align-top mb-3">{{ power.name }}</span>
+                                        {% endfor %}
+                                    {% endif %}
+                                </div>
+                                {% set has_description = (
+                                    promiseUpdate.action.description|trim is not empty
+                                    and promiseUpdate.action.description != '<p>&nbsp;</p>')
+                                %}
+                                {% if has_description %}
+                                    <div
+                                        class="raw-html"
+                                        itemprop="description"
+                                    >{{ promiseUpdate.action.description|raw }}</div>
+                                {% endif %}
+                                {% if promiseUpdate.action.sources is not empty %}
+                                    <div class="mt-3">
+                                        {{ self_macros.sources(promiseUpdate.action.sources) }}
+                                    </div>
+                                {% endif %}
+                                <div class="py-5"></div>
+                            {% endset %}
+                            <div itemscope itemtype="https://schema.org/Action">
+                                <link itemprop="object" href="#promise">
+                                {% include "app/component/block/timeline/segment-dot.html.twig" with {
+                                    header: header,
+                                    content: content
+                                } only %}
+                            </div>
+                        {% endfor %}
                     {% endif %}
                 </div>
             </div>
-            <div class="py-2">
-                {% if has_categories %}
-                    <div>
-                        {% for category in promise.categories %}
-                            <span
-                                class="badge badge-info{% if not loop.first %} ml-3{% endif %}"
-                            >{{ category.name }}</span>
-                        {% endfor %}
-                    </div>
-                {% endif %}
-                {% if promise.sources is not empty %}
-                    <section class="mt-2">
-                        {{ self_macros.sources(promise.sources) }}
-                    </section>
-                {% endif %}
-            </div>
-            {% if has_description %}
-                <div class="my-3 raw-html text-border">{{ promise.description|raw }}</div>
-            {% endif %}
-            {% if mandate %}
-                <div class="py-1 px-3 d-inline-block alert alert-{{ promise.hasPrerogatives ? "success" : "warning" }}">
-                    <small>
-                        <em>
-                            {{ (promise.hasPrerogatives ? "text.has_prerogatives" : "text.no_prerogatives")|trans({
-                                '%title%': mandate.institutionTitle.title.theName
-                            }) }}
-                            {% if mandate.institutionTitle.prerogativesLink %}
-                                <a
-                                    href="{{ mandate.institutionTitle.prerogativesLink }}"
-                                    target="_blank"
-                                >{{ "action.see_the_prerogatives"|trans }}</a>
-                            {% endif %}
-                        </em>
-                    </small>
-                </div>
-            {% endif %}
-            <div class="mb-5"></div>
-        {% endset %}
-        <div class="container promise-page-header">
-            {% include "app/component/block/timeline/begin.html.twig" with {
-                header: header,
-                content: content
-            } only %}
-        </div>
-    </div>
-    <div class="bg-light">
-        <div class="container">
-            {% set content %}
-                {% if promise.promiseUpdates is empty %}
-                    <h3 class="mt-5 mb-3 text-muted">{{ 'title.promise_no_actions'|trans }}</h3>
-                    <p class="mb-5 text-muted">
-                        <span class="h3"><span class="fa fa-search mr-2"></span></span>
-                        {{ 'text.promise_is_monitored'|trans }}
-                    </p>
-                {% else %}
-                    <h3 class="my-4">{{ 'title.promise_actions'|trans }}</h3>
-                {% endif %}
-            {% endset %}
-            {% include "app/component/block/timeline/segment.html.twig" with {
-                content: content,
-                lineColor: "secondary"
-            } only %}
-        </div>
-    </div>
-    <div class="bg-white">
-        <div class="container">
-            {% if promise.promiseUpdates is not empty %}
-                {% set content %}<div class="pt-3"></div>{% endset %}
-                {% include "app/component/block/timeline/segment.html.twig" with {
-                    content: content
-                } only %}
-
-                {% for promiseUpdate in promise.publishedPromiseUpdatesSortedByActionDate %}
-                    {% set header %}
-                        <p>
-                            <samp
-                                data-toggle="tooltip"
-                                data-placement="right"
-                                title="{{ promiseUpdate.action.occurredTime|ago }}"
-                                class="badge badge-primary align-bottom"
-                            >{{ promiseUpdate.action.occurredTime|date }}</samp>
-                        </p>
-                        <div>
-                            {% if promiseUpdate.status %}
-                                <div class="my-4">
-                                    <span
-                                        class="status-stamp status-color-{{ promiseUpdate.status.color }}"
-                                        data-toggle="tooltip"
-                                        data-placement="right"
-                                        title="{{ promiseUpdate.status.description }}"
-                                    >{{ promiseUpdate.status.name }}</span>
-                                </div>
-                            {% else %}
-                                <small class="text-muted">{{ 'text.status_unchanged_lower'|trans }}</small>
-                            {% endif %}
-                        </div>
-                    {% endset %}
-                    {% set content %}
-                        <h4 class="mb-{{ has_description ? '3' : '0' }}">{{ promiseUpdate.action.name }}</h4>
-                        <div>
-                            {% if promiseUpdate.action.usedPowers is not empty %}
-                                {% for power in promiseUpdate.action.usedPowers %}
-                                    <span class="badge badge-info align-top mb-3">{{ power.name }}</span>
-                                {% endfor %}
-                            {% endif %}
-                        </div>
-                        {% set has_description = (
-                            promiseUpdate.action.description|trim is not empty
-                            and promiseUpdate.action.description != '<p>&nbsp;</p>')
-                        %}
-                        {% if has_description %}
-                            <div class="raw-html">{{ promiseUpdate.action.description|raw }}</div>
-                        {% endif %}
-                        {% if promiseUpdate.action.sources is not empty %}
-                            <div class="mt-3">
-                                {{ self_macros.sources(promiseUpdate.action.sources) }}
-                            </div>
-                        {% endif %}
-                        <div class="py-5"></div>
-                    {% endset %}
-                    {% include "app/component/block/timeline/segment-dot.html.twig" with {
-                        header: header,
-                        content: content
-                    } only %}
-                {% endfor %}
-            {% endif %}
-        </div>
-    </div>
+        </section>
+    </main>
     {% include 'app/component/section/footer.html.twig' with {} only %}
 {% endblock %}
 
@@ -200,6 +257,8 @@
     <div class="d-inline-block mb-0 h6">
         {% for source in list %}
             <a
+                itemprop="url"
+                content="{{ source.link }}"
                 href="{{ source.link }}"
                 target="_blank"
                 rel="nofollow"

@@ -1,54 +1,88 @@
 {% extends 'app/base.html.twig' %}
 {% import 'macros.html.twig' as macros %}
 
+{% set constituency_image = (
+    "https://maps.googleapis.com/maps/api/staticmap?size=300x300&scale=2"
+    ~ "&center=" ~ constituency.map.lat ~ "," ~ constituency.map.lng
+    ~ "&markers=color:%23af2227%7Clabel:" ~ constituency.number ~ "%7C" ~ constituency.map.lat ~ "," ~ constituency.map.lng
+    ~ "&zoom=10&language=" ~ app.request.locale ~ "&key=" ~ google_maps_api_key
+) %}
+
 {% block html_class %}bg-dark-pattern{% endblock %}
 {% block body_class %}bg-transparent{% endblock %}
 
-{% block title %}Circumscripție{% endblock %}
+{% block title %}{{ constituency.name }}{% endblock %}
+{% block head_meta_og_image %}{{ constituency_image }}{% endblock %}
+
+{% block head_meta %}
+    {{ parent() }}
+    <meta name="description" content="{{ 'meta_description.constituency'|trans }}">
+{% endblock %}
 
 {% set logoSize = '2rem' %}
 {% set maxImgWidth = '20rem' %}
 
 {% block main %}
-    <div class="container-fluid px-0 bg-white">
+    <main class="container-fluid px-0 bg-white">
         {% include 'app/component/after-header-space.html.twig' %}
         <div class="container pb-4">
-            <div class="row mb-3">
+            <div
+                class="row mb-3"
+                itemscope
+                itemtype="https://schema.org/AdministrativeArea"
+                itemref="constituency-image constituency-link"
+                itemid="#constituency"
+            >
                 <div class="col">
-                    <h1>{{ constituency.name }}</h1>
+                    <h1 itemprop="name">{{ constituency.name }}</h1>
                 </div>
             </div>
             <div class="row">
                 <div class="col-lg-3 mb-3 mb-lg-0">
-                    <div>
+                    <div itemscope>
                         {% if constituency.hasMap() %}
                             <img
-                                src="https://maps.googleapis.com/maps/api/staticmap?size=300x300&scale=2&center={{ constituency.map.lat }},{{ constituency.map.lng }}&markers=color:%23af2227%7Clabel:{{ constituency.number }}%7C{{ constituency.map.lat }},{{ constituency.map.lng }}&zoom=10&language={{ app.request.locale }}&key={{ google_maps_api_key }}"
+                                src="{{ constituency_image }}"
                                 alt="Map"
                                 class="img-fluid w-100 rounded"
                                 style="max-width: {{ maxImgWidth }};"
+                                itemprop="image"
+                                id="constituency-image"
                             >
                         {% endif %}
                     </div>
-                    <div class="mt-3">
+                    <div class="mt-3" itemscope>
                         <a
+                            itemprop="url"
+                            id="constituency-link"
+                            content="{{ constituency.link }}"
                             href="{{ constituency.link }}"
                             target="_blank"
                             class="btn btn-primary mb-0 d-inline-block d-lg-block"
-                        >Detalii circumscripție</a>
+                        >{{ "label.constituency_details"|trans }}</a>
                     </div>
                 </div>
-                <div class="col-lg-9">
+                <section class="col-lg-9" itemscope itemtype="https://schema.org/VoteAction">
+                    <link itemprop="location" href="#constituency"/>
                     <h6 class="mb-3 text-secondary">
-                        {{ election.election.name }}
+                        <span itemprop="name">{{ election.election.name }}</span>
                         {{ "text.from"|trans }}
-                        {{ election.election.date|date }}
+                        <time itemprop="startTime" datetime="{{ election.election.date|date('Y-m-d') }}">
+                            {{ election.election.date|date }}
+                        </time>
                     </h6>
-                    <h3 class="mb-3">{{ "title.candidates_with_most_chances"|trans }}<small class="text-muted">*</small></h3>
+                    <h3 class="mb-3" itemprop="description">
+                        {{ "title.candidates_with_most_chances"|trans }}<small class="text-muted">*</small>
+                    </h3>
                     <div class="row">
                         {% for candidate in election.candidates %}
                             {% set isElected = mandate and mandate.politician and mandate.politician.id == candidate.politician.id %}
-                            <div class="col-sm-6 col-lg-4 {{ isElected ? "order-first" : "" }}">
+                            <div
+                                class="col-sm-6 col-lg-4 {{ isElected ? "order-first" : "" }}"
+                                itemprop="participant"
+                                itemscope
+                                itemtype="https://schema.org/Person"
+                            >
                                 <div
                                     class="card mb-3 {{ isElected ? "elected" : "" }}"
                                     style="max-width: {{ maxImgWidth }};"
@@ -58,13 +92,14 @@
                                             src="{{ macros.politician_photo_url(candidate.politician) }}"
                                             alt="Politician"
                                             class="img-fluid w-100 card-img-top"
+                                            itemprop="image"
                                         >
                                         {% if isElected %}
                                             <div class="elected-label text-center bg-success text-white py-2">
                                                 <h6 class="mb-0">
                                                     <span class="fa fa-vote-yea"></span>
                                                     <span class="mx-1">{{ "text.elected"|trans }}</span>
-                                                    {{ mandate.institutionTitle.title.name }}
+                                                    <span itemprop="jobTitle">{{ mandate.institutionTitle.title.name }}</span>
                                                 </h6>
                                             </div>
                                         {% endif %}
@@ -72,12 +107,17 @@
                                     <div class="card-body px-2 pt-3 pb-1">
                                         <h6 class="card-title text-center">
                                             <a href="{{ path("politician", {slug: candidate.politician.slug}) }}">
-                                                {{ candidate.politician.firstName }}
-                                                {{ candidate.politician.lastName }}
+                                                <span itemprop="givenName">{{ candidate.politician.firstName }}</span>
+                                                <span itemprop="familyName">{{ candidate.politician.lastName }}</span>
                                             </a>
                                         </h6>
                                         {% if candidate.party %}
-                                            <div class="row align-items-center">
+                                            <div
+                                                class="row align-items-center"
+                                                itemprop="memberOf"
+                                                itemscope
+                                                itemtype="https://schema.org/Organization"
+                                            >
                                                 <div class="col-auto pr-2">
                                                     <div style="width: {{ logoSize }};">
                                                         <img
@@ -85,12 +125,14 @@
                                                             alt="Partid"
                                                             class="img-rounded"
                                                             style="max-height: {{ logoSize }}; max-width: {{ logoSize }};"
+                                                            itemprop="image"
                                                         >
                                                     </div>
                                                 </div>
-                                                <small class="col pl-0">
-                                                    {{ candidate.party.name }}
-                                                </small>
+                                                <small
+                                                    class="col pl-0"
+                                                    itemprop="name"
+                                                >{{ candidate.party.name }}</small>
                                             </div>
                                         {% endif %}
                                     </div>
@@ -110,21 +152,32 @@
                             <a href='mai&#108;to&#58;ech&#105;pa&#64;&#100;ef&#97;c&#116;&#37;6&#70;&#46;md'>ec&#104;ipa&#64;defact&#111;&#46;&#109;&#100;</a>
                         </p>
                     </div>
-                </div>
+                </section>
             </div>
             {% if election.problems|default %}
-                <div class="row mt-4">
+                <section class="row mt-4">
                     <div class="col">
                         <h3 class="mb-3">{{ "title.constituency_problems"|trans }}</h3>
                         <div class="row">
                             {% for problem in election.problems %}
-                                <div class="col-lg-6">
+                                <div
+                                    class="col-lg-6"
+                                    itemscope
+                                    itemtype="https://schema.org/DislikeAction"
+                                >
+                                    <link itemprop="location" href="#constituency"/>
                                     <div class="card bg-danger mb-3">
                                         <div class="card-body text-white">
-                                            <h5 class="card-title mb-1">{{ problem.problem.name }}</h5>
+                                            <h5
+                                                class="card-title mb-1"
+                                                itemprop="name"
+                                            >{{ problem.problem.name }}</h5>
                                             <p class="card-text">
                                                 {% if problem.type %}
-                                                    <span class="badge badge-warning mr-3 mb-2 mb-lg-0">
+                                                    <span
+                                                        class="badge badge-warning mr-3 mb-2 mb-lg-0"
+                                                        itemprop="description"
+                                                    >
                                                         {{ "title.problem"|trans }}
                                                         {{ ("label.problem_types." ~ problem.type)|trans|lower }}
                                                     </span>
@@ -132,7 +185,7 @@
                                                 {% endif %}
 
                                                 <span class="fa fa-male mr-1"></span>
-                                                <small>
+                                                <small itemprop="description">
                                                     {% if problem.respondents %}
                                                         <samp class="font-weight-bold">{{ problem.respondents }}</samp>
                                                         {{ "text.respondents_n"|trans({'%count%': problem.respondents}) }}
@@ -152,14 +205,26 @@
                                             <div class="card-body bg-white rounded">
                                                 <h5 class="text-success font-weight-bold">{{ "title.candidates_solutions"|trans }}</h5>
                                                 {% for opinion in election.problemOpinions[ problem.problem.id ] %}
-                                                    <p class="{{ loop.last ? "mb-0" : "mb-1" }}">
-                                                        <a
-                                                            href="{{ path("politician", {slug: opinion.politician.slug}) }}"
-                                                            class="font-weight-bold"
-                                                        >
-                                                            {{- opinion.politician.firstName }} {{ opinion.politician.lastName -}}
-                                                        </a>:
-                                                        {{ opinion.opinion|nl2br }}
+                                                    <p
+                                                        class="{{ loop.last ? "mb-0" : "mb-1" }}"
+                                                        itemprop="potentialAction"
+                                                        itemscope
+                                                        itemtype="https://schema.org/Action"
+                                                    >
+                                                        <span itemprop="agent" itemscope itemtype="https://schema.org/Person">
+                                                            <a
+                                                                href="{{ path("politician", {slug: opinion.politician.slug}) }}"
+                                                                class="font-weight-bold"
+                                                                itemprop="url"
+                                                            >
+                                                                {{- "" -}}
+                                                                <span itemprop="givenName">{{ opinion.politician.firstName }}</span>
+                                                                <span itemprop="familyName">{{ opinion.politician.lastName }}</span>
+                                                                {{- "" -}}
+                                                            </a>
+                                                            {{- "" -}}
+                                                        </span>:
+                                                        <span itemprop="description">{{ opinion.opinion|nl2br }}</span>
                                                     </p>
                                                 {% endfor %}
                                             </div>
@@ -187,6 +252,6 @@
                 </div>
             {% endif %}
         </div>
-    </div>
+    </main>
     {% include 'app/component/section/footer.html.twig' only %}
 {% endblock %}

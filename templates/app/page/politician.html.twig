@@ -185,10 +185,11 @@
                             {% endif %}
                         </h4>
                         {% if candidate.constituency %}
-                            <div class="mb-3">
+                            <div class="mb-3" itemprop="location" itemscope itemtype="https://schema.org/AdministrativeArea">
                                 <a
                                     href="{{ path('constituency', {slug: candidate.constituency.slug, electionSlug: candidate.election.slug}) }}"
-                                ><span itemprop="object">{{ candidate.constituency.name }}</span></a>
+                                    itemprop="url"
+                                ><span itemprop="name">{{ candidate.constituency.name }}</span></a>
                             </div>
                         {% endif %}
                         {% if candidate.party %}

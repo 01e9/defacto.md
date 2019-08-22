@@ -28,6 +28,11 @@
     {% endif -%}
 {% endblock %}
 
+{% block head_meta %}
+    {{ parent() }}
+    <meta name="robots" content="noindex, follow">
+{% endblock %}
+
 {% block main %}
     <main>
         <section class="container-fluid bg-light-pattern">

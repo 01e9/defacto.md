@@ -5,10 +5,19 @@
 {% block html_class %}bg-dark-pattern{% endblock %}
 {% block body_class %}bg-transparent{% endblock %}
 
+{% block title %}{{ "title.blog"|trans }} deFACTO{% endblock %}
+
+{% block head_meta %}
+    {{ parent() }}
+    <meta name="robots" content="noindex, follow">
+{% endblock %}
+
 {% block main %}
-    <div class="container-fluid bg-light-pattern pb-5 px-0">
+    <main class="container-fluid bg-light-pattern pb-5 px-0">
         {% include 'app/component/after-header-space.html.twig' %}
-        <h1 class="text-center mb-3">Blog</h1>
+        <header>
+            <h1 class="text-center mb-3">{{ "title.blog"|trans }}</h1>
+        </header>
         {% if blogPosts is empty %}
             <div class="row">
                 <div class="col text-center text-secondary">
@@ -59,6 +68,6 @@
                 </div>
             {% endif %}
         {% endif %}
-    </div>
+    </main>
     {% include 'app/component/section/footer.html.twig' with {} only %}
 {% endblock %}

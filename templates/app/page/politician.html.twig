@@ -139,7 +139,7 @@
                 <section
                     class="row mt-5"
                     itemscope
-                    itemtype="https://schema.org/{{ mandate ? "WinAction" : "VoteAction" }}"
+                    itemtype="https://schema.org/{{ (mandate and not mandate.cancelDate) ? "WinAction" : "VoteAction" }}"
                 >
                     <link
                         itemprop="{{ mandate ? "agent" : "candidate" }}"
@@ -148,15 +148,17 @@
                     <meta itemprop="endTime" content="{{ candidate.election.date|date('Y-m-d') }}">
 
                     <div class="col">
-                        <h4 class="mb-3">
-                            {% if mandate %}
-                                <span class="fa fa-vote-yea text-success mr-2"></span>
+                        {% if mandate %}
+                            <h4 class="mb-3">
+                                <span class="fa fa-vote-yea {{ mandate.cancelDate ? "text-muted" : "text-success" }} mr-2"></span>
 
-                                {{ "title.elected"|trans }}
-                                <span itemprop="name">
-                                    {{ mandate.institutionTitle.title.name }}
-                                    {{ "text.in_elections_from"|trans }}
-                                    {{ candidate.election.date|date }}
+                                <span class="{{ mandate.cancelDate ? "text-muted" : "" }}">
+                                    {{ "title.elected"|trans }}
+                                    <span itemprop="name">
+                                        {{ mandate.institutionTitle.title.name }}
+                                        {{ "text.in_elections_from"|trans }}
+                                        {{ candidate.election.date|date }}
+                                    </span>
                                 </span>
 
                                 {% if mandate.decisionLink %}
@@ -173,7 +175,38 @@
                                         </small>
                                     </small>
                                 {% endif %}
-                            {% else %}
+                            </h4>
+
+                            {% if mandate.cancelDate %}
+                                <div class="alert alert-dark mb-3" role="alert">
+                                    <h5 class="alert-heading {{ mandate.cancelReason ? "" : "mb-0" }}">
+                                        <span class="fa fa-user-times text-dark mr-2"></span>
+                                        {{ "text.mandate_cancelled_on"|trans({'%date%': mandate.cancelDate|date})|capitalize }}
+
+                                        {% if mandate.cancelLink %}
+                                            <small>
+                                                <small>
+                                                    <small>
+                                                        <a
+                                                            href="{{ mandate.cancelLink }}"
+                                                            target="_blank"
+                                                            itemprop="url"
+                                                            content="{{ mandate.cancelLink }}"
+                                                        >{{ "action.view_decision"|trans }}</a>
+                                                    </small>
+                                                </small>
+                                            </small>
+                                        {% endif %}
+                                    </h5>
+                                    {% if mandate.cancelReason %}
+                                        <p class="mb-0">
+                                            <small class="text-muted">{{ mandate.cancelReason }}</small>
+                                        </p>
+                                    {% endif %}
+                                </div>
+                            {% endif %}
+                        {% else %}
+                            <h4 class="mb-3">
                                 <span class="fa fa-child text-secondary mr-2"></span>
 
                                 {{ "title.candidate_in"|trans }}
@@ -182,8 +215,8 @@
                                     {{ "text.from"|trans }}
                                     {{ candidate.election.date|date }}
                                 </span>
-                            {% endif %}
-                        </h4>
+                            </h4>
+                        {% endif %}
                         {% if candidate.constituency %}
                             <div class="mb-3" itemprop="location" itemscope itemtype="https://schema.org/AdministrativeArea">
                                 <a
@@ -272,7 +305,7 @@
                                             'politicianSlug': candidate.politician.slug,
                                             'electionSlug': candidate.election.slug
                                         }) }}"
-                                    >{{ "text.view_promises_count"|trans({'%count%': promises|length}) }}</a>
+                                    ><strong>{{ "text.view_promises_count"|trans({'%count%': promises|length}) }}</strong></a>
                                 {% else %}
                                     <span class="text-muted">{{ "title.none"|trans }}</span>
                                 {% endif %}

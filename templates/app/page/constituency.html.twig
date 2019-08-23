@@ -78,15 +78,15 @@
                     </header>
                     <div class="row">
                         {% for candidate in election.candidates %}
-                            {% set isElected = mandate and mandate.politician and mandate.politician.id == candidate.politician.id %}
+                            {% set mandate = mandates[ candidate.politician.id ]|default(null) %}
                             <div
-                                class="col-sm-6 col-lg-4 {{ isElected ? "order-first" : "" }}"
+                                class="col-sm-6 col-lg-4 {{ mandate ? "order-first" : "" }}"
                                 itemprop="participant"
                                 itemscope
                                 itemtype="https://schema.org/Person"
                             >
                                 <div
-                                    class="card mb-3 {{ isElected ? "elected" : "" }}"
+                                    class="card mb-3 {{ mandate ? ("elected" ~ (mandate.cancelDate ? " cancelled" : "")) : "" }}"
                                     style="max-width: {{ maxImgWidth }};"
                                 >
                                     <div class="position-relative">
@@ -96,12 +96,19 @@
                                             class="img-fluid w-100 card-img-top"
                                             itemprop="image"
                                         >
-                                        {% if isElected %}
-                                            <div class="elected-label text-center bg-success text-white py-2">
+                                        {% if mandate %}
+                                            <div class="elected-label text-center text-white py-2">
                                                 <h6 class="mb-0">
-                                                    <span class="fa fa-vote-yea"></span>
-                                                    <span class="mx-1">{{ "text.elected"|trans }}</span>
-                                                    <span itemprop="jobTitle">{{ mandate.institutionTitle.title.name }}</span>
+                                                    {% if mandate.cancelDate %}
+                                                        <span class="fa fa-user-times"></span>
+                                                        <span class="ml-1">
+                                                            {{ "text.mandate_cancelled_on"|trans({'%date%': mandate.cancelDate|date}) }}
+                                                        </span>
+                                                    {% else %}
+                                                        <span class="fa fa-vote-yea"></span>
+                                                        <span class="mx-1">{{ "text.elected"|trans }}</span>
+                                                        <span itemprop="jobTitle">{{ mandate.institutionTitle.title.name }}</span>
+                                                    {% endif %}
                                                 </h6>
                                             </div>
                                         {% endif %}

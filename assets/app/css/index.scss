@@ -224,10 +224,20 @@
     box-shadow: 0 0 0 $card-border-radius $success;
 
     .elected-label {
+        background-color: $success;
         position: absolute;
         bottom: -0.5em;
         left: 0;
         width: 100%;
+    }
+
+    &.cancelled {
+        border-color: $dark;
+        box-shadow: 0 0 0 $card-border-radius $dark;
+
+        .elected-label {
+            background-color: $dark;
+        }
     }
 }
 

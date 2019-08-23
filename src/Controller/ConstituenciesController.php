@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Constituency;
 use App\Entity\Election;
+use App\Entity\Mandate;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -30,10 +31,17 @@ class ConstituenciesController extends AbstractController
             throw $this->createNotFoundException();
         }
 
-        $mandate = $this->getDoctrine()->getRepository('App:Mandate')->findOneBy([
-            'constituency' => $constituency,
-            'election' => $election,
-        ]);
+        $mandates = [];
+        foreach (
+            $this->getDoctrine()->getRepository('App:Mandate')->findBy([
+                'constituency' => $constituency,
+                'election' => $election,
+            ])
+            /** @var Mandate $mandate */
+            as $mandate
+        ) {
+            $mandates[ $mandate->getPolitician()->getId() ] = $mandate;
+        }
 
         $elections = [];
         foreach ($constituency->getCandidates() as $candidate) {
@@ -55,7 +63,7 @@ class ConstituenciesController extends AbstractController
         return $this->render('app/page/constituency.html.twig', [
             'constituency' => $constituency,
             'election' => $elections[ $election->getId() ],
-            'mandate' => $mandate,
+            'mandates' => $mandates,
         ]);
     }
 }

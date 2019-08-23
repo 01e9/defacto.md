@@ -1,5 +1,5 @@
 {% macro get_date_interval_progress(beginDate, endDate) %}
-{%- spaceless %}
+{%- apply spaceless %}
     {% set currentDate = date() %}
     {% if beginDate < currentDate and currentDate < endDate %}
         {% set percent = 100 - 100
@@ -11,7 +11,7 @@
     {% else %}
         {% set percent = 0 %}
     {% endif %}
-{% endspaceless -%}
+{% endapply -%}
     {{- percent -}}
 {% endmacro %}
 

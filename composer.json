@@ -9,7 +9,7 @@
         "algolia/search-bundle": "^3.2",
         "doctrine/doctrine-migrations-bundle": "^1.0",
         "guzzlefry/twig-age-extension": "@dev",
-        "knplabs/knp-paginator-bundle": "^3.0",
+        "knplabs/knp-paginator-bundle": "^4.0",
         "knplabs/knp-time-bundle": "^1.8",
         "sensio/framework-extra-bundle": "^5.2",
         "symfony/asset": "^4.0",

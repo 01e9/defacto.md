@@ -139,7 +139,7 @@
                 <section
                     class="row mt-5"
                     itemscope
-                    itemtype="https://schema.org/{{ (mandate and not mandate.cancelDate) ? "WinAction" : "VoteAction" }}"
+                    itemtype="https://schema.org/{{ (mandate and not mandate.ceasingDate) ? "WinAction" : "VoteAction" }}"
                 >
                     <link
                         itemprop="{{ mandate ? "agent" : "candidate" }}"
@@ -150,9 +150,9 @@
                     <div class="col">
                         {% if mandate %}
                             <h4 class="mb-3">
-                                <span class="fa fa-vote-yea {{ mandate.cancelDate ? "text-muted" : "text-success" }} mr-2"></span>
+                                <span class="fa fa-vote-yea {{ mandate.ceasingDate ? "text-muted" : "text-success" }} mr-2"></span>
 
-                                <span class="{{ mandate.cancelDate ? "text-muted" : "" }}">
+                                <span class="{{ mandate.ceasingDate ? "text-muted" : "" }}">
                                     {{ "title.elected"|trans }}
                                     <span itemprop="name">
                                         {{ mandate.institutionTitle.title.name }}
@@ -162,7 +162,7 @@
                                 </span>
 
                                 {% if mandate.decisionLink %}
-                                    <small>
+                                    <small class="d-block d-lg-inline mt-1 mt-lg-0 ml-lg-1">
                                         <small>
                                             <small>
                                                 <a
@@ -177,30 +177,29 @@
                                 {% endif %}
                             </h4>
 
-                            {% if mandate.cancelDate %}
+                            {% if mandate.ceasingDate %}
                                 <div class="alert alert-dark mb-3" role="alert">
-                                    <h5 class="alert-heading {{ mandate.cancelReason ? "" : "mb-0" }}">
+                                    <h5 class="alert-heading {{ mandate.ceasingReason ? "" : "mb-0" }}">
                                         <span class="fa fa-user-times text-dark mr-2"></span>
-                                        {{ "text.mandate_cancelled_on"|trans({'%date%': mandate.cancelDate|date})|capitalize }}
+                                        {{ "text.mandate_ceased_on"|trans({'%date%': mandate.ceasingDate|date})|capitalize }}
 
-                                        {% if mandate.cancelLink %}
-                                            <small>
+                                        {% if mandate.ceasingLink %}
+                                            <small class="d-block d-lg-inline mt-1 mt-lg-0 ml-lg-1">
                                                 <small>
-                                                    <small>
-                                                        <a
-                                                            href="{{ mandate.cancelLink }}"
-                                                            target="_blank"
-                                                            itemprop="url"
-                                                            content="{{ mandate.cancelLink }}"
-                                                        >{{ "action.view_decision"|trans }}</a>
-                                                    </small>
+                                                    <a
+                                                        href="{{ mandate.ceasingLink }}"
+                                                        target="_blank"
+                                                        itemprop="url"
+                                                        content="{{ mandate.ceasingLink }}"
+                                                    >{{ "action.view_decision"|trans }}</a>
                                                 </small>
                                             </small>
                                         {% endif %}
                                     </h5>
-                                    {% if mandate.cancelReason %}
-                                        <p class="mb-0">
-                                            <small class="text-muted">{{ mandate.cancelReason }}</small>
+                                    {% if mandate.ceasingReason %}
+                                        <p class="mb-0 small">
+                                            <span class="text-muted">{{ "label.the_reason"|trans }}:</span>
+                                            {{ mandate.ceasingReason }}
                                         </p>
                                     {% endif %}
                                 </div>

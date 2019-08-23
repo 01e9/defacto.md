@@ -86,7 +86,7 @@
                                 itemtype="https://schema.org/Person"
                             >
                                 <div
-                                    class="card mb-3 {{ mandate ? ("elected" ~ (mandate.cancelDate ? " cancelled" : "")) : "" }}"
+                                    class="card mb-3 {{ mandate ? ("elected" ~ (mandate.ceasingDate ? " ceased" : "")) : "" }}"
                                     style="max-width: {{ maxImgWidth }};"
                                 >
                                     <div class="position-relative">
@@ -99,10 +99,10 @@
                                         {% if mandate %}
                                             <div class="elected-label text-center text-white py-2">
                                                 <h6 class="mb-0">
-                                                    {% if mandate.cancelDate %}
+                                                    {% if mandate.ceasingDate %}
                                                         <span class="fa fa-user-times"></span>
                                                         <span class="ml-1">
-                                                            {{ "text.mandate_cancelled_on"|trans({'%date%': mandate.cancelDate|date}) }}
+                                                            {{ "text.mandate_ceased_on"|trans({'%date%': mandate.ceasingDate|date}) }}
                                                         </span>
                                                     {% else %}
                                                         <span class="fa fa-vote-yea"></span>

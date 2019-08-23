@@ -46,7 +46,7 @@ class Mandate
      * @var \DateTimeInterface
      * @ORM\Column(type="date", nullable=true)
      */
-    private $cancelDate;
+    private $ceasingDate;
 
     /**
      * @var \DateTimeInterface
@@ -120,7 +120,7 @@ class Mandate
      *
      * @Assert\Length(max=255)
      */
-    private $cancelReason;
+    private $ceasingReason;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -128,7 +128,7 @@ class Mandate
      * @Assert\Length(max=255)
      * @Assert\Url()
      */
-    private $cancelLink;
+    private $ceasingLink;
 
     public function getId() : ?string
     {
@@ -147,14 +147,14 @@ class Mandate
         return $this;
     }
 
-    public function getCancelDate() : ?\DateTime
+    public function getCeasingDate() : ?\DateTime
     {
-        return $this->cancelDate;
+        return $this->ceasingDate;
     }
 
-    public function setCancelDate(?\DateTime $date) : self
+    public function setCeasingDate(?\DateTime $date) : self
     {
-        $this->cancelDate = $date;
+        $this->ceasingDate = $date;
 
         return $this;
     }
@@ -255,26 +255,26 @@ class Mandate
         return $this;
     }
 
-    public function getCancelReason() : ?string
+    public function getCeasingReason() : ?string
     {
-        return $this->cancelReason;
+        return $this->ceasingReason;
     }
 
-    public function setCancelReason(?string $cancelReason) : self
+    public function setCeasingReason(?string $ceasingReason) : self
     {
-        $this->cancelReason = $cancelReason;
+        $this->ceasingReason = $ceasingReason;
 
         return $this;
     }
 
-    public function getCancelLink() : ?string
+    public function getCeasingLink() : ?string
     {
-        return $this->cancelLink;
+        return $this->ceasingLink;
     }
 
-    public function setCancelLink(?string $cancelLink) : self
+    public function setCeasingLink(?string $ceasingLink) : self
     {
-        $this->cancelLink = $cancelLink;
+        $this->ceasingLink = $ceasingLink;
 
         return $this;
     }

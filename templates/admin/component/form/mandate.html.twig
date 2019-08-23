@@ -46,19 +46,19 @@
 <div class="row">
     <div class="col">
         <div class="card mt-3">
-            <div class="card-header">{{ "label.mandate_cancel"|trans }}</div>
+            <div class="card-header">{{ "label.mandate_ceasing"|trans }}</div>
             <div class="row px-3 pt-3">
-                <div class="col">
-                    {{ form_row(form.cancelDate, {
+                <div class="col-lg-4">
+                    {{ form_row(form.ceasingDate, {
                         'type': 'text',
                         'attr': {'class': 'datepicker-input'}
                     }) }}
                 </div>
-                <div class="col">
-                    {{ form_row(form.cancelReason) }}
+                <div class="col-lg-4">
+                    {{ form_row(form.ceasingReason) }}
                 </div>
-                <div class="col">
-                    {{ form_row(form.cancelLink) }}
+                <div class="col-lg-4">
+                    {{ form_row(form.ceasingLink) }}
                 </div>
             </div>
         </div>

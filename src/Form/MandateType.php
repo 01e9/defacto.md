@@ -22,12 +22,12 @@ class MandateType extends AbstractType
                 'widget' => 'single_text',
                 'format' => Consts::DATE_FORMAT_INTL,
             ])
-            ->add('cancelDate', DateType::class, [
-                'label' => 'label.cancel_date',
+            ->add('ceasingDate', DateType::class, [
+                'label' => 'label.ceasing_date',
                 'widget' => 'single_text',
                 'format' => Consts::DATE_FORMAT_INTL,
                 'required' => false,
-                'help' => 'text.fill_to_mark_as_cancelled',
+                'help' => 'text.fill_to_mark_as_ceased',
             ])
             ->add('endDate', DateType::class, [
                 'label' => 'label.end_date',
@@ -70,12 +70,12 @@ class MandateType extends AbstractType
                 'label' => 'label.decision_link',
                 'required' => false,
             ])
-            ->add('cancelLink', TextType::class, [
-                'label' => 'label.cancel_link',
+            ->add('ceasingLink', TextType::class, [
+                'label' => 'label.ceasing_link',
                 'required' => false,
             ])
-            ->add('cancelReason', TextType::class, [
-                'label' => 'label.cancel_reason',
+            ->add('ceasingReason', TextType::class, [
+                'label' => 'label.ceasing_reason',
                 'required' => false,
             ])
         ;

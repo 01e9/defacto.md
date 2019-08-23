@@ -1,18 +1,18 @@
 {% extends 'app/base.html.twig' %}
 {% import 'macros.html.twig' as macros %}
 
-{% set constituency_image = (
+{% set constituency_image = constituency.hasMap() ? (
     "https://maps.googleapis.com/maps/api/staticmap?size=300x300&scale=2"
     ~ "&center=" ~ constituency.map.lat ~ "," ~ constituency.map.lng
     ~ "&markers=color:%23af2227%7Clabel:" ~ constituency.number ~ "%7C" ~ constituency.map.lat ~ "," ~ constituency.map.lng
     ~ "&zoom=10&language=" ~ app.request.locale ~ "&key=" ~ google_maps_api_key
-) %}
+) : null %}
 
 {% block html_class %}bg-dark-pattern{% endblock %}
 {% block body_class %}bg-transparent{% endblock %}
 
 {% block title %}{{ constituency.name }}{% endblock %}
-{% block head_meta_og_image %}{{ constituency_image }}{% endblock %}
+{% block head_meta_og_image %}{{ constituency_image ? constituency_image : parent() }}{% endblock %}
 
 {% block head_meta %}
     {{ parent() }}

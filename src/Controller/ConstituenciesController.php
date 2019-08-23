@@ -60,6 +60,10 @@ class ConstituenciesController extends AbstractController
             $elections[ $el->getId() ]['problemOpinions'][ $opinion->getProblem()->getId() ][] = $opinion;
         }
 
+        if (empty($elections[ $election->getId() ])) {
+            throw $this->createNotFoundException();
+        }
+
         return $this->render('app/page/constituency.html.twig', [
             'constituency' => $constituency,
             'election' => $elections[ $election->getId() ],

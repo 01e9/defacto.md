@@ -43,6 +43,27 @@
         {{ form_row(form.decisionLink) }}
     </div>
 </div>
+<div class="row">
+    <div class="col">
+        <div class="card mt-3">
+            <div class="card-header">{{ "label.mandate_cancel"|trans }}</div>
+            <div class="row px-3 pt-3">
+                <div class="col">
+                    {{ form_row(form.cancelDate, {
+                        'type': 'text',
+                        'attr': {'class': 'datepicker-input'}
+                    }) }}
+                </div>
+                <div class="col">
+                    {{ form_row(form.cancelReason) }}
+                </div>
+                <div class="col">
+                    {{ form_row(form.cancelLink) }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 {% include "admin/component/form/widget/submit-delete-buttons.html.twig" with {
     submitText: id ? 'action.edit_mandate'|trans : 'action.add_mandate'|trans,

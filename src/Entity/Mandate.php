@@ -44,6 +44,12 @@ class Mandate
 
     /**
      * @var \DateTimeInterface
+     * @ORM\Column(type="date", nullable=true)
+     */
+    private $cancelDate;
+
+    /**
+     * @var \DateTimeInterface
      * @ORM\Column(type="date")
      *
      * @Assert\NotBlank()
@@ -109,6 +115,21 @@ class Mandate
      */
     private $decisionLink;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     *
+     * @Assert\Length(max=255)
+     */
+    private $cancelReason;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     *
+     * @Assert\Length(max=255)
+     * @Assert\Url()
+     */
+    private $cancelLink;
+
     public function getId() : ?string
     {
         return $this->id;
@@ -122,6 +143,18 @@ class Mandate
     public function setBeginDate(?\DateTime $date) : self
     {
         $this->beginDate = $date;
+
+        return $this;
+    }
+
+    public function getCancelDate() : ?\DateTime
+    {
+        return $this->cancelDate;
+    }
+
+    public function setCancelDate(?\DateTime $date) : self
+    {
+        $this->cancelDate = $date;
 
         return $this;
     }
@@ -218,6 +251,30 @@ class Mandate
     public function setDecisionLink(?string $decisionLink) : self
     {
         $this->decisionLink = $decisionLink;
+
+        return $this;
+    }
+
+    public function getCancelReason() : ?string
+    {
+        return $this->cancelReason;
+    }
+
+    public function setCancelReason(?string $cancelReason) : self
+    {
+        $this->cancelReason = $cancelReason;
+
+        return $this;
+    }
+
+    public function getCancelLink() : ?string
+    {
+        return $this->cancelLink;
+    }
+
+    public function setCancelLink(?string $cancelLink) : self
+    {
+        $this->cancelLink = $cancelLink;
 
         return $this;
     }

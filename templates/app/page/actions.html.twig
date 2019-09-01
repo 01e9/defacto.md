@@ -1,0 +1,123 @@
+{% extends 'app/base.html.twig' %}
+{% import 'app/macros.html.twig' as app_macros %}
+{% import 'macros.html.twig' as macros %}
+
+{# @var \App\Entity\Action[] actions #}
+{# @var \App\Entity\Politician politician #}
+{# @var \App\Entity\Election election #}
+
+{% block html_class %}bg-dark-pattern{% endblock %}
+{% block body_class %}bg-transparent{% endblock %}
+
+{% block title %}
+    {%- if not politician and not election -%}
+        {{ "title.all_actions"|trans }}
+    {% else %}
+        {{ "title.the_actions"|trans }}
+        {% if politician or election %}
+            {% if politician %}
+                {{ "text.made_by"|trans }}
+                {{ politician.firstName }} {{ politician.lastName }}
+            {% endif %}
+            {% if election %}
+                {{ "text.in"|trans }}
+                {{ election.theName|lower }}
+                {{ "text.from"|trans }}
+                {{ election.date|date }}
+            {% endif %}
+        {% endif %}
+    {% endif -%}
+{% endblock %}
+
+{% block head_meta %}
+    {{ parent() }}
+    <meta name="robots" content="noindex, follow">
+{% endblock %}
+
+{% block main %}
+    <main>
+        <section class="container-fluid bg-primary text-white">
+            <div class="container">
+                <header class="row pt-4 pb-2 text-center justify-content-center align-items-center">
+                    <div class="col-lg-6">
+                        {% if not politician and not election %}
+                            <h1>{{ "title.all_actions"|trans }}</h1>
+                        {% else %}
+                            <h1>{{ 'title.the_actions'|trans }}</h1>
+                        {% endif %}
+                    </div>
+                    {% if politician or election %}
+                        <div class="col-lg-6 mt-3 mt-lg-0">
+                            {% if politician %}
+                                <h5>{{ "text.made_by"|trans|capitalize }}</h5>
+                                <h3>
+                                    <img src="{{ macros.politician_photo_url(politician) }}"
+                                         alt="Politician"
+                                         class="rounded-circle img-fluid mr-1 align-bottom"
+                                         style="max-width: 2rem;"
+                                    >
+                                    <a
+                                        class="text-white"
+                                        href="{{ path('politician', {'slug': politician.slug}) }}"
+                                    >{{ politician.firstName }} {{ politician.lastName }}</a>
+                                </h3>
+                            {% endif %}
+                            {% if election %}
+                                <h5>
+                                    {{ "text.in"|trans }}
+                                    {{ election.theName|lower }}
+                                    {{ "text.from"|trans }}
+                                    {{ election.date|date }}
+                                </h5>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                </header>
+            </div>
+        </section>
+        <section class="mb-5 bg-white">
+            {% if actions is empty %}
+                <div class="container">
+                    <header class="row">
+                        <div class="col text-center text-light">
+                            <h2 class="h3 mt-5">
+                                {{ 'title.no_actions'|trans }}
+                            </h2>
+                            <p class="h3 mt-4"><span class="fa fa-surprise"></span></p>
+                        </div>
+                    </header>
+                </div>
+            {% else %}
+                <div class="container">
+                    <div class="row">
+                        <div class="col">
+                            {% set content %}
+                                <div class="pt-4"></div>
+                            {% endset %}
+                            {% include "app/component/block/timeline/segment.html.twig" with {
+                                content: content
+                            } only %}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            {% include "app/component/list/actions.html.twig" with { actions: actions } only %}
+                        </div>
+                    </div>
+                </div>
+                {% if actions.getPaginationData()['pageCount'] > 1 %}
+                    <div class="container-fluid bg-light">
+                        <footer class="row py-5">
+                            <div class="col text-center">
+                                <div class="d-inline-block pagination-wrapper">
+                                    {{ knp_pagination_render(actions) }}
+                                </div>
+                            </div>
+                        </footer>
+                    </div>
+                {% endif %}
+            {% endif %}
+        </section>
+    </main>
+    {% include 'app/component/section/footer.html.twig' with {} only %}
+{% endblock %}

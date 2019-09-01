@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Action;
 use App\Entity\Election;
 use App\Entity\InstitutionTitle;
 use App\Entity\Mandate;
@@ -24,9 +25,19 @@ class MainController extends AbstractController
      */
     public function homeAction(Request $request, ManagerRegistry $em)
     {
+        /** @var Action[] $latestActions */
+        $latestActions = $em->getRepository('App:Action')->createQueryBuilder('a')
+            ->andWhere('a.published = :published')->setParameter('published', true)
+            ->andWhere('a.promiseUpdates IS NOT EMPTY')
+            ->orderBy('a.occurredTime', 'DESC')
+            ->setMaxResults(7 /* todo: add in config */)
+            ->getQuery()
+            ->getResult();
+
         return $this->render('app/page/home.html.twig', [
             'president_mandate' => $this->getPresidentMandateData($em),
             'current_election' => $this->getCurrentElectionData($em),
+            'latest_actions' => $latestActions,
         ]);
     }
 

@@ -1,7 +1,11 @@
+{# @var bool with_arrow #}
+
 {% set line %}
     <div class="bg-primary px-1 h-100 position-relative">
         <div class="bg-primary p-2 rounded-circle timeline-circle">
-            <div class="arrow-down"></div>
+            {% if with_arrow is not defined or with_arrow %}
+                <div class="arrow-down"></div>
+            {% endif %}
         </div>
     </div>
 {% endset %}

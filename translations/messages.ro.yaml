@@ -116,6 +116,7 @@ label:
         blue: Albastru
     constituency_details: Detalii circumscripție
     mandate_ceasing: Încetarea mandatului
+    the_promise: Promisiunea
 
 action:
     login: Autentificare
@@ -164,6 +165,7 @@ action:
     add_blog_post: Adaugă postare
     edit_blog_post: Modifică postare
     delete_blog_post: Șterge postare
+    view_all_actions: Vezi toate acțiunile
 
 title:
     politicians: Politicieni
@@ -239,6 +241,10 @@ title:
     partners: Parteneri
     elected: Ales
     none: Nu sunt
+    recent_politicians_actions: Acțiuni recente ale politicienilor
+    the_actions: Acțiunile
+    all_actions: Toate acțiunile politicienilor
+    no_actions: Nu sunt acțiuni
 
 placeholder:
     choose_option: Alegeți o opțiune

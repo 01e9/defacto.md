@@ -32,6 +32,13 @@
                 </div>
             </div>
         </div>
+        <noindex>
+            {% include 'app/component/section/actions.html.twig' with {
+                title: "title.recent_politicians_actions"|trans,
+                actions: latest_actions,
+                view_all_link: path('actions')
+            } only %}
+        </noindex>
         {% include 'app/component/section/about-us.html.twig' only %}
         <section class="container-fluid bg-white" itemscope itemtype="https://schema.org/Role">
             <div class="container py-4">

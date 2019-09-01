@@ -234,7 +234,8 @@
                                 {% endif %}
                                 <div class="py-5"></div>
                             {% endset %}
-                            <div itemscope itemtype="https://schema.org/Action">
+                            <div itemscope itemtype="https://schema.org/Action" class="position-relative">
+                                <a name="action-{{ promiseUpdate.action.id }}" class="anchor"></a>
                                 <link itemprop="object" href="#promise">
                                 {% include "app/component/block/timeline/segment-dot.html.twig" with {
                                     header: header,

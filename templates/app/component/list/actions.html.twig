@@ -1,0 +1,70 @@
+{# @var \App\Entity\Action[] actions #}
+
+{% import 'macros.html.twig' as macros %}
+
+{% for action in actions %}
+    {% set header %}
+        <header class="mb-2 mb-lg-5">
+            <p class="mb-2">
+                <samp
+                    data-toggle="tooltip"
+                    data-placement="right"
+                    title="{{ action.occurredTime|ago }}"
+                    class="badge badge-primary align-bottom"
+                >{{ action.occurredTime|date }}</samp>
+            </p>
+            <p class="h5 mb-0">
+                <img
+                    class="rounded-circle mb-2"
+                    style="max-height: 3em"
+                    src="{{ macros.politician_photo_url(action.mandate.politician) }}"
+                    alt="Politician"
+                >
+                <a
+                    href="{{ path("politician", {slug: action.mandate.politician.slug}) }}"
+                    class="d-block"
+                >
+                    {{- "" -}}
+                    {{ action.mandate.politician.firstName }}
+                    {{ action.mandate.politician.lastName }}
+                    {{- "" -}}
+                </a>
+            </p>
+        </header>
+    {% endset %}
+    {% set content %}
+        <div class="mb-5">
+            <h4 class="mb-3">{{ action.name }}</h4>
+
+            {% for promiseUpdate in action.promiseUpdates %}
+                <div>
+                    <hr>
+                    <h6 class="mb-1">
+                        <span class="mr-lg-1 d-block d-lg-inline text-muted">
+                            {{ "label.the_promise"|trans }}:
+                        </span>
+                        <a
+                            href="{{ path('promise', {slug: promiseUpdate.promise.slug}) }}#action-{{ action.id }}"
+                        >{{ promiseUpdate.promise.name }}</a>
+                    </h6>
+
+                    {% if promiseUpdate.status %}
+                        <span
+                            class="mt-3 mb-2 status-stamp status-color-{{ promiseUpdate.status.color }}"
+                            data-toggle="tooltip"
+                            data-placement="right"
+                            title="{{ promiseUpdate.status.description }}"
+                        >{{ promiseUpdate.status.name }}</span>
+                    {% else %}
+                        <small class="text-muted">{{ 'text.status_unchanged_lower'|trans }}</small>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    {% endset %}
+    {% include "app/component/block/timeline/segment-dot.html.twig" with {
+        with_arrow: false,
+        header: header,
+        content: content
+    } only %}
+{% endfor %}

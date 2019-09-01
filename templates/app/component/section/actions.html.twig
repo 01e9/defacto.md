@@ -1,0 +1,47 @@
+{# @var \App\Entity\Action[] actions #}
+{# @var string title #}
+{# @var string view_all_link #}
+
+<section>
+    <div class="container-fluid bg-primary pt-5 pb-3">
+        <div class="row">
+            <div class="col">
+                <h2 class="text-center text-white">{{ title }}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="bg-white">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    {% set content %}
+                        <div class="pt-4"></div>
+                    {% endset %}
+                    {% include "app/component/block/timeline/segment.html.twig" with {
+                        content: content
+                    } only %}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    {% include "app/component/list/actions.html.twig" with { actions: actions } only %}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    {% set content %}
+                        <div class="mb-5">
+                            <a
+                                href="{{ view_all_link }}"
+                                class="btn btn-outline-primary"
+                            >{{ "action.view_all_actions"|trans }}</a>
+                        </div>
+                    {% endset %}
+                    {% include "app/component/block/timeline/segment.html.twig" with {
+                        content: content
+                    } only %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

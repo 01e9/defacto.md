@@ -266,17 +266,12 @@
     .arrow-down {
         position: absolute;
         left: 0;
+        top: 100%;
+        font-size: 0.8em;
+        line-height: 0.9;
         width: 100%;
         text-align: center;
-        top: 100%;
         color: #fff;
-        font-size: 1.4em;
-        font-family: serif;
-        line-height: 0.4;
-
-        &:before {
-            content: "↓";
-        }
     }
 }
 

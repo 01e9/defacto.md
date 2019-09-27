@@ -66,7 +66,8 @@ class ConstituenciesController extends AbstractController
 
         return $this->render('app/page/constituency.html.twig', [
             'constituency' => $constituency,
-            'election' => $elections[ $election->getId() ],
+            'election' => $election,
+            'elections' => $elections,
             'mandates' => $mandates,
         ]);
     }

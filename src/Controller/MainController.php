@@ -7,6 +7,7 @@ use App\Entity\Election;
 use App\Entity\InstitutionTitle;
 use App\Entity\Mandate;
 use App\Entity\Promise;
+use App\Entity\Constituency;
 use App\Repository\SettingRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -81,13 +82,31 @@ class MainController extends AbstractController
             return null;
         }
 
-        $constituencies = $em->getRepository('App:Constituency')->createQueryBuilder('con')
-            ->innerJoin('con.candidates', 'can', 'WITH', 'can.election = :election')
-            ->orderBy('con.number', 'ASC')
-            ->groupBy('con.id')
-            ->setParameters(['election' => $election])
+        $childElections = $em->getRepository('App:Election')->createQueryBuilder('e')
+            ->andWhere('e.parent = :election')
+            ->orderBy('e.date', 'ASC') // latest will overwrite older in loop below
+            ->setParameter('election', $election)
             ->getQuery()
             ->getResult();
+
+        $constituencies = [];
+        foreach (array_merge([$election], $childElections) as $el /** @var Election $el */) {
+            foreach (
+                $em->getRepository('App:Constituency')->createQueryBuilder('con')
+                    ->innerJoin('con.candidates', 'can', 'WITH', 'can.election = :election')
+                    ->orderBy('con.number', 'ASC')
+                    ->groupBy('con.id')
+                    ->setParameters(['election' => $el])
+                    ->getQuery()
+                    ->getResult()
+                as $constituency /** @var Constituency $constituency */
+            ) {
+                $constituencies[ $constituency->getId() ] = [
+                    'constituency' => $constituency,
+                    'election' => $el,
+                ];
+            }
+        }
 
         /** @var Mandate[] $mandates */
         $mandates = $em->getRepository('App:Mandate')->findBy([

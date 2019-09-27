@@ -1,14 +1,17 @@
 {% import 'macros.html.twig' as macros %}
 
 {% set mapData = [] %}
-{% for constituency in constituencies %}
-    {% if constituency.hasMap() %}
+{% for c in constituencies %}
+    {% if c.constituency.hasMap() %}
         {% set mapData = mapData|merge([{
-            lat: constituency.map.lat,
-            lng: constituency.map.lng,
-            label: constituency.number,
-            description: constituency.name,
-            url: path('constituency', {slug: constituency.slug, electionSlug: election.slug}),
+            lat: c.constituency.map.lat,
+            lng: c.constituency.map.lng,
+            label: c.constituency.number,
+            description: c.constituency.name,
+            url: path('constituency', {
+                slug: c.constituency.slug,
+                electionSlug: c.election.slug
+            }),
         }]) %}
     {% endif %}
 {% endfor %}
@@ -29,9 +32,13 @@
                     style="width: {{ 'text.choose_constituency'|trans|length }}ch !important;"
                 >
                     <option value="">{{ 'text.choose_constituency'|trans }}</option>
-                    {% for constituency in constituencies %}
-                        <option value="{{ path('constituency', {slug: constituency.slug, electionSlug: election.slug}) }}">
-                            {{ constituency.name }}
+                    {% for c in constituencies %}
+                        <option
+                            value="{{ path('constituency', {
+                                slug: c.constituency.slug,
+                                electionSlug: c.election.slug
+                            }) }}">
+                            {{ c.constituency.name }}
                         </option>
                     {% endfor %}
                 </select>

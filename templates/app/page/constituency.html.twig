@@ -1,6 +1,10 @@
 {% extends 'app/base.html.twig' %}
 {% import 'macros.html.twig' as macros %}
 
+{# @var \App\Entity\Constituency constituency #}
+{# @var \App\Entity\Election election #}
+{# @var array[] elections #}
+
 {% set constituency_image = constituency.hasMap() ? (
     "https://maps.googleapis.com/maps/api/staticmap?size=300x300&scale=2"
     ~ "&center=" ~ constituency.map.lat ~ "," ~ constituency.map.lng
@@ -66,18 +70,38 @@
                     <link itemprop="location" href="#constituency"/>
                     <header>
                         <h6 class="mb-3 text-secondary">
-                            <span itemprop="name">{{ election.election.name }}</span>
+                            <span itemprop="name">{{ election.name }}</span>
                             {{ "text.from"|trans }}
-                            <time itemprop="startTime" datetime="{{ election.election.date|date('Y-m-d') }}">
-                                {{ election.election.date|date }}
+                            <time itemprop="startTime" datetime="{{ election.date|date('Y-m-d') }}">
+                                {{ election.date|date }}
                             </time>
+
+                            {% if election.parent and elections[election.parent.id]|default %}
+                                <small>
+                                    <span class="d-block d-lg-none mt-3"></span>
+                                    <span class="fa fa-angle-double-left mr-1 mx-lg-2"></span>
+                                    <a
+                                        href="{{ path('constituency', {
+                                            'slug': constituency.slug,
+                                            'electionSlug': election.parent.slug
+                                        }) }}"
+                                    >
+                                        {{- "" -}}
+                                        {{ "action.view_candidates_from"|trans }}
+                                        {{ election.parent.name }}
+                                        {{ "text.from"|trans }}
+                                        {{ election.parent.date|date }}
+                                        {{- "" -}}
+                                    </a>
+                                </small>
+                            {% endif %}
                         </h6>
                         <h3 class="mb-3" itemprop="description">
                             {{ "title.candidates_with_most_chances"|trans }}<small class="text-muted">*</small>
                         </h3>
                     </header>
                     <div class="row">
-                        {% for candidate in election.candidates %}
+                        {% for candidate in elections[election.id].candidates|default([]) %}
                             {% set mandate = mandates[ candidate.politician.id ]|default(null) %}
                             <div
                                 class="col-sm-6 col-lg-4 {{ mandate ? "order-first" : "" }}"
@@ -153,7 +177,7 @@
                         <h6 class="alert-heading">{{ "title.candidates_metodology"|trans }}</h6>
                         <p class="mb-0 small">
                             Platforma deFacto.md monitorizează și prezintă programele electorale ale candidaților uninominali
-                            cu cele mai mari șanse de a câștiga la alegerile din {{ election.election.date|date }}.
+                            cu cele mai mari șanse de a câștiga la alegerile din {{ election.date|date }}.
                             Lista restrânsă a candidaților a fost întocmită în baza unei analize extinse,
                             în care au fost luați în calcul următorii factori: rezultatele din alegerile locale 2015 și parlamentare 2014,
                             cele mai recente sondaje, precum și opiniile experților locali.
@@ -163,14 +187,14 @@
                     </footer>
                 </section>
             </div>
-            {% if election.problems|default %}
+            {% if elections[election.id].problems|default %}
                 <section class="row mt-4">
                     <div class="col">
                         <header>
                             <h3 class="mb-3">{{ "title.constituency_problems"|trans }}</h3>
                         </header>
                         <div class="row">
-                            {% for problem in election.problems %}
+                            {% for problem in elections[election.id].problems %}
                                 <article
                                     class="col-lg-6"
                                     itemscope
@@ -212,10 +236,10 @@
                                                 </small>
                                             </p>
                                         </div>
-                                        {% if election.problemOpinions[ problem.problem.id ] is defined %}
+                                        {% if elections[election.id].problemOpinions[ problem.problem.id ] is defined %}
                                             <div class="card-body bg-white rounded">
                                                 <h5 class="text-success font-weight-bold">{{ "title.candidates_solutions"|trans }}</h5>
-                                                {% for opinion in election.problemOpinions[ problem.problem.id ] %}
+                                                {% for opinion in elections[election.id].problemOpinions[ problem.problem.id ] %}
                                                     <p
                                                         class="{{ loop.last ? "mb-0" : "mb-1" }}"
                                                         itemprop="potentialAction"

@@ -29,6 +29,14 @@ class Election
     private $id;
 
     /**
+     * @var null|Election
+     *
+     * @ORM\OneToOne(targetEntity="Election")
+     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $parent;
+
+    /**
      * @ORM\Column(type="string", length=120)
      * @Groups({"searchable"})
      *
@@ -98,6 +106,16 @@ class Election
     public function getId(): ?string
     {
         return $this->id;
+    }
+
+    public function getParent(): ?Election
+    {
+        return $this->parent;
+    }
+
+    public function setParent(?Election $parent): void
+    {
+        $this->parent = $parent;
     }
 
     public function getName(): ?string

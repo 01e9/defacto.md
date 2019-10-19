@@ -310,7 +310,7 @@
                                 </div>
                             </div>
                         {% endif %}
-                        {% if mandate %}
+                        {% if promises|length and mandate %}
                             <div class="{{ detailClasses.row }}">
                                 <div class="{{ detailClasses.colLabel }}">
                                     <strong>{{ "title.promise_actions"|trans }}</strong>

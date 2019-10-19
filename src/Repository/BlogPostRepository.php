@@ -37,6 +37,16 @@ class BlogPostRepository extends ServiceEntityRepository
         );
     }
 
+    public function getRecentPublicPosts(): array
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.publishTime IS NOT NULL')
+            ->orderBy('p.publishTime', 'DESC')
+            ->setMaxResults(10)
+        ->getQuery()
+        ->getResult();
+    }
+
     public function hasConnections(string $id) : bool
     {
         return false;

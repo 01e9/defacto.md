@@ -1,0 +1,38 @@
+{% import 'macros.html.twig' as macros %}
+
+{# @var \App\Entity\BlogPost[] posts #}
+
+<div class="py-5">
+    <h2 class="text-white text-center mb-4">{{ "title.recent_blog_posts"|trans }}</h2>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="app-slider text-white">
+                    {% for post in posts %}
+                        <div class="text-body">
+                            <div class="card mx-3">
+                                {% if post.image %}
+                                    <div class="ratio-16-9 overflow-hidden">
+                                        <img
+                                            src="{{ macros.blog_image_url(post) }}"
+                                            alt="Image"
+                                            class="content-no-height rounded-top d-block"
+                                        >
+                                    </div>
+                                {% endif %}
+                                <div class="card-body py-2">
+                                    <h5>
+                                        <a
+                                            href="{{ path('blog_post', {"slug": post.slug}) }}"
+                                        >{{ post.title }}</a>
+                                    </h5>
+                                    <div><small>{{ post.publishTime|date }}</small></div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

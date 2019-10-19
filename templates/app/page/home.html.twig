@@ -1,5 +1,7 @@
 {% extends 'app/base.html.twig' %}
 
+{# @var \App\Entity\BlogPost[] latest_posts #}
+
 {% block html_class %}bg-dark-pattern{% endblock %}
 {% block body_class %}bg-transparent{% endblock %}
 
@@ -39,9 +41,16 @@
                 view_all_link: path('actions')
             } only %}
         </noindex>
+        {% if latest_posts|length %}
+            <noindex>
+                {% include 'app/component/section/recent-blog-posts.html.twig' with {
+                    posts: latest_posts
+                } only %}
+            </noindex>
+        {% endif %}
         {% include 'app/component/section/about-us.html.twig' only %}
         <section class="container-fluid bg-white" itemscope itemtype="https://schema.org/Role">
-            <div class="container py-4">
+            <div class="container py-5">
                 <div class="row">
                     <div class="col text-center">
                         <h3 itemprop="roleName">{{ "title.partners"|trans }}</h3>

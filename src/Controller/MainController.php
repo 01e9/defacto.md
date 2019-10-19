@@ -39,6 +39,7 @@ class MainController extends AbstractController
             'president_mandate' => $this->getPresidentMandateData($em),
             'current_election' => $this->getCurrentElectionData($em),
             'latest_actions' => $latestActions,
+            'latest_posts' => $em->getRepository("App:BlogPost")->getRecentPublicPosts(),
         ]);
     }
 

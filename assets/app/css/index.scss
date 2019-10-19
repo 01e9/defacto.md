@@ -161,12 +161,6 @@
     align-items: center;
 }
 
-.team-slider {
-    img {
-        max-height: 16rem;
-    }
-}
-
 .raw-html {
     > :last-child {
         margin-bottom: 0;
@@ -278,4 +272,10 @@
 .anchor {
     position: absolute;
     top: -70px;
+}
+
+.app-slider {
+    & > .slick-list {
+        @extend .mx-auto;
+    }
 }

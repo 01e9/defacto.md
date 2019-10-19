@@ -284,7 +284,7 @@ text:
     click_on_status: click pe statut
     or: sau
     see_all: vezi toate
-    made_by: făcute de
+    made_by: întreprinse de
     has_prerogatives: "%title% deține prerogative pentru realizarea promisiunii."
     no_prerogatives: "%title% nu deține prerogative pentru realizarea promisiunii."
     leave_blank_to_not_publish: Lasă gol pentru a nu publica pe site
@@ -293,6 +293,7 @@ text:
     recommended_image_ratio_1_1: "Proporția recomandată 1:1"
     actions_count: "%count% acțiune|%count% acțiuni|%count% de acțiuni"
     view_promises_count: "Vezi %count% promisiune|Vezi %count% promisiuni|Vezi %count% de promisiuni"
+    view_the_made_actions: "Vezi acțiunile întreprinse"
 
 meta_description:
     main: "Platformă de monitorizare a promisiunilor electorale"

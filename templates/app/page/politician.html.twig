@@ -295,21 +295,36 @@
                                 </div>
                             </div>
                         {% endif %}
-                        <div class="{{ detailClasses.row }}">
-                            <div class="{{ detailClasses.colLabel }}"><strong>{{ "title.promises"|trans }}</strong></div>
-                            <div class="{{ detailClasses.colContent }}">
-                                {% if promises|length %}
+                        {% if promises|length %}
+                            <div class="{{ detailClasses.row }}">
+                                <div class="{{ detailClasses.colLabel }}">
+                                    <strong>{{ "title.promises"|trans }}</strong>
+                                </div>
+                                <div class="{{ detailClasses.colContent }}">
                                     <a
                                         href="{{ path("promises", {
                                             'politicianSlug': candidate.politician.slug,
                                             'electionSlug': candidate.election.slug
                                         }) }}"
                                     ><strong>{{ "text.view_promises_count"|trans({'%count%': promises|length}) }}</strong></a>
-                                {% else %}
-                                    <span class="text-muted">{{ "title.none"|trans }}</span>
-                                {% endif %}
+                                </div>
                             </div>
-                        </div>
+                        {% endif %}
+                        {% if mandate %}
+                            <div class="{{ detailClasses.row }}">
+                                <div class="{{ detailClasses.colLabel }}">
+                                    <strong>{{ "title.promise_actions"|trans }}</strong>
+                                </div>
+                                <div class="{{ detailClasses.colContent }}">
+                                    <a
+                                        href="{{ path("actions", {
+                                            'politicianSlug': candidate.politician.slug,
+                                            'electionSlug': candidate.election.slug
+                                        }) }}"
+                                    ><strong>{{ "text.view_the_made_actions"|trans }}</strong></a>
+                                </div>
+                            </div>
+                        {% endif %}
                     </div>
                 </section>
                 {% if not loop.last %}

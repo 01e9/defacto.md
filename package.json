@@ -1,20 +1,20 @@
 {
     "dependencies": {
         "@ckeditor/ckeditor5-build-classic": "^11.2.0",
-        "@fortawesome/fontawesome-free": "^5.8.1",
+        "@fortawesome/fontawesome-free": "^5.11.2",
         "@symfony/webpack-encore": "^0.23.0",
-        "@types/bootstrap": "^4.2.1",
-        "@types/googlemaps": "^3.30.16",
-        "@types/slick-carousel": "^1.6.32",
-        "animate.css": "^3.7.0",
-        "bootstrap": "^4.3.0",
-        "bootstrap-datepicker": "^1.8.0",
+        "@types/bootstrap": "^4.3.1",
+        "@types/googlemaps": "^3.38.0",
+        "@types/slick-carousel": "^1.6.33",
+        "animate.css": "^3.7.2",
+        "bootstrap": "^4.3.1",
+        "bootstrap-datepicker": "^1.9.0",
         "exports-loader": "^0.7.0",
-        "instantsearch.js": "^2.10.4",
-        "jquery": "^3.3.1",
-        "node-sass": "^4.11.0",
-        "popper.js": "^1.14.7",
-        "sass-loader": "^7.1.0",
+        "instantsearch.js": "^2.10.5",
+        "jquery": "^3.4.1",
+        "node-sass": "^4.13.0",
+        "popper.js": "^1.16.0",
+        "sass-loader": "^7.3.1",
         "slick-carousel": "^1.8.1"
     },
     "license": "UNLICENSED",
@@ -25,14 +25,14 @@
         "test": "jest"
     },
     "devDependencies": {
-        "@types/jest": "^24.0.1",
-        "@types/jquery": "^3.3.29",
-        "@types/jsdom": "^12.2.1",
+        "@types/jest": "^24.0.23",
+        "@types/jquery": "^3.3.31",
+        "@types/jsdom": "^12.2.4",
         "@wapps/jest-google-maps-mock": "0.0.8",
-        "jest": "^24.1.0",
+        "jest": "^24.9.0",
         "jsdom": "^13.2.0",
         "ts-jest": "^23.10.5",
-        "ts-loader": "^5.3.3",
-        "typescript": "^3.3.3"
+        "ts-loader": "^5.4.5",
+        "typescript": "^3.7.2"
     }
 }

@@ -16,7 +16,7 @@
         {{ "title.the_actions"|trans }}
         {% if politician or election %}
             {% if politician %}
-                {{ "text.made_by"|trans }}
+                {{ "text.undertaken_by"|trans }}
                 {{ politician.firstName }} {{ politician.lastName }}
             {% endif %}
             {% if election %}
@@ -49,7 +49,7 @@
                     {% if politician or election %}
                         <div class="col-lg-6 mt-3 mt-lg-0">
                             {% if politician %}
-                                <h5>{{ "text.made_by"|trans|capitalize }}</h5>
+                                <h5>{{ "text.undertaken_by"|trans|capitalize }}</h5>
                                 <h3>
                                     <img src="{{ macros.politician_photo_url(politician) }}"
                                          alt="Politician"

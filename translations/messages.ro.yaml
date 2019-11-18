@@ -285,7 +285,8 @@ text:
     click_on_status: click pe statut
     or: sau
     see_all: vezi toate
-    made_by: întreprinse de
+    made_by: făcute de
+    undertaken_by: întreprinse de
     has_prerogatives: "%title% deține prerogative pentru realizarea promisiunii."
     no_prerogatives: "%title% nu deține prerogative pentru realizarea promisiunii."
     leave_blank_to_not_publish: Lasă gol pentru a nu publica pe site

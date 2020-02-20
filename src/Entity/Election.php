@@ -31,7 +31,7 @@ class Election
     /**
      * @var null|Election
      *
-     * @ORM\OneToOne(targetEntity="Election")
+     * @ORM\ManyToOne(targetEntity="Election")
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $parent;

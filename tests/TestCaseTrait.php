@@ -29,9 +29,9 @@ trait TestCaseTrait
 
     protected static function resetDb()
     {
-        self::runCommand('doctrine:schema:drop --force');
-        self::runCommand('doctrine:schema:create');
-        self::runCommand('doctrine:fixtures:load --no-interaction');
+        self::runCommand('doctrine:database:drop --force');
+        self::runCommand('doctrine:database:create');
+        self::runCommand('doctrine:migrations:migrate --no-interaction');
     }
 
     protected static function runCommand($command)

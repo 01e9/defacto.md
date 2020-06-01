@@ -7,7 +7,7 @@ use App\Entity\ActionSource;
 use App\Entity\BlogPost;
 use App\Entity\Candidate;
 use App\Entity\CandidateProblemOpinion;
-use App\Entity\Category;
+use App\Entity\PromiseCategory;
 use App\Entity\Constituency;
 use App\Entity\ConstituencyProblem;
 use App\Entity\Election;
@@ -335,11 +335,11 @@ trait FactoryTrait
         return $opinion;
     }
 
-    protected static function makeCategory(ObjectManager $em) : Category
+    protected static function makeCategory(ObjectManager $em) : PromiseCategory
     {
         $random = self::randomNumber();
 
-        $category = new Category();
+        $category = new PromiseCategory();
         $category->setName("Test category ${random}");
         $category->setSlug("test-category-${random}");
 

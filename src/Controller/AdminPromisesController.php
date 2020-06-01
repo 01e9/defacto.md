@@ -58,7 +58,7 @@ class AdminPromisesController extends AbstractController
         $promise = new Promise();
 
         $form = $this->createForm(PromiseType::class, $promise, [
-            'categories' => $this->getDoctrine()->getRepository('App:Category')->getAdminChoices(),
+            'categories' => $this->getDoctrine()->getRepository('App:PromiseCategory')->getAdminChoices(),
             'elections' => $this->getDoctrine()->getRepository('App:Election')->getAdminChoices(),
             'politicians' => $this->getDoctrine()->getRepository('App:Politician')->getAdminChoices(),
             'statuses' => $this->getDoctrine()->getRepository('App:Status')->getAdminChoices(),
@@ -100,7 +100,7 @@ class AdminPromisesController extends AbstractController
         $actions = $this->getDoctrine()->getRepository('App:Action')->getAdminListByPromise($promise);
 
         $form = $this->createForm(PromiseType::class, $promise, [
-            'categories' => $this->getDoctrine()->getRepository('App:Category')->getAdminChoices(),
+            'categories' => $this->getDoctrine()->getRepository('App:PromiseCategory')->getAdminChoices(),
             'elections' => $this->getDoctrine()->getRepository('App:Election')->getAdminChoices(),
             'politicians' => $this->getDoctrine()->getRepository('App:Politician')->getAdminChoices(),
             'statuses' => $this->getDoctrine()->getRepository('App:Status')->getAdminChoices(),

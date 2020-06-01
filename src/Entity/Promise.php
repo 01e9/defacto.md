@@ -53,7 +53,7 @@ class Promise
     private $status;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Category")
+     * @ORM\ManyToMany(targetEntity="PromiseCategory")
      */
     private $categories;
 

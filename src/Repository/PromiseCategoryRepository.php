@@ -2,22 +2,22 @@
 
 namespace App\Repository;
 
-use App\Entity\Category;
+use App\Entity\PromiseCategory;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
-class CategoryRepository extends ServiceEntityRepository
+class PromiseCategoryRepository extends ServiceEntityRepository
 {
     public function __construct(RegistryInterface $registry)
     {
-        parent::__construct($registry, Category::class);
+        parent::__construct($registry, PromiseCategory::class);
     }
 
     public function getAdminChoices() : array
     {
         $choices = [];
 
-        foreach ($this->findBy([], ['name' => 'ASC']) as $category) { /** @var Category $category */
+        foreach ($this->findBy([], ['name' => 'ASC']) as $category) { /** @var PromiseCategory $category */
             $choices[ $category->getName() ] = $category;
         }
 

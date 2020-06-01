@@ -7,17 +7,17 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\CategoryRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\PromiseCategoryRepository")
  * @ORM\Table(
- *     name="categories",
+ *     name="promise_categories",
  *     uniqueConstraints={
- *      @ORM\UniqueConstraint(name="category_unique_slug", columns={"slug"})
+ *      @ORM\UniqueConstraint(name="promise_category_unique_slug", columns={"slug"})
  *     }
  * )
  *
  * @UniqueEntity(fields={"slug"})
  */
-class Category
+class PromiseCategory
 {
     /**
      * @ORM\Id
@@ -53,7 +53,7 @@ class Category
         return $this->slug;
     }
 
-    public function setSlug(?string $slug) : Category
+    public function setSlug(?string $slug) : self
     {
         $this->slug = $slug;
 
@@ -65,7 +65,7 @@ class Category
         return $this->name;
     }
 
-    public function setName(?string $name) : Category
+    public function setName(?string $name) : self
     {
         $this->name = $name;
 

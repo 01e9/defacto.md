@@ -43,17 +43,20 @@ class MainController extends AbstractController
         ]);
     }
 
-    private function getPresidentMandateData(ManagerRegistry $em) : array
+    private function getPresidentMandateData(ManagerRegistry $em) : ?array
     {
         $settingId = SettingRepository::PRESIDENT_INSTITUTION_TITLE_ID;
 
         /** @var InstitutionTitle $institutionTitle */
         $institutionTitle = $em->getRepository('App:Setting')->get($settingId);
+        if (!$institutionTitle) {
+            return null;
+        }
 
         /** @var Mandate $mandate */
         $mandate = $em->getRepository('App:Mandate')->getLatestByInstitutionTitle($institutionTitle);
         if (!$mandate) {
-            throw new \Exception('President mandate is required');
+            return null;
         }
 
         $powersStatistics = $em->getRepository('App:Mandate')->getPowersStatistics($mandate);

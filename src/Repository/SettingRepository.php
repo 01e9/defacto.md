@@ -16,7 +16,7 @@ class SettingRepository extends ServiceEntityRepository
         self::PRESIDENT_INSTITUTION_TITLE_ID => [
             'type' => 'App:InstitutionTitle',
             'name' => 'Funcția de președinte',
-            'default' => null,
+            'default' => false,
         ],
         self::CURRENT_ELECTION_ID => [
             'type' => 'App:Election',

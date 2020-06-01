@@ -15,6 +15,7 @@
         <div class="container-fluid px-0 bg-white">
             <div class="container">
                 <div class="row bg-white">
+                    {% if president_mandate %}
                     <div class="col-12 col-lg-6">
                         {% include 'app/component/block/statistics/mandate.html.twig' with {
                             mandate: president_mandate.mandate,
@@ -22,6 +23,7 @@
                             power_statistics: president_mandate.power_statistics,
                         } only %}
                     </div>
+                    {% endif %}
                     {% if current_election %}
                         <div class="col-12 col-lg-6 order-first order-lg-last">
                             {% include 'app/component/block/statistics/election.html.twig' with {

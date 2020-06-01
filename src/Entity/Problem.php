@@ -21,12 +21,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class Problem
 {
-    /**
-     * @ORM\Id()
-     * @ORM\Column(type="string", length=36)
-     * @ORM\GeneratedValue(strategy="UUID")
-     */
-    private $id;
+    use Traits\IdTrait;
 
     /**
      * @ORM\Column(type="string", length=120)
@@ -55,11 +50,6 @@ class Problem
     public function __construct()
     {
         $this->constituencyProblems = new ArrayCollection();
-    }
-
-    public function getId(): ?string
-    {
-        return $this->id;
     }
 
     public function getName(): ?string

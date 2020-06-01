@@ -19,12 +19,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  */
 class ActionSource
 {
-    /**
-     * @ORM\Id()
-     * @ORM\Column(type="string", length=36)
-     * @ORM\GeneratedValue(strategy="UUID")
-     */
-    private $id;
+    use Traits\IdTrait;
 
     /**
      * @ORM\Column(type="string", length=120)
@@ -48,11 +43,6 @@ class ActionSource
      * @ORM\JoinColumn(onDelete="CASCADE", nullable=false)
      */
     private $action;
-
-    public function getId()
-    {
-        return $this->id;
-    }
 
     public function getName(): ?string
     {

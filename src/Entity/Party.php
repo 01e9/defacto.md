@@ -21,14 +21,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  */
 class Party
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="string", length=36)
-     * @ORM\GeneratedValue(strategy="UUID")
-     *
-     * @Assert\Uuid()
-     */
-    private $id;
+    use Traits\IdTrait;
 
     /**
      * @ORM\Column(type="string", length=120)
@@ -55,11 +48,6 @@ class Party
      * @Assert\File(mimeTypes={"image/jpeg", "image/png", "image/gif"})
      */
     private $logo;
-
-    public function getId(): ?string
-    {
-        return $this->id;
-    }
 
     public function getSlug() : ?string
     {

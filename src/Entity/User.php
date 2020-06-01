@@ -17,12 +17,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class User implements UserInterface, EquatableInterface, \Serializable
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="string", length=36)
-     * @ORM\GeneratedValue(strategy="UUID")
-     */
-    private $id;
+    use Traits\IdTrait;
 
     /**
      * @ORM\Column(type="string", length=60)
@@ -48,11 +43,6 @@ class User implements UserInterface, EquatableInterface, \Serializable
      * @ORM\Column(name="roles", type="simple_array", options={"default"="ROLE_USER"})
      */
     private $roles;
-
-    public function getId() : string
-    {
-        return $this->id;
-    }
 
     public function setId(?string $id)
     {

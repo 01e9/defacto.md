@@ -19,12 +19,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  */
 class PromiseSource
 {
-    /**
-     * @ORM\Id()
-     * @ORM\Column(type="string", length=36)
-     * @ORM\GeneratedValue(strategy="UUID")
-     */
-    private $id;
+    use Traits\IdTrait;
 
     /**
      * @ORM\Column(type="string", length=120)
@@ -48,11 +43,6 @@ class PromiseSource
      * @ORM\JoinColumn(onDelete="CASCADE", nullable=false)
      */
     private $promise;
-
-    public function getId()
-    {
-        return $this->id;
-    }
 
     public function getName(): ?string
     {

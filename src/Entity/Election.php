@@ -21,12 +21,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class Election
 {
-    /**
-     * @ORM\Id()
-     * @ORM\Column(type="string", length=36)
-     * @ORM\GeneratedValue(strategy="UUID")
-     */
-    private $id;
+    use Traits\IdTrait;
 
     /**
      * @var null|Election
@@ -101,11 +96,6 @@ class Election
         $this->mandates = new ArrayCollection();
         $this->constituencyProblems = new ArrayCollection();
         $this->candidates = new ArrayCollection();
-    }
-
-    public function getId(): ?string
-    {
-        return $this->id;
     }
 
     public function getParent(): ?Election

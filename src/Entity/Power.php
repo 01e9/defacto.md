@@ -19,12 +19,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Power
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="string", length=36)
-     * @ORM\GeneratedValue(strategy="UUID")
-     */
-    private $id;
+    use Traits\IdTrait;
 
     /**
      * @ORM\Column(type="string", length=50)
@@ -42,11 +37,6 @@ class Power
      * @Assert\Length(min=3, max=50)
      */
     private $name;
-
-    public function getId() : ?string
-    {
-        return $this->id;
-    }
 
     public function getSlug() : ?string
     {

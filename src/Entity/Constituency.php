@@ -23,12 +23,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class Constituency
 {
-    /**
-     * @ORM\Id()
-     * @ORM\Column(type="string", length=36)
-     * @ORM\GeneratedValue(strategy="UUID")
-     */
-    private $id;
+    use Traits\IdTrait;
 
     /**
      * @ORM\Column(type="string", length=120)
@@ -106,11 +101,6 @@ class Constituency
         $this->problems = new ArrayCollection();
         $this->candidates = new ArrayCollection();
         $this->candidateProblemOpinions = new ArrayCollection();
-    }
-
-    public function getId(): ?string
-    {
-        return $this->id;
     }
 
     public function getSlug() : ?string

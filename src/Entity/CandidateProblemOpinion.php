@@ -22,12 +22,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  */
 class CandidateProblemOpinion
 {
-    /**
-     * @ORM\Id()
-     * @ORM\Column(type="string", length=36)
-     * @ORM\GeneratedValue(strategy="UUID")
-     */
-    private $id;
+    use Traits\IdTrait;
 
     /**
      * @ORM\ManyToOne(targetEntity="Politician")
@@ -61,11 +56,6 @@ class CandidateProblemOpinion
      * @Assert\Length(min="3", max="10000")
      */
     private $opinion;
-
-    public function getId(): ?string
-    {
-        return $this->id;
-    }
 
     public function getPolitician(): ?Politician
     {

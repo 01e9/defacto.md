@@ -27,12 +27,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Mandate
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="string", length=36)
-     * @ORM\GeneratedValue(strategy="UUID")
-     */
-    private $id;
+    use Traits\IdTrait;
 
     /**
      * @var \DateTimeInterface
@@ -129,11 +124,6 @@ class Mandate
      * @Assert\Url()
      */
     private $ceasingLink;
-
-    public function getId() : ?string
-    {
-        return $this->id;
-    }
 
     public function getBeginDate() : ?\DateTime
     {

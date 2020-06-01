@@ -18,12 +18,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class InstitutionTitle
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="string", length=36)
-     * @ORM\GeneratedValue(strategy="UUID")
-     */
-    private $id;
+    use Traits\IdTrait;
 
     /**
      * @ORM\ManyToOne(targetEntity="Institution", inversedBy="titles", fetch="EAGER")
@@ -44,11 +39,6 @@ class InstitutionTitle
      * @Assert\Url()
      */
     private $prerogativesLink;
-
-    public function getId() : ?string
-    {
-        return $this->id;
-    }
 
     public function getInstitution() : ?Institution
     {

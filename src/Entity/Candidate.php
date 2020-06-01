@@ -22,12 +22,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Candidate
 {
-    /**
-     * @ORM\Id()
-     * @ORM\Column(type="string", length=36)
-     * @ORM\GeneratedValue(strategy="UUID")
-     */
-    private $id;
+    use Traits\IdTrait;
 
     /**
      * @ORM\ManyToOne(targetEntity="Politician", inversedBy="candidates")
@@ -89,11 +84,6 @@ class Candidate
      * @Assert\Url()
      */
     private $electoralPlatformLink;
-
-    public function getId(): ?string
-    {
-        return $this->id;
-    }
 
     public function getConstituency(): ?Constituency
     {

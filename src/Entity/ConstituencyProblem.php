@@ -22,12 +22,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  */
 class ConstituencyProblem
 {
-    /**
-     * @ORM\Id()
-     * @ORM\Column(type="string", length=36)
-     * @ORM\GeneratedValue(strategy="UUID")
-     */
-    private $id;
+    use Traits\IdTrait;
 
     /**
      * @ORM\ManyToOne(targetEntity="Constituency", inversedBy="problems")
@@ -69,11 +64,6 @@ class ConstituencyProblem
      * @Assert\Choice({"local", "national"})
      */
     private $type;
-
-    public function getId(): ?string
-    {
-        return $this->id;
-    }
 
     public function getConstituency(): ?Constituency
     {

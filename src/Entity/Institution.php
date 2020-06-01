@@ -20,12 +20,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Institution
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="string", length=36)
-     * @ORM\GeneratedValue(strategy="UUID")
-     */
-    private $id;
+    use Traits\IdTrait;
 
     /**
      * @ORM\Column(type="string", length=50)
@@ -52,11 +47,6 @@ class Institution
     public function __construct()
     {
         $this->titles = new ArrayCollection();
-    }
-
-    public function getId() : ?string
-    {
-        return $this->id;
     }
 
     public function getSlug() : ?string

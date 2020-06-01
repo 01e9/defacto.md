@@ -17,12 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Action
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="string", length=36)
-     * @ORM\GeneratedValue(strategy="UUID")
-     */
-    private $id;
+    use Traits\IdTrait;
 
     /**
      * @ORM\Column(name="occurred_time", type="date")
@@ -90,11 +85,6 @@ class Action
         $this->promiseUpdates = new ArrayCollection();
         $this->usedPowers = new ArrayCollection();
         $this->sources = new ArrayCollection();
-    }
-
-    public function getId() : ?string
-    {
-        return $this->id;
     }
 
     public function getOccurredTime() : ?\DateTime

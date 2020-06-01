@@ -21,12 +21,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  */
 class PromiseUpdate
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="string", length=36)
-     * @ORM\GeneratedValue(strategy="UUID")
-     */
-    private $id;
+    use Traits\IdTrait;
 
     /**
      * @ORM\ManyToOne(targetEntity="Action", inversedBy="promiseUpdates")
@@ -45,11 +40,6 @@ class PromiseUpdate
      * @ORM\JoinColumn(nullable=true)
      */
     private $status;
-
-    public function getId() : ?string
-    {
-        return $this->id;
-    }
 
     public function getAction() : ?Action
     {

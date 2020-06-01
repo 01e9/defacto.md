@@ -21,12 +21,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  */
 class BlogPost
 {
-    /**
-     * @ORM\Id()
-     * @ORM\Column(type="string", length=36)
-     * @ORM\GeneratedValue(strategy="UUID")
-     */
-    private $id;
+    use Traits\IdTrait;
 
     /**
      * @var \DateTimeInterface
@@ -69,11 +64,6 @@ class BlogPost
      * @Assert\File(mimeTypes={"image/jpeg", "image/png", "image/gif"})
      */
     private $image;
-
-    public function getId(): ?string
-    {
-        return $this->id;
-    }
 
     public function getTitle(): ?string
     {

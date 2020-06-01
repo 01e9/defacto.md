@@ -23,12 +23,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  */
 class Promise
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="string", length=36)
-     * @ORM\GeneratedValue(strategy="UUID")
-     */
-    private $id;
+    use Traits\IdTrait;
 
     /**
      * @ORM\ManyToOne(targetEntity="Election")
@@ -130,11 +125,6 @@ class Promise
         $this->categories = new ArrayCollection();
         $this->promiseUpdates = new ArrayCollection();
         $this->sources = new ArrayCollection();
-    }
-
-    public function getId() : ?string
-    {
-        return $this->id;
     }
 
     public function getElection() : ?Election

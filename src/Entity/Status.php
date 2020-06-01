@@ -21,12 +21,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Status
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="string", length=36)
-     * @ORM\GeneratedValue(strategy="UUID")
-     */
-    private $id;
+    use Traits\IdTrait;
 
     /**
      * @ORM\Column(type="string", length=50)
@@ -71,11 +66,6 @@ class Status
      * @Assert\Regex(pattern="/^[a-z\-]{3,20}$/", message="invalid.color")
      */
     private $color;
-
-    public function getId() : ?string
-    {
-        return $this->id;
-    }
 
     public function getSlug() : ?string
     {

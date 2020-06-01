@@ -11,10 +11,10 @@ $app-status-colors: (
 );
 
 @each $color, $value in $app-status-colors {
-    .status-color-#{$color} { color: $value; }
-    .status-bg-#{$color} { background-color: lighten($value, 10%); }
+    .status-color-#{"" + $color} { color: $value; }
+    .status-bg-#{"" + $color} { background-color: lighten($value, 10%); }
 
-    .status-color-#{$color}-light { color: lighten($value, $app-color-lighten-amount); }
-    .status-bg-#{$color}-light { background-color: lighten($value, 20%); }
-    .status-bg-#{$color}-dark { background-color: $value; }
+    .status-color-#{"" + $color}-light { color: lighten($value, $app-color-lighten-amount); }
+    .status-bg-#{"" + $color}-light { background-color: lighten($value, 20%); }
+    .status-bg-#{"" + $color}-dark { background-color: $value; }
 }

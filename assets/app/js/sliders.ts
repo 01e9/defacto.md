@@ -1,5 +1,5 @@
 import 'slick-carousel'
-import * as $ from "jquery";
+import $ from "jquery";
 
 $(() => {
     $('.app-slider').each((index, element) => {

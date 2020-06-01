@@ -1,5 +1,5 @@
 import { includeGoogleMapsScript } from "../../common/js/google-maps";
-import * as $ from "jquery";
+import $ from "jquery";
 
 /* global google */
 

@@ -1,7 +1,7 @@
 import 'bootstrap'
 import './search'
 import './sliders'
-import * as $ from "jquery";
+import $ from "jquery";
 import { initGoogleMapWithMarkers } from "./google-maps";
 
 $(() => $('[data-toggle="tooltip"]').tooltip());

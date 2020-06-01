@@ -1,5 +1,5 @@
 import "bootstrap-datepicker";
-import * as $ from "jquery";
+import $ from "jquery";
 
 export function initElementDatePickers(element) {
     // @ts-ignore

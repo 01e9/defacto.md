@@ -1,24 +1,153 @@
-const Encore = require('@symfony/webpack-encore');
+const path = require('path');
+const webpack = require('webpack');
 
-Encore
-    .setOutputPath('public/build/')
-    .setPublicPath('/build')
-    .cleanupOutputBeforeBuild()
-    .enableSourceMaps(!Encore.isProduction())
-    .enableSingleRuntimeChunk()
-    .enableSassLoader()
-    .enableTypeScriptLoader()
-    .autoProvidejQuery()
-    .autoProvideVariables({
-        'Popper': 'popper.js/dist/umd/popper'
-    })
-    .enableVersioning()
+const autoprefixer = require("autoprefixer");
+const sass = require("sass");
 
-    .addEntry('app/scripts', './assets/app/js/index.ts')
-    .addStyleEntry('app/styles', './assets/app/css/index.scss')
+//region variables
+const isProduction = process.env.NODE_ENV === "production";
+const sourcePath = path.join(__dirname, "assets");
+//endregion
 
-    .addEntry('admin/scripts', './assets/admin/js/index.ts')
-    .addStyleEntry('admin/styles', './assets/admin/css/index.scss')
-;
+//region Plugins
+const {CleanWebpackPlugin} = require('clean-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const TerserJSPlugin = require('terser-webpack-plugin');
+const ManifestPlugin = require('webpack-manifest-plugin');
+//endregion
 
-module.exports = Encore.getWebpackConfig();
+//region Rules
+const createRules = {
+    css: ({modules}) => [
+        {
+            loader: MiniCssExtractPlugin.loader,
+            options: {
+                hmr: !isProduction,
+            },
+        },
+        {
+            loader: "css-loader",
+            options: {
+                modules
+            }
+        },
+        {
+            loader: "postcss-loader",
+            options: {
+                plugins: [
+                    autoprefixer()
+                ],
+            }
+        }
+    ],
+    scss: ({modules}) => createRules.css({modules}).concat([
+        {
+            loader: "sass-loader",
+            options: {
+                implementation: sass
+            }
+        },
+    ])
+};
+//endregion
+
+module.exports = {
+    mode: isProduction ? "production" : "development",
+    entry: {
+        "build/app/scripts": path.join(sourcePath, 'app/js/index.ts'),
+        "build/app/styles": path.join(sourcePath, 'app/css/index.scss'),
+
+        "build/admin/scripts": path.join(sourcePath, 'admin/js/index.ts'),
+        "build/admin/styles": path.join(sourcePath, 'admin/css/index.scss'),
+    },
+    output: {
+        publicPath: "/build/",
+        path: path.resolve(__dirname, 'public/build/'),
+        filename: `[name]${isProduction ? ".[contenthash]" : ""}.js`,
+        chunkFilename: `[name]${isProduction ? ".[contenthash]" : ""}.js`,
+    },
+    optimization: {
+        minimize: isProduction,
+        minimizer: [
+            new TerserJSPlugin({sourceMap: !isProduction}),
+            new OptimizeCSSAssetsPlugin({})
+        ],
+    },
+    devtool: isProduction ? false : 'inline-source-map',
+    watchOptions: {
+        aggregateTimeout: 1000,
+        poll: 3000
+    },
+    resolve: {
+        extensions: ['.js', '.ts', '.tsx', '.scss'],
+        alias: {
+            "~": sourcePath,
+        }
+    },
+    plugins: [
+        new MiniCssExtractPlugin({
+            filename: `[name]${isProduction ? ".[contenthash]" : ""}.css`,
+            chunkFilename: `[id]${isProduction ? ".[contenthash]" : ""}.css`,
+            ignoreOrder: false // Ignore warnings for the invalid order of the CSS files
+        }),
+        new webpack.DefinePlugin({
+            'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+        }),
+        new CleanWebpackPlugin({
+            dry: !isProduction, // prevent fonts delete
+            cleanOnceBeforeBuildPatterns: ['**/*', '!.gitkeep'],
+        }),
+        new ManifestPlugin(),
+        new webpack.ProvidePlugin({
+            $: 'jquery',
+            jQuery: 'jquery'
+        })
+    ],
+    module: {
+        rules: [
+            //region TS
+            {
+                test: /\.tsx?$/,
+                loader: 'ts-loader',
+                exclude: /node_modules/
+            },
+            //endregion
+            //region SCSS
+            {
+                oneOf: [
+                    {
+                        test: /\.scss$/,
+                        use: createRules.scss({modules: false}),
+                    },
+                ]
+            },
+            //endregion
+            //region CSS
+            {
+                oneOf: [
+                    {
+                        test: /\.css$/,
+                        use: createRules.css({modules: false}),
+                    },
+                ]
+            },
+            //endregion
+            //region Fonts
+            {
+                test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
+                use: [
+                    {
+                        loader: 'file-loader',
+                        options: {
+                            name: `${isProduction ? ".[contenthash]" : "[name]"}.[ext]`,
+                            outputPath: 'fonts/',
+                            publicPath: '/build/fonts/'
+                        }
+                    }
+                ]
+            },
+            //endregion
+        ],
+    }
+};

@@ -1,17 +1,30 @@
 {
     "compilerOptions": {
-        "target": "es2015",
-        "module": "es2015",
-        "moduleResolution": "node",
-        "declaration": false,
         "noImplicitAny": false,
+        "module": "esnext",
+        "target": "es5",
+        "allowJs": true,
+        "strictNullChecks": false,
         "sourceMap": true,
-        "noLib": false,
-        "suppressImplicitAnyIndexErrors": true
+        "esModuleInterop": true,
+        "moduleResolution": "node",
+        "sourceRoot": "assets",
+        "outDir": "public/build/",
+        "baseUrl": ".",
+        "paths": {
+            "~/*": [
+                "./assets/*"
+            ]
+        }
     },
-    "compileOnSave": false,
+    "include": [
+        "assets/**/*"
+    ],
     "exclude": [
         "node_modules",
-        "vendor"
+        "dist",
+        "jest-mocks",
+        "**/*.test.ts",
+        "**/*.test.tsx"
     ]
 }

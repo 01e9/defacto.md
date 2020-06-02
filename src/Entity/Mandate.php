@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -124,6 +125,19 @@ class Mandate
      * @Assert\Url()
      */
     private $ceasingLink;
+
+    /**
+     * @ORM\OneToMany(targetEntity="CompetenceUse", mappedBy="mandate", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
+     *
+     * @Assert\Valid()
+     */
+    private $competenceUses;
+
+    public function __construct()
+    {
+        $this->competenceUses = new ArrayCollection();
+    }
 
     public function getBeginDate() : ?\DateTime
     {
@@ -265,6 +279,18 @@ class Mandate
     public function setCeasingLink(?string $ceasingLink) : self
     {
         $this->ceasingLink = $ceasingLink;
+
+        return $this;
+    }
+
+    public function getCompetenceUses()
+    {
+        return $this->competenceUses;
+    }
+
+    public function setCompetenceUses($competenceUses) : self
+    {
+        $this->competenceUses = $competenceUses;
 
         return $this;
     }

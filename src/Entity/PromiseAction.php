@@ -7,46 +7,25 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\ActionRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\PromiseActionRepository")
  * @ORM\Table(
- *     name="actions",
+ *     name="promise_actions",
  *     uniqueConstraints={
- *      @ORM\UniqueConstraint(name="action_unique_slug", columns={"slug"})
+ *      @ORM\UniqueConstraint(name="promise_action_unique_slug", columns={"slug"})
  *     }
  * )
  */
-class Action
+class PromiseAction
 {
     use Traits\IdTrait;
+    use Traits\NameTrait;
+    use Traits\SlugTrait;
+    use Traits\DescriptionTrait;
 
     /**
      * @ORM\Column(name="occurred_time", type="date")
      */
     private $occurredTime;
-
-    /**
-     * @ORM\Column(type="string", length=120)
-     *
-     * @Assert\NotBlank()
-     * @Assert\Length(min=3, max=120)
-     */
-    private $name;
-
-    /**
-     * @ORM\Column(name="slug", type="string", length=120)
-     *
-     * @Assert\NotBlank()
-     * @Assert\Length(min=3, max=120)
-     * @Assert\Regex(pattern="/^[a-z\d]+(\-[a-z\d]+)*$/", message="invalid.slug")
-     */
-    private $slug;
-
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     *
-     * @Assert\Length(min=3, max=10000)
-     */
-    private $description;
 
     /**
      * @ORM\ManyToOne(targetEntity="Mandate")
@@ -73,7 +52,7 @@ class Action
     private $usedPowers;
 
     /**
-     * @ORM\OneToMany(targetEntity="ActionSource", mappedBy="action", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="PromiseActionSource", mappedBy="action", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      *
      * @Assert\Valid()
@@ -92,45 +71,9 @@ class Action
         return $this->occurredTime;
     }
 
-    public function setOccurredTime(?\DateTime $date) : Action
+    public function setOccurredTime(?\DateTime $date) : PromiseAction
     {
         $this->occurredTime = $date;
-
-        return $this;
-    }
-
-    public function getName() : ?string
-    {
-        return $this->name;
-    }
-
-    public function setName(?string $name) : Action
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    public function getSlug() : ?string
-    {
-        return $this->slug;
-    }
-
-    public function setSlug(?string $slug) : Action
-    {
-        $this->slug = $slug;
-
-        return $this;
-    }
-
-    public function getDescription() : ?string
-    {
-        return $this->description;
-    }
-
-    public function setDescription(?string $description) : Action
-    {
-        $this->description = $description;
 
         return $this;
     }
@@ -140,7 +83,7 @@ class Action
         return $this->mandate;
     }
 
-    public function setMandate(?Mandate $mandate) : Action
+    public function setMandate(?Mandate $mandate) : PromiseAction
     {
         $this->mandate = $mandate;
 
@@ -152,7 +95,7 @@ class Action
         return $this->published;
     }
 
-    public function setPublished(?bool $published) : Action
+    public function setPublished(?bool $published) : PromiseAction
     {
         $this->published = $published;
 
@@ -164,7 +107,7 @@ class Action
         return $this->promiseUpdates;
     }
 
-    public function setPromiseUpdates($promiseUpdates) : Action
+    public function setPromiseUpdates($promiseUpdates) : PromiseAction
     {
         $this->promiseUpdates = $promiseUpdates;
 
@@ -176,7 +119,7 @@ class Action
         return $this->usedPowers;
     }
 
-    public function setUsedPowers($usedPowers) : Action
+    public function setUsedPowers($usedPowers) : PromiseAction
     {
         $this->usedPowers = $usedPowers;
 

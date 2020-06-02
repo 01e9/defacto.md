@@ -7,27 +7,20 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\ActionSourceRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\PromiseActionSourceRepository")
  * @ORM\Table(
- *     name="action_sources",
+ *     name="promise_action_sources",
  *     uniqueConstraints={
- *      @ORM\UniqueConstraint(name="action_source_unique_name", columns={"action_id", "name"})
+ *      @ORM\UniqueConstraint(name="promise_action_source_unique_name", columns={"action_id", "name"})
  *     }
  * )
  *
  * @UniqueEntity(fields={"action", "name"}, errorPath="name")
  */
-class ActionSource
+class PromiseActionSource
 {
     use Traits\IdTrait;
-
-    /**
-     * @ORM\Column(type="string", length=120)
-     *
-     * @Assert\NotBlank()
-     * @Assert\Length(min=3, max=120)
-     */
-    private $name;
+    use Traits\NameTrait;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -39,22 +32,10 @@ class ActionSource
     private $link;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Action", inversedBy="sources")
+     * @ORM\ManyToOne(targetEntity="PromiseAction", inversedBy="sources")
      * @ORM\JoinColumn(onDelete="CASCADE", nullable=false)
      */
     private $action;
-
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    public function setName(string $name): self
-    {
-        $this->name = $name;
-
-        return $this;
-    }
 
     public function getLink(): ?string
     {
@@ -68,12 +49,12 @@ class ActionSource
         return $this;
     }
 
-    public function getAction() : ?Action
+    public function getAction() : ?PromiseAction
     {
         return $this->action;
     }
 
-    public function setAction(?Action $action) : self
+    public function setAction(?PromiseAction $action) : self
     {
         $this->action = $action;
 

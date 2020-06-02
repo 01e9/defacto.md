@@ -2,18 +2,18 @@
 
 namespace App\Repository;
 
-use App\Entity\Action;
+use App\Entity\PromiseAction;
 use App\Entity\Power;
 use App\Entity\Promise;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-class ActionRepository extends ServiceEntityRepository
+class PromiseActionRepository extends ServiceEntityRepository
 {
     public function __construct(RegistryInterface $registry)
     {
-        parent::__construct($registry, Action::class);
+        parent::__construct($registry, PromiseAction::class);
     }
 
     public function getAdminList(Request $request)
@@ -41,7 +41,7 @@ class ActionRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function getAdminPowerChoices(Action $action)
+    public function getAdminPowerChoices(PromiseAction $action)
     {
         $choices = [];
 

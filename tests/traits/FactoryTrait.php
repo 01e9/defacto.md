@@ -2,8 +2,8 @@
 
 namespace App\Tests\traits;
 
-use App\Entity\Action;
-use App\Entity\ActionSource;
+use App\Entity\PromiseAction;
+use App\Entity\PromiseActionSource;
 use App\Entity\BlogPost;
 use App\Entity\Candidate;
 use App\Entity\CandidateProblemOpinion;
@@ -213,11 +213,11 @@ trait FactoryTrait
         return $promise;
     }
 
-    protected static function makeAction(ObjectManager $em) : Action
+    protected static function makePromiseAction(ObjectManager $em) : PromiseAction
     {
         $random = self::randomNumber();
 
-        $action = new Action();
+        $action = new PromiseAction();
         $action->setName("Test ${random}");
         $action->setSlug("test-${random}");
         $action->setPublished(true);
@@ -231,7 +231,7 @@ trait FactoryTrait
     }
 
     protected static function makePromiseUpdate(
-        ObjectManager $em, Action $action = null, Promise $promise = null
+        ObjectManager $em, PromiseAction $action = null, Promise $promise = null
     ) : PromiseUpdate
     {
         if (!$promise) {
@@ -241,7 +241,7 @@ trait FactoryTrait
         }
 
         $promiseUpdate = new PromiseUpdate();
-        $promiseUpdate->setAction($action ? $action : self::makeAction($em));
+        $promiseUpdate->setAction($action ? $action : self::makePromiseAction($em));
         $promiseUpdate->setPromise($promise);
 
         $em->persist($promiseUpdate);
@@ -252,12 +252,12 @@ trait FactoryTrait
         return $promiseUpdate;
     }
 
-    protected static function makeActionSource(ObjectManager $em, Action $action = null) : ActionSource
+    protected static function makePromiseActionSource(ObjectManager $em, PromiseAction $action = null) : PromiseActionSource
     {
         $random = self::randomNumber();
 
-        $actionSource = new ActionSource();
-        $actionSource->setAction($action ? $action : self::makeAction($em));
+        $actionSource = new PromiseActionSource();
+        $actionSource->setAction($action ? $action : self::makePromiseAction($em));
         $actionSource->setName("Name ${random}");
         $actionSource->setLink("http://test.link/${random}");
 

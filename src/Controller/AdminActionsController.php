@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Entity\Action;
+use App\Entity\PromiseAction;
 use App\Entity\PromiseUpdate;
 use App\Form\ActionDeleteType;
 use App\Form\ActionType;
@@ -26,7 +26,7 @@ class AdminActionsController extends AbstractController
      */
     public function addAction(Request $request, TranslatorInterface $translator)
     {
-        $action = new Action();
+        $action = new PromiseAction();
 
         if (
             ($promise = $this->getDoctrine()->getRepository('App:Promise')->find(
@@ -57,7 +57,7 @@ class AdminActionsController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            /** @var Action $action */
+            /** @var PromiseAction $action */
             $action = $form->getData();
 
             $em = $this->getDoctrine()->getManager();
@@ -91,8 +91,8 @@ class AdminActionsController extends AbstractController
      * @return Response
      */
     public function editAction(Request $request, string $id, TranslatorInterface $translator) {
-        /** @var Action $action */
-        $action = $this->getDoctrine()->getRepository('App:Action')->find($id);
+        /** @var PromiseAction $action */
+        $action = $this->getDoctrine()->getRepository('App:PromiseAction')->find($id);
         if (!$action) {
             throw $this->createNotFoundException();
         }
@@ -109,12 +109,12 @@ class AdminActionsController extends AbstractController
             'promises' => $this->getDoctrine()->getRepository('App:Promise')
                 ->getAdminChoicesByMandate($action->getMandate()),
             'statuses' => $this->getDoctrine()->getRepository('App:Status')->getAdminChoices(),
-            'powers' => $this->getDoctrine()->getRepository('App:Action')->getAdminPowerChoices($action),
+            'powers' => $this->getDoctrine()->getRepository('App:PromiseAction')->getAdminPowerChoices($action),
         ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            /** @var Action $action */
+            /** @var PromiseAction $action */
             $action = $form->getData();
 
             $em = $this->getDoctrine()->getManager();
@@ -151,7 +151,7 @@ class AdminActionsController extends AbstractController
      */
     public function deleteAction(Request $request, string $id, TranslatorInterface $translator)
     {
-        $action = $this->getDoctrine()->getRepository('App:Action')->find($id);
+        $action = $this->getDoctrine()->getRepository('App:PromiseAction')->find($id);
         if (!$action) {
             throw $this->createNotFoundException();
         }
@@ -159,7 +159,7 @@ class AdminActionsController extends AbstractController
         $form = $this->createForm(ActionDeleteType::class, $action, [])->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            /** @var Action $action */
+            /** @var PromiseAction $action */
             $action = $form->getData();
 
             $em = $this->getDoctrine()->getManager();

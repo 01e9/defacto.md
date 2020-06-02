@@ -3,7 +3,7 @@
 namespace App\Form;
 
 use App\Consts;
-use App\Entity\Action;
+use App\Entity\PromiseAction;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
@@ -97,7 +97,7 @@ class ActionType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Action::class,
+            'data_class' => PromiseAction::class,
             'mandates' => [],
             'actions' => [],
             'promises' => [],

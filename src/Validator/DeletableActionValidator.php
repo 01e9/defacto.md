@@ -2,7 +2,7 @@
 
 namespace App\Validator;
 
-use App\Repository\ActionRepository;
+use App\Repository\PromiseActionRepository;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
@@ -10,7 +10,7 @@ class DeletableActionValidator extends ConstraintValidator
 {
     protected $actionRepository;
 
-    public function __construct(ActionRepository $actionRepository)
+    public function __construct(PromiseActionRepository $actionRepository)
     {
         $this->actionRepository = $actionRepository;
     }

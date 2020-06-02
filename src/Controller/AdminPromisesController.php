@@ -6,7 +6,7 @@ use App\Entity\Promise;
 use App\Form\PromiseDeleteType;
 use App\Form\PromisesFilterType;
 use App\Form\PromiseType;
-use App\Repository\ActionRepository;
+use App\Repository\PromiseActionRepository;
 use App\Repository\PromiseRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -25,7 +25,7 @@ class AdminPromisesController extends AbstractController
     private $promiseRepository;
     private $actionRepository;
 
-    public function __construct(PromiseRepository $promiseRepository, ActionRepository $actionRepository)
+    public function __construct(PromiseRepository $promiseRepository, PromiseActionRepository $actionRepository)
     {
         $this->promiseRepository = $promiseRepository;
         $this->actionRepository = $actionRepository;
@@ -97,7 +97,7 @@ class AdminPromisesController extends AbstractController
         $originalSources = new ArrayCollection();
         array_map([$originalSources, 'add'], $promise->getSources()->toArray());
 
-        $actions = $this->getDoctrine()->getRepository('App:Action')->getAdminListByPromise($promise);
+        $actions = $this->getDoctrine()->getRepository('App:PromiseAction')->getAdminListByPromise($promise);
 
         $form = $this->createForm(PromiseType::class, $promise, [
             'categories' => $this->getDoctrine()->getRepository('App:PromiseCategory')->getAdminChoices(),

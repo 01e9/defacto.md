@@ -4,7 +4,7 @@ namespace App\Tests\Service;
 
 use App\Entity\Promise;
 use App\Entity\PromiseUpdate;
-use App\Repository\ActionRepository;
+use App\Repository\PromiseActionRepository;
 use App\Repository\PromiseRepository;
 use App\Tests\TestCaseTrait;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -24,8 +24,8 @@ class EntityPromiseUpdateListenerTest extends WebTestCase
         $em = self::bootKernel()->getContainer()->get('doctrine.orm.default_entity_manager');
         /** @var PromiseRepository $promiseRepo */
         $promiseRepo = $em->getRepository('App:Promise');
-        /** @var ActionRepository $actionsRepo */
-        $actionsRepo = $em->getRepository('App:Action');
+        /** @var PromiseActionRepository $actionsRepo */
+        $actionsRepo = $em->getRepository('App:PromiseAction');
 
         $promise = new Promise();
         $promise

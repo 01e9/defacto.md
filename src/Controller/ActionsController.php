@@ -7,7 +7,7 @@ use App\Entity\Politician;
 use App\Repository\ElectionRepository;
 use App\Repository\MandateRepository;
 use App\Repository\PoliticianRepository;
-use App\Repository\ActionRepository;
+use App\Repository\PromiseActionRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,7 +23,7 @@ class ActionsController extends AbstractController
 
     public function __construct(
         PaginatorInterface $paginator,
-        ActionRepository $actionRepository,
+        PromiseActionRepository $actionRepository,
         MandateRepository $mandateRepository,
         PoliticianRepository $politicianRepository,
         ElectionRepository $electionRepository

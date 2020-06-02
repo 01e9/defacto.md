@@ -3,8 +3,8 @@
 namespace App\Tests\Controller;
 
 use App\Consts;
-use App\Entity\Action;
-use App\Entity\ActionSource;
+use App\Entity\PromiseAction;
+use App\Entity\PromiseActionSource;
 use App\Entity\Mandate;
 use App\Entity\Power;
 use App\Entity\PromiseUpdate;
@@ -63,7 +63,7 @@ class AdminActionsControllerTest extends WebTestCase
         $client->submit($form, $this->createAddFormData($mandate));
         $route = $this->assertRedirectsToRoute($client->getResponse(), 'admin_action_edit');
 
-        $action = $em->getRepository('App:Action')->find($route['id']);
+        $action = $em->getRepository('App:PromiseAction')->find($route['id']);
 
         $this->assertNotNull($action);
 
@@ -91,7 +91,7 @@ class AdminActionsControllerTest extends WebTestCase
         $client->submit($form, $this->createAddFormData($mandate));
         $route = $this->assertRedirectsToRoute($client->getResponse(), 'admin_action_edit');
 
-        $action = $em->getRepository('App:Action')->find($route['id']);
+        $action = $em->getRepository('App:PromiseAction')->find($route['id']);
 
         $this->assertNotNull($action);
         $this->assertNotEmpty($action->getPromiseUpdates());
@@ -104,7 +104,7 @@ class AdminActionsControllerTest extends WebTestCase
 
     //region Edit
 
-    private function createEditFormData(Action $action) : array
+    private function createEditFormData(PromiseAction $action) : array
     {
         $data = [
             'action[name]' => $action->getName(),
@@ -137,7 +137,7 @@ class AdminActionsControllerTest extends WebTestCase
         }
         if (!$action->getSources()->isEmpty()) {
             $data['action[sources]'] = array_map(
-                function (ActionSource $source) {
+                function (PromiseActionSource $source) {
                     return [
                         'action' => $source->getAction()->getId(),
                         'name' => $source->getName(),
@@ -158,7 +158,7 @@ class AdminActionsControllerTest extends WebTestCase
 
         /** @var ObjectManager $manager */
         $manager = $client->getContainer()->get('doctrine')->getManager();
-        $action = $this->makeAction($manager);
+        $action = $this->makePromiseAction($manager);
 
         $this->assertOnlyAdminCanAccess("/admin/actions/{$action->getId()}", $client);
     }
@@ -170,7 +170,7 @@ class AdminActionsControllerTest extends WebTestCase
         $locale = self::getLocale($client);
         $formData = ['action[name]' => ''];
 
-        $action = $this->makeAction($em);
+        $action = $this->makePromiseAction($em);
         $form = $client
             ->request('GET', "/${locale}/admin/actions/{$action->getId()}")
             ->filter('form')->form();
@@ -189,7 +189,7 @@ class AdminActionsControllerTest extends WebTestCase
         $client = self::createAdminClient();
         $em = self::getDoctrine($client);
         $locale = self::getLocale($client);
-        $action = $this->makeAction($em);
+        $action = $this->makePromiseAction($em);
         $formData = $this->createEditFormData($action);
 
         $form = $client
@@ -209,7 +209,7 @@ class AdminActionsControllerTest extends WebTestCase
         $em = self::getDoctrine($client);
         $locale = self::getLocale($client);
 
-        $action = $this->makeAction($em);
+        $action = $this->makePromiseAction($em);
         $this->assertCount(0, $action->getPromiseUpdates());
 
         $form = $client
@@ -247,8 +247,8 @@ class AdminActionsControllerTest extends WebTestCase
         $client->request($form->getMethod(), $form->getUri(), $formPhpValues);
         $this->assertRedirectsToRoute($client->getResponse(), 'admin_action_edit');
 
-        $em->clear('App:Action');
-        $action = $em->getRepository('App:Action')->find($action->getId());
+        $em->clear('App:PromiseAction');
+        $action = $em->getRepository('App:PromiseAction')->find($action->getId());
 
         $this->assertNotNull($action);
         $this->assertCount(2, $action->getPromiseUpdates());
@@ -263,7 +263,7 @@ class AdminActionsControllerTest extends WebTestCase
         $em = self::getDoctrine($client);
         $locale = self::getLocale($client);
 
-        $action = $this->makeAction($em);
+        $action = $this->makePromiseAction($em);
 
         $action->setPromiseUpdates(new ArrayCollection([$this->makePromiseUpdate($em, $action)]));
         $em->flush();
@@ -278,8 +278,8 @@ class AdminActionsControllerTest extends WebTestCase
         $client->request($form->getMethod(), $form->getUri(), $formPhpValues);
         $this->assertRedirectsToRoute($client->getResponse(), 'admin_action_edit');
 
-        $em->clear('App:Action');
-        $action = $em->getRepository('App:Action')->find($action->getId());
+        $em->clear('App:PromiseAction');
+        $action = $em->getRepository('App:PromiseAction')->find($action->getId());
 
         $this->assertNotNull($action);
         $this->assertCount(0, $action->getPromiseUpdates());
@@ -294,7 +294,7 @@ class AdminActionsControllerTest extends WebTestCase
         $em = self::getDoctrine($client);
         $locale = self::getLocale($client);
 
-        $action = $this->makeAction($em);
+        $action = $this->makePromiseAction($em);
         $this->assertCount(0, $action->getSources());
 
         $form = $client
@@ -319,9 +319,9 @@ class AdminActionsControllerTest extends WebTestCase
         $client->request($form->getMethod(), $form->getUri(), $formPhpValues);
         $this->assertRedirectsToRoute($client->getResponse(), 'admin_action_edit');
 
-        $em->clear('App:Action');
-        /** @var Action $action */
-        $action = $em->getRepository('App:Action')->find($action->getId());
+        $em->clear('App:PromiseAction');
+        /** @var PromiseAction $action */
+        $action = $em->getRepository('App:PromiseAction')->find($action->getId());
 
         $this->assertNotNull($action);
         $this->assertCount(2, $action->getSources());
@@ -336,7 +336,7 @@ class AdminActionsControllerTest extends WebTestCase
         $em = self::getDoctrine($client);
         $locale = self::getLocale($client);
 
-        $source = $this->makeActionSource($em);
+        $source = $this->makePromiseActionSource($em);
         $action = $source->getAction();
 
         $this->assertCount(1, $action->getSources());
@@ -351,8 +351,8 @@ class AdminActionsControllerTest extends WebTestCase
         $client->request($form->getMethod(), $form->getUri(), $formPhpValues);
         $this->assertRedirectsToRoute($client->getResponse(), 'admin_action_edit');
 
-        $em->clear('App:Action');
-        $action = $em->getRepository('App:Action')->find($action->getId());
+        $em->clear('App:PromiseAction');
+        $action = $em->getRepository('App:PromiseAction')->find($action->getId());
 
         $this->assertNotNull($action);
         $this->assertCount(0, $action->getSources());
@@ -367,7 +367,7 @@ class AdminActionsControllerTest extends WebTestCase
         $em = self::getDoctrine($client);
         $locale = self::getLocale($client);
 
-        $action = $this->makeAction($em);
+        $action = $this->makePromiseAction($em);
         $this->assertCount(0, $action->getUsedPowers());
 
         {
@@ -388,9 +388,9 @@ class AdminActionsControllerTest extends WebTestCase
         $client->request($form->getMethod(), $form->getUri(), $formPhpValues);
         $this->assertRedirectsToRoute($client->getResponse(), 'admin_action_edit');
 
-        $em->clear('App:Action');
-        /** @var Action $action */
-        $action = $em->getRepository('App:Action')->find($action->getId());
+        $em->clear('App:PromiseAction');
+        /** @var PromiseAction $action */
+        $action = $em->getRepository('App:PromiseAction')->find($action->getId());
 
         $this->assertNotNull($action);
         $this->assertCount(2, $action->getUsedPowers());
@@ -405,7 +405,7 @@ class AdminActionsControllerTest extends WebTestCase
         $em = self::getDoctrine($client);
         $locale = self::getLocale($client);
 
-        $action = $this->makeAction($em);
+        $action = $this->makePromiseAction($em);
         $this->assertCount(0, $action->getUsedPowers());
 
         {
@@ -427,8 +427,8 @@ class AdminActionsControllerTest extends WebTestCase
         $client->request($form->getMethod(), $form->getUri(), $formPhpValues);
         $this->assertRedirectsToRoute($client->getResponse(), 'admin_action_edit');
 
-        $em->clear('App:Action');
-        $action = $em->getRepository('App:Action')->find($action->getId());
+        $em->clear('App:PromiseAction');
+        $action = $em->getRepository('App:PromiseAction')->find($action->getId());
 
         $this->assertNotNull($action);
         $this->assertCount(0, $action->getUsedPowers());
@@ -447,7 +447,7 @@ class AdminActionsControllerTest extends WebTestCase
 
         /** @var ObjectManager $manager */
         $manager = $client->getContainer()->get('doctrine')->getManager();
-        $action = $this->makeAction($manager);
+        $action = $this->makePromiseAction($manager);
 
         $this->assertOnlyAdminCanAccess("/admin/actions/{$action->getId()}/d", $client);
 
@@ -465,7 +465,7 @@ class AdminActionsControllerTest extends WebTestCase
         $manager = $client->getContainer()->get('doctrine')->getManager();
         $locale = self::getLocale($client);
 
-        $action = $this->makeAction($manager);
+        $action = $this->makePromiseAction($manager);
 
         $form = $client
             ->request('GET', "/${locale}/admin/actions/{$action->getId()}/d")
@@ -473,10 +473,10 @@ class AdminActionsControllerTest extends WebTestCase
         $client->submit($form);
         $this->assertRedirectsToRoute($client->getResponse(), 'admin_promises');
 
-        $manager->clear('App:Action');
+        $manager->clear('App:PromiseAction');
 
         /** @var Status $action */
-        $action = $manager->getRepository('App:Action')->find($action->getId());
+        $action = $manager->getRepository('App:PromiseAction')->find($action->getId());
 
         $this->assertNull($action);
 

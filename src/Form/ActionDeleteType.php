@@ -2,7 +2,7 @@
 
 namespace App\Form;
 
-use App\Entity\Action;
+use App\Entity\PromiseAction;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -19,7 +19,7 @@ class ActionDeleteType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Action::class,
+            'data_class' => PromiseAction::class,
         ]);
     }
 }

@@ -24,7 +24,7 @@ class PromiseUpdate
     use Traits\IdTrait;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Action", inversedBy="promiseUpdates")
+     * @ORM\ManyToOne(targetEntity="PromiseAction", inversedBy="promiseUpdates")
      * @ORM\JoinColumn(nullable=false)
      */
     private $action;
@@ -41,12 +41,12 @@ class PromiseUpdate
      */
     private $status;
 
-    public function getAction() : ?Action
+    public function getAction() : ?PromiseAction
     {
         return $this->action;
     }
 
-    public function setAction(?Action $action) : self
+    public function setAction(?PromiseAction $action) : self
     {
         $this->action = $action;
 

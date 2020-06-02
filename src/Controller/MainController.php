@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Entity\Action;
+use App\Entity\PromiseAction;
 use App\Entity\Election;
 use App\Entity\InstitutionTitle;
 use App\Entity\Mandate;
@@ -26,8 +26,8 @@ class MainController extends AbstractController
      */
     public function homeAction(Request $request, ManagerRegistry $em)
     {
-        /** @var Action[] $latestActions */
-        $latestActions = $em->getRepository('App:Action')->createQueryBuilder('a')
+        /** @var PromiseAction[] $latestActions */
+        $latestActions = $em->getRepository('App:PromiseAction')->createQueryBuilder('a')
             ->andWhere('a.published = :published')->setParameter('published', true)
             ->andWhere('a.promiseUpdates IS NOT EMPTY')
             ->orderBy('a.occurredTime', 'DESC')

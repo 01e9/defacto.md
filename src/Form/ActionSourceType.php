@@ -2,7 +2,7 @@
 
 namespace App\Form;
 
-use App\Entity\ActionSource;
+use App\Entity\PromiseActionSource;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -35,7 +35,7 @@ class ActionSourceType extends AbstractType
     {
         $resolver->setDefaults([
             'label' => false,
-            'data_class' => ActionSource::class,
+            'data_class' => PromiseActionSource::class,
             'actions' => [],
         ]);
     }

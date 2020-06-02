@@ -22,7 +22,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 class Competence
 {
     use Traits\IdTrait;
-    use Traits\NameTrait;
     use Traits\SlugTrait;
     use Traits\DescriptionTrait;
 
@@ -44,6 +43,14 @@ class Competence
      * @Assert\GreaterThan(0)
      */
     private $points;
+
+    /**
+     * @ORM\Column(type="text", nullable=false)
+     *
+     * @Assert\NotBlank()
+     * @Assert\Length(min=1, max=10000)
+     */
+    private $description;
 
     public function __construct()
     {

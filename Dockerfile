@@ -25,7 +25,7 @@ COPY --from=js /project/public/build ./public/build
 RUN apt-get update \
     && apt-get install -y wget unzip nano \
     && apt-get install -y \
-        libzip-dev libfreetype6-dev libjpeg62-turbo-dev libmcrypt-dev libpng-dev libicu-dev libpq-dev \
+        libzip-dev libfreetype6-dev libjpeg62-turbo-dev libmcrypt-dev libpng-dev libicu-dev libpq-dev libonig-dev \
     && docker-php-ext-install -j$(nproc) zip mbstring json gd iconv pcntl intl pdo pdo_pgsql \
     && apt-get install -y nginx \
         && ln -sf /dev/stdout /var/log/nginx/access.log \

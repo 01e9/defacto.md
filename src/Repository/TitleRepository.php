@@ -12,4 +12,15 @@ class TitleRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Title::class);
     }
+
+    public function getAdminChoices() : array
+    {
+        $choices = [];
+
+        foreach ($this->findBy([], ['name' => 'ASC']) as $entity) {
+            $choices[ $entity->getName() ] = $entity;
+        }
+
+        return $choices;
+    }
 }

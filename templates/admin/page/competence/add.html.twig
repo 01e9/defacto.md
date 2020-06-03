@@ -1,0 +1,14 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block main %}
+    <div class="container">
+        {% include 'admin/component/breadcrumb.html.twig' with {
+            items: [
+                {title: 'title.competences'|trans, link: path('admin_competences')}
+            ],
+            current: {title: 'title.competence_add'|trans}
+        } only %}
+
+        {% include 'admin/component/form/competence.html.twig' with {form: form} only %}
+    </div>
+{% endblock %}

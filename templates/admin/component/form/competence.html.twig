@@ -1,0 +1,37 @@
+{% set id = form.vars.value|default({id:0}).id %}
+
+{{ form_start(form) }}
+
+<div class="row">
+    <div class="col-lg-6">
+        {{ form_row(form.category) }}
+    </div>
+    <div class="col-lg-6">
+        {{ form_row(form.title) }}
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-2">
+        {{ form_row(form.code) }}
+    </div>
+    <div class="col-lg-8">
+        {{ form_row(form.slug) }}
+    </div>
+    <div class="col-lg-2">
+        {{ form_row(form.points) }}
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        {{ form_row(form.name) }}
+    </div>
+</div>
+
+{% include "admin/component/form/widget/submit-delete-buttons.html.twig" with {
+    submitText: id ? 'action.edit_competence'|trans : 'action.add_competence'|trans,
+    delete: id ? {text: 'action.delete_competence'|trans, link: path('admin_competence_delete', {id: id})} : false
+} only %}
+
+{{ form_rest(form) }}
+
+{{ form_end(form) }}

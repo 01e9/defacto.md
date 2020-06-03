@@ -1,0 +1,22 @@
+<div class="list-group list-group-flush">
+    {% for competence in competences %}
+        <div class="list-group-item list-group-item-action">
+            <div class="container-fluid px-0">
+                <div class="row">
+                    <div class="col">
+                        <a href="{{ path('admin_competence_edit', {id: competence.id}) }}">{{ competence.name }}</a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-8">
+                        <small class="mr-1 text-monospace text-muted">{{ competence.code }}</small>
+                        <div class="badge badge-info">{{ competence.category.nameWithParent }}</div>
+                    </div>
+                    <div class="col-lg-4 text-right">
+                        <div class="badge badge-light">{{ competence.title.name }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>

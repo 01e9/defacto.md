@@ -24,6 +24,9 @@ flash:
     problem_created: Problema a fost creată
     problem_updated: Problema a fost modificată
     problem_deleted: Problema a fost ștearsă
+    competence_created: Competența a fost creată
+    competence_updated: Competența a fost modificată
+    competence_deleted: Competența a fost ștearsă
     blog_post_created: Postarea a fost creată
     blog_post_updated: Postarea a fost modificată
     blog_post_deleted: Postarea a fost ștearsă
@@ -74,7 +77,7 @@ label:
     percentage: Procentaj
     number: Numărul
     opinion: Opinia
-    institution_title: Funcție
+    institution_title: Funcția
     code: Cod
     title: Titlu
     description: Descriere
@@ -88,6 +91,7 @@ label:
     published: Publicat(ă)
     hasPrerogatives: Are prerogative
     doesNotHavePrerogatives: Nu are prerogative
+    category: Categoria
     categories: Categorii
     used_powers: Atribuții folosite
     occurred_time: Întâmplat(ă) pe data
@@ -117,6 +121,7 @@ label:
     constituency_details: Detalii circumscripție
     mandate_ceasing: Încetarea mandatului
     the_promise: Promisiunea
+    points: Puncte
 
 action:
     login: Autentificare
@@ -147,6 +152,7 @@ action:
     add_promiseUpdates: Adaugă conexiune cu promisiune
     add_candidateProblemOpinions: Adaugă opinie
     add_problems: Adaugă problemă
+    add_competences: Adaugă competență
     add_candidates: Adaugă candidat
     add_sources: Adaugă sursă
     add_constituency: Adaugă circumscripție
@@ -155,6 +161,9 @@ action:
     add_problem: Adaugă problemă
     edit_problem: Modifică problemă
     delete_problem: Șterge problemă
+    add_competence: Adaugă competență
+    edit_competence: Modifică competență
+    delete_competence: Șterge competență
     search: Caută
     searching: Căutare
     edit_setting: Modifică setare
@@ -211,6 +220,11 @@ title:
     problem_add: Adăugare problemă
     problem_edit: Redactare problemă
     problem_delete: Ștergere problemă
+    competences: Competențe
+    competence: Competență
+    competence_add: Adăugare competență
+    competence_edit: Redactare competență
+    competence_delete: Ștergere competență
     settings: Setări
     setting: Setare
     votes: Voturi

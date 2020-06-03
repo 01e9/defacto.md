@@ -1,0 +1,21 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block main %}
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                {% include 'admin/component/breadcrumb.html.twig' with {
+                    current: {title: 'title.competences'|trans},
+                    add: {link: path('admin_competence_add'), text: 'action.add_competence'|trans}
+                } only %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                {% include 'admin/component/list/competences.html.twig' with {
+                    competences: competences
+                } only %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -14,3 +14,4 @@ not_deletable:
     mandate: "Mandatul nu poate fi șters pentru că e conectat cu alte înregistrări."
     problem: "Problema nu poate fi ștearsă pentru că e conectată cu alte înregistrări."
     blog_post: "Postarea nu poate fi ștearsă pentru că e conectată cu alte înregistrări."
+    competence: "Competența nu poate fi ștearsă pentru că e conectată cu alte înregistrări."

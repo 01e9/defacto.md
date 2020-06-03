@@ -18,4 +18,27 @@ class CompetenceCategoryRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, CompetenceCategory::class);
     }
+
+    public function getAdminChoices() : array
+    {
+        $choices = [];
+
+        foreach ($this->findBy([], ['name' => 'ASC']) as $entity /** @var CompetenceCategory $entity */) {
+            if ($entity->getParent()) {
+                $parentLabel = $entity->getParent()->getName();
+
+                if (isset($choices[$parentLabel]) && !is_array($choices[$parentLabel])) {
+                    $choices[$parentLabel] = [];
+                }
+
+                $choices[ $parentLabel ][ $entity->getName() ] = $entity;
+            } elseif (!isset($choices[$entity->getName()])) {
+                $choices[$entity->getName()] = $entity;
+            }
+        }
+
+        ksort($choices);
+
+        return $choices;
+    }
 }

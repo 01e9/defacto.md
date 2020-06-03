@@ -11,7 +11,7 @@ RUN mkdir -p public/build
 RUN npm install
 RUN npm run build
 
-FROM php:7.3-fpm
+FROM php:7.4-fpm
 
 ARG COMPOSER_VERSION='1.9.0'
 ARG TINI_VERSION='0.18.0'

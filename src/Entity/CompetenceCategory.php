@@ -41,7 +41,7 @@ class CompetenceCategory
     /**
      * @var CompetenceCategory|null
      *
-     * @ORM\ManyToOne(targetEntity="CompetenceCategory")
+     * @ORM\ManyToOne(targetEntity="CompetenceCategory", fetch="EAGER")
      * @ORM\JoinColumn(nullable=true)
      */
     private $parent;
@@ -61,6 +61,11 @@ class CompetenceCategory
     public function getName() : ?string
     {
         return $this->name;
+    }
+
+    public function getNameWithParent() : ?string
+    {
+        return $this->getParent() ? "{$this->getParent()->getName()} / {$this->getName()}" : $this->getName();
     }
 
     public function setName(?string $name) : self

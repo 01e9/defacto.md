@@ -11,12 +11,12 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\Table(
  *     name="competences",
  *     uniqueConstraints={
- *      @ORM\UniqueConstraint(name="competence_unique_slug", columns={"slug"}),
+ *      @ORM\UniqueConstraint(name="competence_unique_title_slug", columns={"title_id", "slug"}),
  *      @ORM\UniqueConstraint(name="competence_unique_title_code", columns={"title_id", "code"})
  *     }
  * )
  *
- * @UniqueEntity(fields={"slug"})
+ * @UniqueEntity(fields={"title", "slug"}, errorPath="slug")
  * @UniqueEntity(fields={"title", "code"}, errorPath="code")
  */
 class Competence
@@ -32,7 +32,7 @@ class Competence
     private $title;
 
     /**
-     * @ORM\ManyToOne(targetEntity="CompetenceCategory")
+     * @ORM\ManyToOne(targetEntity="CompetenceCategory", fetch="EAGER")
      */
     private $category;
 

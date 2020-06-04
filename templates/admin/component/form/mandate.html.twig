@@ -43,7 +43,7 @@
         {{ form_row(form.decisionLink) }}
     </div>
 </div>
-<div class="row">
+<div class="row mb-3">
     <div class="col">
         <div class="card mt-3">
             <div class="card-header">{{ "label.mandate_ceasing"|trans }}</div>
@@ -64,6 +64,24 @@
         </div>
     </div>
 </div>
+
+{% if id %}
+    <div class="row">
+        <div class="col pb-3">
+            {{ form_row(form.competenceUses) }}
+        </div>
+    </div>
+{% else %}
+    {% do form.competenceUses.setRendered() %}
+{% endif %}
+
+{% if not id %}
+    <div class="row">
+        <div class="col">
+            <p class="text-info">{{ 'text.more_fields_after_add'|trans }}</p>
+        </div>
+    </div>
+{% endif %}
 
 {% include "admin/component/form/widget/submit-delete-buttons.html.twig" with {
     submitText: id ? 'action.edit_mandate'|trans : 'action.add_mandate'|trans,

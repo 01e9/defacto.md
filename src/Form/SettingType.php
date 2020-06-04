@@ -37,7 +37,7 @@ class SettingType extends AbstractType
                 $builder->add('value', ChoiceType::class, [
                     'label' => $options['label'],
                     'placeholder' => 'placeholder.choose_option',
-                    'choices' => $this->entityManager->getRepository($options['type'])->getAdminChoices(),
+                    'choices' => $this->entityManager->getRepository($options['type'])->getAdminChoicesByTitle(),
                     'choice_value' => 'id',
                     'required' => !$options['has_default'],
                     'constraints' => $options['has_default'] ? [] : [

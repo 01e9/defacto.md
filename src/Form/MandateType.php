@@ -6,6 +6,7 @@ use App\Consts;
 use App\Entity\Mandate;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -77,6 +78,16 @@ class MandateType extends AbstractType
             ->add('ceasingReason', TextType::class, [
                 'label' => 'label.ceasing_reason',
                 'required' => false,
+            ])
+            ->add('competenceUses', CollectionType::class, [
+                'label' => 'label.competence_uses',
+                'allow_add' => true,
+                'allow_delete' => true,
+                'prototype' => true,
+                'entry_type' => CompetenceUseType::class,
+                'entry_options' => [
+                    'mandate' => $options['data'],
+                ],
             ])
         ;
     }

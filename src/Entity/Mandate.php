@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -25,6 +26,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @UniqueEntity(fields={"politician", "institutionTitle", "beginDate"}, errorPath="beginDate")
  * @UniqueEntity(fields={"politician", "institutionTitle", "endDate"}, errorPath="endDate")
+ *
+ * todo: assert this.title == competenceUses[].title
  */
 class Mandate
 {
@@ -129,6 +132,7 @@ class Mandate
     /**
      * @ORM\OneToMany(targetEntity="CompetenceUse", mappedBy="mandate", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
+     * @ORM\OrderBy({"useDate": "ASC"})
      *
      * @Assert\Valid()
      */
@@ -283,12 +287,12 @@ class Mandate
         return $this;
     }
 
-    public function getCompetenceUses()
+    public function getCompetenceUses(): Collection
     {
         return $this->competenceUses;
     }
 
-    public function setCompetenceUses($competenceUses) : self
+    public function setCompetenceUses(Collection $competenceUses) : self
     {
         $this->competenceUses = $competenceUses;
 

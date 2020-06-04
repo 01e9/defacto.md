@@ -122,6 +122,9 @@ label:
     mandate_ceasing: Încetarea mandatului
     the_promise: Promisiunea
     points: Puncte
+    competence: Competența
+    competence_uses: Competențe folosite
+    use_date: Data folosirii
 
 action:
     login: Autentificare
@@ -152,7 +155,7 @@ action:
     add_promiseUpdates: Adaugă conexiune cu promisiune
     add_candidateProblemOpinions: Adaugă opinie
     add_problems: Adaugă problemă
-    add_competences: Adaugă competență
+    add_competenceUses: Adaugă competență
     add_candidates: Adaugă candidat
     add_sources: Adaugă sursă
     add_constituency: Adaugă circumscripție

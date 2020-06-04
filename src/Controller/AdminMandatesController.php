@@ -6,6 +6,7 @@ namespace App\Controller;
 use App\Entity\Mandate;
 use App\Form\MandateDeleteType;
 use App\Form\MandateType;
+use Doctrine\Common\Collections\ArrayCollection;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -65,11 +66,15 @@ class AdminMandatesController extends AbstractController
      */
     public function editAction(Request $request, string $id, TranslatorInterface $translator)
     {
+        /** @var Mandate $mandate */
         $mandate = $this->getDoctrine()->getRepository('App:Mandate')->find($id);
 
         if (!$mandate) {
             throw $this->createNotFoundException();
         }
+
+        $originalCompetenceUses = new ArrayCollection();
+        array_map([$originalCompetenceUses, 'add'], $mandate->getCompetenceUses()->toArray());
 
         $form = $this->createForm(MandateType::class, $mandate, $this->getChoiceFormOptions());
         $form->handleRequest($request);
@@ -79,6 +84,14 @@ class AdminMandatesController extends AbstractController
             $mandate = $form->getData();
 
             $em = $this->getDoctrine()->getManager();
+
+            foreach ($originalCompetenceUses as $competenceUse) {
+                if (false === $mandate->getCompetenceUses()->contains($competenceUse)) {
+                    $mandate->getCompetenceUses()->removeElement($competenceUse);
+                    $em->remove($competenceUse);
+                }
+            }
+
             $em->persist($mandate);
             $em->flush();
 

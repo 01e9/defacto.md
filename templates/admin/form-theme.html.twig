@@ -217,6 +217,42 @@
     </div>
 {% endblock %}
 
+{% block competence_use_widget %}
+    {% import _self as macros %}
+
+    <div class="card mb-3 bg-light">
+        <div class="card-body pt-2 pb-1 px-3">
+            <div class="d-none">
+                {{ form_row(form.mandate) }}
+            </div>
+            <div class="row">
+                <div class="col">
+                    {{ form_row(form.competence) }}
+                </div>
+                {% if form.parent.vars.allow_delete %}
+                    {{ macros.delete_btn_col() }}
+                {% endif %}
+            </div>
+            <div class="row">
+                <div class="col-lg-3">
+                    {{ form_row(form.useDate, {
+                        'type': 'text',
+                        'attr': {'class': 'datepicker-input', 'readonly': true}
+                    }) }}
+                </div>
+                <div class="col-lg-9">
+                    {{ form_row(form.sourceLink) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    {{ form_row(form.description) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
 {% macro delete_btn_col() %}
     <div class="col-auto pl-0 pr-2">
         <button type="button" class="btn btn-light"

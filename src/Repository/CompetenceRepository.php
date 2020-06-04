@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Competence;
 use App\Entity\CompetenceUse;
+use App\Entity\Title;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
@@ -34,5 +35,17 @@ class CompetenceRepository extends ServiceEntityRepository
             ->addOrderBy('c.code', 'ASC')
             ->getQuery()
             ->getResult();
+    }
+
+    public function getAdminChoicesByTitle(Title $title) : array
+    {
+        $choices = [];
+
+        foreach ($this->findBy(['title' => $title], ['code' => 'ASC']) as $entity) {
+            $label = implode(" | ", [$entity->getCode(), $entity->getPoints(), $entity->getName()]);;
+            $choices[ $label ] = $entity;
+        }
+
+        return $choices;
     }
 }

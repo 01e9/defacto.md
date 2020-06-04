@@ -67,14 +67,14 @@ class CompetenceUse
         return $this;
     }
 
-    public function getUseTime(): \DateTimeInterface
+    public function getUseDate(): ?\DateTimeInterface
     {
-        return $this->useTime;
+        return $this->useDate;
     }
 
-    public function setUseTime(\DateTimeInterface $useTime): self
+    public function setUseDate(?\DateTimeInterface $useDate): self
     {
-        $this->useTime = $useTime;
+        $this->useDate = $useDate;
 
         return $this;
     }

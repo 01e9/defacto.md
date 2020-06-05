@@ -32,6 +32,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Mandate
 {
     use Traits\IdTrait;
+    use Traits\CompetenceUsesCountTrait;
 
     /**
      * @var \DateTimeInterface
@@ -131,16 +132,23 @@ class Mandate
 
     /**
      * @ORM\OneToMany(targetEntity="CompetenceUse", mappedBy="mandate", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
      * @ORM\OrderBy({"useDate": "ASC"})
      *
      * @Assert\Valid()
      */
     private $competenceUses;
 
+    /**
+     * @ORM\OneToMany(targetEntity="MandateCompetenceCategoryStats", mappedBy="mandate", cascade={"persist", "remove"})
+     *
+     * @Assert\Valid()
+     */
+    private $competenceCategoryStats;
+
     public function __construct()
     {
         $this->competenceUses = new ArrayCollection();
+        $this->competenceCategoryStats = new ArrayCollection();
     }
 
     public function getBeginDate() : ?\DateTime
@@ -295,6 +303,18 @@ class Mandate
     public function setCompetenceUses(Collection $competenceUses) : self
     {
         $this->competenceUses = $competenceUses;
+
+        return $this;
+    }
+
+    public function getCompetenceCategoryStats(): Collection
+    {
+        return $this->competenceCategoryStats;
+    }
+
+    public function setCompetenceCategoryStats(Collection $competenceCategoryStats) : self
+    {
+        $this->competenceCategoryStats = $competenceCategoryStats;
 
         return $this;
     }

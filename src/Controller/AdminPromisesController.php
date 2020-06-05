@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Promise;
+use App\Event\PromiseUpdatedEvent;
 use App\Form\PromiseDeleteType;
 use App\Form\PromisesFilterType;
 use App\Form\PromiseType;
@@ -11,6 +12,7 @@ use App\Repository\PromiseRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -87,7 +89,11 @@ class AdminPromisesController extends AbstractController
      * @Route(path="/{id}", name="admin_promise_edit")
      * @return Response
      */
-    public function editAction(Request $request, string $id, TranslatorInterface $translator)
+    public function editAction(
+        Request $request, string $id,
+        TranslatorInterface $translator,
+        EventDispatcherInterface $eventDispatcher
+    )
     {
         $promise = $this->getDoctrine()->getRepository('App:Promise')->find($id);
         if (!$promise) {
@@ -125,6 +131,8 @@ class AdminPromisesController extends AbstractController
             $em->flush();
 
             $this->addFlash('success', $translator->trans('flash.promise_updated'));
+
+            $eventDispatcher->dispatch(new PromiseUpdatedEvent($promise));
 
             return $this->redirectToRoute('admin_promise_edit', ['id' => $promise->getId()]);
         }

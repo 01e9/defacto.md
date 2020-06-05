@@ -84,6 +84,8 @@ class MandateCompetenceUseStatsSubscriber implements EventSubscriberInterface
             $categories[ $category->getId() ] = $category;
         }
 
+        $totalUseCount = 0;
+
         foreach ($categoriesStats as $categoryStatsData) {
             $categoryStats = new MandateCompetenceCategoryStats();
             $categoryStats->setMandate($mandate);
@@ -91,7 +93,11 @@ class MandateCompetenceUseStatsSubscriber implements EventSubscriberInterface
             $categoryStats->setCompetenceUsesCount($categoryStatsData['use_count']);
 
             $this->objectManager->persist($categoryStats);
+
+            $totalUseCount += $categoryStatsData['use_count'];
         }
+
+        $mandate->setCompetenceUsesCount($totalUseCount);
 
         $this->objectManager->flush();
     }

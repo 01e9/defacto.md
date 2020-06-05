@@ -47,12 +47,6 @@ services:
             - { name: doctrine.event_listener, event: postLoad }
             - { name: doctrine.event_listener, event: preRemove }
 
-    App\EventListener\EntityPromiseUpdateListener:
-        tags:
-            - { name: doctrine.event_listener, event: postPersist }
-            - { name: doctrine.event_listener, event: postUpdate }
-            - { name: doctrine.event_listener, event: postRemove }
-
     twig.extension.date.age:
         class: Guzzlefry\Twig\AgeExtension
         tags:

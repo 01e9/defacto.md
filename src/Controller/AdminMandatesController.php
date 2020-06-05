@@ -4,11 +4,13 @@
 namespace App\Controller;
 
 use App\Entity\Mandate;
+use App\Event\MandateUpdatedEvent;
 use App\Form\MandateDeleteType;
 use App\Form\MandateType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -64,7 +66,11 @@ class AdminMandatesController extends AbstractController
      * @Route(path="/{id}", name="admin_mandate_edit")
      * @return Response
      */
-    public function editAction(Request $request, string $id, TranslatorInterface $translator)
+    public function editAction(
+        Request $request, string $id,
+        TranslatorInterface $translator,
+        EventDispatcherInterface $eventDispatcher
+    )
     {
         /** @var Mandate $mandate */
         $mandate = $this->getDoctrine()->getRepository('App:Mandate')->find($id);
@@ -96,6 +102,8 @@ class AdminMandatesController extends AbstractController
             $em->flush();
 
             $this->addFlash('success', $translator->trans('flash.mandate_updated'));
+
+            $eventDispatcher->dispatch(new MandateUpdatedEvent($mandate));
 
             return $this->redirectToRoute('admin_mandate_edit', ['id' => $mandate->getId()]);
         }

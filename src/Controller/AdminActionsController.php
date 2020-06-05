@@ -4,10 +4,12 @@ namespace App\Controller;
 
 use App\Entity\PromiseAction;
 use App\Entity\PromiseUpdate;
+use App\Event\PromiseActionUpdatedEvent;
 use App\Form\ActionDeleteType;
 use App\Form\ActionType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
@@ -90,7 +92,11 @@ class AdminActionsController extends AbstractController
      * @Route(path="/{id}", name="admin_action_edit")
      * @return Response
      */
-    public function editAction(Request $request, string $id, TranslatorInterface $translator) {
+    public function editAction(
+        Request $request, string $id,
+        TranslatorInterface $translator,
+        EventDispatcherInterface $eventDispatcher
+    ) {
         /** @var PromiseAction $action */
         $action = $this->getDoctrine()->getRepository('App:PromiseAction')->find($id);
         if (!$action) {
@@ -137,6 +143,8 @@ class AdminActionsController extends AbstractController
             $em->flush();
 
             $this->addFlash('success', $translator->trans('flash.action_updated'));
+
+            $eventDispatcher->dispatch(new PromiseActionUpdatedEvent($action));
 
             return $this->redirectToRoute('admin_action_edit', ['id' => $action->getId()]);
         }

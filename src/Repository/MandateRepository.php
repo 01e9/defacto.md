@@ -2,10 +2,13 @@
 
 namespace App\Repository;
 
+use App\Entity\Election;
 use App\Entity\InstitutionTitle;
 use App\Entity\Mandate;
 use App\Entity\Power;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\AbstractQuery;
+use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Query\Expr;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -119,6 +122,42 @@ class MandateRepository extends ServiceEntityRepository
         );
 
         return $statistics;
+    }
+
+    public function findCompetencePointsRank(Mandate $mandate): int
+    {
+        {
+            $parentElectionId = $mandate->getElection()->getParent()
+                ? $mandate->getElection()->getParent()->getId()
+                : $mandate->getElection()->getId();
+
+            $childElectionIds = array_column(
+                $this->getEntityManager()->getRepository(Election::class)
+                    ->createQueryBuilder('e')
+                    ->where('e.parent = :parent_election')
+                    ->setParameter('parent_election', $parentElectionId)
+                    ->getQuery()
+                    ->getResult(AbstractQuery::HYDRATE_ARRAY),
+                'id'
+            );
+
+            $electionIds = array_unique(array_merge([$parentElectionId], $childElectionIds));
+        }
+
+        try {
+            $count = $this->createQueryBuilder('m')
+                ->select('COUNT(DISTINCT(m.competenceUsesPoints))')
+                ->where('m.competenceUsesPoints > :points')
+                ->andWhere('m.election IN (:electionIds)')
+                ->setParameter('points', $mandate->getCompetenceUsesPoints())
+                ->setParameter('electionIds', $electionIds)
+                ->getQuery()
+                ->getSingleResult(AbstractQuery::HYDRATE_SINGLE_SCALAR);
+
+            return 1 + $count;
+        } catch (NoResultException $exception) {
+            return 1;
+        }
     }
 
     public function hasConnections(string $id) : bool

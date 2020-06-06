@@ -22,6 +22,21 @@
 input.form-control[type="color"] {
     height: 2.3em;
 }
+.custom-file {
+    height: auto;
+    border: 1px solid $border-color;
+    border-radius: $border-radius;
+    padding: map_get($spacers, 1);
+
+    .custom-file-input {
+        opacity: 1;
+        height: auto;
+    }
+
+    .custom-file-label {
+        display: none;
+    }
+}
 
 //endregion
 

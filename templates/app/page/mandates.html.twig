@@ -1,0 +1,53 @@
+{# @var \Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination mandates #}
+{# @var \App\Entity\Election election #}
+{# @var int first_mandate_rank #}
+
+{% extends 'app/base.html.twig' %}
+{% import 'app/macros.html.twig' as app_macros %}
+{% import 'macros.html.twig' as macros %}
+
+{# todo: title #}
+
+{% block head_meta %}
+    {{ parent() }}
+    <meta name="robots" content="noindex, follow">
+{% endblock %}
+
+{% block main %}
+    <main>
+        <section class="container">
+            <div class="row">
+                <div class="col">
+                    <h1 class="h3 my-4">{{ election.theElectedName }}</h1>
+
+                    <ul class="list-group">
+                        {% set current_rank = first_mandate_rank %}
+                        {% for mandate in mandates %}{# @var \App\Entity\Mandate mandate #}
+                            {% if prev_mandate is defined
+                                and mandate.competenceUsesPoints < prev_mandate.competenceUsesPoints %}
+                                {% set current_rank = current_rank + 1 %}
+                            {% endif %}
+
+                            <li class="list-group-item">
+                                <div>{{ mandate.politician.firstName }} {{ mandate.politician.lastName }}</div>
+                                <samp>#{{ current_rank}} / {{ mandate.competenceUsesPoints }}</samp>
+                            </li>
+
+                            {# @var \App\Entity\Mandate prev_mandate #}
+                            {% set prev_mandate = mandate %}
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            {% if mandates.getPaginationData()['pageCount'] > 1 %}
+                <footer class="row mt-4 mb-5">
+                    <div class="col text-center">
+                        <div class="d-inline-block pagination-wrapper">
+                            {{ knp_pagination_render(mandates) }}
+                        </div>
+                    </div>
+                </footer>
+            {% endif %}
+        </section>
+    </main>
+{% endblock %}

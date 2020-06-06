@@ -23,7 +23,7 @@ class BlogControllerTest extends WebTestCase
 
         $blogPost = $this->makeBlogPost($em);
         $blogPost->setPublishTime(null);
-        $em->flush($blogPost);
+        $em->flush();
 
         $path = "/blog";
 

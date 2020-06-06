@@ -195,7 +195,7 @@ class AdminConstituenciesControllerTest extends WebTestCase
 
         $constituency = $this->makeConstituency($em);
         $constituency->setProblems(new ArrayCollection([$this->makeConstituencyProblem($em, $constituency)]));
-        $em->flush($constituency);
+        $em->flush();
 
         $form = $client
             ->request('GET', "/${locale}/admin/constituencies/{$constituency->getId()}")
@@ -284,7 +284,7 @@ class AdminConstituenciesControllerTest extends WebTestCase
 
         $constituency = $this->makeConstituency($em);
         $constituency->setCandidates(new ArrayCollection([$this->makeConstituencyCandidate($em, $constituency)]));
-        $em->flush($constituency);
+        $em->flush();
 
         $form = $client
             ->request('GET', "/${locale}/admin/constituencies/{$constituency->getId()}")
@@ -383,7 +383,7 @@ class AdminConstituenciesControllerTest extends WebTestCase
         $constituency->setCandidateProblemOpinions(
             new ArrayCollection([$this->makeConstituencyCandidateProblemOpinion($em, $constituency)])
         );
-        $em->flush($constituency);
+        $em->flush();
 
         $form = $client
             ->request('GET', "/${locale}/admin/constituencies/{$constituency->getId()}")

@@ -222,12 +222,12 @@ class AdminActionsControllerTest extends WebTestCase
             $promise1 = $this->makePromise($em);
             $promise1->setElection($action->getMandate()->getElection());
             $promise1->setPolitician($action->getMandate()->getPolitician());
-            $em->flush($promise1);
+            $em->flush();
 
             $promise2 = $this->makePromise($em);
             $promise2->setElection($action->getMandate()->getElection());
             $promise2->setPolitician($action->getMandate()->getPolitician());
-            $em->flush($promise2);
+            $em->flush();
 
             $status = $this->makeStatus($em);
         }

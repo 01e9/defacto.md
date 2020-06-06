@@ -42,7 +42,7 @@ trait FactoryTrait
         $status->setSlug("test-${random}");
 
         $em->persist($status);
-        $em->flush($status);
+        $em->flush();
 
         return $status;
     }
@@ -56,7 +56,7 @@ trait FactoryTrait
         $institution->setSlug("test-${random}");
 
         $em->persist($institution);
-        $em->flush($institution);
+        $em->flush();
 
         return $institution;
     }
@@ -71,7 +71,7 @@ trait FactoryTrait
         $title->setSlug("test-${random}");
 
         $em->persist($title);
-        $em->flush($title);
+        $em->flush();
 
         return $title;
     }
@@ -83,7 +83,7 @@ trait FactoryTrait
         $institutionTitle->setInstitution(self::makeInstitution($em));
 
         $em->persist($institutionTitle);
-        $em->flush($institutionTitle);
+        $em->flush();
 
         return $institutionTitle;
     }
@@ -100,7 +100,7 @@ trait FactoryTrait
         $election->setDate(new \DateTime());
 
         $em->persist($election);
-        $em->flush($election);
+        $em->flush();
 
         return $election;
     }
@@ -113,7 +113,7 @@ trait FactoryTrait
         $candidate->setConstituency(self::makeConstituency($em));
 
         $em->persist($candidate);
-        $em->flush($candidate);
+        $em->flush();
 
         return $candidate;
     }
@@ -129,7 +129,7 @@ trait FactoryTrait
         $constituency->setNumber($random);
 
         $em->persist($constituency);
-        $em->flush($constituency);
+        $em->flush();
 
         return $constituency;
     }
@@ -143,7 +143,7 @@ trait FactoryTrait
         $problem->setSlug("test-problem-${random}");
 
         $em->persist($problem);
-        $em->flush($problem);
+        $em->flush();
 
         return $problem;
     }
@@ -158,7 +158,7 @@ trait FactoryTrait
         $politician->setSlug("foo-bar-${random}");
 
         $em->persist($politician);
-        $em->flush($politician);
+        $em->flush();
 
         return $politician;
     }
@@ -172,7 +172,7 @@ trait FactoryTrait
         $party->setSlug("test-${random}");
 
         $em->persist($party);
-        $em->flush($party);
+        $em->flush();
 
         return $party;
     }
@@ -190,7 +190,7 @@ trait FactoryTrait
         $mandate->setConstituency(self::makeConstituency($em));
 
         $em->persist($mandate);
-        $em->flush($mandate);
+        $em->flush();
 
         return $mandate;
     }
@@ -208,7 +208,7 @@ trait FactoryTrait
         $promise->setMadeTime(new \DateTime("-3 days"));
 
         $em->persist($promise);
-        $em->flush($promise);
+        $em->flush();
 
         return $promise;
     }
@@ -225,7 +225,7 @@ trait FactoryTrait
         $action->setOccurredTime(new \DateTime());
 
         $em->persist($action);
-        $em->flush($action);
+        $em->flush();
 
         return $action;
     }
@@ -245,7 +245,7 @@ trait FactoryTrait
         $promiseUpdate->setPromise($promise);
 
         $em->persist($promiseUpdate);
-        $em->flush($promiseUpdate);
+        $em->flush();
         $em->refresh($promiseUpdate->getAction());
         $em->refresh($promiseUpdate->getPromise());
 
@@ -262,7 +262,7 @@ trait FactoryTrait
         $actionSource->setLink("http://test.link/${random}");
 
         $em->persist($actionSource);
-        $em->flush($actionSource);
+        $em->flush();
         $em->refresh($actionSource->getAction());
 
         return $actionSource;
@@ -277,7 +277,7 @@ trait FactoryTrait
         $party->setSlug("test-${random}");
 
         $em->persist($party);
-        $em->flush($party);
+        $em->flush();
 
         return $party;
     }
@@ -291,7 +291,7 @@ trait FactoryTrait
         $constituencyProblem->setProblem(self::makeProblem($em));
 
         $em->persist($constituencyProblem);
-        $em->flush($constituencyProblem);
+        $em->flush();
         $em->refresh($constituencyProblem->getConstituency());
         $em->refresh($constituencyProblem->getElection());
         $em->refresh($constituencyProblem->getProblem());
@@ -307,7 +307,7 @@ trait FactoryTrait
         $candidate->setPolitician(self::makePolitician($em));
 
         $em->persist($candidate);
-        $em->flush($candidate);
+        $em->flush();
         $em->refresh($candidate->getConstituency());
         $em->refresh($candidate->getElection());
         $em->refresh($candidate->getPolitician());
@@ -326,7 +326,7 @@ trait FactoryTrait
         $opinion->setOpinion("Test");
 
         $em->persist($opinion);
-        $em->flush($opinion);
+        $em->flush();
         $em->refresh($opinion->getConstituency());
         $em->refresh($opinion->getElection());
         $em->refresh($opinion->getPolitician());
@@ -344,7 +344,7 @@ trait FactoryTrait
         $category->setSlug("test-category-${random}");
 
         $em->persist($category);
-        $em->flush($category);
+        $em->flush();
 
         return $category;
     }
@@ -359,7 +359,7 @@ trait FactoryTrait
         $promiseSource->setLink("http://test.link/${random}");
 
         $em->persist($promiseSource);
-        $em->flush($promiseSource);
+        $em->flush();
         $em->refresh($promiseSource->getPromise());
 
         return $promiseSource;
@@ -376,7 +376,7 @@ trait FactoryTrait
         $blogPost->setPublishTime(new \DateTime("-1 day"));
 
         $em->persist($blogPost);
-        $em->flush($blogPost);
+        $em->flush();
 
         return $blogPost;
     }

@@ -54,7 +54,7 @@ class PromisesControllerTest extends WebTestCase
         $locale = self::getLocale($client);
 
         $promise->setPublished(true);
-        $em->flush($promise);
+        $em->flush();
 
         $path = "/promise/{$promise->getSlug()}";
 
@@ -75,7 +75,7 @@ class PromisesControllerTest extends WebTestCase
         $locale = self::getLocale($client);
 
         $promise->setPublished(false);
-        $em->flush($promise);
+        $em->flush();
 
         $path = "/promise/{$promise->getSlug()}";
 

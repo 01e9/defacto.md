@@ -223,7 +223,7 @@ class AdminPromisesControllerTest extends WebTestCase
 
         $promise = self::makePromise($em);
         $promise->setCategories(new ArrayCollection([self::makeCategory($em)]));
-        $em->flush($promise);
+        $em->flush();
 
         $form = $client
             ->request('GET', "/${locale}/admin/promises/{$promise->getId()}")
@@ -256,7 +256,7 @@ class AdminPromisesControllerTest extends WebTestCase
 
         $promise = self::makePromise($em);
         $promise->setStatus(self::makeStatus($em));
-        $em->flush($promise);
+        $em->flush();
 
         $form = $client
             ->request('GET', "/${locale}/admin/promises/{$promise->getId()}")

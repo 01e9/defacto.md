@@ -42,7 +42,7 @@ class CompetenceRepository extends ServiceEntityRepository
         $choices = [];
 
         foreach ($this->findBy(['title' => $title], ['code' => 'ASC']) as $entity) {
-            $label = implode(" | ", [$entity->getCode(), $entity->getPoints(), $entity->getName()]);;
+            $label = "{$entity->getCode()} ({$entity->getPoints()}) {$entity->getName()}";
             $choices[ $label ] = $entity;
         }
 

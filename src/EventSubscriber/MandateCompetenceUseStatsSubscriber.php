@@ -55,7 +55,7 @@ class MandateCompetenceUseStatsSubscriber implements EventSubscriberInterface
 
         $categoriesStats = $this->competenceRepository
             ->createQueryBuilder('c')
-            ->select('COUNT(c.id) as use_count, ca.id as category_id')
+            ->select('COUNT(c.id) as use_count, SUM(c.points) as use_points, ca.id as category_id')
             ->innerJoin(
                 CompetenceUse::class, 'cu', Expr\Join::WITH,
                 'cu.competence = c AND cu.mandate = :mandate'
@@ -85,19 +85,23 @@ class MandateCompetenceUseStatsSubscriber implements EventSubscriberInterface
         }
 
         $totalUseCount = 0;
+        $totalUsePoints = 0;
 
         foreach ($categoriesStats as $categoryStatsData) {
             $categoryStats = new MandateCompetenceCategoryStats();
             $categoryStats->setMandate($mandate);
             $categoryStats->setCompetenceCategory($categories[ $categoryStatsData['category_id'] ]);
             $categoryStats->setCompetenceUsesCount($categoryStatsData['use_count']);
+            $categoryStats->setCompetenceUsesPoints($categoryStatsData['use_points']);
 
             $this->objectManager->persist($categoryStats);
 
             $totalUseCount += $categoryStatsData['use_count'];
+            $totalUsePoints += $categoryStatsData['use_points'];
         }
 
         $mandate->setCompetenceUsesCount($totalUseCount);
+        $mandate->setCompetenceUsesPoints($totalUsePoints);
 
         $this->objectManager->flush();
     }

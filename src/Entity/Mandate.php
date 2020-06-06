@@ -33,6 +33,7 @@ class Mandate
 {
     use Traits\IdTrait;
     use Traits\CompetenceUsesCountTrait;
+    use Traits\CompetenceUsesPointsTrait;
 
     /**
      * @var \DateTimeInterface

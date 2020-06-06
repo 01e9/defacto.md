@@ -24,6 +24,7 @@ class MandateCompetenceCategoryStats
 {
     use Traits\IdTrait;
     use Traits\CompetenceUsesCountTrait;
+    use Traits\CompetenceUsesPointsTrait;
 
     /**
      * @ORM\ManyToOne(targetEntity="Mandate", inversedBy="competenceCategoryStats")

@@ -12,7 +12,12 @@ use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Query\Expr;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\HttpFoundation\Request;
-
+/**
+ * @method Mandate|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Mandate|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Mandate[]    findAll()
+ * @method Mandate[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ */
 class MandateRepository extends ServiceEntityRepository
 {
     public function __construct(RegistryInterface $registry)

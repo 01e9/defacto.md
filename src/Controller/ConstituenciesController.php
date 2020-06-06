@@ -5,42 +5,50 @@ namespace App\Controller;
 use App\Entity\Constituency;
 use App\Entity\Election;
 use App\Entity\Mandate;
+use App\Repository\ConstituencyRepository;
+use App\Repository\ElectionRepository;
+use App\Repository\MandateRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ConstituenciesController extends AbstractController
 {
+    private ConstituencyRepository $repository;
+
+    public function __construct(ConstituencyRepository $repository)
+    {
+        $this->repository = $repository;
+    }
+
     /**
      * @Route("/constituency/{slug}/{electionSlug}", name="constituency")
      */
-    public function viewAction(string $slug, string $electionSlug)
+    public function viewAction(
+        string $slug, string $electionSlug,
+        ElectionRepository $electionRepository,
+        MandateRepository $mandateRepository
+    )
     {
         /** @var Constituency $constituency */
-        $constituency = $this->getDoctrine()->getRepository('App:Constituency')->findOneBy([
-            'slug' => $slug,
-        ]);
+        $constituency = $this->repository->findOneBy(['slug' => $slug]);
         if (!$constituency) {
             throw $this->createNotFoundException();
         }
 
         /** @var Election $election */
-        $election = $this->getDoctrine()->getRepository('App:Election')->findOneBy([
-            'slug' => $electionSlug,
-        ]);
+        $election = $electionRepository->findOneBy(['slug' => $electionSlug]);
         if (!$election) {
             throw $this->createNotFoundException();
         }
 
-        $mandates = [];
+        $politicianToMandate = [];
+        $mandatesCompetencePointsRanks = [];
         foreach (
-            $this->getDoctrine()->getRepository('App:Mandate')->findBy([
-                'constituency' => $constituency,
-                'election' => $election,
-            ])
-            /** @var Mandate $mandate */
-            as $mandate
+            $mandateRepository->findBy(['constituency' => $constituency, 'election' => $election])
+            as $mandate /** @var Mandate $mandate */
         ) {
-            $mandates[ $mandate->getPolitician()->getId() ] = $mandate;
+            $politicianToMandate[ $mandate->getPolitician()->getId() ] = $mandate;
+            $mandatesCompetencePointsRanks[ $mandate->getId() ] = $mandateRepository->findCompetencePointsRank($mandate);
         }
 
         $elections = [];
@@ -68,7 +76,8 @@ class ConstituenciesController extends AbstractController
             'constituency' => $constituency,
             'election' => $election,
             'elections' => $elections,
-            'mandates' => $mandates,
+            'politician_to_mandate' => $politicianToMandate,
+            'mandates_competence_points_ranks' => $mandatesCompetencePointsRanks,
         ]);
     }
 }

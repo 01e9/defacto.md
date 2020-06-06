@@ -12,10 +12,13 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class PoliticiansController extends AbstractController
 {
-    private $politicianRepository;
-    private $promiseRepository;
+    private PoliticianRepository $politicianRepository;
+    private PromiseRepository $promiseRepository;
 
-    public function __construct(PoliticianRepository $politicianRepository, PromiseRepository $promiseRepository)
+    public function __construct(
+        PoliticianRepository $politicianRepository,
+        PromiseRepository $promiseRepository
+    )
     {
         $this->politicianRepository = $politicianRepository;
         $this->promiseRepository = $promiseRepository;

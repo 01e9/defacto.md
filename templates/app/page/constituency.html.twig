@@ -4,6 +4,8 @@
 {# @var \App\Entity\Constituency constituency #}
 {# @var \App\Entity\Election election #}
 {# @var array[] elections #}
+{# @var Mandate[] politician_to_mandate #}
+{# @var int[] mandates_competence_points_ranks #}
 
 {% set constituency_image = constituency.hasMap() ? (
     "https://maps.googleapis.com/maps/api/staticmap?size=300x300&scale=2"
@@ -102,7 +104,10 @@
                     </header>
                     <div class="row">
                         {% for candidate in elections[election.id].candidates|default([]) %}
-                            {% set mandate = mandates[ candidate.politician.id ]|default(null) %}
+                            {# @var \App\Entity\Mandate mandate #}
+                            {% set mandate = politician_to_mandate[ candidate.politician.id ]|default(null) %}
+                            {% set competence_points_rank = mandate ? mandates_competence_points_ranks[mandate.id] : null %}
+
                             <div
                                 class="col-sm-6 col-lg-4 {{ mandate ? "order-first" : "" }}"
                                 itemprop="participant"
@@ -134,6 +139,15 @@
                                                         <span itemprop="jobTitle">{{ mandate.institutionTitle.title.name }}</span>
                                                     {% endif %}
                                                 </h6>
+
+                                                {# todo #}
+                                                {% if false and competence_points_rank %}
+                                                    <samp class="text-warning">
+                                                        <span class="fa fa-chart-line"></span>
+                                                        Rank #{{ competence_points_rank }}
+                                                        ({{ mandate.competenceUsesPoints }} points)
+                                                    </samp>
+                                                {% endif %}
                                             </div>
                                         {% endif %}
                                     </div>

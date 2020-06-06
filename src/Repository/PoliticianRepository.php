@@ -7,6 +7,12 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * @method Politician|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Politician|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Politician[]    findAll()
+ * @method Politician[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ */
 class PoliticianRepository extends ServiceEntityRepository
 {
     public function __construct(RegistryInterface $registry)

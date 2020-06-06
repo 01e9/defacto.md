@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Consts;
 use App\Entity\Election;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\AbstractQuery;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -31,5 +32,23 @@ class ElectionRepository extends ServiceEntityRepository
         }
 
         return $choices;
+    }
+
+    public function findWithSubElectionsIds(Election $election): array
+    {
+        $parentElectionId = $election->getParent()
+            ? $election->getParent()->getId()
+            : $election->getId();
+
+        $childElectionIds = array_column(
+            $this->createQueryBuilder('e')
+                ->where('e.parent = :parent_election')
+                ->setParameter('parent_election', $parentElectionId)
+                ->getQuery()
+                ->getResult(AbstractQuery::HYDRATE_ARRAY),
+            'id'
+        );
+
+        return array_unique(array_merge([$parentElectionId], $childElectionIds));
     }
 }

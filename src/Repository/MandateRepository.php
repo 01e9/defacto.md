@@ -131,23 +131,8 @@ class MandateRepository extends ServiceEntityRepository
 
     public function findCompetencePointsRank(Mandate $mandate): int
     {
-        {
-            $parentElectionId = $mandate->getElection()->getParent()
-                ? $mandate->getElection()->getParent()->getId()
-                : $mandate->getElection()->getId();
-
-            $childElectionIds = array_column(
-                $this->getEntityManager()->getRepository(Election::class)
-                    ->createQueryBuilder('e')
-                    ->where('e.parent = :parent_election')
-                    ->setParameter('parent_election', $parentElectionId)
-                    ->getQuery()
-                    ->getResult(AbstractQuery::HYDRATE_ARRAY),
-                'id'
-            );
-
-            $electionIds = array_unique(array_merge([$parentElectionId], $childElectionIds));
-        }
+        $electionIds = $this->getEntityManager()->getRepository(Election::class)
+            ->findWithSubElectionsIds($mandate->getElection());
 
         try {
             $count = $this->createQueryBuilder('m')

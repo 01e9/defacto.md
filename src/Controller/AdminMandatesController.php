@@ -6,6 +6,7 @@ use App\Entity\Mandate;
 use App\Event\MandateUpdatedEvent;
 use App\Form\MandateDeleteType;
 use App\Form\MandateType;
+use App\Repository\MandateRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -21,13 +22,20 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  */
 class AdminMandatesController extends AbstractController
 {
+    private MandateRepository $repository;
+
+    public function __construct(MandateRepository $repository)
+    {
+        $this->repository = $repository;
+    }
+
     /**
      * @Route(path="", name="admin_mandates")
      * @return Response
      */
     public function indexAction(Request $request)
     {
-        $mandates = $this->getDoctrine()->getRepository('App:Mandate')->getAdminList($request);
+        $mandates = $this->repository->getAdminList($request);
 
         return $this->render('admin/page/mandate/index.html.twig', [
             'mandates' => $mandates,
@@ -72,7 +80,7 @@ class AdminMandatesController extends AbstractController
     )
     {
         /** @var Mandate $mandate */
-        $mandate = $this->getDoctrine()->getRepository('App:Mandate')->find($id);
+        $mandate = $this->repository->find($id);
 
         if (!$mandate) {
             throw $this->createNotFoundException();
@@ -117,7 +125,7 @@ class AdminMandatesController extends AbstractController
      */
     public function deleteAction(Request $request, string $id, TranslatorInterface $translator)
     {
-        $mandate = $this->getDoctrine()->getRepository('App:Mandate')->find($id);
+        $mandate = $this->repository->find($id);
         if (!$mandate) {
             throw $this->createNotFoundException();
         }

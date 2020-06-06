@@ -89,7 +89,7 @@ class AdminBlogPostsControllerTest extends WebTestCase
             ->request('GET', "/${locale}/admin/blog-posts/add")
             ->filter('form')->form();
         $client->insulate(false);
-        $client->submit($form, array_merge($formData, ['blog_post[image]' => $photo,]));
+        $client->submit($form, array_merge($formData, ['blog_post[imageUpload]' => $photo,]));
         $route = $this->assertRedirectsToRoute($client->getResponse(), 'admin_blog_post_edit');
 
         $client = self::createAdminClient();
@@ -100,7 +100,7 @@ class AdminBlogPostsControllerTest extends WebTestCase
         $em->refresh($blogPost); // fix lifecycle callbacks
 
         $this->assertNotNull($blogPost);
-        $this->assertEquals($photo->getMimeType(), $blogPost->getImage()->getMimeType());
+        $this->assertEquals($photo->guessExtension(), explode(".", $blogPost->getImage())[1]);
 
         self::cleanup($em);
     }
@@ -190,7 +190,7 @@ class AdminBlogPostsControllerTest extends WebTestCase
             ->request('GET', "/${locale}/admin/blog-posts/{$blogPost->getId()}")
             ->filter('form')->form();
         $client->insulate(false);
-        $client->submit($form, array_merge($formData, ['blog_post[image]' => $photo,]));
+        $client->submit($form, array_merge($formData, ['blog_post[imageUpload]' => $photo,]));
         $this->assertRedirectsToRoute($client->getResponse(), 'admin_blog_post_edit');
 
         $client = self::createAdminClient();
@@ -202,7 +202,7 @@ class AdminBlogPostsControllerTest extends WebTestCase
         $this->assertNotNull($blogPost);
         $em->refresh($blogPost); // fix lifecycle callbacks
 
-        $this->assertEquals($photo->getMimeType(), $blogPost->getImage()->getMimeType());
+        $this->assertEquals($photo->guessExtension(), explode(".", $blogPost->getImage())[1]);
 
         self::cleanup($em);
     }

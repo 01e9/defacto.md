@@ -3,9 +3,9 @@
 namespace App\Controller;
 
 use App\Form\EditorImageType;
-use App\Service\FileUploader;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -15,22 +15,31 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class AdminEditorImagesController extends AbstractController
 {
-    private $uploadDir = "/editor";
+    private $uploadDirRelativePath = "/uploads/editor";
+    private $uploadDirFullPath;
+
+    public function __construct(string $projectDir)
+    {
+        $this->uploadDirFullPath = "{$projectDir}{$this->uploadDirRelativePath}";
+    }
 
     /**
      * @Route(path="/admin/editor-images", methods={"POST"})
      * @return Response
      */
-    public function addAction(Request $request, FileUploader $fileUploader)
+    public function addAction(Request $request)
     {
         $form = $this->createForm(EditorImageType::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            /** @var UploadedFile $image */
             $image = $form->getData()['image'];
-            $fileName = $fileUploader->upload($this->uploadDir, $image);
+            $fileName = md5(uniqid()) . '.' . $image->guessExtension();
 
-            return $this->json(["url" => "/uploads{$this->uploadDir}/{$fileName}"]);
+            $image->move($this->uploadDirFullPath, $fileName);
+
+            return $this->json(["url" => "{$this->uploadDirRelativePath}/{$fileName}"]);
         }
 
         return $this->json(["error" => ["message" => "Invalid request"]]);

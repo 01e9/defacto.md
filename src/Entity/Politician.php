@@ -54,8 +54,6 @@ class Politician
 
     /**
      * @ORM\Column(type="string", nullable=true)
-     *
-     * @Assert\File(mimeTypes={"image/jpeg", "image/png", "image/gif"})
      */
     private $photo;
 
@@ -176,15 +174,12 @@ class Politician
         return $this;
     }
 
-    /**
-     * @return File
-     */
-    public function getPhoto()
+    public function getPhoto(): ?string
     {
         return $this->photo;
     }
 
-    public function setPhoto($photo) : self
+    public function setPhoto(?string $photo) : self
     {
         $this->photo = $photo;
 

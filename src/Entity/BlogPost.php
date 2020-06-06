@@ -60,8 +60,6 @@ class BlogPost
 
     /**
      * @ORM\Column(type="string", nullable=true)
-     *
-     * @Assert\File(mimeTypes={"image/jpeg", "image/png", "image/gif"})
      */
     private $image;
 
@@ -113,15 +111,12 @@ class BlogPost
         return $this;
     }
 
-    /**
-     * @return File
-     */
-    public function getImage()
+    public function getImage(): ?string
     {
         return $this->image;
     }
 
-    public function setImage($image) : self
+    public function setImage(?string $image) : self
     {
         $this->image = $image;
 

@@ -5,9 +5,11 @@ namespace App\Controller;
 use App\Entity\Politician;
 use App\Form\PoliticianDeleteType;
 use App\Form\PoliticianType;
+use App\Service\EntityFileUploader;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -19,6 +21,13 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  */
 class AdminPoliticiansController extends AbstractController
 {
+    private EntityFileUploader $entityFileUploader;
+
+    public function __construct(EntityFileUploader $entityFileUploader)
+    {
+        $this->entityFileUploader = $entityFileUploader;
+    }
+
     /**
      * @Route(path="", name="admin_politicians")
      * @return Response
@@ -49,6 +58,11 @@ class AdminPoliticiansController extends AbstractController
             $em->persist($politician);
             $em->flush();
 
+            /** @var UploadedFile $photoFile */
+            if ($photoFile = $form->get('photoUpload')->getData()) {
+                $this->entityFileUploader->uploadAndUpdate($politician, $photoFile);
+            }
+
             $this->addFlash('success', $translator->trans('flash.politician_created'));
 
             return $this->redirectToRoute('admin_politician_edit', ['id' => $politician->getId()]);
@@ -71,9 +85,6 @@ class AdminPoliticiansController extends AbstractController
             throw $this->createNotFoundException();
         }
 
-        /** @var File $initialPhoto */
-        $initialPhoto = $politician->getPhoto();
-
         $form = $this->createForm(PoliticianType::class, $politician, []);
         $form->handleRequest($request);
 
@@ -81,13 +92,14 @@ class AdminPoliticiansController extends AbstractController
             /** @var Politician $politician */
             $politician = $form->getData();
 
-            if (!$politician->getPhoto()) {
-                $politician->setPhoto($initialPhoto);
-            }
-
             $em = $this->getDoctrine()->getManager();
             $em->persist($politician);
             $em->flush();
+
+            /** @var UploadedFile $photoFile */
+            if ($photoFile = $form->get('photoUpload')->getData()) {
+                $this->entityFileUploader->uploadAndUpdate($politician, $photoFile);
+            }
 
             $this->addFlash('success', $translator->trans('flash.politician_updated'));
 
@@ -96,6 +108,7 @@ class AdminPoliticiansController extends AbstractController
 
         return $this->render('admin/page/politician/edit.html.twig', [
             'form' => $form->createView(),
+            'politician' => $politician,
         ]);
     }
 

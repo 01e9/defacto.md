@@ -86,7 +86,7 @@ class MandateType extends AbstractType
                 'prototype' => true,
                 'entry_type' => CompetenceUseType::class,
                 'entry_options' => [
-                    'mandate' => $options['data'],
+                    'mandate' => $options['data'] ?? null,
                 ],
             ])
         ;

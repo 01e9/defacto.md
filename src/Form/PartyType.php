@@ -8,6 +8,7 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\File;
 
 class PartyType extends AbstractType
 {
@@ -21,10 +22,17 @@ class PartyType extends AbstractType
                 'label' => 'label.slug',
                 'attr' => ['data-slug-from' => 'party[name]'],
             ])
-            ->add('logo', FileType::class, [
+            ->add('logoUpload', FileType::class, [
+                'mapped' => false,
                 'label' => 'label.logo',
                 'required' => false,
                 'help' => 'text.recommended_image_ratio_1_1',
+                'constraints' => [
+                    new File([
+                        'maxSize' => '1024k',
+                        'mimeTypes' => ["image/jpeg", "image/png", "image/gif"],
+                    ])
+                ],
             ])
         ;
     }

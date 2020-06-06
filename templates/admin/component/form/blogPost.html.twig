@@ -1,3 +1,6 @@
+{# @var \Symfony\Component\Form\FormInterface form #}
+{# @var \App\Entity\BlogPost blogPost Optional #}
+
 {% set id = form.vars.value|default({id:0}).id %}
 
 {{ form_start(form) }}
@@ -36,8 +39,10 @@
 <div class="row">
     <div class="col-lg-2">
         {% include 'admin/component/form/field/photo.html.twig' with {
-            field: form.image,
-            imageDir: '/uploads/blog/'
+            field: form.imageUpload,
+            imagePath: (blogPost is defined and blogPost.image)
+                ? (constant('App\\Consts::UPLOADS_DIR_BLOG') ~ blogPost.image)
+                : null
         } only %}
     </div>
 </div>

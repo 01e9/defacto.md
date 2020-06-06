@@ -23,7 +23,7 @@ trait TestCaseTrait
 
     private static $consoleApplication;
 
-    protected function setUp()
+    protected function setUp(): void
     {
     }
 
@@ -200,7 +200,7 @@ trait TestCaseTrait
     protected static function assertHasFormErrors(Response $response)
     {
         self::assertEquals(200, $response->getStatusCode());
-        self::assertContains('is-invalid', $response->getContent());
+        self::assertStringContainsString('is-invalid', $response->getContent());
     }
 
     protected static function assertRedirectsToRoute(Response $response, string $routeName) : array

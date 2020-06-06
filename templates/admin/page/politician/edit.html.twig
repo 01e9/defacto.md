@@ -1,3 +1,6 @@
+{# @var \Symfony\Component\Form\FormInterface form #}
+{# @var \App\Entity\Politician politician #}
+
 {% extends 'admin/base.html.twig' %}
 
 {% block main %}
@@ -10,6 +13,6 @@
             add: {link: path('admin_politician_add'), text: 'action.add_politician'|trans}
         } only %}
 
-        {% include 'admin/component/form/politician.html.twig' with {form: form} only %}
+        {% include 'admin/component/form/politician.html.twig' with {form: form, politician: politician} only %}
     </div>
 {% endblock %}

@@ -18,7 +18,7 @@
 {% macro politician_photo_url(politician) %}
     {{-
     politician.photo
-    ? asset('uploads/politicians/' ~ politician.photo.filename)
+    ? asset('uploads/politicians/' ~ politician.photo)
     : asset('img/no-avatar.png')
     -}}
 {% endmacro %}
@@ -26,7 +26,7 @@
 {% macro party_logo_url(party) %}
     {{-
     party.logo
-    ? asset('uploads/parties/' ~ party.logo.filename)
+    ? asset('uploads/parties/' ~ party.logo)
     : asset('img/no-image.png')
     -}}
 {% endmacro %}
@@ -34,7 +34,7 @@
 {% macro blog_image_url(post) %}
     {{-
     post.image
-    ? asset('uploads/blog/' ~ post.image.filename)
+    ? asset('uploads/blog/' ~ post.image)
     : asset('img/no-image.png')
     -}}
 {% endmacro %}

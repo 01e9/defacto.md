@@ -12,7 +12,7 @@ trait CompetenceUsesCountTrait
      *
      * @Assert\GreaterThanOrEqual(0)
      */
-    private $competenceUsesCount;
+    private $competenceUsesCount = 0;
 
     public function getCompetenceUsesCount(): ?int
     {

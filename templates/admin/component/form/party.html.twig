@@ -1,3 +1,6 @@
+{# @var \Symfony\Component\Form\FormInterface form #}
+{# @var \App\Entity\Party party Optional #}
+
 {% set id = form.vars.value|default({id:0}).id %}
 
 {{ form_start(form) }}
@@ -5,8 +8,10 @@
 <div class="row mb-4">
     <div class="col-lg-2">
         {% include 'admin/component/form/field/photo.html.twig' with {
-            field: form.logo,
-            imageDir: '/uploads/parties/',
+            field: form.logoUpload,
+            imagePath: (party is defined and party.logo)
+                ? (constant('App\\Consts::UPLOADS_DIR_PARTY') ~ party.logo)
+                : null,
             changeText: 'action.change_logo'|trans
         } only %}
     </div>

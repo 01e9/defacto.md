@@ -85,7 +85,7 @@ class AdminPoliticiansControllerTest extends WebTestCase
             ->request('GET', "/${locale}/admin/politicians/add")
             ->filter('form')->form();
         $client->insulate(false);
-        $client->submit($form, array_merge($formData, ['politician[photo]' => $photo,]));
+        $client->submit($form, array_merge($formData, ['politician[photoUpload]' => $photo,]));
         $route = $this->assertRedirectsToRoute($client->getResponse(), 'admin_politician_edit');
 
         $client = self::createAdminClient();
@@ -96,7 +96,7 @@ class AdminPoliticiansControllerTest extends WebTestCase
         $em->refresh($politician); // fix lifecycle callbacks
 
         $this->assertNotNull($politician);
-        $this->assertEquals($photo->getMimeType(), $politician->getPhoto()->getMimeType());
+        $this->assertEquals($photo->guessExtension(), explode(".", $politician->getPhoto())[1]);
 
         self::cleanup($em);
     }
@@ -180,7 +180,7 @@ class AdminPoliticiansControllerTest extends WebTestCase
             ->request('GET', "/${locale}/admin/politicians/{$politician->getId()}")
             ->filter('form')->form();
         $client->insulate(false);
-        $client->submit($form, array_merge($formData, ['politician[photo]' => $photo,]));
+        $client->submit($form, array_merge($formData, ['politician[photoUpload]' => $photo,]));
         $this->assertRedirectsToRoute($client->getResponse(), 'admin_politician_edit');
 
         $client = self::createAdminClient();
@@ -192,7 +192,7 @@ class AdminPoliticiansControllerTest extends WebTestCase
         $this->assertNotNull($politician);
         $em->refresh($politician); // fix lifecycle callbacks
 
-        $this->assertEquals($photo->getMimeType(), $politician->getPhoto()->getMimeType());
+        $this->assertEquals($photo->guessExtension(), explode(".", $politician->getPhoto())[1]);
 
         self::cleanup($em);
     }

@@ -9,7 +9,7 @@ use App\Event\MandateUpdatedEvent;
 use App\Repository\CompetenceCategoryRepository;
 use App\Repository\CompetenceRepository;
 use App\Repository\MandateCompetenceCategoryStatsRepository;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Doctrine\ORM\Query\Expr;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 

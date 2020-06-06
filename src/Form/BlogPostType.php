@@ -11,6 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Validator\Constraints\File;
 
 class BlogPostType extends AbstractType
 {
@@ -36,10 +37,17 @@ class BlogPostType extends AbstractType
                 'required' => false,
                 'help' => 'text.leave_blank_to_not_publish',
             ])
-            ->add('image', FileType::class, [
+            ->add('imageUpload', FileType::class, [
+                'mapped' => false,
                 'label' => 'label.image',
                 'required' => false,
                 'help' => 'text.recommended_image_ratio_16_9',
+                'constraints' => [
+                    new File([
+                        'maxSize' => '1024k',
+                        'mimeTypes' => ["image/jpeg", "image/png", "image/gif"],
+                    ])
+                ],
             ]);
     }
 

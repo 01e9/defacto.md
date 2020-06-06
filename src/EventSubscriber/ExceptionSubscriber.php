@@ -24,7 +24,7 @@ class ExceptionSubscriber implements EventSubscriberInterface
         RouterInterface $router,
         FlashBagInterface $flashBag,
         TranslatorInterface $translator,
-        $defaultLocale,
+        string $defaultLocale,
         string $appLocales
     ) {
         $this->router = $router;

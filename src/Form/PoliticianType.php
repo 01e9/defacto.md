@@ -11,6 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\File;
 
 class PoliticianType extends AbstractType
 {
@@ -27,10 +28,17 @@ class PoliticianType extends AbstractType
                 'label' => 'label.slug',
                 'attr' => ['data-slug-from' => 'politician[firstName],politician[lastName]'],
             ])
-            ->add('photo', FileType::class, [
+            ->add('photoUpload', FileType::class, [
+                'mapped' => false,
                 'label' => 'label.photo',
                 'required' => false,
                 'help' => 'text.recommended_image_ratio_1_1',
+                'constraints' => [
+                    new File([
+                        'maxSize' => '1024k',
+                        'mimeTypes' => ["image/jpeg", "image/png", "image/gif"],
+                    ])
+                ],
             ])
             ->add('birthDate', DateType::class, [
                 'label' => 'label.birth_date',

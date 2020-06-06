@@ -300,7 +300,7 @@ class Mandate
         return $this->competenceUses;
     }
 
-    public function setCompetenceUses(Collection $competenceUses) : self
+    public function setCompetenceUses($competenceUses) : self
     {
         $this->competenceUses = $competenceUses;
 
@@ -312,7 +312,7 @@ class Mandate
         return $this->competenceCategoryStats;
     }
 
-    public function setCompetenceCategoryStats(Collection $competenceCategoryStats) : self
+    public function setCompetenceCategoryStats($competenceCategoryStats) : self
     {
         $this->competenceCategoryStats = $competenceCategoryStats;
 

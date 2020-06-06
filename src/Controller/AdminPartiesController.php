@@ -5,9 +5,10 @@ namespace App\Controller;
 use App\Entity\Party;
 use App\Form\PartyDeleteType;
 use App\Form\PartyType;
+use App\Service\EntityFileUploader;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -19,6 +20,13 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  */
 class AdminPartiesController extends AbstractController
 {
+    private EntityFileUploader $entityFileUploader;
+
+    public function __construct(EntityFileUploader $entityFileUploader)
+    {
+        $this->entityFileUploader = $entityFileUploader;
+    }
+
     /**
      * @Route(path="", name="admin_parties")
      * @return Response
@@ -49,6 +57,11 @@ class AdminPartiesController extends AbstractController
             $em->persist($party);
             $em->flush();
 
+            /** @var UploadedFile $logoFile */
+            if ($logoFile = $form->get('logoUpload')->getData()) {
+                $this->entityFileUploader->uploadAndUpdate($party, $logoFile);
+            }
+
             $this->addFlash('success', $translator->trans('flash.party_created'));
 
             return $this->redirectToRoute('admin_party_edit', ['id' => $party->getId()]);
@@ -71,9 +84,6 @@ class AdminPartiesController extends AbstractController
             throw $this->createNotFoundException();
         }
 
-        /** @var File $initialLogo */
-        $initialLogo = $party->getLogo();
-
         $form = $this->createForm(PartyType::class, $party, []);
         $form->handleRequest($request);
 
@@ -81,13 +91,14 @@ class AdminPartiesController extends AbstractController
             /** @var Party $party */
             $party = $form->getData();
 
-            if (!$party->getLogo()) {
-                $party->setLogo($initialLogo);
-            }
-
             $em = $this->getDoctrine()->getManager();
             $em->persist($party);
             $em->flush();
+
+            /** @var UploadedFile $logoFile */
+            if ($logoFile = $form->get('logoUpload')->getData()) {
+                $this->entityFileUploader->uploadAndUpdate($party, $logoFile);
+            }
 
             $this->addFlash('success', $translator->trans('flash.party_updated'));
 
@@ -96,6 +107,7 @@ class AdminPartiesController extends AbstractController
 
         return $this->render('admin/page/party/edit.html.twig', [
             'form' => $form->createView(),
+            'party' => $party,
         ]);
     }
 

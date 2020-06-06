@@ -6,9 +6,11 @@ use App\Entity\BlogPost;
 use App\Form\BlogPostDeleteType;
 use App\Form\BlogPostType;
 use App\Repository\BlogPostRepository;
+use App\Service\EntityFileUploader;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -20,11 +22,16 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  */
 class AdminBlogPostsController extends AbstractController
 {
-    private $blogPostsRepository;
+    private EntityFileUploader $entityFileUploader;
+    private BlogPostRepository $blogPostsRepository;
 
-    public function __construct(BlogPostRepository $blogPostsRepository)
+    public function __construct(
+        BlogPostRepository $blogPostsRepository,
+        EntityFileUploader $entityFileUploader
+    )
     {
         $this->blogPostsRepository = $blogPostsRepository;
+        $this->entityFileUploader = $entityFileUploader;
     }
 
     /**
@@ -58,6 +65,11 @@ class AdminBlogPostsController extends AbstractController
             $em->persist($blogPost);
             $em->flush();
 
+            /** @var UploadedFile $imageFile */
+            if ($imageFile = $form->get('imageUpload')->getData()) {
+                $this->entityFileUploader->uploadAndUpdate($blogPost, $imageFile);
+            }
+
             $this->addFlash('success', $translator->trans('flash.blog_post_created'));
 
             return $this->redirectToRoute('admin_blog_post_edit', ['id' => $blogPost->getId()]);
@@ -80,9 +92,6 @@ class AdminBlogPostsController extends AbstractController
             throw $this->createNotFoundException();
         }
 
-        /** @var File $initialImage */
-        $initialImage = $blogPost->getImage();
-
         $form = $this->createForm(BlogPostType::class, $blogPost, []);
         $form->handleRequest($request);
 
@@ -90,14 +99,15 @@ class AdminBlogPostsController extends AbstractController
             /** @var BlogPost $blogPost */
             $blogPost = $form->getData();
 
-            if (!$blogPost->getImage()) {
-                $blogPost->setImage($initialImage);
-            }
-
             $em = $this->getDoctrine()->getManager();
 
             $em->persist($blogPost);
             $em->flush();
+
+            /** @var UploadedFile $imageFile */
+            if ($imageFile = $form->get('imageUpload')->getData()) {
+                $this->entityFileUploader->uploadAndUpdate($blogPost, $imageFile);
+            }
 
             $this->addFlash('success', $translator->trans('flash.blog_post_updated'));
 

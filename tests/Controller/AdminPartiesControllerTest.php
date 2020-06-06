@@ -89,7 +89,7 @@ class AdminPartiesControllerTest extends WebTestCase
             ->filter('form')->form();
         $client->insulate(false);
         $client->submit($form, array_merge($formData, [
-            'party[logo]' => $logo,
+            'party[logoUpload]' => $logo,
         ]));
         $route = $this->assertRedirectsToRoute($client->getResponse(), 'admin_party_edit');
 
@@ -101,7 +101,7 @@ class AdminPartiesControllerTest extends WebTestCase
         $em->refresh($party); // fix lifecycle callbacks
 
         $this->assertNotNull($party);
-        $this->assertEquals($logo->getMimeType(), $party->getLogo()->getMimeType());
+        $this->assertEquals($logo->guessExtension(), explode(".", $party->getLogo())[1]);
 
         self::cleanup($em);
     }
@@ -180,7 +180,7 @@ class AdminPartiesControllerTest extends WebTestCase
             ->request('GET', "/${locale}/admin/parties/{$party->getId()}")
             ->filter('form')->form();
         $client->insulate(false);
-        $client->submit($form, array_merge($formData, ['party[logo]' => $logo,]));
+        $client->submit($form, array_merge($formData, ['party[logoUpload]' => $logo,]));
         $this->assertRedirectsToRoute($client->getResponse(), 'admin_party_edit');
 
         $client = self::createAdminClient();
@@ -191,7 +191,7 @@ class AdminPartiesControllerTest extends WebTestCase
         $this->assertNotNull($party);
         $em->refresh($party); // fix lifecycle callbacks
 
-        $this->assertEquals($logo->getMimeType(), $party->getLogo()->getMimeType());
+        $this->assertEquals($logo->guessExtension(), explode(".", $party->getLogo())[1]);
 
         self::cleanup($em);
     }

@@ -1,3 +1,6 @@
+{# @var \Symfony\Component\Form\FormInterface form #}
+{# @var \App\Entity\Politician politician Optional #}
+
 {% set id = form.vars.value|default({id:0}).id %}
 
 {{ form_start(form) }}
@@ -5,8 +8,10 @@
 <div class="row">
     <div class="col-lg-2">
         {% include 'admin/component/form/field/photo.html.twig' with {
-            field: form.photo,
-            imageDir: '/uploads/politicians/'
+            field: form.photoUpload,
+            imagePath: (politician is defined and politician.photo)
+                ? (constant('App\\Consts::UPLOADS_DIR_POLITICIAN') ~ politician.photo)
+                : null,
         } only %}
     </div>
     <div class="col-lg-10">

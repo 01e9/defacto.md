@@ -5,7 +5,7 @@ namespace App\EventSubscriber;
 use App\Entity\Promise;
 use App\Entity\PromiseUpdate;
 use App\Event\PromiseActionUpdatedEvent;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Doctrine\ORM\Query\Expr;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 

@@ -44,8 +44,6 @@ class Party
 
     /**
      * @ORM\Column(type="string", nullable=true)
-     *
-     * @Assert\File(mimeTypes={"image/jpeg", "image/png", "image/gif"})
      */
     private $logo;
 
@@ -73,15 +71,12 @@ class Party
         return $this;
     }
 
-    /**
-     * @return File
-     */
-    public function getLogo()
+    public function getLogo(): ?string
     {
         return $this->logo;
     }
 
-    public function setLogo($logo) : self
+    public function setLogo(?string $logo) : self
     {
         $this->logo = $logo;
 

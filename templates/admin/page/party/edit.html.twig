@@ -1,3 +1,6 @@
+{# @var \Symfony\Component\Form\FormInterface form #}
+{# @var \App\Entity\Party party #}
+
 {% extends 'admin/base.html.twig' %}
 
 {% block main %}
@@ -10,6 +13,6 @@
             add: {link: path('admin_party_add'), text: 'action.add_party'|trans}
         } only %}
 
-        {% include 'admin/component/form/party.html.twig' with {form: form} only %}
+        {% include 'admin/component/form/party.html.twig' with {form: form, party: party} only %}
     </div>
 {% endblock %}

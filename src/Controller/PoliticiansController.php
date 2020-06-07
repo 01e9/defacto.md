@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Mandate;
 use App\Entity\Politician;
 use App\Entity\Promise;
+use App\Repository\MandateRepository;
 use App\Repository\PoliticianRepository;
 use App\Repository\PromiseRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -14,14 +15,17 @@ class PoliticiansController extends AbstractController
 {
     private PoliticianRepository $politicianRepository;
     private PromiseRepository $promiseRepository;
+    private MandateRepository $mandateRepository;
 
     public function __construct(
         PoliticianRepository $politicianRepository,
-        PromiseRepository $promiseRepository
+        PromiseRepository $promiseRepository,
+        MandateRepository $mandateRepository
     )
     {
         $this->politicianRepository = $politicianRepository;
         $this->promiseRepository = $promiseRepository;
+        $this->mandateRepository = $mandateRepository;
     }
 
     /**
@@ -35,10 +39,21 @@ class PoliticiansController extends AbstractController
             throw $this->createNotFoundException();
         }
 
+        $lastValidMandate = null;
+
         $mandatesByElection = [];
         foreach ($politician->getMandates()->toArray() as $mandate) { /** @var Mandate $mandate */
             $mandatesByElection[ $mandate->getElection()->getId() ] = $mandate;
+
+            if (!$lastValidMandate && !$mandate->getCeasingDate()) {
+                $lastValidMandate = $mandate;
+            }
         }
+
+        $lastValidMandate = $lastValidMandate ? [
+            'mandate' => $lastValidMandate,
+            'competencePointsRank' => $this->mandateRepository->findCompetencePointsRank($lastValidMandate),
+        ] : null;
 
         $promisesByElection = [];
         foreach ($this->promiseRepository->findBy(['politician' => $politician, 'published' => true]) as $promise) { /** @var Promise $promise */
@@ -53,9 +68,9 @@ class PoliticiansController extends AbstractController
 
         return $this->render('app/page/politician.html.twig', [
             'politician' => $politician,
-            'candidates' => $politician->getSortedCandidates(),
-            'mandatesByElection' => $mandatesByElection,
-            'promisesByElection' => $promisesByElection,
+            'mandates_by_election' => $mandatesByElection,
+            'promises_by_election' => $promisesByElection,
+            'last_valid_mandate' => $lastValidMandate,
         ]);
     }
 }

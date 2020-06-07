@@ -125,6 +125,7 @@ label:
     competence: Competența
     competence_uses: Competențe folosite
     use_date: Data folosirii
+    the_place: Locul
 
 action:
     login: Autentificare
@@ -173,6 +174,8 @@ action:
     filter: Filtrează
     view_on_site: Vezi pe site
     see_the_prerogatives: Vezi prerogativele
+    see_the_politicians_points: Vezi punctajele politicienilor
+    see_points_details: Vezi detalii despre punctaje
     view_decision: Vezi hotărârea
     add_blog_post: Adaugă postare
     edit_blog_post: Modifică postare
@@ -264,6 +267,7 @@ title:
     all_actions: Toate acțiunile politicienilor
     no_actions: Nu sunt acțiuni
     recent_blog_posts: Postări recente pe blog
+    participation_in_elections: Participarea în alegeri
 
 placeholder:
     choose_option: Alegeți o opțiune
@@ -313,6 +317,7 @@ text:
     actions_count: "%count% acțiune|%count% acțiuni|%count% de acțiuni"
     view_promises_count: "Vezi %count% promisiune|Vezi %count% promisiuni|Vezi %count% de promisiuni"
     view_the_made_actions: "Vezi acțiunile întreprinse"
+    points: "punct|puncte|de puncte"
 
 meta_description:
     main: "Platformă de monitorizare a promisiunilor electorale"

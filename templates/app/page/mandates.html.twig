@@ -29,8 +29,15 @@
                             {% endif %}
 
                             <li class="list-group-item">
-                                <div>{{ mandate.politician.firstName }} {{ mandate.politician.lastName }}</div>
-                                <samp>#{{ current_rank}} / {{ mandate.competenceUsesPoints }}</samp>
+                                <div class="mb-1">
+                                    <a
+                                        href="{{ path('politician', {"slug": mandate.politician.slug}) }}"
+                                    >{{ mandate.politician.firstName }} {{ mandate.politician.lastName }}</a>
+                                </div>
+                                <samp class="p-2 mr-1 badge badge-warning font-weight-bold">
+                                    {{ current_rank}}
+                                </samp>
+                                <samp>{{ mandate.competenceUsesPoints }}</samp> {{ "text.points"|trans({"%count%": mandate.competenceUsesPoints}) }}
                             </li>
 
                             {# @var \App\Entity\Mandate prev_mandate #}

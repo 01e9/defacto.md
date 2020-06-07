@@ -124,6 +124,7 @@ class Politician
 
     /**
      * @ORM\OneToMany(targetEntity="Mandate", mappedBy="politician")
+     * @ORM\OrderBy({"beginDate": "DESC"})
      */
     private $mandates;
 

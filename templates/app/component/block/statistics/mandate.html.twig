@@ -67,7 +67,7 @@
                                             <samp class="text-body">{{ mandate.endDate|date('d.m.Y') }}</samp>
                                         </div>
                                     </div>
-                                    <div class="progress thin bg-light mandate-period">
+                                    <div class="progress thin bg-light mandate-period mt-1">
                                         <div class="progress-bar bg-info rounded"
                                              style="width: {{ '' ~ macros.get_date_interval_progress(mandate.beginDate, mandate.endDate) }}%;"
                                         >

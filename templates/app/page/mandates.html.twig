@@ -13,14 +13,22 @@
     <meta name="robots" content="noindex, follow">
 {% endblock %}
 
+{% set place_width = '5rem' %}
+{% set photo_width = '3rem' %}
+
 {% block main %}
     <main>
-        <section class="container">
+        <div class="container-fluid bg-light-pattern text-center pt-5 pb-3">
             <div class="row">
                 <div class="col">
-                    <h1 class="h3 my-4">{{ election.theElectedName }}</h1>
-
-                    <ul class="list-group">
+                    <h1>{{ "title.the_points_of_the_politicians"|trans }}</h1>
+                </div>
+            </div>
+        </div>
+        <div class="container py-5">
+            <div class="row justify-content-center">
+                <div class="d-inline-block">
+                    <div class="list-group list-group-flush">
                         {% set current_rank = first_mandate_rank %}
                         {% for mandate in mandates %}{# @var \App\Entity\Mandate mandate #}
                             {% if prev_mandate is defined
@@ -28,22 +36,58 @@
                                 {% set current_rank = current_rank + 1 %}
                             {% endif %}
 
-                            <li class="list-group-item">
-                                <div class="mb-1">
-                                    <a
-                                        href="{{ path('politician', {"slug": mandate.politician.slug}) }}"
-                                    >{{ mandate.politician.firstName }} {{ mandate.politician.lastName }}</a>
+                            <div class="list-group-item">
+                                <div class="row">
+                                    <div class="col-auto">
+                                        <div
+                                            class="square bg-dark text-white rounded-circle"
+                                            style="width: {{ place_width }};"
+                                        >
+                                            <div class="content d-flex text-center align-items-center justify-content-center">
+                                                <div>
+                                                    <div class="pt-4 text-warning">
+                                                        <sub>{{ "label.the_place"|trans }}</sub>
+                                                    </div>
+                                                    <div class="font-size-3">
+                                                        <sup>{{ current_rank}}</sup>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col pl-0">
+                                        <h3 class="d-flex align-items-center">
+                                            <img
+                                                src="{{ macros.politician_photo_url(mandate.politician) }}"
+                                                alt="{{ mandate.politician.firstName ~ " " ~ mandate.politician.lastName }}"
+                                                class="d-inline-block rounded-circle mx-2"
+                                                style="max-width: {{ photo_width }};"
+                                            >
+                                            <span class="px-1"></span>
+                                            <a
+                                                href="{{ path('politician', {"slug": mandate.politician.slug}) }}"
+                                            >{{ mandate.politician.firstName }} {{ mandate.politician.lastName }}</a>
+                                        </h3>
+                                        <div>
+                                            <big>
+                                                <big>
+                                                    <big>
+                                                        <strong class="mr-1 text-info">{{ mandate.competenceUsesPoints }}</strong>
+                                                    </big>
+                                                </big>
+                                                <sup>
+                                                    {{ "text.points"|trans({"%count%": mandate.competenceUsesPoints}) }}
+                                                </sup>
+                                            </big>
+                                        </div>
+                                    </div>
                                 </div>
-                                <samp class="p-2 mr-1 badge badge-warning font-weight-bold">
-                                    {{ current_rank}}
-                                </samp>
-                                <samp>{{ mandate.competenceUsesPoints }}</samp> {{ "text.points"|trans({"%count%": mandate.competenceUsesPoints}) }}
-                            </li>
+                            </div>
 
                             {# @var \App\Entity\Mandate prev_mandate #}
                             {% set prev_mandate = mandate %}
                         {% endfor %}
-                    </ul>
+                    </div>
                 </div>
             </div>
             {% if mandates.getPaginationData()['pageCount'] > 1 %}
@@ -55,6 +99,9 @@
                     </div>
                 </footer>
             {% endif %}
-        </section>
+        </div>
     </main>
+    <div class="bg-dark-pattern py-5">
+        {% include 'app/component/section/footer.html.twig' only %}
+    </div>
 {% endblock %}

@@ -47,7 +47,7 @@ class MandatesController extends AbstractController
         $mandates = $this->paginator->paginate(
             $query,
             $request->query->getInt('page', 1), // fixme: hardcode
-            10 // fixme: hardcode
+            20 // fixme: hardcode
         );
 
         $firstMandateRank = ($firstMandate = $mandates->getItems()[0] ?? null)

@@ -45,10 +45,16 @@
                             {% if last_valid_mandate %}
                                 {% set mandate = last_valid_mandate.mandate %}
                                 <div class="d-inline-block bg-primary rounded p-3">
-                                    <div>
-                                        <span class="badge badge-warning">{{ mandate.beginDate|date }}</span>
-                                        <span class="text-light h5 mb-0 mx-3">{{ mandate.institutionTitle.title.name }}</span>
-                                        <span class="badge badge-warning">{{ mandate.endDate|date }}</span>
+                                    <div class="row">
+                                        <div class="text-left col-6 col-md-auto">
+                                            <span class="badge badge-warning">{{ mandate.beginDate|date }}</span>
+                                        </div>
+                                        <div class="text-center col-12 order-first col-md order-md-0 mb-3 mb-lg-0">
+                                            <span class="text-light h5 mb-0 mx-3">{{ mandate.institutionTitle.title.name }}</span>
+                                        </div>
+                                        <div class="text-right col-6 col-md-auto">
+                                            <span class="badge badge-warning">{{ mandate.endDate|date }}</span>
+                                        </div>
                                     </div>
                                     {% if mandate.endDate > date() %}
                                         <div class="progress thin bg-dark mandate-period mt-3">
@@ -206,6 +212,28 @@
                                 </h5>
                             {% endif %}
                             <div class="card-body bg-white rounded">
+                                {% if promises|length %}
+                                    <div class="row mb-4">
+                                        <div class="col">
+                                            <a
+                                                class="btn btn-outline-primary"
+                                                href="{{ path("promises", {
+                                                    'politicianSlug': candidate.politician.slug,
+                                                    'electionSlug': candidate.election.slug
+                                                }) }}"
+                                            ><strong>{{ "text.view_promises_count"|trans({'%count%': promises|length}) }}</strong></a>
+                                            {% if mandate %}
+                                                <a
+                                                    class="btn btn-outline-info ml-3"
+                                                    href="{{ path("actions", {
+                                                        'politicianSlug': candidate.politician.slug,
+                                                        'electionSlug': candidate.election.slug
+                                                    }) }}"
+                                                ><strong>{{ "text.view_the_made_actions"|trans }}</strong></a>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                {% endif %}
                                 {% if candidate.constituency %}
                                     <div class="mb-3" itemprop="location" itemscope itemtype="https://schema.org/AdministrativeArea">
                                         <a
@@ -282,36 +310,6 @@
                                             <a href="{{ candidate.electoralPlatformLink }}" target="_blank">
                                                 {{ "label.electoral_platform_link"|trans }}
                                             </a>
-                                        </div>
-                                    </div>
-                                {% endif %}
-                                {% if promises|length %}
-                                    <div class="{{ detailClasses.row }}">
-                                        <div class="{{ detailClasses.colLabel }}">
-                                            <strong>{{ "title.promises"|trans }}</strong>
-                                        </div>
-                                        <div class="{{ detailClasses.colContent }}">
-                                            <a
-                                                href="{{ path("promises", {
-                                                    'politicianSlug': candidate.politician.slug,
-                                                    'electionSlug': candidate.election.slug
-                                                }) }}"
-                                            ><strong>{{ "text.view_promises_count"|trans({'%count%': promises|length}) }}</strong></a>
-                                        </div>
-                                    </div>
-                                {% endif %}
-                                {% if promises|length and mandate %}
-                                    <div class="{{ detailClasses.row }}">
-                                        <div class="{{ detailClasses.colLabel }}">
-                                            <strong>{{ "title.promise_actions"|trans }}</strong>
-                                        </div>
-                                        <div class="{{ detailClasses.colContent }}">
-                                            <a
-                                                href="{{ path("actions", {
-                                                    'politicianSlug': candidate.politician.slug,
-                                                    'electionSlug': candidate.election.slug
-                                                }) }}"
-                                            ><strong>{{ "text.view_the_made_actions"|trans }}</strong></a>
                                         </div>
                                     </div>
                                 {% endif %}

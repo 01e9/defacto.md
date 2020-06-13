@@ -38,13 +38,31 @@
                 <div class="container">
                     <div class="row text-lg-center mb-4">
                         <div class="col">
-                            <h1>
+                            <h1 class="mb-4">
                                 <span itemprop="givenName">{{ politician.firstName }}</span>
                                 <span itemprop="familyName">{{ politician.lastName }}</span>
                             </h1>
                             {% if last_valid_mandate %}
                                 {% set mandate = last_valid_mandate.mandate %}
-                                <div class="text-light">{{ mandate.institutionTitle.title.name }}</div>
+                                <div class="d-inline-block bg-primary rounded p-3">
+                                    <div>
+                                        <span class="badge badge-warning">{{ mandate.beginDate|date }}</span>
+                                        <span class="text-light h5 mb-0 mx-3">{{ mandate.institutionTitle.title.name }}</span>
+                                        <span class="badge badge-warning">{{ mandate.endDate|date }}</span>
+                                    </div>
+                                    {% if mandate.endDate > date() %}
+                                        <div class="progress thin bg-dark mandate-period mt-3">
+                                            <div class="progress-bar bg-warning rounded"
+                                                 style="width: {{ '' ~ macros.get_date_interval_progress(mandate.beginDate, mandate.endDate) }}%;"
+                                            >
+                                                <span class="fas fa-circle text-warning rounded-circle"></span>
+                                            </div>
+                                        </div>
+                                        <div class="mt-3 small text-warning text-right">
+                                            <small>{{ "text.the_mandate_ends_in"|trans({"%time%": mandate.endDate|ago}) }}</small>
+                                        </div>
+                                    {% endif %}
+                                </div>
                             {% endif %}
                         </div>
                     </div>
@@ -104,6 +122,7 @@
                 </div>
             </div>
         </section>
+        {% if politician.sortedCandidates|length %}
         <div class="container-fluid px-0 bg-light-pattern">
             <div class="bg-primary py-3">
                 <div class="container">
@@ -305,6 +324,7 @@
                 {% endfor %}
             </div>
         </div>
+        {% endif %}
     </main>
     {% include 'app/component/section/footer.html.twig' only %}
 {% endblock %}

@@ -300,6 +300,7 @@ text:
     years_n: an|ani|de ani
     elected: ales
     mandate_ceased_on: mandat încetat pe %date%
+    the_mandate_ends_in: mandatul încetează %time%
     in: în
     in_elections_from: în alegerile din
     in_elections_for: în alegerile pentru

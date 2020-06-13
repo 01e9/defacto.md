@@ -5,31 +5,31 @@
 {% endif %}
 <footer class="container text-light my-5">
     <div class="row">
-        <div class="col mb-3 text-sm-center">
-            <p>deFacto - Platformă online de monitorizare a promisiunilor făcute de politicieni</p>
+        <div class="col text-sm-center">
+            <h5 class="mb-5">{{ "meta_description.main_longer"|trans }}</h5>
         </div>
     </div>
     <div class="row justify-content-md-center">
-        <div class="col text-sm-center">
-            <h5 class="mb-3">Ne găsiți pe</h5>
-            <ul class="list-unstyled d-inline-block text-left">
+        <div class="col text-center">
+            <h5 class="h3 mb-3">{{ "text.find_us_on"|trans }}</h5>
+            <div class="d-lg-flex justify-content-center">
+                {# {
+                    name: 'Instagram',
+                    link: 'https://instagram.com/defacto.md/',
+                    icon: 'fab fa-instagram',
+                    raw:  false
+                },
+                {
+                    name: 'Linkedin',
+                    link: 'https://www.linkedin.com/company/defactomd/',
+                    icon: 'fab fa-linkedin',
+                    raw:  false
+                }, #}
                 {% for item in [
                     {
                         name: 'Facebook',
                         link: 'https://facebook.com/defacto.md/',
                         icon: 'fab fa-facebook-square',
-                        raw:  false
-                    },
-                    {
-                        name: 'Instagram',
-                        link: 'https://instagram.com/defacto.md/',
-                        icon: 'fab fa-instagram',
-                        raw:  false
-                    },
-                    {
-                        name: 'Linkedin',
-                        link: 'https://www.linkedin.com/company/defactomd/',
-                        icon: 'fab fa-linkedin',
                         raw:  false
                     },
                     {
@@ -39,14 +39,20 @@
                         raw:  true
                     },
                 ] %}
-                <li class="h6">
-                    <span class="{{ item.icon }} mr-2"></span>
-                    <a href="{{ item.raw ? item.link|raw : item.link }}"
-                       {% if not item.raw %}target="_blank"{% endif %}
-                       class="text-primary-light">{{ item.name }}</a>
-                </li>
+                <div class="px-2 mb-3">
+                    <a
+                        href="{{ item.raw ? item.link|raw : item.link }}"
+                        {% if not item.raw %}target="_blank"{% endif %}
+                        class="btn btn-lg btn-outline-info p-3"
+                    >
+                        <div class="mb-2">
+                            <span class="{{ item.icon }} fa-3x"></span>
+                        </div>
+                        <div>{{ item.name }}</div>
+                    </a>
+                </div>
                 {% endfor %}
-            </ul>
+            </div>
         </div>
     </div>
 </footer>

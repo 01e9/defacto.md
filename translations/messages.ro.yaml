@@ -320,9 +320,11 @@ text:
     view_promises_count: "Vezi %count% promisiune|Vezi %count% promisiuni|Vezi %count% de promisiuni"
     view_the_made_actions: "Vezi acțiunile întreprinse"
     points: "punct|puncte|de puncte"
+    find_us_on: "Ne găsiți pe"
 
 meta_description:
     main: "Platformă de monitorizare a promisiunilor electorale"
+    main_longer: "deFacto - Platformă online de monitorizare a promisiunilor făcute de politicieni"
     politician: "Promisiuni făcute, date de contact, studii, profesie, candidat în alegeri"
     constituency: "Candidați cu șanse de câștig, problemele principale, soluțiile candidaților"
     promise: "%politician% a promis. Acțiuni întreprinse, surse, detalii"

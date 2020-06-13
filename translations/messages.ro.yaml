@@ -174,8 +174,8 @@ action:
     filter: Filtrează
     view_on_site: Vezi pe site
     see_the_prerogatives: Vezi prerogativele
-    see_the_politicians_points: Vezi punctajele politicienilor
-    see_points_details: Vezi detalii despre punctaje
+    see_the_politicians_points: Vezi punctajul politicienilor
+    see_points_details: Vezi detalii despre punctaj
     view_decision: Vezi hotărârea
     add_blog_post: Adaugă postare
     edit_blog_post: Modifică postare
@@ -268,7 +268,7 @@ title:
     no_made_actions_found: Nu am găsit nici o acțiune
     recent_blog_posts: Postări recente pe blog
     participation_in_elections: Participarea în alegeri
-    the_points_of_the_politicians: Punctajele politicienilor
+    the_points_of_the_politicians: Punctajul politicienilor
 
 placeholder:
     choose_option: Alegeți o opțiune

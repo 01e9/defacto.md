@@ -13,19 +13,22 @@
     <meta name="robots" content="noindex, follow">
 {% endblock %}
 
+{% block html_class %}bg-dark-pattern{% endblock %}
+{% block body_class %}bg-transparent{% endblock %}
+
 {% set place_width = '5rem' %}
 {% set photo_width = '3rem' %}
 
 {% block main %}
-    <main>
-        <div class="container-fluid bg-light-pattern text-center pt-5 pb-3">
+    <main class="bg-info">
+        <div class="container-fluid text-center text-white pt-5">
             <div class="row">
                 <div class="col">
-                    <h1>{{ "title.the_points_of_the_politicians"|trans }}</h1>
+                    <h1 class="mb-0">{{ "title.the_points_of_the_politicians"|trans }}</h1>
                 </div>
             </div>
         </div>
-        <div class="container py-5">
+        <div class="container mt-5 mb-4">
             <div class="row justify-content-center">
                 <div class="d-inline-block">
                     <div class="list-group list-group-flush">
@@ -36,7 +39,7 @@
                                 {% set current_rank = current_rank + 1 %}
                             {% endif %}
 
-                            <div class="list-group-item">
+                            <div class="list-group-item pt-4{% if loop.first %} rounded-top{% endif %}{% if loop.last %} rounded-bottom{% endif %}">
                                 <div class="row">
                                     <div class="col-auto">
                                         <div
@@ -55,12 +58,12 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col pl-0">
+                                    <div class="col">
                                         <h3 class="d-flex align-items-center">
                                             <img
                                                 src="{{ macros.politician_photo_url(mandate.politician) }}"
                                                 alt="{{ mandate.politician.firstName ~ " " ~ mandate.politician.lastName }}"
-                                                class="d-inline-block rounded-circle ml-3 mr-2"
+                                                class="d-inline-block rounded-circle mr-2"
                                                 style="max-width: {{ photo_width }};"
                                             >
                                             <span class="px-1"></span>
@@ -90,18 +93,20 @@
                     </div>
                 </div>
             </div>
-            {% if mandates.getPaginationData()['pageCount'] > 1 %}
-                <footer class="row mt-4 mb-5">
+        </div>
+        {% if mandates.getPaginationData()['pageCount'] > 1 %}
+            <div class="container-fluid bg-light">
+                <footer class="row pt-4 pb-5">
                     <div class="col text-center">
                         <div class="d-inline-block pagination-wrapper">
                             {{ knp_pagination_render(mandates) }}
                         </div>
                     </div>
                 </footer>
-            {% endif %}
-        </div>
+            </div>
+        {% else %}
+            <div class="py-3"></div>
+        {% endif %}
     </main>
-    <div class="bg-dark-pattern py-5">
-        {% include 'app/component/section/footer.html.twig' only %}
-    </div>
+    {% include 'app/component/section/footer.html.twig' only %}
 {% endblock %}

@@ -65,7 +65,7 @@ class CompetenceCategory
 
     public function getNameWithParent() : ?string
     {
-        return $this->getParent() ? "{$this->getParent()->getName()} / {$this->getName()}" : $this->getName();
+        return $this->getParent() ? "{$this->getParent()->getName()} ⮞ {$this->getName()}" : $this->getName();
     }
 
     public function setName(?string $name) : self

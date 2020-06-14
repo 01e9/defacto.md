@@ -117,6 +117,7 @@ class AdminMandatesController extends AbstractController
 
         return $this->render('admin/page/mandate/edit.html.twig', [
             'form' => $form->createView(),
+            'mandate' => $mandate,
         ]);
     }
 

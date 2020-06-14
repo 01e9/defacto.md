@@ -60,4 +60,22 @@ class MandatesController extends AbstractController
             'first_mandate_rank' => $firstMandateRank,
         ]);
     }
+
+    /**
+     * @Route("/mandate/{electionSlug}/{politicianSlug}", name="mandate", methods={"GET"})
+     */
+    public function viewAction(string $electionSlug, string $politicianSlug)
+    {
+        $mandate = $this->repository->findOneBySlugs($electionSlug, $politicianSlug);
+        if (!$mandate) {
+            throw $this->createNotFoundException();
+        }
+
+        $rank = $this->repository->findCompetencePointsRank($mandate);
+
+        return $this->render('app/page/mandate.html.twig', [
+            'mandate' => $mandate,
+            'rank' => $rank,
+        ]);
+    }
 }

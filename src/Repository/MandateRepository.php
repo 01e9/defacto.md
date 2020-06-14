@@ -150,6 +150,20 @@ class MandateRepository extends ServiceEntityRepository
         }
     }
 
+    public function findOneBySlugs(string $electionSlug, string $politicianSlug): ?Mandate
+    {
+        return $this->createQueryBuilder('m')
+            ->join('m.election', 'e')
+            ->join('m.politician', 'p')
+            ->where('e.slug = :electionSlug')
+            ->andWhere('p.slug = :politicianSlug')
+            ->setMaxResults(1)
+            ->setParameter('electionSlug', $electionSlug)
+            ->setParameter('politicianSlug', $politicianSlug)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
     public function hasConnections(string $id) : bool
     {
         return false;

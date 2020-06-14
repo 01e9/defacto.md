@@ -133,7 +133,7 @@ class Mandate
 
     /**
      * @ORM\OneToMany(targetEntity="CompetenceUse", mappedBy="mandate", cascade={"persist", "remove"})
-     * @ORM\OrderBy({"useDate": "ASC"})
+     * @ORM\OrderBy({"useDate": "DESC"})
      *
      * @Assert\Valid()
      */
@@ -141,6 +141,7 @@ class Mandate
 
     /**
      * @ORM\OneToMany(targetEntity="MandateCompetenceCategoryStats", mappedBy="mandate", cascade={"persist", "remove"})
+     * @ORM\OrderBy({"competenceUsesPoints": "DESC"})
      *
      * @Assert\Valid()
      */

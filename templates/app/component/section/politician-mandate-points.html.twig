@@ -1,9 +1,11 @@
 {# @var \App\Entity\Politician politician #}
 {# @var \App\Entity\Mandate mandate Optional #}
 {# @var int rank Optional #}
+{# @var bool is_mandate_page Optional #}
 
 {% import 'macros.html.twig' as macros %}
 
+{% set is_mandate_page = is_mandate_page is defined ? is_mandate_page : false %}
 {% set maxPhotoWidth = '10rem' %}
 
 <div class="container-fluid px-0 py-5 bg-dark-pattern text-white">
@@ -11,8 +13,20 @@
         <div class="row text-lg-center mb-4">
             <div class="col">
                 <h1 class="mb-4">
-                    <span itemprop="givenName">{{ politician.firstName }}</span>
-                    <span itemprop="familyName">{{ politician.lastName }}</span>
+                    {% if is_mandate_page %}
+                        <a
+                            href="{{ path('politician', {'slug': politician.slug}) }}"
+                            class="text-white"
+                        >
+                            {{- "" -}}
+                            <span itemprop="givenName">{{ politician.firstName }}</span>
+                            <span itemprop="familyName">{{ politician.lastName }}</span>
+                            {{- "" -}}
+                        </a>
+                    {% else %}
+                        <span itemprop="givenName">{{ politician.firstName }}</span>
+                        <span itemprop="familyName">{{ politician.lastName }}</span>
+                    {% endif %}
                 </h1>
                 {% if mandate %}
                     <div class="d-inline-block bg-dark rounded p-3">
@@ -77,11 +91,13 @@
                         class="btn btn-outline-info"
                         href="{{ path('mandates', {"electionSlug": mandate.election.slug}) }}"
                     >{{ "action.see_the_politicians_points"|trans }}</a>
-                    <span class="d-block d-lg-inline px-2 mb-5 mb-lg-0"></span>
-                    <a
-                        class="btn btn-outline-warning"
-                        href="{{ path('mandate', {'electionSlug': mandate.election.slug, 'politicianSlug': politician.slug}) }}"
-                    >{{ "action.see_points_details"|trans }}</a>
+                    {% if not is_mandate_page %}
+                        <span class="d-block d-lg-inline px-2 mb-5 mb-lg-0"></span>
+                        <a
+                            class="btn btn-outline-warning"
+                            href="{{ path('mandate', {'electionSlug': mandate.election.slug, 'politicianSlug': politician.slug}) }}"
+                        >{{ "action.see_points_details"|trans }}</a>
+                    {% endif %}
                 </div>
             </div>
         {% endif %}

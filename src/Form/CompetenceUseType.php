@@ -46,6 +46,7 @@ class CompetenceUseType extends AbstractType
             ->add('description', TextareaType::class, [
                 'label' => 'label.description',
                 'required' => false,
+                'attr' => ['class' => 'wysiwyg'],
             ])
             ->add('sourceLink', TextType::class, [
                 'label' => 'label.source_link',

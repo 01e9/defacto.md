@@ -68,7 +68,10 @@
                                             >
                                             <span class="px-1"></span>
                                             <a
-                                                href="{{ path('politician', {"slug": mandate.politician.slug}) }}"
+                                                href="{{ path('mandate', {
+                                                    "electionSlug": mandate.election.slug,
+                                                    "politicianSlug": mandate.politician.slug,
+                                                }) }}"
                                             >{{ mandate.politician.firstName }} {{ mandate.politician.lastName }}</a>
                                         </h3>
                                         <div>

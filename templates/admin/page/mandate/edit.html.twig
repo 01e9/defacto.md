@@ -1,3 +1,6 @@
+{# @var \Symfony\Component\Form\FormInterface form #}
+{# @var \App\Entity\Mandate mandate #}
+
 {% extends 'admin/base.html.twig' %}
 
 {% block main %}
@@ -7,7 +10,11 @@
                 {title: 'title.mandates'|trans, link: path('admin_mandates')}
             ],
             current: {title: 'title.mandate_edit'|trans},
-            add: {link: path('admin_mandate_add'), text: 'action.add_mandate'|trans}
+            add: {link: path('admin_mandate_add'), text: 'action.add_mandate'|trans},
+            frontendLink: path("mandate", {
+                "electionSlug": mandate.election.slug,
+                "politicianSlug": mandate.politician.slug
+            })
         } only %}
 
         {% include 'admin/component/form/mandate.html.twig' with {form: form} only %}

@@ -88,7 +88,9 @@
                                                         </small>
                                                     {% endif %}
                                                 </strong>
-                                                {{ "text.points"|trans({"%count%": competenceUse.competence.points}) }}
+                                                {{ "text.points"|trans({"%count%": (competenceUse.competence.points * (
+                                                    competenceUse.multiplied ? competence_use_multiplication_factor : 1
+                                                ))}) }}
                                             </div>
                                         </div>
                                     </div>

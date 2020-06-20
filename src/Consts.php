@@ -27,4 +27,6 @@ final class Consts
         Party::class => 'logo',
         BlogPost::class => 'image',
     ];
+
+    const COMPETENCE_USE_MULTIPLICATION_FACTOR = 2;
 }

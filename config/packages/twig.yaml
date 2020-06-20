@@ -7,3 +7,4 @@ twig:
         timezone: Europe/Chisinau
     globals:
         google_maps_api_key: '%google_maps_api_key%'
+        competence_use_multiplication_factor: !php/const App\Consts::COMPETENCE_USE_MULTIPLICATION_FACTOR

@@ -33,3 +33,7 @@
     height: 100%;
   }
 }
+
+a.no-underline:hover {
+  text-decoration: none !important;
+}

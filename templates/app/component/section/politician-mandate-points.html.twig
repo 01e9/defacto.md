@@ -60,27 +60,43 @@
         <div class="row align-items-lg-center">
             <div class="col-12 col-lg text-lg-right">
                 {% if rank %}
-                    <div class="text-info">
+                    <a
+                        class="text-info d-inline-block no-underline"
+                        href="{{ path('mandates', {"electionSlug": mandate.election.slug}) }}"
+                    >
                         <sup class="font-size-2 mr-3">{{ "label.the_place"|trans|lower }}</sup>
                         <span class="font-size-6">{{ rank }}</span>
-                    </div>
+                    </a>
                 {% endif %}
             </div>
             <div class="col-12 col-lg-auto px-lg-5">
-                <img
-                    src="{{ macros.politician_photo_url(politician) }}"
-                    alt="{{ politician.firstName ~ " " ~ politician.lastName }}"
-                    class="d-inline-block bg-white rounded-circle"
-                    style="max-width: {{ maxPhotoWidth }};"
-                    itemprop="image"
+                <a
+                    href="{{ path('politician', {'slug': politician.slug}) }}"
+                    class="d-inline-block"
                 >
+                    <img
+                        src="{{ macros.politician_photo_url(politician) }}"
+                        alt="{{ politician.firstName ~ " " ~ politician.lastName }}"
+                        class="d-inline-block bg-white rounded-circle"
+                        style="max-width: {{ maxPhotoWidth }};"
+                        itemprop="image"
+                    >
+                </a>
             </div>
             <div class="col-12 col-lg">
                 {% if mandate %}
-                    <div class="text-warning">
+                    {% set content %}
                         <span class="font-size-6">{{ mandate.competenceUsesPoints }}</span>
                         <sup class="font-size-2 ml-3">{{ "text.points"|trans({"%count%": mandate.competenceUsesPoints}) }}</sup>
-                    </div>
+                    {% endset %}
+                    {% if is_mandate_page %}
+                        <div class="text-warning">{{ content }}</div>
+                    {% else %}
+                        <a
+                            class="text-warning d-inline-block no-underline"
+                            href="{{ path('mandate', {'electionSlug': mandate.election.slug, 'politicianSlug': politician.slug}) }}"
+                        >{{ content }}</a>
+                    {% endif %}
                 {% endif %}
             </div>
         </div>

@@ -74,9 +74,9 @@
 </div>
 
 {% if id %}
-    <div class="row">
-        <div class="col pb-3">
-            {{ form_row(form.competenceUses) }}
+    <div class="row mb-3">
+        <div class="col">
+            {% include 'admin/component/form/widget/addable.html.twig' with {field: form.competenceUses} only %}
         </div>
     </div>
 {% else %}

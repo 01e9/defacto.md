@@ -1,0 +1,10 @@
+{# @var field #}
+
+<div class="card bg-secondary border-dark">
+    <div class="card-header bg-dark">
+        {{ form_label(field, null, {'label_attr': {'class': 'p-0 m-0 text-white'}}) }}
+    </div>
+    <div class="card-body">
+        {{ form_widget(field) }}
+    </div>
+</div>

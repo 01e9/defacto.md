@@ -36,9 +36,9 @@
 </div>
 
 {% if id %}
-    <div class="row">
-        <div class="col pb-3">
-            {{ form_row(form.sources) }}
+    <div class="row mb-3">
+        <div class="col">
+            {% include 'admin/component/form/widget/addable.html.twig' with {field: form.sources} only %}
         </div>
     </div>
 {% else %}
@@ -58,9 +58,9 @@
             </div>
         </div>
         {% if id %}
-            <div class="row">
+            <div class="row mb-3">
                 <div class="col pb-3">
-                    {{ form_row(form.promiseUpdates) }}
+                    {% include 'admin/component/form/widget/addable.html.twig' with {field: form.promiseUpdates} only %}
                 </div>
             </div>
         {% else %}
@@ -69,7 +69,7 @@
     </div>
     <div class="col-12 col-lg-4">
         {% if id %}
-            <div class="row">
+            <div class="row mb-3">
                 <div class="col">
                     {{ form_row(form.usedPowers) }}
                 </div>

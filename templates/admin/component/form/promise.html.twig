@@ -6,9 +6,11 @@
     <div class="col-4">
         {{ form_row(form.politician) }}
     </div>
-    <div class="col-2">
-        <div class="p-md-3"></div>
-        {{ form_row(form.hasPrerogatives) }}
+    <div class="col-2 d-flex align-items-center">
+        <div>
+            <label>&nbsp;</label>
+            {{ form_row(form.hasPrerogatives, {'label_attr': {'class': 'switch-custom'}}) }}
+        </div>
     </div>
     <div class="col-6">
         {{ form_row(form.election) }}
@@ -41,9 +43,11 @@
             <div class="col-lg-6">
                 {{ form_row(form.code) }}
             </div>
-            <div class="col-lg-6">
-                <div class="p-md-3"></div>
-                {{ form_row(form.published) }}
+            <div class="col-lg-6 d-flex align-items-center">
+                <div>
+                    <label>&nbsp;</label>
+                    {{ form_row(form.published, {'label_attr': {'class': 'switch-custom'}}) }}
+                </div>
             </div>
         </div>
     </div>

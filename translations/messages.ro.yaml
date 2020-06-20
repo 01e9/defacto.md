@@ -126,6 +126,7 @@ label:
     competence_uses: Competențe folosite
     use_date: Data folosirii
     the_place: Locul
+    is_multiplied: Multiplică punctajul
 
 action:
     login: Autentificare

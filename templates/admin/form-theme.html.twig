@@ -234,14 +234,20 @@
                 {% endif %}
             </div>
             <div class="row">
-                <div class="col-lg-3">
+                <div class="col-lg-2">
                     {{ form_row(form.useDate, {
                         'type': 'text',
                         'attr': {'class': 'datepicker-input', 'readonly': true}
                     }) }}
                 </div>
-                <div class="col-lg-9">
+                <div class="col-lg">
                     {{ form_row(form.sourceLink) }}
+                </div>
+                <div class="col-lg-auto d-flex align-items-center">
+                    <div>
+                        <label>&nbsp;</label>
+                        {{ form_row(form.isMultiplied, {'label_attr': {'class': 'switch-custom'}}) }}
+                    </div>
                 </div>
             </div>
             <div class="row">

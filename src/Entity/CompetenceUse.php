@@ -43,6 +43,13 @@ class CompetenceUse
      */
     private $sourceLink;
 
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default": false})
+     */
+    private $isMultiplied = false;
+
     public function getMandate(): ?Mandate
     {
         return $this->mandate;
@@ -90,4 +97,17 @@ class CompetenceUse
 
         return $this;
     }
+
+    public function isMultiplied(): bool
+    {
+        return $this->isMultiplied;
+    }
+
+    public function setIsMultiplied(bool $isMultiplied): self
+    {
+        $this->isMultiplied = $isMultiplied;
+
+        return $this;
+    }
+
 }

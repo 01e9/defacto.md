@@ -7,6 +7,7 @@ use App\Entity\CompetenceUse;
 use App\Entity\Mandate;
 use App\Repository\CompetenceRepository;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -56,6 +57,10 @@ class CompetenceUseType extends AbstractType
                 'label' => 'label.use_date',
                 'widget' => 'single_text',
                 'format' => Consts::DATE_FORMAT_INTL,
+            ])
+            ->add('isMultiplied', CheckboxType::class, [
+                'label' => 'label.is_multiplied',
+                'required' => false,
             ])
         ;
     }

@@ -48,7 +48,9 @@ class ConstituenciesController extends AbstractController
             as $mandate /** @var Mandate $mandate */
         ) {
             $politicianToMandate[ $mandate->getPolitician()->getId() ] = $mandate;
-            $mandatesCompetencePointsRanks[ $mandate->getId() ] = $mandateRepository->findCompetencePointsRank($mandate);
+            $mandatesCompetencePointsRanks[ $mandate->getId() ] = $mandate->getElection()->isCompetenceUseTracked()
+                ? $mandateRepository->findCompetencePointsRank($mandate)
+                : 0;
         }
 
         $elections = [];

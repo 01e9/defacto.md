@@ -115,14 +115,14 @@
                                 itemtype="https://schema.org/Person"
                             >
                                 <div
-                                    class="card mb-3 {{ mandate ? ("elected" ~ (mandate.ceasingDate ? " ceased" : "")) : "" }}"
+                                    class="card mb-3 {{ mandate ? ("elected " ~ (mandate.ceasingDate ? "ceased bg-dark" : "bg-success")) : "border-info" }}"
                                     style="max-width: {{ maxImgWidth }};"
                                 >
                                     <div class="position-relative">
                                         <img
                                             src="{{ macros.politician_photo_url(candidate.politician) }}"
                                             alt="Politician"
-                                            class="img-fluid w-100 card-img-top"
+                                            class="bg-white img-fluid w-100 card-img-top"
                                             itemprop="image"
                                         >
                                         {% if mandate %}
@@ -139,19 +139,10 @@
                                                         <span itemprop="jobTitle">{{ mandate.institutionTitle.title.name }}</span>
                                                     {% endif %}
                                                 </h6>
-
-                                                {# todo #}
-                                                {% if false and competence_points_rank %}
-                                                    <samp class="text-warning">
-                                                        <span class="fa fa-chart-line"></span>
-                                                        Rank #{{ competence_points_rank }}
-                                                        ({{ mandate.competenceUsesPoints }} points)
-                                                    </samp>
-                                                {% endif %}
                                             </div>
                                         {% endif %}
                                     </div>
-                                    <div class="card-body px-2 pt-3 pb-1">
+                                    <div class="card-body {% if mandate %}bg-white rounded{% endif%} px-2 pt-3 pb-1">
                                         <h6 class="card-title text-center">
                                             <a href="{{ path("politician", {slug: candidate.politician.slug}) }}">
                                                 <span itemprop="givenName">{{ candidate.politician.firstName }}</span>
@@ -183,6 +174,28 @@
                                             </div>
                                         {% endif %}
                                     </div>
+                                    {% if competence_points_rank and not mandate.ceasingDate %}
+                                        <div class="pt-1 text-white bg-success">
+                                            <a
+                                                href="{{ path('mandate', {'electionSlug': mandate.election.slug, 'politicianSlug': mandate.politician.slug}) }}"
+                                                class="d-block btn btn-light"
+                                            >
+                                                <div class="row">
+                                                    <div class="col text-left">
+                                                        <small>{{ "label.the_place"|trans }}</small>
+                                                        <strong>{{ competence_points_rank }}</strong>
+                                                    </div>
+                                                    <div class="col-auto">
+                                                        <big class="fa fa-chart-line align-middle"></big>
+                                                    </div>
+                                                    <div class="col text-right">
+                                                        <strong>{{ mandate.competenceUsesPoints }}</strong>
+                                                        <small>{{ "label.points"|trans({"%count%": mandate.competenceUsesPoints}) }}</small>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    {% endif %}
                                 </div>
                             </div>
                         {% endfor %}

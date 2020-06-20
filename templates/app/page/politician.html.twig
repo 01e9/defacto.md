@@ -161,33 +161,53 @@
                                         </div>
                                     </div>
                                 {% endif %}
-                                {% if candidate.constituency %}
-                                    <div class="mb-3" itemprop="location" itemscope itemtype="https://schema.org/AdministrativeArea">
-                                        <a
-                                            href="{{ path('constituency', {slug: candidate.constituency.slug, electionSlug: candidate.election.slug}) }}"
-                                            itemprop="url"
-                                        ><span itemprop="name">{{ candidate.constituency.name }}</span></a>
-                                    </div>
-                                {% endif %}
-                                {% if candidate.party %}
-                                    <div class="mb-3">
-                                        <div class="row align-items-center">
-                                            <div class="col-auto pr-0">
-                                                <div style="width: {{ logoSize }};" class="text-center">
-                                                    <img
-                                                        src="{{ macros.party_logo_url(candidate.party) }}"
-                                                        alt="Logo"
-                                                        style="max-width: {{ logoSize }}; max-height: {{ logoSize }};"
-                                                        class="rounded"
-                                                    >
-                                                </div>
-                                            </div>
-                                            <div class="col">
-                                                {{ candidate.party.name }}
+                                <div class="row">
+                                    {% if candidate.constituency %}
+                                        <div class="col-12 col-lg">
+                                            <div
+                                                class="mb-3"
+                                                itemscope
+                                                itemprop="location"
+                                                itemtype="https://schema.org/AdministrativeArea"
+                                            >
+                                                <a
+                                                    href="{{ path('constituency', {
+                                                        slug: candidate.constituency.slug,
+                                                        electionSlug: candidate.election.slug
+                                                    }) }}"
+                                                    itemprop="url"
+                                                >
+                                                    {{- "" -}}
+                                                    <big class="fa fa-map-marker-alt mr-2"></big>
+                                                    {{- "" -}}
+                                                    <span itemprop="name">{{ candidate.constituency.name }}</span>
+                                                    {{- "" -}}
+                                                </a>
                                             </div>
                                         </div>
-                                    </div>
-                                {% endif %}
+                                    {% endif %}
+                                    {% if candidate.party %}
+                                        <div class="col-12 col-lg-auto">
+                                            <div class="mb-3">
+                                                <div class="row align-items-center">
+                                                    <div class="col-auto pr-0">
+                                                        <div style="width: {{ logoSize }};" class="text-center">
+                                                            <img
+                                                                src="{{ macros.party_logo_url(candidate.party) }}"
+                                                                alt="Logo"
+                                                                style="max-width: {{ logoSize }}; max-height: {{ logoSize }};"
+                                                                class="rounded"
+                                                            >
+                                                        </div>
+                                                    </div>
+                                                    <div class="col">
+                                                        {{ candidate.party.name }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                </div>
                                 {% if candidate.registrationDate %}
                                     <meta itemprop="startTime" content="{{ candidate.registrationDate|date('Y-m-d') }}">
                                     <div class="{{ detailClasses.row }}">

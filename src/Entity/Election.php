@@ -91,6 +91,13 @@ class Election
      */
     private $candidates;
 
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default": true})
+     */
+    private $isCompetenceUseTracked = true;
+
     public function __construct()
     {
         $this->mandates = new ArrayCollection();
@@ -164,6 +171,18 @@ class Election
     public function setDate(\DateTimeInterface $date): self
     {
         $this->date = $date;
+
+        return $this;
+    }
+
+    public function isCompetenceUseTracked(): bool
+    {
+        return $this->isCompetenceUseTracked;
+    }
+
+    public function setIsCompetenceUseTracked(bool $isCompetenceUseTracked): self
+    {
+        $this->isCompetenceUseTracked = $isCompetenceUseTracked;
 
         return $this;
     }

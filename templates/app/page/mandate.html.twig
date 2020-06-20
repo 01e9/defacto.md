@@ -82,6 +82,11 @@
                                             <div class="col-auto">
                                                 <strong class="text-info">
                                                     {{ competenceUse.competence.points }}
+                                                    {% if competenceUse.multiplied %}
+                                                        <small class="text-danger font-weight-bold mr-1">
+                                                            <samp>x{{ competence_use_multiplication_factor }}</samp>
+                                                        </small>
+                                                    {% endif %}
                                                 </strong>
                                                 {{ "text.points"|trans({"%count%": competenceUse.competence.points}) }}
                                             </div>

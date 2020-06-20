@@ -54,6 +54,10 @@ class MandateCompetenceUseStatsSubscriber implements EventSubscriberInterface
             ->getQuery()
             ->execute();
 
+        if (!$mandate->getElection()->isCompetenceUseTracked()) {
+            return;
+        }
+
         $getCategoriesStats = function (bool $isMultiplied) use ($mandate) {
             return $this->competenceRepository
                 ->createQueryBuilder('c')

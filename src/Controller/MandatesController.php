@@ -34,7 +34,7 @@ class MandatesController extends AbstractController
     )
     {
         $election = $electionRepository->findOneBy(['slug' => $electionSlug]);
-        if (!$election) {
+        if (!$election || !$election->isCompetenceUseTracked()) {
             throw $this->createNotFoundException();
         }
 

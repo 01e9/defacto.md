@@ -6,6 +6,7 @@
 {% import 'macros.html.twig' as macros %}
 
 {% set is_mandate_page = is_mandate_page is defined ? is_mandate_page : false %}
+{% set is_competence_use_trakced = mandate and mandate.election.competenceUseTracked %}
 {% set maxPhotoWidth = '10rem' %}
 
 <div class="container-fluid px-0 py-5 bg-dark-pattern text-white">
@@ -70,10 +71,7 @@
                 {% endif %}
             </div>
             <div class="col-12 col-lg-auto px-lg-5">
-                <a
-                    href="{{ path('politician', {'slug': politician.slug}) }}"
-                    class="d-inline-block"
-                >
+                {% set image %}
                     <img
                         src="{{ macros.politician_photo_url(politician) }}"
                         alt="{{ politician.firstName ~ " " ~ politician.lastName }}"
@@ -81,10 +79,18 @@
                         style="max-width: {{ maxPhotoWidth }};"
                         itemprop="image"
                     >
-                </a>
+                {% endset %}
+                {% if is_mandate_page %}
+                    <a
+                        href="{{ path('politician', {'slug': politician.slug}) }}"
+                        class="d-inline-block"
+                    >{{ image }}</a>
+                {% else %}
+                    {{ image }}
+                {% endif %}
             </div>
             <div class="col-12 col-lg">
-                {% if mandate %}
+                {% if mandate and is_competence_use_trakced %}
                     {% set content %}
                         <span class="font-size-6">{{ mandate.competenceUsesPoints }}</span>
                         <sup class="font-size-2 ml-3">{{ "text.points"|trans({"%count%": mandate.competenceUsesPoints}) }}</sup>
@@ -100,7 +106,7 @@
                 {% endif %}
             </div>
         </div>
-        {% if mandate %}
+        {% if mandate and is_competence_use_trakced %}
             <div class="row mt-5">
                 <div class="col text-lg-center">
                     <a

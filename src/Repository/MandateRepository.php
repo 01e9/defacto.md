@@ -131,6 +131,10 @@ class MandateRepository extends ServiceEntityRepository
 
     public function findCompetencePointsRank(Mandate $mandate): int
     {
+        if (!$mandate->getElection()->isCompetenceUseTracked()) {
+            return 0;
+        }
+
         $electionIds = $this->getEntityManager()->getRepository(Election::class)
             ->findWithSubElectionsIds($mandate->getElection());
 

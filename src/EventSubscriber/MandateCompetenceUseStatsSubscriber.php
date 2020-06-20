@@ -2,6 +2,7 @@
 
 namespace App\EventSubscriber;
 
+use App\Consts;
 use App\Entity\CompetenceCategory;
 use App\Entity\CompetenceUse;
 use App\Entity\MandateCompetenceCategoryStats;
@@ -53,20 +54,28 @@ class MandateCompetenceUseStatsSubscriber implements EventSubscriberInterface
             ->getQuery()
             ->execute();
 
-        $categoriesStats = $this->competenceRepository
-            ->createQueryBuilder('c')
-            ->select('COUNT(c.id) as use_count, SUM(c.points) as use_points, ca.id as category_id')
-            ->innerJoin(
-                CompetenceUse::class, 'cu', Expr\Join::WITH,
-                'cu.competence = c AND cu.mandate = :mandate'
-            )
-            ->innerJoin('c.category', 'ca')
-            ->groupBy('ca.id')
-            ->setParameter('mandate', $mandate)
-            ->getQuery()
-            ->getResult();
+        $getCategoriesStats = function (bool $isMultiplied) use ($mandate) {
+            return $this->competenceRepository
+                ->createQueryBuilder('c')
+                ->select('COUNT(c.id) as use_count, SUM(c.points) as use_points, ca.id as category_id')
+                ->innerJoin(
+                    CompetenceUse::class, 'cu', Expr\Join::WITH,
+                    'cu.competence = c AND cu.mandate = :mandate AND cu.isMultiplied = :is_multiplied'
+                )
+                ->innerJoin('c.category', 'ca')
+                ->groupBy('ca.id')
+                ->setParameter('mandate', $mandate)
+                ->setParameter('is_multiplied', $isMultiplied)
+                ->getQuery()
+                ->getResult();
+        };
 
-        if (!count($categoriesStats)) {
+        $categoriesStats = [
+            'regular' => $getCategoriesStats(false),
+            'multiplied' => $getCategoriesStats(true),
+        ];
+
+        if (!count($categoriesStats['regular']) && !count($categoriesStats['multiplied'])) {
             return;
         }
 
@@ -76,7 +85,10 @@ class MandateCompetenceUseStatsSubscriber implements EventSubscriberInterface
                 ->createQueryBuilder('cc')
                 ->select('cc')
                 ->where('cc.id IN (:ids)')
-                ->setParameter('ids', array_column($categoriesStats, 'category_id'))
+                ->setParameter('ids', array_unique(array_merge(
+                    array_column($categoriesStats['regular'], 'category_id'),
+                    array_column($categoriesStats['multiplied'], 'category_id'),
+                )))
                 ->getQuery()
                 ->getResult()
             as $category /** @var CompetenceCategory $category */
@@ -86,19 +98,44 @@ class MandateCompetenceUseStatsSubscriber implements EventSubscriberInterface
 
         $totalUseCount = 0;
         $totalUsePoints = 0;
+        $categoryToStats = [];
 
-        foreach ($categoriesStats as $categoryStatsData) {
-            $categoryStats = new MandateCompetenceCategoryStats();
-            $categoryStats->setMandate($mandate);
-            $categoryStats->setCompetenceCategory($categories[ $categoryStatsData['category_id'] ]);
-            $categoryStats->setCompetenceUsesCount($categoryStatsData['use_count']);
-            $categoryStats->setCompetenceUsesPoints($categoryStatsData['use_points']);
+        foreach (
+            [
+                [false, $categoriesStats['regular']],
+                [true, $categoriesStats['multiplied']],
+            ]
+            as $pair
+        ) {
+            list($isMultiplied, $stats) = $pair;
 
-            $this->objectManager->persist($categoryStats);
+            foreach ($stats as $categoryStatsData) {
+                $categoryId = $categoryStatsData['category_id'];
 
-            $totalUseCount += $categoryStatsData['use_count'];
-            $totalUsePoints += $categoryStatsData['use_points'];
+                if (!isset($categoryToStats[ $categoryId ])) {
+                    $categoryStats = new MandateCompetenceCategoryStats();
+                    $categoryStats->setMandate($mandate);
+                    $categoryStats->setCompetenceCategory($categories[ $categoryId ]);
+
+                    $categoryToStats[ $categoryId ] = $categoryStats;
+                }
+
+                $categoryStats = $categoryToStats[ $categoryId ];
+
+                $useCount = $categoryStatsData['use_count'];
+                $usePoints = $categoryStatsData['use_points'] * ($isMultiplied ? Consts::COMPETENCE_USE_MULTIPLICATION_FACTOR : 1);
+
+                $categoryStats->setCompetenceUsesCount($useCount + $categoryStats->getCompetenceUsesCount());
+                $categoryStats->setCompetenceUsesPoints($usePoints + $categoryStats->getCompetenceUsesPoints());
+
+                $totalUseCount += $useCount;
+                $totalUsePoints += $usePoints;
+            }
         }
+
+        array_walk($categoryToStats, function ($categoryStats) {
+            $this->objectManager->persist($categoryStats);
+        });
 
         $mandate->setCompetenceUsesCount($totalUseCount);
         $mandate->setCompetenceUsesPoints($totalUsePoints);

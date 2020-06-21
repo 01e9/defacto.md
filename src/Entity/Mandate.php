@@ -12,6 +12,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="App\Repository\MandateRepository")
  * @ORM\Table(
  *     name="mandates",
+ *     indexes={
+ *      @ORM\Index(
+ *          name="mandate_index_constituency_begin_date",
+ *          columns={"constituency_id", "begin_date"}
+ *      )
+ *     },
  *     uniqueConstraints={
  *      @ORM\UniqueConstraint(
  *          name="mandate_unique_politician_institution_begin",

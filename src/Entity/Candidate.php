@@ -10,6 +10,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="App\Repository\CandidateRepository")
  * @ORM\Table(
  *     name="candidates",
+ *     indexes={
+ *      @ORM\Index(
+ *          name="candidate_index_constituency_registration_date",
+ *          columns={"constituency_id", "registration_date"}
+ *      )
+ *     },
  *     uniqueConstraints={
  *      @ORM\UniqueConstraint(
  *          name="candidates_unique_composite",

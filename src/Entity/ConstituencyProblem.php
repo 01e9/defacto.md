@@ -10,6 +10,12 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\Entity(repositoryClass="App\Repository\ConstituencyProblemRepository")
  * @ORM\Table(
  *     name="constituency_problems",
+ *     indexes={
+ *      @ORM\Index(
+ *          name="constituency_problem_index_constituency_percentage",
+ *          columns={"constituency_id", "percentage"}
+ *      )
+ *     },
  *     uniqueConstraints={
  *      @ORM\UniqueConstraint(
  *          name="constituency_problems_unique_composite",

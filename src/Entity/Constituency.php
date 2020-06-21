@@ -59,12 +59,14 @@ class Constituency
 
     /**
      * @ORM\OneToMany(targetEntity="Mandate", mappedBy="constituency")
+     * @ORM\OrderBy({"beginDate": "DESC"})
      */
     private $mandates;
 
     /**
      * @ORM\OneToMany(targetEntity="ConstituencyProblem", mappedBy="constituency", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
+     * @ORM\OrderBy({"percentage": "DESC"})
      *
      * @Assert\Valid()
      */
@@ -73,6 +75,7 @@ class Constituency
     /**
      * @ORM\OneToMany(targetEntity="Candidate", mappedBy="constituency", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
+     * @ORM\OrderBy({"registrationDate": "DESC"})
      *
      * @Assert\Valid()
      */

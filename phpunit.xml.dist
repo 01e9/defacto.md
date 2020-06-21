@@ -23,6 +23,7 @@
         <!-- ###- algolia/search-bundle ### -->
 
         <env name="GOOGLE_MAPS_API_KEY" value="..."/>
+        <env name="GOOGLE_ANALYTICS_KEY" value=""/>
     </php>
 
     <testsuites>

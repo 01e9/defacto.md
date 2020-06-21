@@ -133,6 +133,12 @@ class Politician
      */
     private $candidates;
 
+    /**
+     * @var boolean
+     * @ORM\Column(type="boolean", options={"default": false})
+     */
+    private $isFemale = false;
+
     public function __construct()
     {
         $this->mandates = new ArrayCollection();
@@ -312,5 +318,17 @@ class Politician
         });
 
         return $candidates;
+    }
+
+    public function isFemale(): bool
+    {
+        return $this->isFemale;
+    }
+
+    public function setIsFemale(bool $isFemale): self
+    {
+        $this->isFemale = $isFemale;
+
+        return $this;
     }
 }

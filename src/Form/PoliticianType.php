@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Consts;
 use App\Entity\Politician;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -74,6 +75,10 @@ class PoliticianType extends AbstractType
             ->add('previousTitles', TextareaType::class, [
                 'label' => 'label.previous_titles',
                 'attr' => ['class' => 'wysiwyg'],
+                'required' => false,
+            ])
+            ->add('isFemale', CheckboxType::class, [
+                'label' => 'label.is_female',
                 'required' => false,
             ])
         ;

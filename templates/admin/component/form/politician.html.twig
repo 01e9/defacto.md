@@ -27,10 +27,16 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-8">
+            <div class="col-lg-auto d-flex align-items-center">
+                <div>
+                    <label>&nbsp;</label>
+                    {{ form_row(form.isFemale, {'label_attr': {'class': 'switch-custom'}}) }}
+                </div>
+            </div>
+            <div class="col-lg">
                 {{ form_row(form.profession) }}
             </div>
-            <div class="col-lg-4">
+            <div class="col-lg-2">
                 {{ form_row(form.birthDate, {
                     'type': 'text',
                     'attr': {'class': 'datepicker-input', 'readonly': true}

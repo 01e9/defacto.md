@@ -17,6 +17,7 @@
 {% block head_meta %}
     {{ parent() }}
     <meta name="description" content="{{ 'meta_description.mandate'|trans }}">
+    <style type="text/css">#categories-pie-chart { height: 15rem; }</style>
 {% endblock %}
 
 {% set emptyHtml = '<p>&nbsp;</p>' %}
@@ -40,10 +41,16 @@
                         </div>
                     </div>
                     <div class="row">
+                        {% set chart_items = [] %}
                         {% for categoryStats in mandate.competenceCategoryStats %}
+                            {% set chart_items = chart_items|merge([{
+                                y: categoryStats.competenceUsesPoints,
+                                label: categoryStats.competenceCategory.nameWithParent
+                            }]) %}
+
                             {# @var \App\Entity\MandateCompetenceCategoryStats categoryStats #}
                             <div class="col-12 col-lg mb-4">
-                                <div class="bg-light-pattern p-4 rounded">
+                                <div class="bg-light-pattern py-4 px-3 rounded">
                                     <h5>{{ categoryStats.competenceCategory.nameWithParent }}</h5>
                                     <div class="font-size-2">
                                         <strong class="text-info">{{ categoryStats.competenceUsesPoints }}</strong>
@@ -59,6 +66,15 @@
                     </div>
                 </div>
             </div>
+            {% if chart_items|length > 1 %}
+                <div class="bg-dark py-4">
+                    <div
+                        id="categories-pie-chart"
+                        class="w-100"
+                        data-chart-items="{{ chart_items|json_encode }}"
+                    ></div>
+                </div>
+            {% endif %}
             <div class="bg-light py-5">
                 <div class="container">
                     <div class="row text-center mb-3">
@@ -129,5 +145,35 @@
         {% endif %}
     </main>
     {% include 'app/component/section/footer.html.twig' only %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {% if mandate.competenceCategoryStats|length > 1 %}
+        <script src="{{ asset('js/canvasjs.min.js') }}"></script>
+        <script>
+            window.onload = function () {
+                var wrap = document.getElementById("categories-pie-chart");
+                if (!wrap) {
+                    return;
+                }
+
+                var chart = new CanvasJS.Chart(wrap, {
+                    theme: "dark1",
+                    backgroundColor: "transparent",
+                    data: [{
+                        type: "pie",
+                        indexLabelFontSize: 18,
+                        radius: 80,
+                        //indexLabel: "{label} ({y})",
+                        yValueFormatString: "###0.0 {{ "label.points"|trans|lower|escape('js') }}",
+                        dataPoints: JSON.parse(wrap.getAttribute('data-chart-items'))
+                    }]
+                });
+                chart.render();
+            };
+        </script>
+    {% endif %}
 {% endblock %}
 

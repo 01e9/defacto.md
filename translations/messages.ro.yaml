@@ -127,6 +127,7 @@ label:
     use_date: Data folosirii
     the_place: Locul
     is_multiplied: Multiplică punctajul
+    is_female: Femeie
 
 action:
     login: Autentificare
@@ -184,6 +185,7 @@ action:
     view_all_actions: Vezi toate acțiunile
     view_candidates_from: Vezi candidații din
     view_source: Vezi sursa
+    view_details: Vezi detalii
 
 title:
     politicians: Politicieni
@@ -259,7 +261,7 @@ title:
     candidates_with_most_chances: Candidați cu șanse de câștig
     problems_metodology: Metodologia de colectare a problemelor
     candidates_metodology: Metodologia de selectare a candidaților
-    constituency_problems: Problemele principale
+    constituency_problems: Problemele principale din circumscripție
     candidate_in: Candidat în
     candidates_solutions: Soluțiile candidaților
     partners: Parteneri
@@ -274,6 +276,7 @@ title:
     participation_in_elections: Participarea în alegeri
     the_points_of_the_politicians: Punctajul politicienilor
     points_by_category: Punctajul pe categorii
+    performance_index: Indecele de performanță
 
 placeholder:
     choose_option: Alegeți o opțiune
@@ -305,6 +308,7 @@ text:
     of_respondents: din respondenți
     years_n: an|ani|de ani
     elected: ales
+    elected_f: aleasă
     mandate_ceased_on: mandat încetat pe %date%
     the_mandate_ends_in: mandatul încetează %time%
     in: în

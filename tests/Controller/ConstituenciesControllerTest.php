@@ -9,7 +9,7 @@ class ConstituenciesControllerTest extends WebTestCase
 {
     use TestCaseTrait;
 
-    public function testViewAction()
+    public function testViewElectionAction()
     {
         $client = static::createClient();
         $client->insulate();

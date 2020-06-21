@@ -8,7 +8,7 @@
             lng: c.constituency.map.lng,
             label: c.constituency.number,
             description: c.constituency.name,
-            url: path('constituency', {
+            url: path('constituency_election', {
                 slug: c.constituency.slug,
                 electionSlug: c.election.slug
             }),
@@ -34,7 +34,7 @@
                     <option value="">{{ 'text.choose_constituency'|trans }}</option>
                     {% for c in constituencies %}
                         <option
-                            value="{{ path('constituency', {
+                            value="{{ path('constituency_election', {
                                 slug: c.constituency.slug,
                                 electionSlug: c.election.slug
                             }) }}">

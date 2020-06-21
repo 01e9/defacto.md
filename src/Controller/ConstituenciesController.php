@@ -21,9 +21,9 @@ class ConstituenciesController extends AbstractController
     }
 
     /**
-     * @Route("/constituency/{slug}/{electionSlug}", name="constituency")
+     * @Route("/constituency/{slug}/{electionSlug}", name="constituency_election")
      */
-    public function viewAction(
+    public function viewElectionAction(
         string $slug, string $electionSlug,
         ElectionRepository $electionRepository,
         MandateRepository $mandateRepository
@@ -74,7 +74,7 @@ class ConstituenciesController extends AbstractController
             throw $this->createNotFoundException();
         }
 
-        return $this->render('app/page/constituency.html.twig', [
+        return $this->render('app/page/constituency-election.html.twig', [
             'constituency' => $constituency,
             'election' => $election,
             'elections' => $elections,

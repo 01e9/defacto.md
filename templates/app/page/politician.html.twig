@@ -81,12 +81,19 @@
                                         <div class="col-12 col-lg">
                                             <span class="fa fa-vote-yea mr-2"></span>
 
-                                            {{ "title.elected"|trans }}
-                                            <span itemprop="name">
-                                                {{ mandate.institutionTitle.title.name }}
-                                                {{ "text.in_elections_from"|trans }}
-                                                {{ candidate.election.date|date }}
-                                            </span>
+                                            <a
+                                                href="{{ path('mandate', {"electionSlug": mandate.election.slug, "politicianSlug": mandate.politician.slug}) }}"
+                                                class="text-white"
+                                            >
+                                                {{- "" -}}
+                                                {{ "title.elected"|trans }}
+                                                <span itemprop="name">
+                                                    {{ mandate.institutionTitle.title.name }}
+                                                    {{ "text.in_elections_from"|trans }}
+                                                    {{ candidate.election.date|date }}
+                                                </span>
+                                                {{- "" -}}
+                                            </a>
                                         </div>
                                         <div class="col-12 col-lg-auto">
                                             {% if mandate.decisionLink %}

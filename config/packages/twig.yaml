@@ -8,3 +8,4 @@ twig:
     globals:
         google_maps_api_key: '%google_maps_api_key%'
         competence_use_multiplication_factor: !php/const App\Consts::COMPETENCE_USE_MULTIPLICATION_FACTOR
+        google_analytics_key: '%env(GOOGLE_ANALYTICS_KEY)%'

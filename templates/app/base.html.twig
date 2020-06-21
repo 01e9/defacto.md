@@ -24,12 +24,14 @@
         {% include 'app/component/flash-messages.html.twig' %}
     {% endblock %}
 
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-109582556-2"></script>
-<script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'UA-109582556-2');
-</script>
+    {% if google_analytics_key %}
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-109582556-2"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '{{ google_analytics_key|escape('js') }}');
+        </script>
+    {% endif %}
 
 {% endblock %}

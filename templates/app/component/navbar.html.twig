@@ -6,14 +6,20 @@
 
         <ul class="navbar-nav ml-auto mr-3">
             <li class="nav-item {{ app.request.attributes.get('_route') starts with 'blog' ? 'active' : '' }}">
-                <a class="nav-link" href="{{ path('blog') }}">{{ "title.blog"|trans }}</a>
+                <a class="nav-link text-primary" href="{{ path('blog') }}">
+                    {{- "" -}}
+                    <span class="fa fa-newspaper mr-1"></span>
+                    {{ "title.blog"|trans }}
+                    {{- "" -}}
+                </a>
             </li>
         </ul>
 
-        <button class="btn btn-sm btn-outline-primary my-2 my-sm-0"
-                type="button"
-                data-toggle="modal"
-                data-target="#instant-search-modal"
+        <button
+            class="btn btn-sm btn-outline-primary my-2 my-sm-0"
+            type="button"
+            data-toggle="modal"
+            data-target="#instant-search-modal"
         ><span class="fa fa-search"></span><span class="d-none d-sm-inline">&nbsp;&nbsp;{{ 'action.searching'|trans }}</span></button>
     </div>
 </nav>

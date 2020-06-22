@@ -4,7 +4,7 @@
             <img src="{{ asset('img/de-facto-check.svg') }}" alt="deFACTO">
         </a>
 
-        <ul class="navbar-nav ml-auto mr-3">
+        <ul class="navbar-nav ml-auto mr-4">
             <li class="nav-item {{ app.request.attributes.get('_route') starts with 'blog' ? 'active' : '' }}">
                 <a class="nav-link text-primary" href="{{ path('blog') }}">
                     {{- "" -}}

@@ -217,7 +217,11 @@
                 <div class="row">
                     <div class="col">
                         <h3 class="text-center text-light mb-4">
-                            {{ "title.candidates_with_most_chances"|trans }}<small class="text-muted ml-1">*</small>
+                            {% if date() < election.date %}
+                                {{ "title.candidates_with_most_chances"|trans }}
+                            {% else %}
+                                {{ "title.contracandidates"|trans }}
+                            {% endif %}
                         </h3>
                     </div>
                 </div>
@@ -255,24 +259,6 @@
                             </div>
                         </div>
                     {% endfor %}
-                </div>
-            </div>
-            <div class="container opacity-05 mt-3">
-                <div class="row justify-content-center">
-                    <div class="col-lg-9">
-                        <footer class="alert alert-dark text-muted" role="alert">
-                            <h6 class="alert-heading">{{ "title.candidates_metodology"|trans }}</h6>
-                            <p class="mb-0 small">{# fixme: translate #}
-                                Platforma deFacto.md monitorizează și prezintă programele electorale ale candidaților uninominali
-                                cu cele mai mari șanse de a câștiga la alegerile din {{ election.date|date }}.
-                                Lista restrânsă a candidaților a fost întocmită în baza unei analize extinse,
-                                în care au fost luați în calcul următorii factori: rezultatele din alegerile locale 2015 și parlamentare 2014,
-                                cele mai recente sondaje, precum și opiniile experților locali.
-                                Orice sugestie în privința listei restrânse a candidaților poate fi expediată la adresa:
-                                <a href='mai&#108;to&#58;ech&#105;pa&#64;&#100;ef&#97;c&#116;&#37;6&#70;&#46;md'>ec&#104;ipa&#64;defact&#111;&#46;&#109;&#100;</a>
-                            </p>
-                        </footer>
-                    </div>
                 </div>
             </div>
         </div>

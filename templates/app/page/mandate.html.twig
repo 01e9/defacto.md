@@ -41,13 +41,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        {% set chart_items = [] %}
-                        {% for categoryStats in mandate.competenceCategoryStats %}
-                            {% set chart_items = chart_items|merge([{
-                                y: categoryStats.competenceUsesPoints,
-                                label: categoryStats.competenceCategory.nameWithParent
-                            }]) %}
-
+                        {% for categoryStats in mandate.competenceCategoryStatsByParentCategory %}
                             {# @var \App\Entity\MandateCompetenceCategoryStats categoryStats #}
                             <div class="col-12 col-lg mb-4">
                                 <div class="bg-light-pattern py-4 px-3 rounded">
@@ -66,7 +60,15 @@
                     </div>
                 </div>
             </div>
-            {% if chart_items|length > 1 %}
+            {% if mandate.competenceCategoryStats|length > 1 %}
+                {% set chart_items = [] %}
+                {% for categoryStats in mandate.competenceCategoryStats %}
+                    {% set chart_items = chart_items|merge([{
+                        y: categoryStats.competenceUsesPoints,
+                        label: categoryStats.competenceCategory.nameWithParent
+                    }]) %}
+                {% endfor %}
+
                 <div class="bg-dark py-4">
                     <div
                         id="categories-pie-chart"
@@ -90,7 +92,11 @@
                                     <div class="card-header">
                                         <div class="row">
                                             <div class="col">
-                                                <div class="badge badge-warning mr-3">
+                                                <div
+                                                    class="badge badge-primary mr-3"
+                                                    data-toggle="tooltip" data-placement="right"
+                                                    title="{{ competenceUse.useDate|ago }}"
+                                                >
                                                     {{ competenceUse.useDate|date }}
                                                 </div>
                                                 {{ competenceUse.competence.category.nameWithParent }}
@@ -125,7 +131,7 @@
                                                 <a
                                                     href="{{ competenceUse.sourceLink }}"
                                                     target="_blank"
-                                                    class="btn btn-sm btn-outline-primary"
+                                                    class="btn btn-sm btn-outline-info"
                                                 >{{ "action.view_source"|trans }}</a>
                                             </div>
                                         {% endif %}

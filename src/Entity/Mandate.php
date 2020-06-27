@@ -315,6 +315,8 @@ class Mandate
         return $this;
     }
 
+    //region competenceCategoryStats
+
     public function getCompetenceCategoryStats(): Collection
     {
         return $this->competenceCategoryStats;
@@ -326,6 +328,49 @@ class Mandate
 
         return $this;
     }
+
+    public function getCompetenceCategoryStatsByParentCategory(): Collection
+    {
+        /** @var MandateCompetenceCategoryStats[] $stats {parentCategoryId: Stats} */
+        $stats = [];
+
+        foreach (
+            $this->competenceCategoryStats
+            as $categoryStat /** @var MandateCompetenceCategoryStats $categoryStat */
+        ) {
+            $parentCategory = $categoryStat->getCompetenceCategory()->getParent()
+                ?: $categoryStat->getCompetenceCategory();
+
+            $stat = new MandateCompetenceCategoryStats();
+            $stat->setCompetenceUsesPoints($categoryStat->getCompetenceUsesPoints());
+            $stat->setCompetenceUsesCount($categoryStat->getCompetenceUsesCount());
+            $stat->setCompetenceCategory($parentCategory);
+
+            if (isset($stats[ $parentCategory->getId() ])) {
+                $stats[ $parentCategory->getId() ]->setCompetenceUsesPoints(
+                    $stats[ $parentCategory->getId() ]->getCompetenceUsesPoints()
+                    + $stat->getCompetenceUsesPoints()
+                );
+                $stats[ $parentCategory->getId() ]->setCompetenceUsesCount(
+                    $stats[ $parentCategory->getId() ]->getCompetenceUsesCount()
+                    + $stat->getCompetenceUsesCount()
+                );
+            } else {
+                $stats[ $parentCategory->getId() ] = $stat;
+            }
+        }
+
+        usort($stats, function (MandateCompetenceCategoryStats $a, MandateCompetenceCategoryStats $b) {
+            if ($a->getCompetenceUsesPoints() === $b->getCompetenceUsesPoints()) {
+                return 0;
+            }
+            return ($a->getCompetenceUsesPoints() > $b->getCompetenceUsesPoints()) ? -1 : 1;
+        });
+
+        return new ArrayCollection($stats);
+    }
+
+    //endregion
 
     public function getChoiceName() : string
     {

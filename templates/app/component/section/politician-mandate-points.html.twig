@@ -32,15 +32,18 @@
             </div>
         </div>
         <div class="row align-items-lg-center text-center">
-            <div class="col-12 col-lg text-lg-right">
+            <div class="col-12 col-lg text-lg-right text-info">
                 {% if rank %}
-                    <a
-                        class="text-info d-inline-block no-underline"
-                        href="{{ path('mandates', {"electionSlug": mandate.election.slug}) }}"
-                    >
-                        <sup class="font-size-2 mr-3">{{ "label.the_place"|trans|lower }}</sup>
-                        <span class="font-size-6 text-warning">{{ rank }}</span>
-                    </a>
+                    <sup class="font-size-2 mr-3 position-relative">
+                        {{- "label.the_place"|trans|lower -}}
+                        <a
+                            href="{{ path('mandates', {"electionSlug": mandate.election.slug}) }}"
+                            class="position-absolute btn btn-sm btn-outline-warning text-nowrap"
+                            style="right: 0; top: 3.3rem;"
+                        ><small><span class="fa fa-star mr-2"></span>{{ "action.see_the_top"|trans }}</small></a>
+                        {{- "" -}}
+                    </sup>
+                    <span class="font-size-6 text-warning">{{ rank }}</span>
                 {% endif %}
             </div>
             <div class="col-12 col-lg-auto px-lg-5 order-first order-lg-0">
@@ -62,27 +65,26 @@
                     {{ image }}
                 {% endif %}
             </div>
-            <div class="col-12 col-lg text-lg-left">
+            <div class="col-12 col-lg text-lg-left text-info">
                 {% if mandate and is_competence_use_trakced %}
-                    {% set content %}
-                        <span class="font-size-6 text-warning">{{ mandate.competenceUsesPoints }}</span>
-                        <sup class="font-size-2 ml-3">{{ "text.points"|trans({"%count%": mandate.competenceUsesPoints}) }}</sup>
-                    {% endset %}
-                    {% if is_mandate_page %}
-                        <div class="text-info">{{ content }}</div>
-                    {% else %}
-                        <a
-                            class="text-info d-inline-block no-underline"
-                            href="{{ path('mandate', {'electionSlug': mandate.election.slug, 'politicianSlug': politician.slug}) }}"
-                        >{{ content }}</a>
-                    {% endif %}
+                    <span class="font-size-6 text-warning">{{ mandate.competenceUsesPoints }}</span>
+                    <sup class="font-size-2 ml-3 position-relative">
+                        {{- "text.points"|trans({"%count%": mandate.competenceUsesPoints}) -}}
+                        {%- if not is_mandate_page and mandate.competenceUsesPoints -%}
+                            <a
+                                href="{{ path('mandate', {'electionSlug': mandate.election.slug, 'politicianSlug': politician.slug}) }}"
+                                class="position-absolute btn btn-sm btn-outline-warning text-nowrap"
+                                style="left: 0; top: 3.3rem;"
+                            ><small>{{ "action.see_details"|trans }}<span class="fa fa-chart-pie ml-2"></span></small></a>
+                        {%- endif -%}
+                    </sup>
                 {% endif %}
             </div>
         </div>
         {% if mandate %}
             <div class="row">
                 <div class="col text-center">
-                    <div class="d-inline-block mt-2">
+                    <div class="d-inline-block mt-5 mt-lg-2">
                         <div class="row">
                             <div class="text-left col-6 col-md-auto">
                                 <span class="badge badge-primary text-light">{{ mandate.beginDate|date }}</span>

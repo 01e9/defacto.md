@@ -9,11 +9,11 @@
 {% set is_competence_use_trakced = mandate and mandate.election.competenceUseTracked %}
 {% set maxPhotoWidth = '10rem' %}
 
-<div class="container-fluid px-0 py-5 bg-dark-pattern text-white">
+<div class="container-fluid px-0 py-4 bg-dark-pattern text-white">
     <div class="container">
-        <div class="row text-lg-center mb-4">
+        <div class="row text-lg-center mb-3">
             <div class="col">
-                <h1 class="mb-4">
+                <h1 class="mb-0">
                     {% if is_mandate_page %}
                         <a
                             href="{{ path('politician', {'slug': politician.slug}) }}"

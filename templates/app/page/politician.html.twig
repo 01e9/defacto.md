@@ -25,6 +25,7 @@
     colLabel: "col-lg-3",
     colContent: "col-lg-9",
 } %}
+{% set decisionLinkCass = "btn btn-sm btn-outline-light float-lg-right d-block d-lg-inline my-2 my-lg-0" %}
 
 {% block main %}
     <main>
@@ -105,7 +106,7 @@
                                                 <a
                                                     href="{{ mandate.decisionLink }}"
                                                     target="_blank"
-                                                    class="btn btn-sm btn-outline-light float-right"
+                                                    class="{{ decisionLinkCass }}"
                                                     itemprop="url"
                                                     content="{{ mandate.decisionLink }}"
                                                 >{{ "action.view_decision"|trans }}</a>
@@ -133,7 +134,7 @@
                                         <a
                                             href="{{ mandate.ceasingLink }}"
                                             target="_blank"
-                                            class="btn btn-sm btn-outline-light float-right"
+                                            class="{{ decisionLinkCass }}"
                                             itemprop="url"
                                             content="{{ mandate.ceasingLink }}"
                                         >{{ "action.view_decision"|trans }}</a>
@@ -149,7 +150,7 @@
                                     <div class="row mb-4">
                                         <div class="col">
                                             <a
-                                                class="btn btn-lg btn-outline-primary"
+                                                class="btn btn-lg btn-outline-primary mb-3 mb-lg-0"
                                                 href="{{ path("promises", {
                                                     'politicianSlug': candidate.politician.slug,
                                                     'electionSlug': candidate.election.slug
@@ -160,7 +161,7 @@
                                             </a>
                                             {% if mandate %}
                                                 <a
-                                                    class="btn btn-lg btn-outline-info ml-3"
+                                                    class="btn btn-lg btn-outline-info ml-lg-3"
                                                     href="{{ path("actions", {
                                                         'politicianSlug': candidate.politician.slug,
                                                         'electionSlug': candidate.election.slug
@@ -175,7 +176,7 @@
                                 {% endif %}
                                 <div class="row">
                                     {% if candidate.constituency %}
-                                        <div class="col-12 col-lg">
+                                        <div class="col-12 col-lg-6">
                                             <div
                                                 class="mb-3"
                                                 itemscope
@@ -199,10 +200,13 @@
                                         </div>
                                     {% endif %}
                                     {% if candidate.party %}
-                                        <div class="col-12 col-lg-auto">
+                                        <div class="col-12 col-lg-6 text-right">
                                             <div class="mb-3">
                                                 <div class="row align-items-center">
-                                                    <div class="col-auto pr-0">
+                                                    <div class="col">
+                                                        {{ candidate.party.name }}
+                                                    </div>
+                                                    <div class="col-auto pl-0">
                                                         <div style="width: {{ logoSize }};" class="text-center">
                                                             <img
                                                                 src="{{ macros.party_logo_url(candidate.party) }}"
@@ -211,9 +215,6 @@
                                                                 class="rounded"
                                                             >
                                                         </div>
-                                                    </div>
-                                                    <div class="col">
-                                                        {{ candidate.party.name }}
                                                     </div>
                                                 </div>
                                             </div>

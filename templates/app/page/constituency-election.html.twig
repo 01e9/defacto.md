@@ -121,7 +121,7 @@
         {% endif %}
 
         <div class="bg-dark-pattern pb-4 text-white">
-            <h3 class="mb-3 p-3 text-center {% if mandate.ceasingDate %}bg-dark{% else %}bg-success{% endif %}">
+            <h3 class="p-3 text-center {% if mandate.ceasingDate %}bg-dark{% else %}bg-success{% endif %}">
                 <a
                     href="{{ path("politician", {"slug": mandate.politician.slug}) }}"
                     class="text-white"
@@ -193,16 +193,16 @@
                             >
                                 <div class="row align-items-center">
                                     <div class="col-12 col-lg font-size-3">
-                                        <small>{{ "label.the_place"|trans }}</small>
-                                        <strong>{{ mandate_ranks[ mandate.id ] }}</strong>
+                                        <span>{{ "label.the_place"|trans }}</span>
+                                        <strong class="text-warning">{{ mandate_ranks[ mandate.id ] }}</strong>
                                     </div>
                                     <div class="col-12 col-lg-auto order-first order-lg-0 pt-2 pt-lg-0 text-warning">
                                         <span class="fa fa-chart-line align-middle font-size-2"></span>
                                         <div class="h6 mb-0 mt-1">{{ "title.performance_index"|trans }}</div>
                                     </div>
                                     <div class="col-12 col-lg font-size-3">
-                                        <strong>{{ mandate.competenceUsesPoints }}</strong>
-                                        <small>{{ "label.points"|trans({"%count%": mandate.competenceUsesPoints})|lower }}</small>
+                                        <strong class="text-warning">{{ mandate.competenceUsesPoints }}</strong>
+                                        <span>{{ "label.points"|trans({"%count%": mandate.competenceUsesPoints})|lower }}</span>
                                     </div>
                                 </div>
                             </a>
@@ -226,7 +226,7 @@
                         </h3>
                     </div>
                 </div>
-                <div class="row justify-content-center align-items-center">
+                <div class="row justify-content-center">
                     {% for politician_id, candidate in candidates %}
                         <div class="col-8 col-lg-auto">
                             <div class="card mb-3 mx-auto candidate-card border-light">

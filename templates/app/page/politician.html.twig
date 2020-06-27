@@ -39,15 +39,20 @@
                 rank: last_valid_mandate ? last_valid_mandate.competencePointsRank : null
             } only %}
 
-            <div class="container-fluid px-0 py-5 bg-white">
-                <div class="container">
-                    <div class="row justify-content-center">
-                        <div class="col-lg-8">
-                            {{ self_macros.politician_bio(politician, detailClasses, emptyHtml) }}
+            {% set politician_bio %}
+                {{ self_macros.politician_bio(politician, detailClasses, emptyHtml) }}
+            {% endset %}
+            {% if politician_bio|trim|length %}
+                <div class="container-fluid px-0 py-5 bg-white">
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-8">
+                                {{ politician_bio }}
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            {% endif %}
         </section>
         {% if politician.sortedCandidates|length %}
         <div class="container-fluid px-0 bg-light-pattern">

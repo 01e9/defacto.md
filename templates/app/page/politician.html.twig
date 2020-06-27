@@ -245,14 +245,23 @@
                                     </div>
                                 {% endif %}
                                 {% if candidate.electoralPlatform and candidate.electoralPlatform != emptyHtml %}
-                                    <div itemprop="description">
-                                        {{ self_macros.detail_block("label.electoral_platform"|trans, candidate.electoralPlatform, detailClasses, "raw") }}
+                                    <div
+                                        itemprop="description"
+                                        class="row"
+                                    >
+                                        <div class="col">
+                                            <div class="bg-light rounded p-3">
+                                                <h3 class="text-info mb-4">{{ "label.electoral_platform"|trans }}</h3>
+                                                <div class="raw-html">{{ candidate.electoralPlatform|raw }}</div>
+                                            </div>
+                                        </div>
                                     </div>
                                 {% elseif not candidate.electoralPlatformLink %}
                                     <div class="{{ detailClasses.row }}">
                                         <div class="{{ detailClasses.colLabel }}">{{ "label.electoral_platform"|trans }}</div>
                                         <div class="{{ detailClasses.colContent }}">
                                             <div class="alert alert-dark text-muted">
+                                                {# fixme: translate #}
                                                 <small>
                                                     Informația nu este disponibilă.
                                                     Informația a fost cercetată din 3 surse diferite, conform metodologiei elaborate de deFacto.md.
@@ -264,12 +273,13 @@
                                     </div>
                                 {% endif %}
                                 {% if candidate.electoralPlatformLink %}
-                                    <div class="{{ detailClasses.row }}">
-                                        <div class="{{ detailClasses.colLabel }}"></div>
-                                        <div class="{{ detailClasses.colContent }}">
-                                            <a href="{{ candidate.electoralPlatformLink }}" target="_blank">
-                                                {{ "label.electoral_platform_link"|trans }}
-                                            </a>
+                                    <div class="row">
+                                        <div class="col mt-3">
+                                            <a
+                                                href="{{ candidate.electoralPlatformLink }}"
+                                                target="_blank"
+                                                class="btn btn-outline-primary"
+                                            >{{ "label.electoral_platform_link"|trans }}</a>
                                         </div>
                                     </div>
                                 {% endif %}

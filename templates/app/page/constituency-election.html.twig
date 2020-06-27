@@ -36,11 +36,15 @@
             max-width: 2rem;
             max-height: 2rem;
         }
+        img.party-logo.position-absolute {
+            bottom: 0.5em;
+            right: 0.5em;
+        }
     </style>
 {% endblock %}
 
 {% block main %}
-    <div class="bg-light-pattern py-4">
+    <div class="bg-info text-white py-4">
         <div class="container text-center text-lg-left">
             <div class="row justify-content-center">
                 <div class="col-lg-9">
@@ -54,13 +58,13 @@
                                 >
                             </div>
                         {% endif %}
-                        <div class="col-12 col-lg order-first order-lg-0">
-                            <div class="bg-white p-3 mb-3 mb-lg-0 rounded {% if not constituency.hasMap() %}text-center{% endif %}">
+                        <div class="col-12 col-lg mb-4 mb-lg-0 order-first order-lg-0">
+                            <div class="{% if not constituency.hasMap() %}text-center{% endif %}">
                                 <h1 class="mb-4">{{ constituency.name }}</h1>
                                 <a
                                     href="{{ constituency.link }}"
                                     target="_blank"
-                                    class="btn btn-sm btn-info"
+                                    class="btn btn-sm btn-warning"
                                 >{{ "action.view_details"|trans }}</a>
                             </div>
                         </div>
@@ -69,11 +73,12 @@
             </div>
         </div>
     </div>
-    <div class="bg-primary text-white text-center pt-5 pb-3">
+    <div class="bg-light-pattern text-center pt-5 pb-3">
         <div class="container">
             <div class="row">
                 <div class="col">
                     <h2>
+                        <span class="fa fa-person-booth mr-2"></span>
                         <span>{{ election.name }}</span>
                         {{ "text.from"|trans }}
                         <time datetime="{{ election.date|date('Y-m-d') }}">
@@ -87,7 +92,7 @@
                                     'slug': constituency.slug,
                                     'electionSlug': election.parent.slug
                                 }) }}"
-                                class="btn btn-sm btn-outline-light"
+                                class="btn btn-sm btn-outline-info"
                             >
                                 {{- "" -}}
                                 <span class="fa fa-history mr-2"></span>
@@ -106,47 +111,65 @@
     </div>
     {% for politician_id, mandate in mandates %}
         {# @var \App\Entity\Mandate mandate #}
-        <div class="bg-dark-pattern py-4 text-white">
-            <div class="container">
-                <div class="row">
-                    <div class="col text-center">
-                        <h3 class="mb-3 d-inline-block p-3 rounded {% if mandate.ceasingDate %}bg-dark{% else %}bg-success{% endif %}">
-                            <a
-                                href="{{ path("politician", {"slug": mandate.politician.slug}) }}"
-                                class="text-white"
-                            >
-                                {{- "" -}}
-                                <span>{{ mandate.politician.firstName }}</span>
-                                <span>{{ mandate.politician.lastName }}</span>
-                                {{- "" -}}
-                            </a>
-                            {% if mandate.ceasingDate %}
-                                <span class="fa fa-user-times mx-2"></span>
-                                <span>{{ "text.mandate_ceased_on"|trans({'%date%': mandate.ceasingDate|date}) }}</span>
-                            {% else %}
-                                <span class="fa fa-vote-yea mx-2"></span>
-                                <span class="mr-1">{{ mandate.politician.female ? "text.elected_f"|trans : "text.elected"|trans }}</span>
-                                <span>{{ mandate.institutionTitle.title.name }}</span>
-                            {% endif %}
-                        </h3>
-                    </div>
-                </div>
+
+        {% if candidates[ mandate.politician.id ] is defined %}
+            {% set candidate = candidates[ mandate.politician.id ] %}
+            {# remove from the Contracandidates list below #}
+            {% set candidates = candidates | filter((v, k) => k != mandate.politician.id) %}
+        {% else %}
+            {% set candidate = null %}
+        {% endif %}
+
+        <div class="bg-dark-pattern pb-4 text-white">
+            <h3 class="mb-3 p-3 text-center {% if mandate.ceasingDate %}bg-dark{% else %}bg-success{% endif %}">
+                <a
+                    href="{{ path("politician", {"slug": mandate.politician.slug}) }}"
+                    class="text-white"
+                >
+                    {{- "" -}}
+                    <span>{{ mandate.politician.firstName }}</span>
+                    <span>{{ mandate.politician.lastName }}</span>
+                    {{- "" -}}
+                </a>
+                {% if mandate.ceasingDate %}
+                    <span class="fa fa-user-times mx-2"></span>
+                    <span>{{ "text.mandate_ceased_on"|trans({'%date%': mandate.ceasingDate|date}) }}</span>
+                {% else %}
+                    <span class="fa fa-vote-yea mx-2"></span>
+                    <span class="mr-1">{{ mandate.politician.female ? "text.elected_f"|trans : "text.elected"|trans }}</span>
+                    <span>{{ mandate.institutionTitle.title.name }}</span>
+                {% endif %}
+            </h3>
+            <div class="container pt-3">
                 <div class="row align-items-center text-center">
                     <div class="col-12 col-lg text-lg-right">
                         {% if mandate.votesPercent %}
-                            <span class="font-size-3 text-success">
-                                    {{ mandate.votesPercent }}<small>%</small>
-                                </span>
+                            <span class="font-size-3 text-success">{{ mandate.votesPercent }}<small>%</small></span>
                         {% endif %}
                     </div>
                     <div class="col-12 col-lg-auto">
-                        <div class="rounded-circle d-inline-block p-2 {% if mandate.ceasingDate %}bg-dark{% else %}bg-success{% endif %}">
-                            <a href="{{ path("politician", {"slug": mandate.politician.slug}) }}">
+                        <div
+                            class="rounded-circle d-inline-block p-2 {%
+                                if mandate.ceasingDate %}bg-dark{% else %}bg-success{% endif
+                            %}"
+                        >
+                            <a
+                                href="{{ path("politician", {"slug": mandate.politician.slug}) }}"
+                                class="d-block position-relative"
+                            >
                                 <img
                                     src="{{ macros.politician_photo_url(mandate.politician) }}"
                                     alt="Politician"
                                     class="politician-photo bg-white rounded-circle"
                                 >
+                                {% if candidate and candidate.party %}
+                                    <img
+                                        src="{{ macros.party_logo_url(candidate.party) }}"
+                                        alt="{{ candidate.party.name }}"
+                                        title="{{ candidate.party.name }}"
+                                        class="d-inline-block party-logo bg-light rounded position-absolute"
+                                    >
+                                {% endif %}
                             </a>
                         </div>
                     </div>
@@ -160,32 +183,10 @@
                     </div>
                 </div>
             </div>
-            {% if candidates[ mandate.politician.id ] is defined and candidates[ mandate.politician.id ].party %}
-                {% set candidate = candidates[ mandate.politician.id ] %}
-                {% set candidates = candidates | filter((v, k) => k != mandate.politician.id) %}
-                <div class="container mt-3 opacity-05">
-                    <div class="row">
-                        <div class="col text-center">
-                            <div class="py-1 px-2 rounded bg-white text-body d-inline-block">
-                                <div class="row align-items-center">
-                                    <div class="col-auto pr-2">
-                                        <img
-                                            src="{{ macros.party_logo_url(candidate.party) }}"
-                                            alt="Partid"
-                                            class="d-inline-block party-logo"
-                                        >
-                                    </div>
-                                    <strong class="col pl-0">{{ candidate.party.name }}</strong>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            {% endif %}
             {% if not mandate.ceasingDate and mandate_ranks[ mandate.id ] is defined and mandate_ranks[ mandate.id ] %}
                 <div class="container mt-4">
                     <div class="row justify-content-center">
-                        <div class="col-12 col-lg-9 text-center bg-dark p-4 rounded">
+                        <div class="col-12 col-lg-9 text-center">
                             <a
                                 href="{{ path('mandate', {'electionSlug': mandate.election.slug, 'politicianSlug': mandate.politician.slug}) }}"
                                 class="btn btn-lg btn-outline-info btn-block"
@@ -212,7 +213,7 @@
         </div>
     {% endfor %}
     {% if candidates|length %}
-        <div class="bg-dark py-5">
+        <div class="bg-dark pt-4 pb-5">
             <div class="container-fluid">
                 <div class="row">
                     <div class="col">

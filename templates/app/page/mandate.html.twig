@@ -168,12 +168,15 @@
                 var chart = new CanvasJS.Chart(wrap, {
                     theme: "dark1",
                     backgroundColor: "transparent",
+                    toolTip:{
+                        enabled: false,
+                    },
                     data: [{
                         type: "pie",
                         indexLabelFontSize: 18,
                         radius: 80,
-                        //indexLabel: "{label} ({y})",
-                        yValueFormatString: "###0.0 {{ "label.points"|trans|lower|escape('js') }}",
+                        indexLabel: "{label} ❨{y}❩",
+                        yValueFormatString: "###0.0",
                         dataPoints: JSON.parse(wrap.getAttribute('data-chart-items'))
                     }]
                 });

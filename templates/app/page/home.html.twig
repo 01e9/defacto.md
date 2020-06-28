@@ -24,16 +24,7 @@
     <main>
         <div class="container-fluid px-0 bg-white">
             <div class="container">
-                <div class="row bg-white">
-                    {% if president_mandate %}
-                    <div class="col-12 col-lg-6">
-                        {% include 'app/component/block/statistics/mandate.html.twig' with {
-                            mandate: president_mandate.mandate,
-                            promise_statistics: president_mandate.promise_statistics,
-                            power_statistics: president_mandate.power_statistics,
-                        } only %}
-                    </div>
-                    {% endif %}
+                <div class="row bg-white justify-content-center">
                     {% if current_election %}
                         <div class="col-12 col-lg-6 order-first order-lg-last">
                             {% include 'app/component/block/statistics/election.html.twig' with {
@@ -46,7 +37,14 @@
                 </div>
             </div>
         </div>
-        <div class="bg-primary text-white text-center py-4">
+        {% if president_mandate %}
+            {% include 'app/component/section/statistics/mandate-votes-and-promises.html.twig' with {
+                mandate: president_mandate.mandate,
+                promise_statistics: president_mandate.promise_statistics,
+                power_statistics: president_mandate.power_statistics,
+            } only %}
+        {% endif %}
+        <div class="bg-primary text-white text-center py-5">
             <h3 class="mb-3">
                 <span class="fa fa-walking mr-2"></span>
                 {{ "title.the_recent_politicians_actions"|trans }}

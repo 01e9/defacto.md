@@ -9,7 +9,7 @@
 {% set is_competence_use_trakced = mandate and mandate.election.competenceUseTracked %}
 {% set maxPhotoWidth = '8rem' %}
 
-<div class="container-fluid px-0 py-4 bg-dark-pattern text-white">
+<div class="py-4 bg-dark-pattern text-white">
     <div class="container">
         <div class="row">
             <div class="col text-center">
@@ -84,7 +84,9 @@
         {% if mandate %}
             <div class="row">
                 <div class="col text-center">
-                    {% include "app/component/block/mandate-timeline.html.twig" with { mandate: mandate } only %}
+                    {% include "app/component/block/mandate/begin-end.html.twig" with {
+                        mandate: mandate
+                    } only %}
                 </div>
             </div>
         {% endif %}

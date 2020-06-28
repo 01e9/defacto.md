@@ -1,0 +1,63 @@
+{# @var \App\Entity\Mandate mandate #}
+{# @var array promise_statistics #}
+
+{% import 'macros.html.twig' as macros %}
+
+{% set politician_full_name = mandate.politician.firstName ~ " " ~ mandate.politician.lastName %}
+
+<div itemscope itemtype="https://schema.org/WinAction">
+    <meta itemprop="startTime" content="{{ mandate.beginDate|date('Y-m-d') }}">
+    <meta itemprop="endTime" content="{{ mandate.endDate|date('Y-m-d') }}">
+    <div class="pt-4 pb-3 bg-dark-pattern text-white">
+        <h3 class="h2 text-center">
+            <a
+                href="{{ path("politician", {slug: mandate.politician.slug}) }}"
+                class="text-white"
+            >
+                {{- "" -}}
+                <span itemprop="name">{{ politician_full_name }}</span>
+                {{- "" -}}
+            </a>
+        </h3>
+        {% include "app/component/block/mandate/photo-and-votes-container.html.twig" with {
+            mandate: mandate
+        } %}
+        <div class="container-fluid mt-1">
+            <div class="row">
+                <div class="col text-center">
+                    {% include "app/component/block/mandate/begin-end.html.twig" with { mandate: mandate } only %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="bg-light-pattern pt-3 pb-5">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <h3 class="mb-3 text-center">
+                        <a
+                            itemprop="url"
+                            href="{{ path("promises", {
+                                'politicianSlug': mandate.politician.slug,
+                                'electionSlug': mandate.election.slug
+                            }) }}"
+                        >
+                            {{- "" -}}
+                            {{ 'title.the_promises'|trans }} {{ "text.made_by"|trans }} {{ politician_full_name }}
+                            {{- "" -}}
+                        </a>
+                    </h3>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-8 col-lg-4">
+                    {% include "app/component/block/promise-statistics.html.twig" with {
+                        promise_statistics: promise_statistics,
+                        mandate: mandate
+                    } only %}
+                </div>
+            </div>
+        </div>
+        {% include "app/component/after-header-space.html.twig" only %}
+    </div>
+</div>

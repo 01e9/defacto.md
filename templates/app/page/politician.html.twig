@@ -34,7 +34,7 @@
             itemtype="https://schema.org/Person"
             itemid="{{ path('politician', {slug: politician.slug}) }}"
         >
-            {% include "app/component/section/politician-mandate-points.html.twig" with {
+            {% include "app/component/section/statistics/mandate-points.html.twig" with {
                 politician: politician,
                 mandate: last_valid_mandate ? last_valid_mandate.mandate : null,
                 rank: last_valid_mandate ? last_valid_mandate.competencePointsRank : null

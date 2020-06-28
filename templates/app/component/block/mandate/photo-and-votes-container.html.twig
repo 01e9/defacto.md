@@ -1,0 +1,47 @@
+{# @var \App\Entity\Mandate mandate #}
+{# @var \App\Entity\Candidate candidate #} {# optional #}
+
+{% import 'macros.html.twig' as macros %}
+
+<div class="container">
+    <div class="row align-items-center text-center">
+        <div class="col-12 col-lg text-lg-right">
+            {% if mandate.votesPercent %}
+                <span class="font-size-3 text-success">{{ mandate.votesPercent }}<small>%</small></span>
+            {% endif %}
+        </div>
+        <div class="col-12 col-lg-auto">
+            <div class="rounded-circle d-inline-block p-2 {% if mandate.ceasingDate %}bg-dark{% else %}bg-success{% endif %}">
+                <a
+                    href="{{ path("politician", {"slug": mandate.politician.slug}) }}"
+                    class="d-block position-relative"
+                >
+                    <img
+                        src="{{ macros.politician_photo_url(mandate.politician) }}"
+                        alt="Politician"
+                        class="bg-white rounded-circle"
+                        style="max-width: 10rem;"
+                    >
+                    {% if candidate is defined and candidate and candidate.party %}
+                        <div class="party-logo rounded position-absolute p-1 bg-white">
+                            <img
+                                src="{{ macros.party_logo_url(candidate.party) }}"
+                                alt="{{ candidate.party.name }}"
+                                title="{{ candidate.party.name }}"
+                                class="d-inline-block rounded w-100 h-100"
+                            >
+                        </div>
+                    {% endif %}
+                </a>
+            </div>
+        </div>
+        <div class="col-12 col-lg text-lg-left">
+            {% if mandate.votesCount %}
+                <span class="font-size-2 text-success">
+                    {{ mandate.votesCount }}
+                    <small>{{ "text.votes"|trans }}</small>
+                </span>
+            {% endif %}
+        </div>
+    </div>
+</div>

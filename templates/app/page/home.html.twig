@@ -46,13 +46,16 @@
                 </div>
             </div>
         </div>
-        <noindex>
-            {% include 'app/component/section/actions.html.twig' with {
-                title: "title.recent_politicians_actions"|trans,
-                actions: latest_actions,
-                view_all_link: path('actions')
-            } only %}
-        </noindex>
+        <div class="bg-primary text-white text-center py-4">
+            <h3 class="mb-3">
+                <span class="fa fa-walking mr-2"></span>
+                {{ "title.the_recent_politicians_actions"|trans }}
+            </h3>
+            <a
+                href="{{ path('actions') }}"
+                class="btn btn-outline-light"
+            >{{ "action.view_the_list"|trans }}</a>
+        </div>
         {% if latest_posts|length %}
             <noindex>
                 {% include 'app/component/section/recent-blog-posts.html.twig' with {

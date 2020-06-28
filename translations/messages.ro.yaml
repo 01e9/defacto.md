@@ -188,6 +188,7 @@ action:
     view_source: Vezi sursa
     view_details: Vezi detalii
     vote: Votează
+    view_the_list: Vezi lista
 
 title:
     politicians: Politicieni
@@ -271,7 +272,7 @@ title:
     elected: Ales
     elected_f: Aleasă
     none: Nu sunt
-    recent_politicians_actions: Acțiuni recente ale politicienilor
+    the_recent_politicians_actions: Acțiunile recente ale politicienilor
     the_actions: Acțiunile
     all_actions: Toate acțiunile politicienilor
     no_made_actions_found: Nu am găsit nici o acțiune

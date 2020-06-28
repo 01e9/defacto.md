@@ -10,6 +10,16 @@
     <meta name="description" content="{{ 'meta_description.main'|trans }}">
 {% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <style type="text/css">
+        .partner-logo {
+            max-height: 6rem;
+            max-width: 15rem;
+        }
+    </style>
+{% endblock %}
+
 {% block main %}
     <main>
         <div class="container-fluid px-0 bg-white">
@@ -63,20 +73,18 @@
                                 itemprop="url"
                             ><img
                                 src="{{ asset('img/partners/avem-ce-votam.png') }}"
-                                style="max-height: 6rem"
-                                class="d-inline-block"
+                                class="d-inline-block partner-logo"
                                 alt="avemcevotam.md"
                                 ></a>
                             <div class="p-2 d-block d-lg-inline"></div>
                             <a
-                                href="https://5000.md/"
+                                href="https://parereata.md/"
                                 target="_blank"
                                 itemprop="url"
                             ><img
-                                src="{{ asset('img/partners/5000.png') }}"
-                                style="max-height: 6rem"
-                                class="d-inline-block"
-                                alt="5000.md"
+                                src="{{ asset('img/partners/parereata.png') }}"
+                                class="d-inline-block partner-logo"
+                                alt="parereata.md"
                                 ></a>
                         </div>
                     </div>

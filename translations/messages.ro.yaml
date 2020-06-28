@@ -128,6 +128,7 @@ label:
     the_place: Locul
     is_multiplied: Multiplică punctajul
     is_female: Femeie
+    questionnaire_embed_link: Link chestionar (embed)
 
 action:
     login: Autentificare
@@ -262,7 +263,7 @@ title:
     contracandidates: Contracandidați
     problems_metodology: Metodologia de colectare a problemelor
     candidates_metodology: Metodologia de selectare a candidaților
-    constituency_problems: Problemele principale din circumscripție
+    constituency_problems_n: Problema principală din circumscripție|Problemele principale din circumscripție|Problemele principale din circumscripție
     candidate_in: Candidat în
     candidates_solutions: Soluțiile candidaților
     partners: Parteneri

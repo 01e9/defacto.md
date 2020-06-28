@@ -67,24 +67,29 @@
                 {{ form_row(form.constituency) }}
             </div>
             <div class="row">
-                <div class="col-lg-3">
+                <div class="col-lg-4">
                     {{ form_row(form.election) }}
                 </div>
-                <div class="col-lg-3">
+                <div class="col-lg-5">
                     {{ form_row(form.problem) }}
                 </div>
-                <div class="col-lg-2">
+                <div class="col-lg">
                     {{ form_row(form.type) }}
-                </div>
-                <div class="col-lg-2">
-                    {{ form_row(form.percentage) }}
-                </div>
-                <div class="col">
-                    {{ form_row(form.respondents) }}
                 </div>
                 {% if form.parent.vars.allow_delete %}
                     {{ macros.delete_btn_col() }}
                 {% endif %}
+            </div>
+            <div class="row">
+                <div class="col-lg-2">
+                    {{ form_row(form.percentage) }}
+                </div>
+                <div class="col-lg-2">
+                    {{ form_row(form.respondents) }}
+                </div>
+                <div class="col-lg-8">
+                    {{ form_row(form.questionnaireEmbedLink) }}
+                </div>
             </div>
         </div>
     </div>
@@ -99,11 +104,11 @@
                 {{ form_row(form.constituency) }}
             </div>
             <div class="row">
-                <div class="col-lg-3">
-                    {{ form_row(form.politician) }}
-                </div>
                 <div class="col-lg-5">
                     {{ form_row(form.election) }}
+                </div>
+                <div class="col-lg-3">
+                    {{ form_row(form.politician) }}
                 </div>
                 <div class="col">
                     {{ form_row(form.party) }}

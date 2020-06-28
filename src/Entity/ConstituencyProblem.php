@@ -71,6 +71,14 @@ class ConstituencyProblem
      */
     private $type;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     *
+     * @Assert\Length(max=255)
+     * @Assert\Url()
+     */
+    private $questionnaireEmbedLink;
+
     public function getConstituency(): ?Constituency
     {
         return $this->constituency;
@@ -139,6 +147,18 @@ class ConstituencyProblem
     public function setType(?string $type) : self
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    public function getQuestionnaireEmbedLink(): ?string
+    {
+        return $this->questionnaireEmbedLink;
+    }
+
+    public function setQuestionnaireEmbedLink(?string $questionnaireEmbedLink): self
+    {
+        $this->questionnaireEmbedLink = $questionnaireEmbedLink;
 
         return $this;
     }

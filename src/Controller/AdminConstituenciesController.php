@@ -124,6 +124,7 @@ class AdminConstituenciesController extends AbstractController
 
         return $this->render('admin/page/constituency/edit.html.twig', [
             'form' => $form->createView(),
+            'constituency' => $constituency,
         ]);
     }
 

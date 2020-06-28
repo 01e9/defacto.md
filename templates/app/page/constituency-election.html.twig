@@ -32,11 +32,11 @@
         img.politician-photo {
             max-width: 10rem;
         }
-        img.party-logo {
+        .party-logo {
             max-width: 2rem;
             max-height: 2rem;
         }
-        img.party-logo.position-absolute {
+        .party-logo.position-absolute {
             bottom: 0.5em;
             right: 0.5em;
         }
@@ -163,12 +163,14 @@
                                     class="politician-photo bg-white rounded-circle"
                                 >
                                 {% if candidate and candidate.party %}
-                                    <img
-                                        src="{{ macros.party_logo_url(candidate.party) }}"
-                                        alt="{{ candidate.party.name }}"
-                                        title="{{ candidate.party.name }}"
-                                        class="d-inline-block party-logo bg-light rounded position-absolute"
-                                    >
+                                    <div class="party-logo rounded position-absolute p-1 bg-white">
+                                        <img
+                                            src="{{ macros.party_logo_url(candidate.party) }}"
+                                            alt="{{ candidate.party.name }}"
+                                            title="{{ candidate.party.name }}"
+                                            class="d-inline-block rounded w-100 h-100"
+                                        >
+                                    </div>
                                 {% endif %}
                             </a>
                         </div>
@@ -274,10 +276,10 @@
                                 {{ "title.constituency_problems_n"|trans({"%count%": problems|length}) }}
                             </h3>
                         </header>
-                        <div class="row">
+                        <div class="row justify-content-center">
                             {% set problem_is_full_width = problems|length == 1 %}
                             {% for problem in problems %}
-                                <div class="col-lg-{{ problem_is_full_width ? "12" : "6" }}">
+                                <div class="col-lg-{{ problem_is_full_width ? "8" : "6" }}">
                                     <div class="card bg-danger mb-3">
                                         <div class="card-body text-white {{ problem_is_full_width ? "text-center" : "" }}">
                                             <h5 class="card-title mb-1">{{ problem.problem.name }}</h5>

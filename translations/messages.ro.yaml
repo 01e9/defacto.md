@@ -267,6 +267,7 @@ title:
     candidates_solutions: Soluțiile candidaților
     partners: Parteneri
     elected: Ales
+    elected_f: Aleasă
     none: Nu sunt
     recent_politicians_actions: Acțiuni recente ale politicienilor
     the_actions: Acțiunile
@@ -275,7 +276,7 @@ title:
     no_used_competences_found: Nu au fost găsite competențe folosite
     recent_blog_posts: Postări recente pe blog
     participation_in_elections: Participarea în alegeri
-    the_points_of_the_politicians: Punctajul politicienilor
+    the_points_of_used_competences: Punctajul competențelor folosite
     points_by_category: Punctajul pe categorii
     performance_index: Indecele de performanță
 

@@ -57,14 +57,14 @@
         </section>
         {% if politician.sortedCandidates|length %}
         <div class="container-fluid px-0 bg-light-pattern">
-            <div class="bg-primary py-3">
+            <div class="bg-primary pt-5 pb-3">
                 <div class="container">
                     <h2 class="mb-0 text-lg-center text-white">
                         {{ "title.participation_in_elections"|trans }}
                     </h2>
                 </div>
             </div>
-            <div class="container py-5">
+            <div class="container pt-4 pb-5">
                 {% for candidate in politician.sortedCandidates %}
                     {% set mandate = mandates_by_election[candidate.election.id]|default(null) %}
                     {% set promises = promises_by_election[candidate.election.id]|default([]) %}
@@ -95,7 +95,7 @@
                                                 class="text-white"
                                             >
                                                 {{- "" -}}
-                                                {{ "title.elected"|trans }}
+                                                {{ mandate.politician.female ? "title.elected_f"|trans : "title.elected"|trans }}
                                                 <span itemprop="name">
                                                     {{ mandate.institutionTitle.title.name }}
                                                     {{ "text.in_elections_from"|trans }}

@@ -87,7 +87,11 @@
                     <div class="d-inline-block mt-5 mt-lg-2">
                         <div class="row">
                             <div class="text-left col-6 col-md-auto">
-                                <span class="badge badge-primary text-light">{{ mandate.beginDate|date }}</span>
+                                <span
+                                    class="badge badge-primary text-light"
+                                    data-toggle="tooltip" data-placement="right"
+                                    title="{{ mandate.beginDate|ago }}"
+                                >{{ mandate.beginDate|date }}</span>
                             </div>
                             <div class="col-12 col-md order-first order-md-0">
                                 <span class="badge badge-light">{{ mandate.institutionTitle.title.name }}</span>

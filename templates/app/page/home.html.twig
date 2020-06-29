@@ -1,6 +1,8 @@
 {% extends 'app/base.html.twig' %}
 
 {# @var \App\Entity\BlogPost[] latest_posts #}
+{# @var array president_mandate #}
+{# @var array current_election #}
 
 {% block html_class %}bg-dark-pattern{% endblock %}
 {% block body_class %}bg-transparent{% endblock %}
@@ -41,7 +43,6 @@
             {% include 'app/component/section/statistics/mandate-votes-and-promises.html.twig' with {
                 mandate: president_mandate.mandate,
                 promise_statistics: president_mandate.promise_statistics,
-                power_statistics: president_mandate.power_statistics,
             } only %}
         {% endif %}
         <div class="bg-primary text-white text-center py-5">

@@ -3,7 +3,9 @@
 namespace App\Repository;
 
 use App\Consts;
+use App\Entity\Constituency;
 use App\Entity\Election;
+use App\Entity\Mandate;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\AbstractQuery;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -16,9 +18,27 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class ElectionRepository extends ServiceEntityRepository
 {
+    private SettingRepository $settingRepository;
+    private ConstituencyRepository $constituencyRepository;
+    private MandateRepository $mandateRepository;
+
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, Election::class);
+    }
+
+    /**
+     * @required
+     */
+    public function setRequirements(
+        SettingRepository $settingRepository,
+        ConstituencyRepository $constituencyRepository,
+        MandateRepository $mandateRepository
+    )
+    {
+        $this->settingRepository = $settingRepository;
+        $this->constituencyRepository = $constituencyRepository;
+        $this->mandateRepository = $mandateRepository;
     }
 
     public function getAdminChoices() : array
@@ -50,5 +70,50 @@ class ElectionRepository extends ServiceEntityRepository
         );
 
         return array_unique(array_merge([$parentElectionId], $childElectionIds));
+    }
+
+    public function getCurrentElectionData() : ?array
+    {
+        $settingId = SettingRepository::CURRENT_ELECTION_ID;
+
+        /** @var Election $election */
+        $election = $this->settingRepository->get($settingId);
+        if (!$election) {
+            return null;
+        }
+
+        $childElections = $this->createQueryBuilder('e')
+            ->andWhere('e.parent = :election')
+            ->orderBy('e.date', 'ASC') // latest will overwrite older in loop below
+            ->setParameter('election', $election)
+            ->getQuery()
+            ->getResult();
+
+        $constituencies = [];
+        foreach (array_merge([$election], $childElections) as $el /** @var Election $el */) {
+            foreach (
+                $this->constituencyRepository->createQueryBuilder('con')
+                    ->innerJoin('con.candidates', 'can', 'WITH', 'can.election = :election')
+                    ->orderBy('con.number', 'ASC')
+                    ->groupBy('con.id')
+                    ->setParameters(['election' => $el])
+                    ->getQuery()
+                    ->getResult()
+                as $constituency /** @var Constituency $constituency */
+            ) {
+                $constituencies[ $constituency->getId() ] = [
+                    'constituency' => $constituency,
+                    'election' => $el,
+                ];
+            }
+        }
+
+        $mandates = $this->mandateRepository->findBy(['election' => $election]);
+
+        return [
+            'election' => $election,
+            'mandates' => $mandates,
+            'constituencies' => $constituencies,
+        ];
     }
 }

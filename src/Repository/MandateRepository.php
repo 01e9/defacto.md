@@ -20,9 +20,19 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class MandateRepository extends ServiceEntityRepository
 {
+    private SettingRepository $settingRepository;
+
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, Mandate::class);
+    }
+
+    /**
+     * @required
+     */
+    public function setRequirements(SettingRepository $settingRepository)
+    {
+        $this->settingRepository = $settingRepository;
     }
 
     public function getAdminChoices() : array
@@ -166,6 +176,29 @@ class MandateRepository extends ServiceEntityRepository
             ->setParameter('politicianSlug', $politicianSlug)
             ->getQuery()
             ->getOneOrNullResult();
+    }
+
+    public function getCurrentPresidentStatistics(): ?array
+    {
+        $settingId = SettingRepository::PRESIDENT_INSTITUTION_TITLE_ID;
+
+        /** @var InstitutionTitle $institutionTitle */
+        $institutionTitle = $this->settingRepository->get($settingId);
+        if (!$institutionTitle) {
+            return null;
+        }
+
+        /** @var Mandate $mandate */
+        $mandate = $this->getLatestByInstitutionTitle($institutionTitle);
+        if (!$mandate) {
+            return null;
+        }
+
+        // fixme: maybe Dto
+        return [
+            'mandate' => $mandate,
+            'promise_statistics' => $this->getPromiseStatistics($mandate),
+        ];
     }
 
     public function hasConnections(string $id) : bool

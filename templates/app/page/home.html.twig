@@ -24,7 +24,7 @@
             max-width: 15rem;
         }
         .rank-item-politician-photo {
-            max-height: 2rem;
+            height: 2rem;
         }
     </style>
 {% endblock %}
@@ -144,20 +144,22 @@
                 </div>
                 <div class="col-md text-center text-md-left">
                     <div class="h2 row align-items-center">
-                        <div class="col-auto pr-0 d-none d-md-flex align-items-center">
+                        <div class="col-md-auto mb-1 mb-md-0 pr-md-0 d-md-flex align-items-center">
                             <img
                                 src="{{ macros.politician_photo_url(mandate.politician) }}"
                                 alt="{{ mandate.politician.firstName }} {{ mandate.politician.lastName }}"
                                 class="d-inline-block rounded-circle rank-item-politician-photo"
                             >
                         </div>
-                        <div class="col">
+                        <div class="col-md">
                             {{ mandate.politician.firstName }} {{ mandate.politician.lastName }}
                         </div>
                     </div>
                     <div>
-                        <strong class="text-info">{{ mandate.competenceUsesPoints }}</strong>
-                        <span>{{ "label.points"|trans({"%count%": mandate.competenceUsesPoints})|lower }}</span>
+                        <big>
+                            <strong class="text-info">{{ mandate.competenceUsesPoints }}</strong>
+                            <span>{{ "label.points"|trans({"%count%": mandate.competenceUsesPoints})|lower }}</span>
+                        </big>
                     </div>
                 </div>
             </div>

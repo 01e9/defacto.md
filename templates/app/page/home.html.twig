@@ -1,8 +1,11 @@
-{% extends 'app/base.html.twig' %}
-
 {# @var \App\Entity\BlogPost[] latest_posts #}
 {# @var \App\Repository\Vo\MandateStatisticsVo president_mandate #}
 {# @var \App\Repository\Vo\ElectionDataVo current_election #}
+{# @var \App\Entity\Mandate[] top_rank_mandates #}
+
+{% extends 'app/base.html.twig' %}
+
+{% import _self as self_macros %}
 
 {% block html_class %}bg-dark-pattern{% endblock %}
 {% block body_class %}bg-transparent{% endblock %}
@@ -27,8 +30,14 @@
         <div class="container-fluid px-0 bg-white">
             <div class="container">
                 <div class="row bg-white justify-content-center">
+                    <div class="col-12 col-lg-6">
+                        {{ self_macros.top_ranked_mandates_block(
+                            top_rank_mandates,
+                            current_election ? current_election.election : null
+                        ) }}
+                    </div>
                     {% if current_election %}
-                        <div class="col-12 col-lg-6 order-first order-lg-last">
+                        <div class="col-12 col-lg-6">
                             {% include 'app/component/block/statistics/election.html.twig' with {
                                 election: current_election.election,
                                 mandates: current_election.mandates,
@@ -96,3 +105,58 @@
     </main>
     {% include 'app/component/section/footer.html.twig' only %}
 {% endblock %}
+
+{% macro top_ranked_mandates_block(mandates, election) %}
+    {# @var \App\Entity\Mandate[] mandates #}
+    {# @var \App\Entity\Election election #}
+
+    {% include 'app/component/after-header-space.html.twig' %}
+
+    <h2 class="mb-3 text-center">{{ "title.top_responsible_deputies"|trans }}</h2>
+
+    {% set current_rank = 1 %}
+
+    <div class="list-group">
+    {% for mandate in mandates %}
+        {% if prev_mandate is defined and mandate.competenceUsesPoints < prev_mandate.competenceUsesPoints %}
+            {% set current_rank = current_rank + 1 %}
+        {% endif %}
+
+        <a
+            href="{{ path('mandate', {
+                "electionSlug": mandate.election.slug,
+                "politicianSlug": mandate.politician.slug
+            }) }}"
+            class="list-group-item list-group-item-action px-4 py-3"
+        >
+            <div class="row">
+                <div class="col-md-auto mb-1 mb-md-0 text-center">
+                    <div>
+                        <div class="d-inline-block px-3 font-size-2 bg-primary text-white rounded">
+                            <samp>{{ current_rank }}</samp>
+                        </div>
+                    </div>
+                    <div class="text-primary mt-1">{{ "label.place"|trans|lower }}</div>
+                </div>
+                <div class="col-md text-center text-md-left">
+                    <div class="h2">{{ mandate.politician.firstName }} {{ mandate.politician.lastName }}</div>
+                    <div>
+                        <strong class="text-info">{{ mandate.competenceUsesPoints }}</strong>
+                        <span>{{ "label.points"|trans({"%count%": mandate.competenceUsesPoints})|lower }}</span>
+                    </div>
+                </div>
+            </div>
+        </a>
+
+        {# @var \App\Entity\Mandate prev_mandate #}
+        {% set prev_mandate = mandate %}
+    {% endfor %}
+    </div>
+
+    {% if election %}
+        <a
+            href="{{ path('mandates', {"electionSlug": election.slug}) }}"
+            class="btn btn-block btn-outline-info mt-3"
+        >{{ "action.view_the_complete_list"|trans }}</a>
+    {% endif %}
+{% endmacro %}

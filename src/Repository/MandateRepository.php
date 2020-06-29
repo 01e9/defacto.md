@@ -22,6 +22,7 @@ use Symfony\Component\HttpFoundation\Request;
 class MandateRepository extends ServiceEntityRepository
 {
     private SettingRepository $settingRepository;
+    private ElectionRepository $electionRepository;
 
     public function __construct(RegistryInterface $registry)
     {
@@ -31,9 +32,13 @@ class MandateRepository extends ServiceEntityRepository
     /**
      * @required
      */
-    public function setRequirements(SettingRepository $settingRepository)
+    public function setRequirements(
+        SettingRepository $settingRepository,
+        ElectionRepository $electionRepository
+    )
     {
         $this->settingRepository = $settingRepository;
+        $this->electionRepository = $electionRepository;
     }
 
     public function getAdminChoices() : array
@@ -207,7 +212,16 @@ class MandateRepository extends ServiceEntityRepository
      */
     public function getTopRanked(Election $election): array
     {
-        return []; // todo
+        $electionIds = $this->electionRepository->findWithSubElectionsIds($election);
+
+        return $this->createQueryBuilder('m')
+            ->where('m.ceasingDate IS NULL')
+            ->andWhere('m.election IN (:electionIds)')
+            ->orderBy('m.competenceUsesPoints', 'DESC')
+            ->setMaxResults(5 /* todo: constant */)
+            ->setParameter('electionIds', $electionIds)
+            ->getQuery()
+            ->getResult();
     }
 
     public function hasConnections(string $id) : bool

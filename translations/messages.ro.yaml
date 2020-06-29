@@ -125,6 +125,7 @@ label:
     competence: Competența
     competence_uses: Competențe folosite
     use_date: Data folosirii
+    place: Loc
     the_place: Locul
     is_multiplied: Multiplică punctajul
     is_female: Femeie
@@ -189,6 +190,7 @@ action:
     view_details: Vezi detalii
     vote: Votează
     view_the_list: Vezi lista
+    view_the_complete_list: Vezi lista completă
 
 title:
     politicians: Politicieni
@@ -282,6 +284,7 @@ title:
     the_points_of_used_competences: Punctajul competențelor folosite
     points_by_category: Punctajul pe categorii
     performance_index: Indecele de performanță
+    top_responsible_deputies: Top deputați responsabili
 
 placeholder:
     choose_option: Alegeți o opțiune

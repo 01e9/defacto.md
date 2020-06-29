@@ -5,6 +5,7 @@
 
 {% extends 'app/base.html.twig' %}
 
+{% import 'macros.html.twig' as macros %}
 {% import _self as self_macros %}
 
 {% block html_class %}bg-dark-pattern{% endblock %}
@@ -21,6 +22,9 @@
         .partner-logo {
             max-height: 6rem;
             max-width: 15rem;
+        }
+        .rank-item-politician-photo {
+            max-height: 2rem;
         }
     </style>
 {% endblock %}
@@ -129,7 +133,7 @@
             }) }}"
             class="list-group-item list-group-item-action px-4 py-3"
         >
-            <div class="row">
+            <div class="row align-items-center">
                 <div class="col-md-auto mb-1 mb-md-0 text-center">
                     <div>
                         <div class="d-inline-block px-3 font-size-2 bg-primary text-white rounded">
@@ -139,7 +143,18 @@
                     <div class="text-primary mt-1">{{ "label.place"|trans|lower }}</div>
                 </div>
                 <div class="col-md text-center text-md-left">
-                    <div class="h2">{{ mandate.politician.firstName }} {{ mandate.politician.lastName }}</div>
+                    <div class="h2 row align-items-center">
+                        <div class="col-auto pr-0 d-flex align-items-center">
+                            <img
+                                src="{{ macros.politician_photo_url(mandate.politician) }}"
+                                alt="{{ mandate.politician.firstName }} {{ mandate.politician.lastName }}"
+                                class="d-inline-block rounded-circle rank-item-politician-photo"
+                            >
+                        </div>
+                        <div class="col">
+                            {{ mandate.politician.firstName }} {{ mandate.politician.lastName }}
+                        </div>
+                    </div>
                     <div>
                         <strong class="text-info">{{ mandate.competenceUsesPoints }}</strong>
                         <span>{{ "label.points"|trans({"%count%": mandate.competenceUsesPoints})|lower }}</span>

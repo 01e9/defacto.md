@@ -1,4 +1,5 @@
 {# @var \App\Entity\Action[] actions #}
+{# @var bool hide_politician #} {# optional #}
 
 {% import 'macros.html.twig' as macros %}
 
@@ -13,23 +14,25 @@
                     class="badge badge-light align-bottom"
                 >{{ action.occurredTime|date }}</samp>
             </p>
-            <p class="h5 mb-0">
-                <img
-                    class="rounded-circle mb-2"
-                    style="max-height: 3em"
-                    src="{{ macros.politician_photo_url(action.mandate.politician) }}"
-                    alt="Politician"
-                >
-                <a
-                    href="{{ path("politician", {slug: action.mandate.politician.slug}) }}"
-                    class="d-block"
-                >
-                    {{- "" -}}
-                    {{ action.mandate.politician.firstName }}
-                    {{ action.mandate.politician.lastName }}
-                    {{- "" -}}
-                </a>
-            </p>
+            {% if hide_politician is defined and not hide_politician %}
+                <p class="h5 mb-0">
+                    <img
+                        class="rounded-circle mb-2"
+                        style="max-height: 3em"
+                        src="{{ macros.politician_photo_url(action.mandate.politician) }}"
+                        alt="Politician"
+                    >
+                    <a
+                        href="{{ path("politician", {slug: action.mandate.politician.slug}) }}"
+                        class="d-block"
+                    >
+                        {{- "" -}}
+                        {{ action.mandate.politician.firstName }}
+                        {{ action.mandate.politician.lastName }}
+                        {{- "" -}}
+                    </a>
+                </p>
+            {% endif %}
         </header>
     {% endset %}
     {% set content %}

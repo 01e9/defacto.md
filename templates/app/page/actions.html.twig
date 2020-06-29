@@ -11,9 +11,9 @@
 
 {% block title %}
     {%- if not politician and not election -%}
-        {{ "title.all_actions"|trans }}
+        {{ "title.the_politicians_promise_actions"|trans }}
     {% else %}
-        {{ "title.the_actions"|trans }}
+        {{ "title.the_promise_actions"|trans }}
         {% if politician or election %}
             {% if politician %}
                 {{ "text.undertaken_by"|trans }}
@@ -39,13 +39,15 @@
         <section class="container-fluid bg-primary text-white">
             <div class="container">
                 <header class="row pt-4 pb-2 text-center justify-content-center align-items-center">
-                    <div class="col-lg-6">
-                        {% if not politician and not election %}
-                            <h1>{{ "title.all_actions"|trans }}</h1>
-                        {% else %}
-                            <h1>{{ 'title.the_actions'|trans }}</h1>
-                        {% endif %}
-                    </div>
+                    {% if not politician and not election %}
+                        <div class="col">
+                            <h1 class="h2">{{ "title.the_politicians_promise_actions"|trans }}</h1>
+                        </div>
+                    {% else %}
+                        <div class="col-lg-6">
+                            <h1 class="h2">{{ 'title.the_promise_actions'|trans }}</h1>
+                        </div>
+                    {% endif %}
                     {% if politician or election %}
                         <div class="col-lg-6 mt-3 mt-lg-0">
                             {% if politician %}
@@ -100,7 +102,10 @@
                     </div>
                     <div class="row">
                         <div class="col">
-                            {% include "app/component/list/actions.html.twig" with { actions: actions } only %}
+                            {% include "app/component/list/actions.html.twig" with {
+                                actions: actions,
+                                hide_politician: not not politician
+                            } only %}
                         </div>
                     </div>
                 </div>

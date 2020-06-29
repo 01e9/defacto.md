@@ -5,7 +5,8 @@ namespace App\Repository;
 use App\Consts;
 use App\Entity\Constituency;
 use App\Entity\Election;
-use App\Entity\Mandate;
+use App\Repository\Vo\ConstituencyElectionVo;
+use App\Repository\Vo\ElectionDataVo;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\AbstractQuery;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -72,7 +73,7 @@ class ElectionRepository extends ServiceEntityRepository
         return array_unique(array_merge([$parentElectionId], $childElectionIds));
     }
 
-    public function getCurrentElectionData() : ?array
+    public function getCurrentElectionData() : ?ElectionDataVo
     {
         $settingId = SettingRepository::CURRENT_ELECTION_ID;
 
@@ -101,19 +102,21 @@ class ElectionRepository extends ServiceEntityRepository
                     ->getResult()
                 as $constituency /** @var Constituency $constituency */
             ) {
-                $constituencies[ $constituency->getId() ] = [
-                    'constituency' => $constituency,
-                    'election' => $el,
-                ];
+                $constituencyElection = new ConstituencyElectionVo();
+                $constituencyElection->constituency = $constituency;
+                $constituencyElection->election = $el;
+
+                $constituencies[ $constituency->getId() ] = $constituencyElection;
             }
         }
 
         $mandates = $this->mandateRepository->findBy(['election' => $election]);
 
-        return [
-            'election' => $election,
-            'mandates' => $mandates,
-            'constituencies' => $constituencies,
-        ];
+        $electionData = new ElectionDataVo();
+        $electionData->election = $election;
+        $electionData->mandates = $mandates;
+        $electionData->constituencies = $constituencies;
+
+        return $electionData;
     }
 }

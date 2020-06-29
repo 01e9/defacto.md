@@ -6,6 +6,7 @@ use App\Entity\Election;
 use App\Entity\InstitutionTitle;
 use App\Entity\Mandate;
 use App\Entity\Power;
+use App\Repository\Vo\MandateStatisticsVo;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\NoResultException;
@@ -178,7 +179,7 @@ class MandateRepository extends ServiceEntityRepository
             ->getOneOrNullResult();
     }
 
-    public function getCurrentPresidentStatistics(): ?array
+    public function getCurrentPresidentStatistics(): ?MandateStatisticsVo
     {
         $settingId = SettingRepository::PRESIDENT_INSTITUTION_TITLE_ID;
 
@@ -194,11 +195,19 @@ class MandateRepository extends ServiceEntityRepository
             return null;
         }
 
-        // fixme: maybe Dto
-        return [
-            'mandate' => $mandate,
-            'promise_statistics' => $this->getPromiseStatistics($mandate),
-        ];
+        $statistics = new MandateStatisticsVo();
+        $statistics->mandate = $mandate;
+        $statistics->promiseStatistics = $this->getPromiseStatistics($mandate);
+
+        return $statistics;
+    }
+
+    /**
+     * @return Mandate[]
+     */
+    public function getTopRanked(Election $election): array
+    {
+        return []; // todo
     }
 
     public function hasConnections(string $id) : bool

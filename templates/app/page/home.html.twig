@@ -76,31 +76,45 @@
             </noindex>
         {% endif %}
         {% include 'app/component/section/about-us.html.twig' only %}
-        <section class="container-fluid bg-white" itemscope itemtype="https://schema.org/Role">
+        <section class="container-fluid bg-white">
             <div class="container py-5">
                 <div class="row">
                     <div class="col text-center">
-                        <h3 itemprop="roleName">{{ "title.partners"|trans }}</h3>
+                        <h3>{{ "title.partners"|trans }}</h3>
                         <div class="mt-3">
-                            <a
-                                href="https://avemcevotam.md/"
-                                target="_blank"
-                                itemprop="url"
-                            ><img
-                                src="{{ asset('img/partners/avem-ce-votam.png') }}"
-                                class="d-inline-block partner-logo"
-                                alt="avemcevotam.md"
-                                ></a>
-                            <div class="p-2 d-block d-lg-inline"></div>
-                            <a
-                                href="https://parereata.md/"
-                                target="_blank"
-                                itemprop="url"
-                            ><img
-                                src="{{ asset('img/partners/parereata.png') }}"
-                                class="d-inline-block partner-logo"
-                                alt="parereata.md"
-                                ></a>
+                            {% set partners = [
+                                {
+                                    url: "https://avemcevotam.md/",
+                                    image: asset('img/partners/avem-ce-votam.png'),
+                                },
+                                {
+                                    url: "https://www.challenger.md/",
+                                    image: asset('img/partners/challenger.png'),
+                                },
+                                {
+                                    url: "https://parereata.md/",
+                                    image: asset('img/partners/parereata.png'),
+                                }
+                            ] %}
+                            {% for partner in partners %}
+                                <span itemscope itemtype="https://schema.org/WebSite">
+                                    <a
+                                        itemprop="url"
+                                        href="{{ partner.url }}"
+                                        target="_blank"
+                                    >
+                                        {{- "" -}}
+                                        <img
+                                            itemprop="thumbnailUrl"
+                                            src="{{ partner.image }}"
+                                            class="d-inline-block partner-logo"
+                                            alt="{{ partner.url }}"
+                                        >
+                                        {{- "" -}}
+                                    </a>
+                                </span>
+                                {% if not loop.last %}<div class="py-2 d-block d-lg-inline"></div>{% endif %}
+                            {% endfor %}
                         </div>
                     </div>
                 </div>

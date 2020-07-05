@@ -1,3 +1,15 @@
+FROM php:7.4-fpm as php-base
+
+RUN apt-get update \
+    && apt-get install -y wget unzip nano \
+    && apt-get install -y \
+        libzip-dev libfreetype6-dev libjpeg62-turbo-dev libmcrypt-dev libpng-dev libicu-dev libpq-dev libonig-dev \
+    && docker-php-ext-install -j$(nproc) zip mbstring json gd iconv pcntl intl pdo pdo_pgsql \
+    && apt-get install -y nginx \
+        && ln -sf /dev/stdout /var/log/nginx/access.log \
+        && ln -sf /dev/stderr /var/log/nginx/error.log \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
+
 FROM node:lts-alpine as js
 
 WORKDIR /project
@@ -11,7 +23,7 @@ RUN mkdir -p public/build
 RUN npm install
 RUN npm run build
 
-FROM php:7.4-fpm
+FROM php-base
 
 ARG COMPOSER_VERSION='1.9.0'
 ARG TINI_VERSION='0.18.0'
@@ -21,16 +33,6 @@ WORKDIR /project
 COPY . ./
 
 COPY --from=js /project/public/build ./public/build
-
-RUN apt-get update \
-    && apt-get install -y wget unzip nano \
-    && apt-get install -y \
-        libzip-dev libfreetype6-dev libjpeg62-turbo-dev libmcrypt-dev libpng-dev libicu-dev libpq-dev libonig-dev \
-    && docker-php-ext-install -j$(nproc) zip mbstring json gd iconv pcntl intl pdo pdo_pgsql \
-    && apt-get install -y nginx \
-        && ln -sf /dev/stdout /var/log/nginx/access.log \
-        && ln -sf /dev/stderr /var/log/nginx/error.log \
-    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 ADD https://github.com/composer/composer/releases/download/${COMPOSER_VERSION}/composer.phar /usr/local/bin/composer
 RUN chmod +x /usr/local/bin/composer

@@ -32,10 +32,13 @@
             </div>
         </div>
         <div class="row align-items-lg-center text-center">
-            <div class="col-12 col-lg text-lg-right text-info">
+            <div class="col-12 col-lg text-lg-right text-warning">
                 {% if rank %}
                     <sup class="font-size-2 mr-3 position-relative">
-                        {{- "label.the_place"|trans|lower -}}
+                        <span class="text-white">
+                            {{- "label.the_place"|trans|lower -}}
+                        </span>
+                        {{- "" -}}
                         <a
                             href="{{ path('mandates', {"electionSlug": mandate.election.slug}) }}"
                             class="position-absolute btn btn-sm btn-outline-warning text-nowrap"
@@ -43,7 +46,7 @@
                         ><small><span class="fa fa-star mr-2"></span>{{ "action.see_the_top"|trans }}</small></a>
                         {{- "" -}}
                     </sup>
-                    <span class="font-size-6 text-warning">{{ rank }}</span>
+                    <span class="font-size-6">{{ rank }}</span>
                 {% endif %}
             </div>
             <div class="col-12 col-lg-auto px-lg-5 order-first order-lg-0">
@@ -67,13 +70,15 @@
             </div>
             <div class="col-12 col-lg text-lg-left text-info">
                 {% if mandate and is_competence_use_trakced %}
-                    <span class="font-size-6 text-warning">{{ mandate.competenceUsesPoints }}</span>
+                    <span class="font-size-6">{{ mandate.competenceUsesPoints }}</span>
                     <sup class="font-size-2 ml-3 position-relative">
-                        {{- "text.points"|trans({"%count%": mandate.competenceUsesPoints}) -}}
+                        <span class="text-white">
+                            {{- "text.points"|trans({"%count%": mandate.competenceUsesPoints}) -}}
+                        </span>
                         {%- if not is_mandate_page and mandate.competenceUsesPoints -%}
                             <a
                                 href="{{ path('mandate', {'electionSlug': mandate.election.slug, 'politicianSlug': politician.slug}) }}"
-                                class="position-absolute btn btn-sm btn-outline-warning text-nowrap"
+                                class="position-absolute btn btn-sm btn-outline-info text-nowrap"
                                 style="left: 0; top: 3.3rem;"
                             ><small>{{ "action.see_details"|trans }}<span class="fa fa-chart-pie ml-2"></span></small></a>
                         {%- endif -%}

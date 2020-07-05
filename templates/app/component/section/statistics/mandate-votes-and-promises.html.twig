@@ -1,5 +1,6 @@
 {# @var \App\Entity\Mandate mandate #}
 {# @var array promise_statistics #}
+{# @var bool hide_title #}
 
 {% import 'macros.html.twig' as macros %}
 
@@ -8,7 +9,7 @@
 <div itemscope itemtype="https://schema.org/WinAction">
     <meta itemprop="startTime" content="{{ mandate.beginDate|date('Y-m-d') }}">
     <meta itemprop="endTime" content="{{ mandate.endDate|date('Y-m-d') }}">
-    <div class="pt-4 pb-3 bg-dark-pattern text-white">
+    <div class="py-3 bg-dark-pattern text-white">
         <h3 class="h2 text-center">
             <a
                 href="{{ path("politician", {slug: mandate.politician.slug}) }}"
@@ -25,7 +26,10 @@
         <div class="container-fluid mt-1">
             <div class="row">
                 <div class="col text-center">
-                    {% include "app/component/block/mandate/begin-end.html.twig" with { mandate: mandate } only %}
+                    {% include "app/component/block/mandate/begin-end.html.twig" with {
+                        mandate: mandate,
+                        hide_title: hide_title|default(false)
+                    } only %}
                 </div>
             </div>
         </div>
@@ -58,6 +62,5 @@
                 </div>
             </div>
         </div>
-        {% include "app/component/after-header-space.html.twig" only %}
     </div>
 </div>

@@ -3,6 +3,7 @@
 
 {% extends 'app/base.html.twig' %}
 {% import 'macros.html.twig' as macros %}
+{% import _self as self_macros %}
 
 {% block html_class %}bg-dark-pattern{% endblock %}
 {% block body_class %}bg-transparent{% endblock %}
@@ -20,8 +21,6 @@
     <style type="text/css">#categories-pie-chart { height: 15rem; }</style>
 {% endblock %}
 
-{% set emptyHtml = '<p>&nbsp;</p>' %}
-
 {% block main %}
     <main>
         <section>
@@ -33,115 +32,8 @@
             } only %}
         </section>
         {% if mandate.competenceCategoryStats|length %}
-            <div class="bg-primary pt-4 pb-2 text-center">
-                <div class="container">
-                    <div class="row text-white mb-3">
-                        <div class="col">
-                            <h2>{{ "title.points_by_category"|trans }}</h2>
-                        </div>
-                    </div>
-                    <div class="row">
-                        {% for categoryStats in mandate.competenceCategoryStatsByParentCategory %}
-                            {# @var \App\Entity\MandateCompetenceCategoryStats categoryStats #}
-                            <div class="col-12 col-lg mb-4">
-                                <div class="bg-light-pattern py-4 px-3 rounded">
-                                    <h5>{{ categoryStats.competenceCategory.nameWithParent }}</h5>
-                                    <div class="font-size-2">
-                                        <strong class="text-info">{{ categoryStats.competenceUsesPoints }}</strong>
-                                        <small>{{ "text.points"|trans({"%count%": categoryStats.competenceUsesPoints}) }}</small>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {% if loop.index0 and not loop.index0 % 2 %}
-                    </div><div class="row">
-                            {% endif %}
-                        {% endfor %}
-                    </div>
-                </div>
-            </div>
-            {% if mandate.competenceCategoryStats|length > 1 %}
-                {% set chart_items = [] %}
-                {% for categoryStats in mandate.competenceCategoryStats %}
-                    {% set chart_items = chart_items|merge([{
-                        y: categoryStats.competenceUsesPoints,
-                        label: categoryStats.competenceCategory.nameWithParent
-                    }]) %}
-                {% endfor %}
-
-                <div class="bg-dark py-4">
-                    <div
-                        id="categories-pie-chart"
-                        class="w-100"
-                        data-chart-items="{{ chart_items|json_encode }}"
-                    ></div>
-                </div>
-            {% endif %}
-            <div class="bg-light py-5">
-                <div class="container">
-                    <div class="row text-center mb-3">
-                        <div class="col">
-                            <h2>{{ "title.used_competences"|trans }}</h2>
-                        </div>
-                    </div>
-                    <div class="row justify-content-center">
-                        <div class="col-lg-8">
-                            {% for competenceUse in mandate.competenceUses %}
-                                {# @var \App\Entity\CompetenceUse competenceUse #}
-                                <div class="card{% if not loop.last %} mb-4{% endif %}">
-                                    <div class="card-header">
-                                        <div class="row">
-                                            <div class="col">
-                                                <div
-                                                    class="badge badge-primary mr-3"
-                                                    data-toggle="tooltip" data-placement="right"
-                                                    title="{{ competenceUse.useDate|ago }}"
-                                                >
-                                                    {{ competenceUse.useDate|date }}
-                                                </div>
-                                                {{ competenceUse.competence.category.nameWithParent }}
-                                            </div>
-                                            <div class="col-auto">
-                                                <strong class="text-info">
-                                                    {{ competenceUse.competence.points }}
-                                                    {% if competenceUse.multiplied %}
-                                                        <small class="text-danger font-weight-bold mr-1">
-                                                            <samp>x{{ competence_use_multiplication_factor }}</samp>
-                                                        </small>
-                                                    {% endif %}
-                                                </strong>
-                                                {{ "text.points"|trans({"%count%": (competenceUse.competence.points * (
-                                                    competenceUse.multiplied ? competence_use_multiplication_factor : 1
-                                                ))}) }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card-body">
-                                        <h6 class="mb-0 alert alert-info">
-                                            <span class="text-muted">{{ "label.competence"|trans }}: </span>
-                                            {{ competenceUse.competence.name }}
-                                        </h6>
-                                        {% if competenceUse.description and competenceUse.description != emptyHtml %}
-                                            <div class="mt-3 raw-html">
-                                                {{ competenceUse.description|raw }}
-                                            </div>
-                                        {% endif %}
-                                        {% if competenceUse.sourceLink %}
-                                            <div class="mt-3">
-                                                <a
-                                                    href="{{ competenceUse.sourceLink }}"
-                                                    target="_blank"
-                                                    class="btn btn-sm btn-outline-info"
-                                                >{{ "action.view_source"|trans }}</a>
-                                            </div>
-                                        {% endif %}
-                                    </div>
-                                </div>
-                            {% endfor %}
-                        </div>
-                    </div>
-                </div>
-            </div>
+            {{ self_macros.category_stats_section(mandate) }}
+            {{ self_macros.competence_use_list_section(mandate) }}
         {% else %}
             <div class="bg-secondary py-5 text-center">
                 <h3 class="mb-0">
@@ -185,4 +77,130 @@
         </script>
     {% endif %}
 {% endblock %}
+
+{% macro category_stats_section(mandate) %}
+    <div class="bg-primary pt-4 pb-2 text-center">
+        <div class="container">
+            <div class="row text-white mb-3">
+                <div class="col">
+                    <h2>{{ "title.points_by_category"|trans }}</h2>
+                </div>
+            </div>
+            <div class="row">
+                {% for categoryStats in mandate.competenceCategoryStatsByParentCategory %}
+                {# @var \App\Entity\MandateCompetenceCategoryStats categoryStats #}
+                <div class="col-12 col-lg mb-4">
+                    <div class="bg-light-pattern py-4 px-3 rounded">
+                        <h5>{{ categoryStats.competenceCategory.nameWithParent }}</h5>
+                        <div class="font-size-2">
+                            <strong class="text-info">{{ categoryStats.competenceUsesPoints }}</strong>
+                            <small>{{ "text.points"|trans({"%count%": categoryStats.competenceUsesPoints}) }}</small>
+                        </div>
+                    </div>
+                </div>
+
+                {% if loop.index0 and not loop.index0 % 2 %}
+            </div><div class="row">
+                {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% if mandate.competenceCategoryStats|length > 1 %}
+        {% set chart_items = [] %}
+        {% for categoryStats in mandate.competenceCategoryStats %}
+            {% set chart_items = chart_items|merge([{
+                y: categoryStats.competenceUsesPoints,
+                label: categoryStats.competenceCategory.nameWithParent
+            }]) %}
+        {% endfor %}
+
+        <div class="bg-dark py-4">
+            <div
+                id="categories-pie-chart"
+                class="w-100"
+                data-chart-items="{{ chart_items|json_encode }}"
+            ></div>
+        </div>
+    {% endif %}
+{% endmacro %}
+
+{% macro competence_use_list_section(mandate) %}
+    {% set emptyHtml = '<p>&nbsp;</p>' %}
+
+    <div class="bg-light-pattern pt-4 pb-5">
+        <div class="container">
+            <div class="row text-center mb-3">
+                <div class="col">
+                    <h2>{{ "title.used_competences"|trans }}</h2>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    {% for competenceUse in mandate.competenceUses %}
+                        {# @var \App\Entity\CompetenceUse competenceUse #}
+                        <div class="card{% if not loop.last %} mb-4{% endif %}">
+                            <div class="card-body pt-3">
+                                <div class="row mb-3">
+                                    <div class="col-4 col-lg-auto pr-0">
+                                        <span
+                                            class="badge badge-primary align-middle"
+                                            data-toggle="tooltip" data-placement="right"
+                                            title="{{ competenceUse.useDate|ago }}"
+                                        >
+                                            {{ competenceUse.useDate|date }}
+                                        </span>
+                                    </div>
+                                    <div class="col-12 col-lg order-last order-lg-0 mt-3 mt-lg-0">
+                                        {{ competenceUse.competence.category.nameWithParent }}
+                                    </div>
+                                    <div class="col-8 col-lg-auto text-right d-flex align-items-center">
+                                        <div>
+                                            <span class="text-info font-weight-bold font-size-2 line-height-0 align-middle">
+                                                {{ competenceUse.competence.points }}
+                                            </span>
+                                        </div>
+                                        <div class="pl-2">
+                                            {% if competenceUse.multiplied %}
+                                                <span
+                                                    class="badge badge-success ml-1 mr-2"
+                                                    data-toggle="tooltip" data-placement="left"
+                                                    title="todo: ce inseamnă asta..."
+                                                >
+                                                    <span class="fa fa-times"></span>
+                                                    <big><samp>{{ competence_use_multiplication_factor }}</samp></big>
+                                                </span>
+                                            {% endif %}
+                                            {% set count = competenceUse.competence.points * (
+                                                competenceUse.multiplied ? competence_use_multiplication_factor : 1) %}
+                                            {{ "text.points"|trans({"%count%": count}) }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <h6 class="mb-0 alert alert-info bg-light">
+                                    <div class="text-info h5 mb-2">{{ "label.competence"|trans }}</div>
+                                    <div>{{ competenceUse.competence.name }}</div>
+                                </h6>
+                                {% if competenceUse.description and competenceUse.description != emptyHtml %}
+                                    <div class="mt-3 raw-html">
+                                        {{ competenceUse.description|raw }}
+                                    </div>
+                                {% endif %}
+                                {% if competenceUse.sourceLink %}
+                                    <div class="mt-3">
+                                        <a
+                                            href="{{ competenceUse.sourceLink }}"
+                                            target="_blank"
+                                            class="btn btn-sm btn-outline-info"
+                                        >{{ "action.view_source"|trans }}</a>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endmacro %}
 

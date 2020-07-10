@@ -29,4 +29,6 @@ final class Consts
     ];
 
     const COMPETENCE_USE_MULTIPLICATION_FACTOR = 2;
+
+    const CATEGORY_SEPARATOR = '►';
 }

@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Consts;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -65,7 +66,11 @@ class CompetenceCategory
 
     public function getNameWithParent() : ?string
     {
-        return $this->getParent() ? "{$this->getParent()->getName()} ⮞ {$this->getName()}" : $this->getName();
+        $separator = Consts::CATEGORY_SEPARATOR;
+
+        return $this->getParent()
+            ? "{$this->getParent()->getName()} {$separator} {$this->getName()}"
+            : $this->getName();
     }
 
     public function setName(?string $name) : self

@@ -5,6 +5,7 @@
 {# @var \App\Entity\Candidate[] candidates {politician_id: candidate} #}
 {# @var \App\Entity\ConstituencyProblem[] problems #}
 {# @var arrau problem_opinions {problem_id: [opinion]} #}
+{# @var \App\Repository\Vo\ElectionDataVo election_data #}
 
 {% extends 'app/base.html.twig' %}
 {% import 'macros.html.twig' as macros %}
@@ -61,8 +62,12 @@
                                 <a
                                     href="{{ constituency.link }}"
                                     target="_blank"
-                                    class="btn btn-sm btn-warning"
+                                    class="btn btn-sm btn-warning mb-4"
                                 >{{ "action.view_details"|trans }}</a>
+                                {% include "app/component/block/constituencies-select.html.twig" with {
+                                    constituencies: election_data.constituencies,
+                                    placeholder: 'action.view_to_other_constituency'|trans
+                                } only %}
                             </div>
                         </div>
                     </div>

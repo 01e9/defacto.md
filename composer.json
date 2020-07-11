@@ -7,6 +7,7 @@
         "php": "^7.4",
         "ext-iconv": "*",
         "algolia/search-bundle": "^3.2",
+        "cocur/slugify": "^4.0",
         "doctrine/doctrine-migrations-bundle": "^1.0",
         "guzzlefry/twig-age-extension": "@dev",
         "knplabs/knp-paginator-bundle": "^4.0",

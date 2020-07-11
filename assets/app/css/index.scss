@@ -10,6 +10,22 @@
 @import "../../common/css/utils";
 @import url("https://fonts.googleapis.com/css?family=Merriweather|Crete+Round:400,700");
 
+//region Bootstrap Select
+
+@import '~bootstrap-select/sass/bootstrap-select';
+
+.bootstrap-select {
+    .dropdown-menu {
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+    }
+
+    &.bs-container .dropdown-menu {
+        max-width: 100vw;
+    }
+}
+
+//endregion
+
 @each $color, $value in $theme-colors {
     .text-#{$color}-light { color: lighten($value, $app-color-lighten-amount); }
     a.text-#{$color}-light:hover { color: lighten($value, $app-color-lighten-amount); }

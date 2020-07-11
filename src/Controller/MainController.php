@@ -24,7 +24,9 @@ class MainController extends AbstractController
         BlogPostRepository $blogPostRepository
     )
     {
-        $currentElectionData = $electionRepository->getCurrentElectionData();
+        $currentElectionData = ($currentElection = $electionRepository->getCurrentElection())
+            ? $electionRepository->getElectionData($currentElection)
+            : [];
 
         return $this->render('app/page/home.html.twig', [
             'president_mandate' => $mandateRepository->getCurrentPresidentStatistics(),

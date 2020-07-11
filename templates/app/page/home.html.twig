@@ -44,7 +44,6 @@
                         <div class="col-12 col-lg-6">
                             {% include 'app/component/block/statistics/election.html.twig' with {
                                 election: current_election.election,
-                                mandates: current_election.mandates,
                                 constituencies: current_election.constituencies
                             } only %}
                         </div>

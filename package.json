@@ -8,6 +8,7 @@
         "animate.css": "^3.7.2",
         "bootstrap": "^4.3.1",
         "bootstrap-datepicker": "^1.9.0",
+        "bootstrap-select": "^1.13.18",
         "exports-loader": "^0.7.0",
         "instantsearch.js": "^2.10.5",
         "jquery": "^3.4.1",
@@ -25,6 +26,7 @@
         "build": "NODE_ENV=production webpack --colors"
     },
     "devDependencies": {
+        "@types/bootstrap-select": "^1.13.0",
         "@types/jest": "^24.9.1",
         "@types/jquery": "^3.3.31",
         "@types/jsdom": "^12.2.4",

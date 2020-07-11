@@ -84,6 +84,8 @@ class ConstituenciesController extends AbstractController
             $problemOpinions[ $problemOpinion->getProblem()->getId() ][] = $problemOpinion;
         }
 
+        $electionData = $electionRepository->getElectionData($election);
+
         return $this->render('app/page/constituency-election.html.twig', [
             'constituency' => $constituency,
             'election' => $election,
@@ -92,6 +94,7 @@ class ConstituenciesController extends AbstractController
             'candidates' => $candidates,
             'problems' => $problems,
             'problem_opinions' => $problemOpinions,
+            'election_data' => $electionData,
         ]);
     }
 }

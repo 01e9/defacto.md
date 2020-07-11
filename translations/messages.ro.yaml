@@ -191,6 +191,9 @@ action:
     vote: Votează
     view_the_list: Vezi lista
     view_the_complete_list: Vezi lista completă
+    choose_constituency: Alegeți circumscripția
+    choose_constituency_or_click_on_map: Alegeți circumscripția sau click pe hartă
+    view_to_other_constituency: Vezi altă circumscripție
 
 title:
     politicians: Politicieni
@@ -310,8 +313,7 @@ text:
     no_logs: Nicio înregistrare
     map_input_info: Setați poziția mutând markerul.
     votes: voturi
-    choose_constituency: Alegeți circumscripția
-    or_click_on_map: sau faceți click pe hartă.
+    or_click_on_map: sau faceți click pe hartă
     duration: durata
     respondents_n: respondent|respondenți|de respondenți
     of_respondents: din respondenți

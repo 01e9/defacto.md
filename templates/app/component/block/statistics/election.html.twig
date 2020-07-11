@@ -1,8 +1,5 @@
 {# @var \App\Entity\Election election #}
-{# @var \App\Entity\Mandate[] mandates #}
 {# @var \App\Repository\Vo\ConstituencyElectionVo[] constituencies #}
-
-{% import 'macros.html.twig' as macros %}
 
 {% set mapData = [] %}
 {% for c in constituencies %}
@@ -23,32 +20,16 @@
 <section class="election-statistics pb-5" itemscope itemtype="https://schema.org/VoteAction">
     {% include 'app/component/after-header-space.html.twig' %}
     <div class="row">
-        <div class="col">
+        <div class="col mb-3">
             <h2
                 class="text-center mb-3"
                 itemprop="name"
             >{{ election.date < date() ? election.theElectedName : election.theName }}</h2>
             <meta itemprop="startTime" content="{{ election.date|date('Y-m-d') }}">
-            <div class="alert alert-info" role="alert">
-                <select
-                    class="form-control form-control-sm d-inline-block w-auto mr-2"
-                    onchange="location.assign(this.value)"
-                    style="width: {{ 'text.choose_constituency'|trans|length }}ch !important;"
-                >
-                    <option value="">{{ 'text.choose_constituency'|trans }}</option>
-                    {% for c in constituencies %}
-                        <option
-                            value="{{ path('constituency_election', {
-                                slug: c.constituency.slug,
-                                electionSlug: c.election.slug
-                            }) }}">
-                            {{ c.constituency.name }}
-                        </option>
-                    {% endfor %}
-                </select>
-                <div class="mt-2 d-sm-none"></div>
-                {{ 'text.or_click_on_map'|trans }}
-            </div>
+            {% include "app/component/block/constituencies-select.html.twig" with {
+                constituencies: constituencies,
+                placeholder: 'action.choose_constituency_or_click_on_map'|trans
+            } only %}
         </div>
     </div>
     <div class="row">

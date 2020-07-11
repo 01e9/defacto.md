@@ -17,6 +17,10 @@
 .bootstrap-select {
     .dropdown-menu {
         box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+
+        .dropdown-item.active .text-primary {
+            color: $white !important;
+        }
     }
 
     &.bs-container .dropdown-menu {
@@ -29,6 +33,10 @@
 @each $color, $value in $theme-colors {
     .text-#{$color}-light { color: lighten($value, $app-color-lighten-amount); }
     a.text-#{$color}-light:hover { color: lighten($value, $app-color-lighten-amount); }
+
+    .btn-outline-#{$color}:hover .text-white-on-hover {
+        color: $white !important;
+    }
 }
 
 //region Background patterns

@@ -151,16 +151,16 @@ class MandateRepository extends ServiceEntityRepository
             return 0;
         }
 
-        $electionIds = $this->getEntityManager()->getRepository(Election::class)
-            ->findWithSubElectionsIds($mandate->getElection());
+        $elections = $this->getEntityManager()->getRepository(Election::class)
+            ->findWithSubElections($mandate->getElection());
 
         try {
             $count = $this->createQueryBuilder('m')
                 ->select('COUNT(DISTINCT(m.competenceUsesPoints))')
                 ->where('m.competenceUsesPoints > :points')
-                ->andWhere('m.election IN (:electionIds)')
+                ->andWhere('m.election IN (:elections)')
                 ->setParameter('points', $mandate->getCompetenceUsesPoints())
-                ->setParameter('electionIds', $electionIds)
+                ->setParameter('elections', $elections)
                 ->getQuery()
                 ->getSingleResult(AbstractQuery::HYDRATE_SINGLE_SCALAR);
 
@@ -212,14 +212,14 @@ class MandateRepository extends ServiceEntityRepository
      */
     public function getTopRanked(Election $election): array
     {
-        $electionIds = $this->electionRepository->findWithSubElectionsIds($election);
+        $elections = $this->electionRepository->findWithSubElections($election);
 
         return $this->createQueryBuilder('m')
             ->where('m.ceasingDate IS NULL')
-            ->andWhere('m.election IN (:electionIds)')
+            ->andWhere('m.election IN (:elections)')
             ->orderBy('m.competenceUsesPoints', 'DESC')
             ->setMaxResults(5 /* todo: constant */)
-            ->setParameter('electionIds', $electionIds)
+            ->setParameter('elections', $elections)
             ->getQuery()
             ->getResult();
     }

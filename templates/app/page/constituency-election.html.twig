@@ -154,19 +154,19 @@
                         <div class="col-12 col-lg-9 text-center">
                             <a
                                 href="{{ path('mandate', {'electionSlug': mandate.election.slug, 'politicianSlug': mandate.politician.slug}) }}"
-                                class="btn btn-lg btn-outline-info btn-block"
+                                class="btn btn-lg btn-outline-success btn-block"
                             >
                                 <div class="row align-items-center">
-                                    <div class="col-12 col-lg font-size-3">
+                                    <div class="col-12 col-lg font-size-3 text-warning text-white-on-hover">
                                         <span>{{ "label.the_place"|trans }}</span>
-                                        <strong class="text-warning">{{ mandate_ranks[ mandate.id ] }}</strong>
+                                        <strong>{{ mandate_ranks[ mandate.id ] }}</strong>
                                     </div>
-                                    <div class="col-12 col-lg-auto order-first order-lg-0 pt-2 pt-lg-0 text-warning">
+                                    <div class="col-12 col-lg-auto order-first order-lg-0 pt-2 pt-lg-0 text-success text-white-on-hover">
                                         <span class="fa fa-chart-line align-middle font-size-2"></span>
                                         <div class="h6 mb-0 mt-1">{{ "title.performance_index"|trans }}</div>
                                     </div>
-                                    <div class="col-12 col-lg font-size-3">
-                                        <strong class="text-warning">{{ mandate.competenceUsesPoints }}</strong>
+                                    <div class="col-12 col-lg font-size-3 text-info text-white-on-hover">
+                                        <strong>{{ mandate.competenceUsesPoints }}</strong>
                                         <span>{{ "text.points"|trans({"%count%": mandate.competenceUsesPoints}) }}</span>
                                     </div>
                                 </div>

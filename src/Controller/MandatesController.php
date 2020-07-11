@@ -40,9 +40,9 @@ class MandatesController extends AbstractController
 
         $query = $this->repository->createQueryBuilder('m')
             ->where('m.ceasingDate IS NULL')
-            ->andWhere('m.election IN (:electionIds)')
+            ->andWhere('m.election IN (:elections)')
             ->orderBy('m.competenceUsesPoints', 'DESC')
-            ->setParameter('electionIds', $electionRepository->findWithSubElectionsIds($election));
+            ->setParameter('elections', $electionRepository->findWithSubElections($election));
 
         $mandates = $this->paginator->paginate(
             $query,

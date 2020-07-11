@@ -9,6 +9,7 @@ use App\Entity\Mandate;
 use App\Repository\Vo\ConstituencyElectionVo;
 use App\Repository\Vo\ElectionDataVo;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\AbstractQuery;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -56,22 +57,17 @@ class ElectionRepository extends ServiceEntityRepository
         return $choices;
     }
 
-    public function findWithSubElectionsIds(Election $election): array
+    public function findWithSubElections(Election $election): array
     {
-        $parentElectionId = $election->getParent()
-            ? $election->getParent()->getId()
-            : $election->getId();
+        $parentElection = $election->getParent() ?: $election;
 
-        $childElectionIds = array_column(
-            $this->createQueryBuilder('e')
-                ->where('e.parent = :parent_election')
-                ->setParameter('parent_election', $parentElectionId)
-                ->getQuery()
-                ->getResult(AbstractQuery::HYDRATE_ARRAY),
-            'id'
-        );
-
-        return array_unique(array_merge([$parentElectionId], $childElectionIds));
+        return $this->createQueryBuilder('e')
+            ->where('e.id = :parent')
+            ->orWhere('e.parent = :parent')
+            ->orderBy('e.date', 'ASC') // required in some cases to override old mandates
+            ->setParameter('parent', $parentElection)
+            ->getQuery()
+            ->getResult();
     }
 
     public function getCurrentElection(): ?Election
@@ -81,18 +77,12 @@ class ElectionRepository extends ServiceEntityRepository
         /** @var Election $election */
         $election = $this->settingRepository->get($settingId);
 
-        return $election;
+        return $election ?: null;
     }
 
     public function getElectionData(Election $election) : ?ElectionDataVo
     {
-        $childElections = $this->createQueryBuilder('e')
-            ->andWhere('e.parent = :election')
-            ->orderBy('e.date', 'ASC') // latest will overwrite older in loop below
-            ->setParameter('election', $election)
-            ->getQuery()
-            ->getResult();
-        $elections = array_merge([$election], $childElections);
+        $elections = $this->findWithSubElections($election);
 
         $constituencies = [];
         foreach ($elections as $el /** @var Election $el */) {

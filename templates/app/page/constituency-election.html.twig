@@ -17,7 +17,7 @@
     ~ "&zoom=10&language=" ~ app.request.locale ~ "&key=" ~ google_maps_api_key
 ) : null %}
 
-{% block html_class %}bg-dark-pattern{% endblock %}
+{% block html_class %}bg-dark-pattern page-constituency-election{% endblock %}
 {% block body_class %}bg-transparent{% endblock %}
 
 {% block title %}{{ constituency.name }}{% endblock %}
@@ -26,19 +26,6 @@
 {% block head_meta %}
     {{ parent() }}
     <meta name="description" content="{{ 'meta_description.constituency'|trans }}">
-    <style type="text/css">
-        img.constituency-map, .candidate-card {
-            max-width: 15rem;
-        }
-        .party-logo {
-            max-width: 2rem;
-            max-height: 2rem;
-        }
-        .party-logo.position-absolute {
-            bottom: 0.5em;
-            right: 0.5em;
-        }
-    </style>
 {% endblock %}
 
 {% block main %}
@@ -52,7 +39,7 @@
                                 <img
                                     src="{{ constituency_image }}"
                                     alt="Map"
-                                    class="constituency-map img-fluid w-100 rounded border-primary"
+                                    class="constituency-map img-fluid rounded border-primary"
                                 >
                             </div>
                         {% endif %}
@@ -199,7 +186,7 @@
                                     <img
                                         src="{{ macros.politician_photo_url(candidate.politician) }}"
                                         alt="Politician"
-                                        class="bg-white rounded-bottom img-fluid w-100 card-img-top"
+                                        class="bg-white rounded-bottom img-fluid card-img-top"
                                     >
                                 </div>
                                 <div class="card-body px-2 pt-3 pb-1">

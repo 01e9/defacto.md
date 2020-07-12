@@ -329,3 +329,23 @@
 .no-transform {
     transform: none !important;
 }
+
+//region Pages
+
+html.page-constituency-election {
+    img.constituency-map,
+    .candidate-card {
+        max-width: 100%;
+        width: 15rem;
+    }
+    .party-logo {
+        max-width: 2rem;
+        max-height: 2rem;
+    }
+    .party-logo.position-absolute {
+        bottom: 0.5em;
+        right: 0.5em;
+    }
+}
+
+//endregion

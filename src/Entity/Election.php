@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -26,7 +27,7 @@ class Election
     /**
      * @var null|Election
      *
-     * @ORM\ManyToOne(targetEntity="Election")
+     * @ORM\ManyToOne(targetEntity="Election", inversedBy="children")
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $parent;
@@ -98,11 +99,19 @@ class Election
      */
     private $isCompetenceUseTracked = true;
 
+    /**
+     * @var Election[]
+     *
+     * @ORM\OneToMany(targetEntity="Election", mappedBy="parent")
+     */
+    private $children;
+
     public function __construct()
     {
         $this->mandates = new ArrayCollection();
         $this->constituencyProblems = new ArrayCollection();
         $this->candidates = new ArrayCollection();
+        $this->children = new ArrayCollection();
     }
 
     public function getParent(): ?Election
@@ -185,5 +194,26 @@ class Election
         $this->isCompetenceUseTracked = $isCompetenceUseTracked;
 
         return $this;
+    }
+
+    public function getChildren(): Collection
+    {
+        return $this->children;
+    }
+
+    public function getCandidates(): Collection
+    {
+        return $this->candidates;
+    }
+
+    public function hasCandidatesInConstituency(Constituency $constituency): bool
+    {
+        foreach ($this->candidates as $candidate /** @var Candidate $candidate */) {
+            if ($candidate->getConstituency()->getId() === $constituency->getId()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

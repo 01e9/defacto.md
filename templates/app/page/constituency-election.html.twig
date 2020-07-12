@@ -74,25 +74,37 @@
                             {{ election.date|date }}
                         </time>
                     </h2>
+
+                    {% set other_elections = { icon: '', elections: [] } %}
                     {% if election.parent %}
-                        <h6 class="mt-3">
-                            <a
-                                href="{{ path('constituency_election', {
-                                    'slug': constituency.slug,
-                                    'electionSlug': election.parent.slug
-                                }) }}"
-                                class="btn btn-sm btn-outline-info"
-                            >
-                                {{- "" -}}
-                                <span class="fa fa-history mr-2"></span>
-                                {{- "" -}}
-                                {{ "action.view_candidates_from"|trans }}
-                                {{ election.parent.theName|lower }}
-                                {{ "text.from"|trans }}
-                                {{ election.parent.date|date }}
-                                {{- "" -}}
-                            </a>
-                        </h6>
+                        {% set other_elections = { icon: 'history', elections: [election.parent] } %}
+                    {% elseif election.children %}
+                        {% set other_elections = { icon: 'vote-yea', elections: election.children } %}
+                    {% endif %}
+                    {% if other_elections.elections|length %}
+                        {% for other_election in other_elections.elections %}
+                            {# @var \App\Entity\Election other_election #}
+                            {% if other_election.candidatesInConstituency(constituency) %}
+                                <h6 class="mt-3">
+                                    <a
+                                        href="{{ path('constituency_election', {
+                                            'slug': constituency.slug,
+                                            'electionSlug': other_election.slug
+                                        }) }}"
+                                        class="btn btn-sm btn-outline-info"
+                                    >
+                                        {{- "" -}}
+                                        <span class="fa fa-{{ other_elections.icon}} mr-2"></span>
+                                        {{- "" -}}
+                                        {{ "action.view_candidates_from"|trans }}
+                                        {{ other_election.theName|lower }}
+                                        {{ "text.from"|trans }}
+                                        {{ other_election.date|date }}
+                                        {{- "" -}}
+                                    </a>
+                                </h6>
+                            {% endif %}
+                        {% endfor %}
                     {% endif %}
                 </div>
             </div>
@@ -145,7 +157,7 @@
                             >
                                 <div class="row align-items-center">
                                     <div class="col-12 col-lg font-size-3 text-warning text-white-on-hover">
-                                        <span>{{ "label.the_place"|trans }}</span>
+                                        <span class="text-light">{{ "label.the_place"|trans }}</span>
                                         <strong>{{ mandate_ranks[ mandate.id ] }}</strong>
                                     </div>
                                     <div class="col-12 col-lg-auto order-first order-lg-0 pt-2 pt-lg-0 text-success text-white-on-hover">
@@ -154,7 +166,7 @@
                                     </div>
                                     <div class="col-12 col-lg font-size-3 text-info text-white-on-hover">
                                         <strong>{{ mandate.competenceUsesPoints }}</strong>
-                                        <span>{{ "text.points"|trans({"%count%": mandate.competenceUsesPoints}) }}</span>
+                                        <span class="text-light">{{ "text.points"|trans({"%count%": mandate.competenceUsesPoints}) }}</span>
                                     </div>
                                 </div>
                             </a>

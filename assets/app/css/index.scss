@@ -348,4 +348,34 @@ html.page-constituency-election {
     }
 }
 
+html.page-home {
+    .partner-logo {
+        max-height: 6rem;
+        max-width: 15rem;
+    }
+
+    .rank-item-politician-photo {
+        height: 4rem;
+
+        @include media-breakpoint-up(md) {
+            height: 2rem;
+        }
+    }
+}
+
+html.page-mandate {
+    #categories-pie-chart {
+        height: 15rem;
+    }
+}
+
+html.page-mandates {
+    .place-square {
+        width: 5rem;
+    }
+    .politician-photo {
+        width: 3rem;
+    }
+}
+
 //endregion

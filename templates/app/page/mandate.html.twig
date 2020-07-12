@@ -5,7 +5,7 @@
 {% import 'macros.html.twig' as macros %}
 {% import _self as self_macros %}
 
-{% block html_class %}bg-dark-pattern{% endblock %}
+{% block html_class %}bg-dark-pattern page-mandate{% endblock %}
 {% block body_class %}bg-transparent{% endblock %}
 
 {% block title %}
@@ -18,7 +18,6 @@
 {% block head_meta %}
     {{ parent() }}
     <meta name="description" content="{{ 'meta_description.mandate'|trans }}">
-    <style type="text/css">#categories-pie-chart { height: 15rem; }</style>
 {% endblock %}
 
 {% block main %}

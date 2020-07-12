@@ -8,7 +8,7 @@
 {% import 'macros.html.twig' as macros %}
 {% import _self as self_macros %}
 
-{% block html_class %}bg-dark-pattern{% endblock %}
+{% block html_class %}bg-dark-pattern page-home{% endblock %}
 {% block body_class %}bg-transparent{% endblock %}
 
 {% block head_meta %}
@@ -18,15 +18,6 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    <style type="text/css">
-        .partner-logo {
-            max-height: 6rem;
-            max-width: 15rem;
-        }
-        .rank-item-politician-photo {
-            height: 2rem;
-        }
-    </style>
 {% endblock %}
 
 {% block main %}

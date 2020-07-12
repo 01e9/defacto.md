@@ -12,8 +12,10 @@
     <meta name="robots" content="noindex, follow">
 {% endblock %}
 
+{% set max_title_length = 70 %}
+
 {% block main %}
-    <main class="container-fluid bg-light-pattern pb-5 px-0">
+    <main class="container-fluid bg-light-pattern pb-5">
         {% include 'app/component/after-header-space.html.twig' %}
         <header>
             <h1 class="text-center mb-3">{{ "title.blog"|trans }}</h1>
@@ -25,44 +27,45 @@
                 </div>
             </div>
         {% else %}
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-8 offset-lg-2 col-xl-6 offset-xl-3">
-                        {% for blogPost in blogPosts %}
-                            <div class="row">
-                                <div class="col">
-                                    <div class="card mb-3">
-                                        {% if blogPost.image %}
-                                            <div class="ratio-16-9 overflow-hidden">
-                                                <img
-                                                    src="{{ macros.blog_image_url(blogPost) }}"
-                                                    alt="Image"
-                                                    class="content-no-height rounded-top d-block"
-                                                >
-                                            </div>
-                                        {% endif %}
-                                        <div class="card-body">
-                                            <h2>
-                                                <a
-                                                    href="{{ path('blog_post', {slug: blogPost.slug}) }}"
-                                                >{{ blogPost.title }}</a>
-                                            </h2>
-                                            <div><small>{{ blogPost.publishTime|date }}</small></div>
-                                        </div>
+            <div class="row">
+                {% for blogPost in blogPosts %}
+                    <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
+                        <div class="card mb-3">
+                            {% if blogPost.image %}
+                                <a
+                                    href="{{ path('blog_post', {slug: blogPost.slug}) }}"
+                                    class="d-block"
+                                >
+                                    <div class="ratio-16-9 overflow-hidden">
+                                        <img
+                                            src="{{ macros.blog_image_url(blogPost) }}"
+                                            alt="Image"
+                                            class="content-no-height rounded-top d-block"
+                                        >
                                     </div>
+                                </a>
+                            {% endif %}
+                            <div class="card-body">
+                                <h2 class="h4">
+                                    <a
+                                        href="{{ path('blog_post', {slug: blogPost.slug}) }}"
+                                        class="text-body"
+                                        title="{{ blogPost.title }}"
+                                    >{{ blogPost.title|truncate(50, true) }}</a>
+                                </h2>
+                                <div>
+                                    <samp class="small text-muted">{{ blogPost.publishTime|date }}</samp>
                                 </div>
                             </div>
-                        {% endfor %}
+                        </div>
                     </div>
-                </div>
+                {% endfor %}
             </div>
             {% if blogPosts.getPaginationData()['pageCount'] > 1 %}
-                <div class="container-fluid">
-                    <div class="row mt-4">
-                        <div class="col text-center">
-                            <div class="d-inline-block pagination-wrapper">
-                                {{ knp_pagination_render(blogPosts) }}
-                            </div>
+                <div class="row mt-4">
+                    <div class="col text-center">
+                        <div class="d-inline-block pagination-wrapper">
+                            {{ knp_pagination_render(blogPosts) }}
                         </div>
                     </div>
                 </div>

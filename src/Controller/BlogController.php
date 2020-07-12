@@ -39,7 +39,7 @@ class BlogController extends AbstractController
         $blogPosts = $this->paginator->paginate(
             $blogPostsQuery,
             $request->query->getInt('page', 1), // fixme: hardcode
-            7 // fixme: hardcode
+            12 // fixme: hardcode
         );
 
         return $this->render('app/page/blog.html.twig', [

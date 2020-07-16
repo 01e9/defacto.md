@@ -22,7 +22,7 @@
 
 {% block main %}
     <main>
-        <div class="container-fluid px-0 bg-light-pattern">
+        <div class="container-fluid px-0 pb-5 bg-light-pattern">
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-12 col-lg-6">
@@ -32,7 +32,7 @@
                         ) }}
                     </div>
                     {% if current_election %}
-                        <div class="col-12 col-lg-6">
+                        <div class="col-12 col-lg-6 mt-4 mt-lg-0">
                             {% include 'app/component/block/statistics/election.html.twig' with {
                                 election: current_election.election,
                                 constituencies: current_election.constituencies

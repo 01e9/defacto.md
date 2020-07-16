@@ -4,12 +4,14 @@
 {% import 'macros.html.twig' as macros %}
 
 {% set remaining_time %}
-    <div class="mt-{{ hide_title|default(false) ? '1' : '2' }} small text-light text-right">
+    <div class="mt-{{ hide_title|default(false) ? '1' : '2' }} small text-light {%
+        if hide_title|default(false) %}text-center{% else %}text-right{% endif %}"
+    >
         <small>{{ "text.the_mandate_ends_in"|trans({"%time%": mandate.endDate|ago}) }}</small>
     </div>
 {% endset %}
 
-<div class="d-inline-block mt-5 mt-lg-2">
+<div class="d-inline-block mt-3 mt-lg-2">
     <div class="row">
         <div class="text-left col-6 col-md-auto">
             <span

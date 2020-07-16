@@ -3,8 +3,15 @@
 {# @var \App\Entity\BlogPost[] posts #}
 
 <div class="py-5">
-    <h2 class="text-white text-center mb-4">{{ "title.recent_blog_posts"|trans }}</h2>
-    <div class="container">
+    <h2 class="text-center mb-4">
+        <a href="{{ path('blog') }}" class="text-white">
+            <span class="fa fa-newspaper mr-3"></span>
+            {{- "" -}}
+            {{ "title.recent_blog_posts"|trans }}
+            {{- "" -}}
+        </a>
+    </h2>
+    <div class="container-fluid">
         <div class="row">
             <div class="col">
                 <div class="app-slider text-white">
@@ -24,7 +31,8 @@
                                     <h5>
                                         <a
                                             href="{{ path('blog_post', {"slug": post.slug}) }}"
-                                        >{{ post.title }}</a>
+                                            title="{{ post.title }}"
+                                        >{{ post.title|truncate(50, true) }}</a>
                                     </h5>
                                     <div><small>{{ post.publishTime|date }}</small></div>
                                 </div>

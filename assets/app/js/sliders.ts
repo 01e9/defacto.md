@@ -6,7 +6,7 @@ $(() => {
         const $el = $(element);
 
         $el.slick({
-            slidesToShow: Math.min(3, $el.children().length),
+            slidesToShow: Math.min(4, $el.children().length),
             infinite: true,
             centerMode: true,
             autoplay: true,

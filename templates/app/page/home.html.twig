@@ -45,6 +45,7 @@
         {% if president_mandate %}
             <section>
                 <h2 class="bg-primary text-white text-center pt-5 pb-3 mb-0">
+                    <span class="fa fa-flag mr-3"></span>
                     {{ president_mandate.mandate.institutionTitle.title.name }}
                 </h2>
                 {% include 'app/component/section/statistics/mandate-votes-and-promises.html.twig' with {
@@ -75,7 +76,11 @@
         <section class="container-fluid bg-white py-5">
             <div class="row">
                 <div class="col text-center">
-                    <h3>{{ "title.partners"|trans }}</h3>
+                    <h2>
+                        <span class="fa fa-handshake mr-3"></span>
+                        {{- "" -}}
+                        {{ "title.partners"|trans }}
+                    </h2>
                     <div class="mt-3">
                         {% set partners = [
                             {
@@ -124,7 +129,11 @@
 
     {% include 'app/component/after-header-space.html.twig' %}
 
-    <h2 class="mb-3 text-center">{{ "title.top_responsible_deputies"|trans }}</h2>
+    <h2 class="mb-3 text-center">
+        <span class="fa fa-medal mr-3"></span>
+        {{- "" -}}
+        {{ "title.top_responsible_deputies"|trans }}
+    </h2>
 
     {% include "app/component/block/mandate/rank-list.html.twig" with {
         mandates: mandates

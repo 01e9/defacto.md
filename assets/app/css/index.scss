@@ -330,6 +330,20 @@
     transform: none !important;
 }
 
+//region Blocks
+
+.block-mandate-rank-list {
+    .rank-item-politician-photo {
+        height: 4rem;
+
+        @include media-breakpoint-up(md) {
+            height: 2rem;
+        }
+    }
+}
+
+//endregion
+
 //region Pages
 
 html.page-constituency-election {
@@ -353,14 +367,6 @@ html.page-home {
         max-height: 6rem;
         max-width: 15rem;
     }
-
-    .rank-item-politician-photo {
-        height: 4rem;
-
-        @include media-breakpoint-up(md) {
-            height: 2rem;
-        }
-    }
 }
 
 html.page-mandate {
@@ -370,12 +376,6 @@ html.page-mandate {
 }
 
 html.page-mandates {
-    .place-square {
-        width: 5rem;
-    }
-    .politician-photo {
-        width: 3rem;
-    }
 }
 
 //endregion

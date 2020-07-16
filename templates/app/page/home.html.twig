@@ -22,9 +22,9 @@
 
 {% block main %}
     <main>
-        <div class="container-fluid px-0 bg-white">
+        <div class="container-fluid px-0 bg-light-pattern">
             <div class="container">
-                <div class="row bg-white justify-content-center">
+                <div class="row justify-content-center">
                     <div class="col-12 col-lg-6">
                         {{ self_macros.top_ranked_mandates_block(
                             top_rank_mandates,
@@ -126,57 +126,9 @@
 
     <h2 class="mb-3 text-center">{{ "title.top_responsible_deputies"|trans }}</h2>
 
-    {% set current_rank = 1 %}
-
-    <div class="list-group">
-    {% for mandate in mandates %}
-        {% if prev_mandate is defined and mandate.competenceUsesPoints < prev_mandate.competenceUsesPoints %}
-            {% set current_rank = current_rank + 1 %}
-        {% endif %}
-
-        <a
-            href="{{ path('mandate', {
-                "electionSlug": mandate.election.slug,
-                "politicianSlug": mandate.politician.slug
-            }) }}"
-            class="list-group-item list-group-item-action px-4 py-3"
-        >
-            <div class="row align-items-center">
-                <div class="col-md-auto mb-1 mb-md-0 text-center">
-                    <div>
-                        <div class="d-inline-block px-3 font-size-2 bg-warning text-dark rounded-circle">
-                            <samp>{{ current_rank }}</samp>
-                        </div>
-                    </div>
-                    <div class="text-dark mt-1">{{ "label.place"|trans|lower }}</div>
-                </div>
-                <div class="col-md text-center text-md-left">
-                    <div class="h2 row align-items-center">
-                        <div class="col-md-auto mb-1 mb-md-0 pr-md-0 d-md-flex align-items-center">
-                            <img
-                                src="{{ macros.politician_photo_url(mandate.politician) }}"
-                                alt="{{ mandate.politician.firstName }} {{ mandate.politician.lastName }}"
-                                class="d-inline-block rounded-circle rank-item-politician-photo"
-                            >
-                        </div>
-                        <div class="col-md text-primary">
-                            {{ mandate.politician.firstName }} {{ mandate.politician.lastName }}
-                        </div>
-                    </div>
-                    <div>
-                        <big>
-                            <strong class="text-info">{{ mandate.competenceUsesPoints }}</strong>
-                            <span>{{ "text.points"|trans({"%count%": mandate.competenceUsesPoints}) }}</span>
-                        </big>
-                    </div>
-                </div>
-            </div>
-        </a>
-
-        {# @var \App\Entity\Mandate prev_mandate #}
-        {% set prev_mandate = mandate %}
-    {% endfor %}
-    </div>
+    {% include "app/component/block/mandate/rank-list.html.twig" with {
+        mandates: mandates
+    } only %}
 
     {% if election %}
         <a

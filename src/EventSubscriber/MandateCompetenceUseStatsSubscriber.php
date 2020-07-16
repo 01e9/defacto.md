@@ -54,6 +54,10 @@ class MandateCompetenceUseStatsSubscriber implements EventSubscriberInterface
             ->getQuery()
             ->execute();
 
+        $mandate->setCompetenceUsesCount(0);
+        $mandate->setCompetenceUsesPoints(0);
+        $this->objectManager->flush();
+
         if (!$mandate->getElection()->isCompetenceUseTracked()) {
             return;
         }

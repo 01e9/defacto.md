@@ -1,0 +1,16 @@
+{# @var \Symfony\Component\Form\FormInterface form #}
+
+{% extends 'admin/base.html.twig' %}
+
+{% block main %}
+    <div class="container">
+        {% include 'admin/component/breadcrumb.html.twig' with {
+            items: [
+                {title: 'title.methodologies'|trans, link: path('admin_methodologies')}
+            ],
+            current: {title: 'title.methodology_add'|trans}
+        } only %}
+
+        {% include 'admin/component/form/methodology.html.twig' with {form: form} only %}
+    </div>
+{% endblock %}

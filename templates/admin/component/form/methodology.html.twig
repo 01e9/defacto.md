@@ -1,0 +1,29 @@
+{# @var \Symfony\Component\Form\FormInterface form #}
+{# @var \App\Entity\Methodology methodology #}
+
+{% set id = form.vars.value|default({id:0}).id %}
+
+{{ form_start(form) }}
+
+<div class="row">
+    <div class="col">
+        {{ form_row(form.title) }}
+    </div>
+    <div class="col">
+        {{ form_row(form.slug) }}
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        {{ form_row(form.content) }}
+    </div>
+</div>
+
+{% include "admin/component/form/widget/submit-delete-buttons.html.twig" with {
+    submitText: id ? 'action.edit_methodology'|trans : 'action.add_methodology'|trans,
+    delete: id ? {text: 'action.delete_methodology'|trans, link: path('admin_methodology_delete', {id: id})} : false
+} only %}
+
+{{ form_rest(form) }}
+
+{{ form_end(form) }}

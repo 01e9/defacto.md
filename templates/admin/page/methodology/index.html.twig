@@ -1,0 +1,24 @@
+{# @var pagination #}
+
+{% extends 'admin/base.html.twig' %}
+
+{% block main %}
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                {% include 'admin/component/breadcrumb.html.twig' with {
+                    current: {title: 'title.methodologies'|trans},
+                    add: {link: path('admin_methodology_add'), text: 'action.add_methodology'|trans}
+                } only %}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                {% include 'admin/component/list/methodologies.html.twig' with {
+                    pagination: pagination
+                } only %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -15,3 +15,4 @@ not_deletable:
     problem: "Problema nu poate fi ștearsă pentru că e conectată cu alte înregistrări."
     blog_post: "Postarea nu poate fi ștearsă pentru că e conectată cu alte înregistrări."
     competence: "Competența nu poate fi ștearsă pentru că e conectată cu alte înregistrări."
+    methodology: "Metodologia nu poate fi ștearsă pentru că e conectată cu alte înregistrări."

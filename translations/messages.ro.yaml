@@ -32,6 +32,9 @@ flash:
     blog_post_deleted: Postarea a fost ștearsă
     setting_updated: Setarea a fost modificată
     error_404: Pagina nu există
+    methodology_created: Metodologia a fost creată
+    methodology_updated: Metodologia a fost modificată
+    methodology_deleted: Metodologia a fost ștearsă
 
 label:
     email: Email
@@ -194,6 +197,9 @@ action:
     choose_constituency: Alegeți circumscripția
     choose_constituency_or_click_on_map: Alegeți circumscripția sau click pe hartă
     view_to_other_constituency: Vezi altă circumscripție
+    add_methodology: Adaugă metodologie
+    edit_methodology: Modifică metodologie
+    delete_methodology: Șterge metodologie
 
 title:
     politicians: Politicieni
@@ -289,6 +295,10 @@ title:
     points_by_category: Punctajul pe categorii
     performance_index: Indecele de performanță
     top_responsible_deputies: Top deputați responsabili
+    methodologies: Metodologii
+    methodology_add: Adăugare metodologie
+    methodology_edit: Redactare metodologie
+    methodology_delete: Ștergere metodologie
 
 placeholder:
     choose_option: Alegeți o opțiune

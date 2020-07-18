@@ -1,0 +1,10 @@
+<div class="list-group list-group-flush">
+    {% for methodology in pagination %}
+        <a
+            class="list-group-item list-group-item-action"
+            href="{{ path('admin_methodology_edit', {id: methodology.id}) }}"
+        ><h5 class="mb-0">{{ methodology.title }}</h5></a>
+    {% endfor %}
+
+    <div class="mt-4">{{ knp_pagination_render(pagination) }}</div>
+</div>

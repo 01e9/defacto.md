@@ -12,7 +12,7 @@
     <meta name="robots" content="noindex, follow">
 {% endblock %}
 
-{% set max_title_length = 70 %}
+{% set max_title_length = 50 %}
 
 {% block main %}
     <main class="container-fluid bg-light-pattern pb-5">
@@ -51,7 +51,7 @@
                                         href="{{ path('blog_post', {slug: blogPost.slug}) }}"
                                         class="text-body"
                                         title="{{ blogPost.title }}"
-                                    >{{ blogPost.title|truncate(50, true) }}</a>
+                                    >{{ blogPost.title|truncate(max_title_length, true) }}</a>
                                 </h2>
                                 <div>
                                     <samp class="small text-muted">{{ blogPost.publishTime|date }}</samp>

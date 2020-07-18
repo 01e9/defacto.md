@@ -1,0 +1,54 @@
+{# @var \App\Entity\Methodology[] methodologies #}
+
+{% extends 'app/base.html.twig' %}
+
+{% block html_class %}bg-dark-pattern{% endblock %}
+{% block body_class %}bg-transparent{% endblock %}
+
+{% block title %}{{ "title.methodologies"|trans }}{% endblock %}
+
+{% block head_meta %}
+    {{ parent() }}
+    <meta name="robots" content="noindex, follow">
+{% endblock %}
+
+{% block main %}
+    <main class="container-fluid bg-light-pattern pb-5">
+        {% include 'app/component/after-header-space.html.twig' %}
+        <header>
+            <h1 class="text-center mb-4">
+                {{- "" -}}
+                <span class="fa fa-book-reader mr-3"></span>
+                {{- "" -}}
+                {{ "title.methodologies"|trans }}
+            </h1>
+        </header>
+        {% if methodologies is empty %}
+            <div class="row">
+                <div class="col text-center text-secondary">
+                    <p class="h3 mt-4"><span class="fa fa-surprise"></span></p>
+                </div>
+            </div>
+        {% else %}
+            <div class="container px-0">
+                <div class="row justify-content-center">
+                    {% for methodology in methodologies %}
+                        <div class="col-12 col-xl-6">
+                            <div class="card mb-3 text-center">
+                                <div class="card-body p-xl-5">
+                                    <h2 class="mb-0 h1">
+                                        <a
+                                            href="{{ path('methodology', {slug: methodology.slug}) }}"
+                                            title="{{ methodology.title }}"
+                                        >{{ methodology.title }}</a>
+                                    </h2>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+    </main>
+    {% include 'app/component/section/footer.html.twig' with { hide_methodology: true } only %}
+{% endblock %}

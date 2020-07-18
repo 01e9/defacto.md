@@ -1,3 +1,6 @@
+{# @var bool delimiter #}
+{# @var bool hide_methodology #}
+
 {% if delimiter is defined %}
     <div class="container">
         <hr class="border-secondary mt-5">
@@ -6,9 +9,27 @@
 <footer class="container text-light my-5">
     <div class="row">
         <div class="col text-sm-center">
-            <h5 class="mb-5">{{ "meta_description.main_longer"|trans }}</h5>
+            <h5 class="mb-4">{{ "meta_description.main_longer"|trans }}</h5>
         </div>
     </div>
+    {% if not hide_methodology|default(false) %}
+        <div class="row">
+            <div class="col text-sm-center">
+                <h6 class="mb-4 h4">
+                    <a
+                        href="{{ path('methodologies') }}"
+                        class="text-info"
+                    >
+                        {{- "" -}}
+                        <span class="fa fa-book-reader mr-3"></span>
+                        {{- "" -}}
+                        {{ "title.methodologies_footer"|trans }}
+                        {{- "" -}}
+                    </a>
+                </h6>
+            </div>
+        </div>
+    {% endif %}
     <div class="row justify-content-md-center">
         <div class="col text-center">
             <h5 class="h3 mb-3">{{ "text.find_us_on"|trans }}</h5>

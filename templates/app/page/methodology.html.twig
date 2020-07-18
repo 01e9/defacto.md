@@ -1,0 +1,39 @@
+{# @var \App\Entity\Methodology methodology #}
+
+{% extends 'app/base.html.twig' %}
+
+{% block html_class %}bg-dark-pattern{% endblock %}
+{% block body_class %}bg-transparent{% endblock %}
+
+{% block title %}{{ methodology.title }} • {{ "title.blog"|trans }}{% endblock %}
+
+{% block main %}
+    <main class="bg-light-pattern pb-5">
+        {% include 'app/component/after-header-space.html.twig' %}
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 offset-lg-2">
+                    <div class="row">
+                        <div class="col px-1">
+                            <div
+                                class="card mb-3"
+                            >
+                                <div class="card-body px-lg-5 pb-lg-5 pt-lg-5">
+                                    <h1
+                                        class="h1 mb-4 text-center"
+                                        itemprop="name headline"
+                                    >{{ methodology.title }}</h1>
+                                    <div
+                                        class="raw-html"
+                                        itemprop="articleBody"
+                                    >{{ methodology.content|raw }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    {% include 'app/component/section/footer.html.twig' with {} only %}
+{% endblock %}

@@ -3,51 +3,49 @@
 
 {% import 'macros.html.twig' as macros %}
 
-<div class="alert alert-info mb-0" role="alert">
-    <select
-        class="form-control form-control-sm d-block w-auto selectpicker"
-        data-live-search="true"
-        data-style="btn-form-control"
-        data-container="body"
-        onchange="location.assign(this.value)"
-        title="{{ placeholder|default('action.choose_constituency'|trans) }}"
-    >
-        {% for c in constituencies %}
-            {% set option_content %}
-                <div class="my-3">
-                    <div class="h6 mb-0">
-                        {{ c.constituency.name }}
-                    </div>
-                    {% if c.mandate is defined %}
-                        <div class="d-flex align-items-center mt-2">
-                            <div>
-                                <img
-                                    src="{{ macros.politician_photo_url(c.mandate.politician) }}"
-                                    alt="Politician"
-                                    style="max-height: 2em;"
-                                    class="rounded-circle mr-3"
-                                >
-                            </div>
-                            <div class="font-weight-bold text-primary">
-                                {{ c.mandate.politician.firstName }}
-                                {{ c.mandate.politician.lastName }}
-                            </div>
-                        </div>
-                    {% endif %}
+<select
+    class="form-control form-control-sm d-block w-auto selectpicker"
+    data-live-search="true"
+    data-style="btn-form-control"
+    data-container="body"
+    onchange="location.assign(this.value)"
+    title="{{ placeholder|default('action.choose_constituency'|trans) }}"
+>
+    {% for c in constituencies %}
+        {% set option_content %}
+            <div class="my-3">
+                <div class="h6 mb-0">
+                    {{ c.constituency.name }}
                 </div>
-            {% endset %}
+                {% if c.mandate is defined %}
+                    <div class="d-flex align-items-center mt-2">
+                        <div>
+                            <img
+                                src="{{ macros.politician_photo_url(c.mandate.politician) }}"
+                                alt="Politician"
+                                style="max-height: 2em;"
+                                class="rounded-circle mr-3"
+                            >
+                        </div>
+                        <div class="font-weight-bold text-primary">
+                            {{ c.mandate.politician.firstName }}
+                            {{ c.mandate.politician.lastName }}
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        {% endset %}
 
-            {% set tokens = c.constituency.name|ascii %}
-            {% if c.mandate is defined %}
-                {% set tokens = tokens ~ " " ~ c.mandate.politician.firstName|ascii %}
-                {% set tokens = tokens ~ " " ~ c.mandate.politician.lastName|ascii %}
-            {% endif %}
+        {% set tokens = c.constituency.name|ascii %}
+        {% if c.mandate is defined %}
+            {% set tokens = tokens ~ " " ~ c.mandate.politician.firstName|ascii %}
+            {% set tokens = tokens ~ " " ~ c.mandate.politician.lastName|ascii %}
+        {% endif %}
 
-            <option
-                value="{{ path('constituency_election', {slug: c.constituency.slug, electionSlug: c.election.slug}) }}"
-                data-tokens="{{ tokens }}"
-                data-content="{{ option_content|escape('html_attr') }}"
-            >{{ c.constituency.name }}</option>
-        {% endfor %}
-    </select>
-</div>
+        <option
+            value="{{ path('constituency_election', {slug: c.constituency.slug, electionSlug: c.election.slug}) }}"
+            data-tokens="{{ tokens }}"
+            data-content="{{ option_content|escape('html_attr') }}"
+        >{{ c.constituency.name }}</option>
+    {% endfor %}
+</select>

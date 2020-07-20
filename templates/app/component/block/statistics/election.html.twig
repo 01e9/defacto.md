@@ -20,7 +20,7 @@
 <section class="election-statistics" itemscope itemtype="https://schema.org/VoteAction">
     {% include 'app/component/after-header-space.html.twig' %}
     <div class="row">
-        <div class="col mb-3">
+        <div class="col">
             <h2
                 class="text-center mb-3"
                 itemprop="name"
@@ -30,16 +30,22 @@
                 {{ election.date < date() ? election.theElectedName : election.theName }}
             </h2>
             <meta itemprop="startTime" content="{{ election.date|date('Y-m-d') }}">
-            {% include "app/component/block/constituencies-select.html.twig" with {
-                constituencies: constituencies,
-                placeholder: 'action.choose_constituency_or_click_on_map'|trans
-            } only %}
-        </div>
-    </div>
-    <div class="row">
-        <div class="col">
-            <div class="square">
-                <div class="content rounded bg-light map-markers" data-map-markers="{{ mapData|json_encode }}"></div>
+            <div class="alert alert-info py-4 mb-0">
+                <div class="row">
+                    <div class="col mb-3">
+                        {% include "app/component/block/constituencies-select.html.twig" with {
+                            constituencies: constituencies,
+                            placeholder: 'action.choose_constituency_or_click_on_map'|trans
+                        } only %}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="square">
+                            <div class="content rounded bg-light map-markers" data-map-markers="{{ mapData|json_encode }}"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

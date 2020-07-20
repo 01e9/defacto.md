@@ -51,10 +51,12 @@
                                     target="_blank"
                                     class="btn btn-sm btn-warning mb-4"
                                 >{{ "action.view_details"|trans }}</a>
-                                {% include "app/component/block/constituencies-select.html.twig" with {
-                                    constituencies: election_data.constituencies,
-                                    placeholder: 'action.view_to_other_constituency'|trans
-                                } only %}
+                                <div class="alert alert-info mb-0">
+                                    {% include "app/component/block/constituencies-select.html.twig" with {
+                                        constituencies: election_data.constituencies,
+                                        placeholder: 'action.view_to_other_constituency'|trans
+                                    } only %}
+                                </div>
                             </div>
                         </div>
                     </div>

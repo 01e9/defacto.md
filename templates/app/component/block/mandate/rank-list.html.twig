@@ -19,18 +19,18 @@
             class="list-group-item list-group-item-action px-4 py-3"
         >
             <div class="row align-items-center">
-                <div class="col-md-auto mb-1 mb-md-0 text-center">
-                    <div>
-                        <div class="d-inline-block px-3 font-size-2 bg-warning text-dark rounded-circle">
+                <div class="col-md-auto mb-1 mb-md-0 text-center text-dark">
+                    <div class="d-flex align-items-center justify-content-center bg-warning rounded-circle place-circle">
+                        <div class="pt-1">
+                            <small class="d-block">{{ "label.the_place"|trans|lower }}</small>
                             <samp
-                                class="{% if current_rank == 1 %}font-weight-bold{% endif %}"
+                                class="place-number d-block font-size-2 {% if current_rank == 1 %}font-weight-bold{% endif %}"
                             >{{ current_rank }}</samp>
                         </div>
                     </div>
-                    <div class="text-dark mt-1">{{ "label.place"|trans|lower }}</div>
                 </div>
                 <div class="col-md text-center text-md-left">
-                    <div class="h2 row align-items-center">
+                    <div class="h2 mb-1 row align-items-center">
                         <div class="col-md-auto mb-1 mb-md-0 pr-md-0 d-md-flex align-items-center">
                             <img
                                 src="{{ macros.politician_photo_url(mandate.politician) }}"

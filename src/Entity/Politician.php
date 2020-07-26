@@ -5,7 +5,6 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -13,6 +12,9 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @ORM\Entity(repositoryClass="App\Repository\PoliticianRepository")
  * @ORM\Table(
  *     name="politicians",
+ *     indexes={
+ *      @ORM\Index(name="politician_birth_date", columns={"birth_date"})
+ *     },
  *     uniqueConstraints={
  *      @ORM\UniqueConstraint(name="politician_unique_slug", columns={"slug"})
  *     }

@@ -8,4 +8,7 @@
             <lastmod>{{ blogLastModified|date(constant('\DateTimeInterface::W3C')) }}</lastmod>
         {% endif %}
     </sitemap>
+    <sitemap>
+        <loc>{{ url('sitemap_politicians') }}</loc>
+    </sitemap>
 </sitemapindex>

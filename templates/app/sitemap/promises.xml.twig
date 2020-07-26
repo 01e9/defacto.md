@@ -1,0 +1,11 @@
+{# @var \App\Entity\Promise[] promises -#}
+
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    {% for promise in promises %}
+    <url>
+        <loc>{{ url('promise', {'slug': promise.slug}) }}</loc>
+        <changefreq>monthly</changefreq>
+    </url>
+    {% endfor %}
+</urlset>

@@ -8,6 +8,7 @@ use App\Repository\ConstituencyRepository;
 use App\Repository\MandateRepository;
 use App\Repository\MethodologyRepository;
 use App\Repository\PoliticianRepository;
+use App\Repository\PromiseRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -23,13 +24,15 @@ class SitemapController extends AbstractController
     private MandateRepository $mandateRepository;
     private ConstituencyRepository $constituencyRepository;
     private MethodologyRepository $methodologyRepository;
+    private PromiseRepository $promiseRepository;
 
     public function __construct(
         BlogPostRepository $blogPostRepository,
         PoliticianRepository $politicianRepository,
         MandateRepository $mandateRepository,
         ConstituencyRepository $constituencyRepository,
-        MethodologyRepository $methodologyRepository
+        MethodologyRepository $methodologyRepository,
+        PromiseRepository $promiseRepository
     )
     {
         $this->blogPostRepository = $blogPostRepository;
@@ -37,6 +40,7 @@ class SitemapController extends AbstractController
         $this->mandateRepository = $mandateRepository;
         $this->constituencyRepository = $constituencyRepository;
         $this->methodologyRepository = $methodologyRepository;
+        $this->promiseRepository = $promiseRepository;
     }
 
     /**
@@ -132,5 +136,19 @@ class SitemapController extends AbstractController
         $methodologies = $this->methodologyRepository->findAll();
 
         return $this->render('app/sitemap/methodologies.xml.twig', ['methodologies' => $methodologies]);
+    }
+
+    /**
+     * @Route(path="/sitemap.promises.xml", name="sitemap_promises")
+     */
+    public function promisesAction(Request $request)
+    {
+        $promises = $this->promiseRepository->createQueryBuilder('p')
+            ->select('p')
+            ->orderBy('p.madeTime', 'DESC')
+            ->getQuery()
+            ->getResult();
+
+        return $this->render('app/sitemap/promises.xml.twig', ['promises' => $promises]);
     }
 }

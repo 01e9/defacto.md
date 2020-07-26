@@ -22,15 +22,15 @@
 
 {% block main %}
     <main>
+        <div class="container-fluid site-title-section">
+            <div class="row">
+                <div class="col text-center bg-dark-pattern text-light py-4">
+                    <h1 class="h3 mb-0">{{ "title.site"|trans }}</h1>
+                </div>
+            </div>
+        </div>
         <div class="container-fluid px-0 pb-5 bg-light-pattern">
             <div class="container">
-                <div class="row">
-                    <div class="col text-center pt-4">
-                        <div class="alert alert-success bg-success border-light text-white">
-                            <h1 class="h5 mb-0">{{ "title.site"|trans }}</h1>
-                        </div>
-                    </div>
-                </div>
                 <div class="row justify-content-center pt-3">
                     <div class="col-12 col-lg-6">
                         {{ self_macros.top_ranked_mandates_block(

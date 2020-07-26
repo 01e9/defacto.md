@@ -3,14 +3,15 @@
 {# @var \App\Entity\BlogPost[] posts #}
 
 <div class="py-5">
-    <h2 class="text-center mb-4">
+    <h2 class="text-center">
         <a href="{{ path('blog') }}" class="text-white">
             <span class="fa fa-newspaper mr-3"></span>
             {{- "" -}}
-            {{ "title.recent_blog_posts"|trans }}
+            {{ "title.blog"|trans }}
             {{- "" -}}
         </a>
     </h2>
+    <p class="text-white-50 text-center"><small>{{ "title.latest_articles"|trans }}</small></p>
     <div class="container-fluid">
         <div class="row">
             <div class="col">

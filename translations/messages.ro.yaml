@@ -181,8 +181,9 @@ action:
     filter: Filtrează
     view_on_site: Vezi pe site
     see_the_prerogatives: Vezi prerogativele
-    see_the_top: Vezi topul
+    see_the_top: Vezi tot clasamentul
     see_details: Vezi detalii
+    see_points_details: Vezi punctajul detaliat
     view_decision: Vezi hotărârea
     add_blog_post: Adaugă postare
     edit_blog_post: Modifică postare
@@ -216,6 +217,7 @@ title:
     statuses: Statuturi
     status: Statut
     promises: Promisiuni
+    the_promises_progress: Progresul promisiunilor electorale
     the_promises: Promisiunile
     all_promises: Toate promisiunile
     promise: Promisiune
@@ -259,7 +261,7 @@ title:
     prerogatives: Prerogative
     about_us: Despre noi
     about_project: Despre proiect
-    why_we_are_doing_this: De ce facem asta
+    why_are_we_doing_this: De ce facem asta
     _promised: a promis
     promise_actions: Acțiuni întreprinse
     promise_no_actions: Nici o acțiune întreprinsă
@@ -274,33 +276,34 @@ title:
     logs: Jurnal de bord
     contact_information: Date de contact
     candidates_with_most_chances: Candidați cu șanse de câștig
-    contracandidates: Contracandidați
+    main_contracandidates: Principalii contracandidați
     problems_metodology: Metodologia de colectare a problemelor
     candidates_metodology: Metodologia de selectare a candidaților
-    constituency_problems_n: Problema principală din circumscripție|Problemele principale din circumscripție|Problemele principale din circumscripție
+    constituency_problems_n: Principala problemă din circumscripție|Problemele principale din circumscripție|Problemele principale din circumscripție
     candidate_in: Candidat în
     candidates_solutions: Soluțiile candidaților
     partners: Parteneri
     elected: Ales
     elected_f: Aleasă
     none: Nu sunt
-    the_politicians_promise_actions: Acțiunile politicienilor pentru îndeplinirea promisiunilor
+    the_politicians_promise_actions: Ultimile acțiuni întreprinse de deputați pentru îndeplinirea promisiunilor electorale
     the_promise_actions: Acțiunile pentru îndeplinirea promisiunilor
     the_actions: Acțiunile
     all_actions: Toate acțiunile politicienilor
     no_made_actions_found: Nu am găsit nici o acțiune
     no_used_competences_found: Nu au fost găsite competențe folosite
-    recent_blog_posts: Postări recente pe blog
     participation_in_elections: Participarea în alegeri
     the_points_of_used_competences: Punctajul competențelor folosite
+    the_points_for_used_powers: Punctaj pentru atribuțiile utilizate
     points_by_category: Punctajul pe categorii
-    performance_index: Indecele de performanță
-    top_responsible_deputies: Top deputați responsabili
+    responsibility_index: Indicele de responsabilitate
+    top_responsible_deputies: Clasamentul deputaților responsabili
     methodologies: Metodologii
     the_methodology: Metodologia
     methodology_add: Adăugare metodologie
     methodology_edit: Redactare metodologie
     methodology_delete: Ștergere metodologie
+    latest_articles: Ultimele articole
 
 placeholder:
     choose_option: Alegeți o opțiune
@@ -353,6 +356,18 @@ text:
     view_the_made_actions: "Vezi acțiunile întreprinse"
     points: "punct|puncte|de puncte"
     find_us_on: "Ne găsiți pe"
+    responsibility_index_of_constituency_deputies: >-
+        Indicele de responsabilitate a deputaților aleși în circumscripțiile uninominale
+    information_about_constituencies: >-
+        Informații despre circumscripțiile electorale
+    mandate_and_promises: Mandatul și promisiunile electorale
+    about_project: >-
+        Proiectul deFacto este o platformă online care vine să informeze alegătorii despre atribuțiile politicienilor aleși
+        și urmărește cât de responsabili și deschiși sunt aceștia față de cetățeni.
+    why_are_we_doing_this: >-
+        Credem că putem ajuta alegătorii să-și ajusteze așteptările privind competențele pe care le au politicienii aleși.
+        Iar prin monitorizarea activității și gradului de responsabilitate a acestora,
+        alegătorii vor putea face o alegere mai informată.
 
 meta_description:
     main: "Platformă de monitorizare a promisiunilor electorale și activității politicienilor aleși"

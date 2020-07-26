@@ -21,13 +21,14 @@
     <div class="row">
         <div class="col">
             <h2
-                class="text-center mb-3"
+                class="text-center h3"
                 itemprop="name"
             >
                 <span class="fa fa-map-marker-alt mr-3"></span>
                 {{- "" -}}
                 {{ election.date < date() ? election.theElectedName : election.theName }}
             </h2>
+            <p class="text-muted text-center"><small>{{ "text.information_about_constituencies"|trans }}</small></p>
             <meta itemprop="startTime" content="{{ election.date|date('Y-m-d') }}">
             <div class="alert alert-info py-4 mb-0">
                 <div class="row">

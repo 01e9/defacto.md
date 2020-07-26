@@ -43,7 +43,7 @@
                                 >
                             </div>
                         {% endif %}
-                        <div class="col-12 col-lg mb-4 mb-lg-0 order-first order-lg-0">
+                        <div class="col-12 col-lg my-4 my-lg-0">
                             <div class="{% if not constituency.hasMap() %}text-center{% endif %}">
                                 <h1 class="mb-4">{{ constituency.name }}</h1>
                                 <a
@@ -164,7 +164,7 @@
                                     </div>
                                     <div class="col-12 col-lg-auto order-first order-lg-0 pt-2 pt-lg-0 text-success text-white-on-hover">
                                         <span class="fa fa-chart-line align-middle font-size-2"></span>
-                                        <div class="h6 mb-0 mt-1">{{ "title.performance_index"|trans }}</div>
+                                        <div class="h6 mb-0 mt-1">{{ "title.responsibility_index"|trans }}</div>
                                     </div>
                                     <div class="col-12 col-lg font-size-3 text-info text-white-on-hover">
                                         <strong>{{ mandate.competenceUsesPoints }}</strong>
@@ -187,7 +187,7 @@
                             {% if date() < election.date %}
                                 {{ "title.candidates_with_most_chances"|trans }}
                             {% else %}
-                                {{ "title.contracandidates"|trans }}
+                                {{ "title.main_contracandidates"|trans }}
                             {% endif %}
                         </h3>
                     </div>

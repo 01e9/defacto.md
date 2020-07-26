@@ -24,7 +24,14 @@
     <main>
         <div class="container-fluid px-0 pb-5 bg-light-pattern">
             <div class="container">
-                <div class="row justify-content-center">
+                <div class="row">
+                    <div class="col text-center pt-4">
+                        <div class="alert alert-success bg-success border-light text-white">
+                            <h1 class="h5 mb-0">{{ "title.site"|trans }}</h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="row justify-content-center pt-3">
                     <div class="col-12 col-lg-6">
                         {{ self_macros.top_ranked_mandates_block(
                             top_rank_mandates,
@@ -126,8 +133,6 @@
 {% macro top_ranked_mandates_block(mandates, election) %}
     {# @var \App\Entity\Mandate[] mandates #}
     {# @var \App\Entity\Election election #}
-
-    {% include 'app/component/after-header-space.html.twig' %}
 
     <h2 class="mb-3 text-center">
         <span class="fa fa-medal mr-3"></span>

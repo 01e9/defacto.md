@@ -1,8 +1,12 @@
 controllers:
-    resource: '../../src/Controller/'
     type: annotation
+    resource: '../../src/Controller/'
     prefix: /{_locale}
     defaults:
         _locale: '%locale%'
     requirements:
         _locale: '%app_locales%'
+
+sitemaps:
+    type: annotation
+    resource: '../../src/Controller/SitemapController.php'

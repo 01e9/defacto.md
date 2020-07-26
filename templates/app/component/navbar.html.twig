@@ -1,26 +1,44 @@
 <nav class="navbar sticky-top navbar-expand-lg navbar-light bg-light shadow">
     <div class="container">
-        <a class="navbar-brand" href="{{ path('home') }}">
+        <a class="navbar-brand mr-0" href="{{ path('home') }}">
             <img src="{{ asset('img/de-facto-check.svg') }}" alt="deFACTO">
         </a>
 
-        <ul class="navbar-nav ml-auto mr-4">
-            <li class="nav-item {{ app.request.attributes.get('_route') starts with 'blog' ? 'active' : '' }}">
-                <a class="nav-link text-primary" href="{{ path('blog') }}">
-                    {{- "" -}}
-                    <span class="fa fa-newspaper mr-1"></span>
-                    {{ "title.blog"|trans }}
-                    {{- "" -}}
-                </a>
-            </li>
-        </ul>
-
         <button
-            class="btn btn-sm btn-outline-primary my-2 my-sm-0"
+            class="btn btn-sm btn-outline-primary mx-lg-5"
             type="button"
             data-toggle="modal"
             data-target="#instant-search-modal"
         ><span class="fa fa-search"></span><span class="d-none d-sm-inline">&nbsp;&nbsp;{{ 'action.searching'|trans }}</span></button>
+
+        <button
+            class="navbar-toggler"
+            type="button"
+            data-toggle="collapse"
+            data-target="#navbarMenu"
+        >
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse mt-3 mt-lg-0 text-right" id="navbarMenu">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item {{ app.request.attributes.get('_route') starts with 'methodolog' ? 'active' : '' }}">
+                    <a class="nav-link text-primary" href="{{ path('methodologies') }}">
+                        {{- "" -}}
+                        <span class="fa fa-book-reader mr-1"></span>
+                        {{ "title.the_methodology"|trans }}
+                        {{- "" -}}
+                    </a>
+                </li>
+                <li class="nav-item ml-3 {{ app.request.attributes.get('_route') starts with 'blog' ? 'active' : '' }}">
+                    <a class="nav-link text-primary" href="{{ path('blog') }}">
+                        {{- "" -}}
+                        <span class="fa fa-newspaper mr-1"></span>
+                        {{ "title.blog"|trans }}
+                        {{- "" -}}
+                    </a>
+                </li>
+            </ul>
+        </div>
     </div>
 </nav>
 

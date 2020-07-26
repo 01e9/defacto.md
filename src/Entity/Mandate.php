@@ -13,10 +13,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(
  *     name="mandates",
  *     indexes={
- *      @ORM\Index(
- *          name="mandate_index_constituency_begin_date",
- *          columns={"constituency_id", "begin_date"}
- *      )
+ *      @ORM\Index(name="mandate_index_begin_date", columns={"begin_date"}),
+ *      @ORM\Index(name="mandate_index_constituency_begin_date", columns={"constituency_id", "begin_date"})
  *     },
  *     uniqueConstraints={
  *      @ORM\UniqueConstraint(

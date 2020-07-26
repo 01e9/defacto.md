@@ -8,14 +8,15 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20200726130537 extends AbstractMigration
+final class Version20200726133021 extends AbstractMigration
 {
     public function up(Schema $schema) : void
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'postgresql', 'Migration can only be executed safely on \'postgresql\'.');
 
-        $this->addSql('CREATE INDEX politician_index_birth_date ON politicians (birth_date)');
+        $this->addSql('CREATE INDEX constituency_index_name ON constituencies (name)');
+        $this->addSql('CREATE INDEX mandate_index_begin_date ON mandates (begin_date)');
     }
 
     public function down(Schema $schema) : void
@@ -23,6 +24,7 @@ final class Version20200726130537 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'postgresql', 'Migration can only be executed safely on \'postgresql\'.');
 
-        $this->addSql('DROP INDEX politician_index_birth_date');
+        $this->addSql('DROP INDEX mandate_index_begin_date');
+        $this->addSql('DROP INDEX constituency_index_name');
     }
 }

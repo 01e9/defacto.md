@@ -12,6 +12,9 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @ORM\Entity(repositoryClass="App\Repository\ConstituencyRepository")
  * @ORM\Table(
  *     name="constituencies",
+ *     indexes={
+ *      @ORM\Index(name="constituency_index_name", columns={"name"}),
+ *     },
  *     uniqueConstraints={
  *      @ORM\UniqueConstraint(name="constituency_unique_slug", columns={"slug"}),
  *      @ORM\UniqueConstraint(name="constituency_unique_number", columns={"number"})

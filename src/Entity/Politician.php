@@ -13,7 +13,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @ORM\Table(
  *     name="politicians",
  *     indexes={
- *      @ORM\Index(name="politician_birth_date", columns={"birth_date"})
+ *      @ORM\Index(name="politician_index_birth_date", columns={"birth_date"})
  *     },
  *     uniqueConstraints={
  *      @ORM\UniqueConstraint(name="politician_unique_slug", columns={"slug"})

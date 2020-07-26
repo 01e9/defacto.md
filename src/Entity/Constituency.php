@@ -218,4 +218,12 @@ class Constituency
     {
         return $this->map && $this->map['lat'];
     }
+
+    /**
+     * @return ArrayCollection|Mandate[]
+     */
+    public function getMandates()
+    {
+        return $this->mandates;
+    }
 }

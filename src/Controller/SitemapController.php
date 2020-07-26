@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Constituency;
 use App\Repository\BlogPostRepository;
+use App\Repository\ConstituencyRepository;
 use App\Repository\MandateRepository;
 use App\Repository\PoliticianRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,16 +20,19 @@ class SitemapController extends AbstractController
     private BlogPostRepository $blogPostRepository;
     private PoliticianRepository $politicianRepository;
     private MandateRepository $mandateRepository;
+    private ConstituencyRepository $constituencyRepository;
 
     public function __construct(
         BlogPostRepository $blogPostRepository,
         PoliticianRepository $politicianRepository,
-        MandateRepository $mandateRepository
+        MandateRepository $mandateRepository,
+        ConstituencyRepository $constituencyRepository
     )
     {
         $this->blogPostRepository = $blogPostRepository;
         $this->politicianRepository = $politicianRepository;
         $this->mandateRepository = $mandateRepository;
+        $this->constituencyRepository = $constituencyRepository;
     }
 
     /**
@@ -84,5 +89,34 @@ class SitemapController extends AbstractController
             ->getResult();
 
         return $this->render('app/sitemap/mandates.xml.twig', ['mandates' => $mandates]);
+    }
+
+    /**
+     * @Route(path="/sitemap.constituencies.xml", name="sitemap_constituencies")
+     */
+    public function constituenciesAction(Request $request)
+    {
+        $constituenciesElections = [];
+        foreach (
+            $this->constituencyRepository->createQueryBuilder('c')
+                ->select('c')
+                ->leftJoin('c.mandates', 'ma')
+                ->leftJoin('c.candidates', 'ca')
+                ->orderBy('c.name', 'ASC')
+                ->getQuery()
+                ->getResult()
+            as $constituency /** @var Constituency $constituency */
+        ) {
+            foreach ($constituency->getCandidates() as $candidate) {
+                $constituenciesElections[ $constituency->getSlug() ][ $candidate->getElection()->getSlug() ] = true;
+            }
+            foreach ($constituency->getMandates() as $mandate) {
+                $constituenciesElections[ $constituency->getSlug() ][ $mandate->getElection()->getSlug() ] = true;
+            }
+        }
+
+        return $this->render('app/sitemap/constituencies.xml.twig', [
+            'constituenciesElections' => $constituenciesElections
+        ]);
     }
 }

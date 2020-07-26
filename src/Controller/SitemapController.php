@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Repository\BlogPostRepository;
+use App\Repository\MandateRepository;
 use App\Repository\PoliticianRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,14 +17,17 @@ class SitemapController extends AbstractController
 {
     private BlogPostRepository $blogPostRepository;
     private PoliticianRepository $politicianRepository;
+    private MandateRepository $mandateRepository;
 
     public function __construct(
         BlogPostRepository $blogPostRepository,
-        PoliticianRepository $politicianRepository
+        PoliticianRepository $politicianRepository,
+        MandateRepository $mandateRepository
     )
     {
         $this->blogPostRepository = $blogPostRepository;
         $this->politicianRepository = $politicianRepository;
+        $this->mandateRepository = $mandateRepository;
     }
 
     /**
@@ -40,7 +44,7 @@ class SitemapController extends AbstractController
     }
 
     /**
-     * @Route(path="/sitemap-blog.xml", name="sitemap_blog")
+     * @Route(path="/sitemap.blog.xml", name="sitemap_blog")
      */
     public function blogAction(Request $request)
     {
@@ -55,17 +59,30 @@ class SitemapController extends AbstractController
     }
 
     /**
-     * @Route(path="/sitemap-politicians.xml", name="sitemap_politicians")
+     * @Route(path="/sitemap.politicians.xml", name="sitemap_politicians")
      */
     public function politiciansAction(Request $request)
     {
         $politicians = $this->politicianRepository->createQueryBuilder('p')
             ->select('p')
-            ->orderBy('p.lastName', 'ASC')
-            ->addOrderBy('p.firstName', 'ASC')
+            ->orderBy('p.birthDate', 'DESC')
             ->getQuery()
             ->getResult();
 
         return $this->render('app/sitemap/politicians.xml.twig', ['politicians' => $politicians]);
+    }
+
+    /**
+     * @Route(path="/sitemap.mandates.xml", name="sitemap_mandates")
+     */
+    public function mandatesAction(Request $request)
+    {
+        $mandates = $this->mandateRepository->createQueryBuilder('m')
+            ->select('m')
+            ->orderBy('m.beginDate', 'DESC')
+            ->getQuery()
+            ->getResult();
+
+        return $this->render('app/sitemap/mandates.xml.twig', ['mandates' => $mandates]);
     }
 }

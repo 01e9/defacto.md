@@ -1,0 +1,11 @@
+{# @var \App\Entity\Mandate[] mandates -#}
+
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    {% for mandate in mandates %}
+    <url>
+        <loc>{{ url('mandate', {'electionSlug': mandate.election.slug, 'politicianSlug': mandate.politician.slug}) }}</loc>
+        <changefreq>{{ (mandate.endDate > date() and not mandate.ceasingDate) ? "monthly" : "yearly" }}</changefreq>
+    </url>
+    {% endfor %}
+</urlset>

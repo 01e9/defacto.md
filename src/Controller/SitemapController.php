@@ -6,6 +6,7 @@ use App\Entity\Constituency;
 use App\Repository\BlogPostRepository;
 use App\Repository\ConstituencyRepository;
 use App\Repository\MandateRepository;
+use App\Repository\MethodologyRepository;
 use App\Repository\PoliticianRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,18 +22,21 @@ class SitemapController extends AbstractController
     private PoliticianRepository $politicianRepository;
     private MandateRepository $mandateRepository;
     private ConstituencyRepository $constituencyRepository;
+    private MethodologyRepository $methodologyRepository;
 
     public function __construct(
         BlogPostRepository $blogPostRepository,
         PoliticianRepository $politicianRepository,
         MandateRepository $mandateRepository,
-        ConstituencyRepository $constituencyRepository
+        ConstituencyRepository $constituencyRepository,
+        MethodologyRepository $methodologyRepository
     )
     {
         $this->blogPostRepository = $blogPostRepository;
         $this->politicianRepository = $politicianRepository;
         $this->mandateRepository = $mandateRepository;
         $this->constituencyRepository = $constituencyRepository;
+        $this->methodologyRepository = $methodologyRepository;
     }
 
     /**
@@ -118,5 +122,15 @@ class SitemapController extends AbstractController
         return $this->render('app/sitemap/constituencies.xml.twig', [
             'constituenciesElections' => $constituenciesElections
         ]);
+    }
+
+    /**
+     * @Route(path="/sitemap.methodologies.xml", name="sitemap_methodologies")
+     */
+    public function methodologiesAction(Request $request)
+    {
+        $methodologies = $this->methodologyRepository->findAll();
+
+        return $this->render('app/sitemap/methodologies.xml.twig', ['methodologies' => $methodologies]);
     }
 }

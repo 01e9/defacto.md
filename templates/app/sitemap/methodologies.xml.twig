@@ -1,0 +1,11 @@
+{# @var \App\Entity\Methodology[] methodologies -#}
+
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    {% for methodology in methodologies %}
+    <url>
+        <loc>{{ url('methodology', {'slug': methodology.slug}) }}</loc>
+        <changefreq>monthly</changefreq>
+    </url>
+    {% endfor %}
+</urlset>

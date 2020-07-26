@@ -12,6 +12,9 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\Entity(repositoryClass="App\Repository\PromiseRepository")
  * @ORM\Table(
  *     name="promises",
+ *     indexes={
+ *      @ORM\Index(name="promise_index_made_time", columns={"made_time"})
+ *     },
  *     uniqueConstraints={
  *      @ORM\UniqueConstraint(name="promise_unique_slug", columns={"slug"}),
  *      @ORM\UniqueConstraint(name="promise_unique_code", columns={"code"})

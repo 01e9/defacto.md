@@ -5,7 +5,13 @@
 {% block html_class %}bg-dark-pattern{% endblock %}
 {% block body_class %}bg-transparent{% endblock %}
 
-{% block title %}{{ methodology.title }} • {{ "title.blog"|trans }}{% endblock %}
+{% block title %}{{ methodology.title }}{% endblock %}
+
+{% block head_meta %}
+    {{ parent() }}
+    <link rel="canonical" href="{{ url('methodology', {'slug': methodology.slug}) }}" />
+    <meta name="robots" content="noindex, follow">
+{% endblock %}
 
 {% block main %}
     <main class="bg-light-pattern pb-5">

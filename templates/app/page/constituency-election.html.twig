@@ -25,6 +25,9 @@
 
 {% block head_meta %}
     {{ parent() }}
+    <link rel="canonical" href="{{ url('constituency_election', {
+        'slug': constituency.slug, 'electionSlug': election.slug
+    }) }}" />
     <meta name="description" content="{{ 'meta_description.constituency'|trans }}">
 {% endblock %}
 

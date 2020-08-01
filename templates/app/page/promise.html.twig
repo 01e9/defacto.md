@@ -1,3 +1,6 @@
+{# @var \App\Entity\Promise promise #}
+{# @var \App\Entity\Mandate mandate #}
+
 {% extends 'app/base.html.twig' %}
 
 {% import 'macros.html.twig' as macros %}
@@ -14,10 +17,10 @@
 
 {% block head_meta %}
     {{ parent() }}
-    <meta
-        name="description"
-        content="{{ 'meta_description.promise'|trans({'%politician%': promise.politician.firstName ~ " " ~ promise.politician.lastName}) }}"
-    >
+    <link rel="canonical" href="{{ url('promise', {'slug': promise.slug}) }}" />
+    <meta name="description" content="{{ 'meta_description.promise'|trans({
+        '%politician%': promise.politician.firstName ~ " " ~ promise.politician.lastName
+    }) }}" >
 {% endblock %}
 
 {% block main %}

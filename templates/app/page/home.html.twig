@@ -13,6 +13,7 @@
 
 {% block head_meta %}
     {{ parent() }}
+    <link rel="canonical" href="{{ url('home') }}" />
     <meta name="description" content="{{ 'meta_description.main'|trans }}">
 {% endblock %}
 

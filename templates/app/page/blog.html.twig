@@ -9,6 +9,7 @@
 
 {% block head_meta %}
     {{ parent() }}
+    <link rel="canonical" href="{{ url('blog') }}" />
     <meta name="robots" content="noindex, follow">
 {% endblock %}
 

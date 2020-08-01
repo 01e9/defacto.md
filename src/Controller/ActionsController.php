@@ -12,6 +12,7 @@ use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\RouterInterface;
 
 class ActionsController extends AbstractController
 {
@@ -44,8 +45,15 @@ class ActionsController extends AbstractController
      *     defaults={"politicianSlug"="*", "electionSlug"="*"}
      * )
      */
-    public function indexAction(Request $request, string $politicianSlug, string $electionSlug)
+    public function indexAction(
+        Request $request, RouterInterface $router,
+        string $politicianSlug, string $electionSlug
+    )
     {
+        $canonicalUrl = $router->generate('actions', [
+            'politicianSlug' => $politicianSlug,
+            'electionSlug' => $electionSlug,
+        ], RouterInterface::ABSOLUTE_URL);
         $actionsQuery = $this->actionRepository->createQueryBuilder('a')->orderBy('a.occurredTime', 'DESC');
         $actionsQuery
             ->andWhere('a.published = :published')->setParameter('published', true)
@@ -92,6 +100,7 @@ class ActionsController extends AbstractController
             'actions' => $actions,
             'politician' => $politician,
             'election' => $election,
+            'canonicalUrl' => $canonicalUrl,
         ]);
     }
 }

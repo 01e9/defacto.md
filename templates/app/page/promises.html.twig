@@ -1,4 +1,7 @@
+{# @var string canonicalUrl #}
+
 {% extends 'app/base.html.twig' %}
+
 {% import 'app/macros.html.twig' as app_macros %}
 {% import 'macros.html.twig' as macros %}
 
@@ -30,6 +33,7 @@
 
 {% block head_meta %}
     {{ parent() }}
+    <link rel="canonical" href="{{ canonicalUrl }}" />
     <meta name="robots" content="noindex, follow">
 {% endblock %}
 

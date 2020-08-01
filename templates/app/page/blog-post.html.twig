@@ -1,4 +1,7 @@
+{# @var \App\Entity\BlogPost blogPost #}
+
 {% extends 'app/base.html.twig' %}
+
 {% import 'app/macros.html.twig' as app_macros %}
 {% import 'macros.html.twig' as macros %}
 
@@ -6,6 +9,11 @@
 {% block body_class %}bg-transparent{% endblock %}
 
 {% block title %}{{ blogPost.title }} • {{ "title.blog"|trans }}{% endblock %}
+
+{% block head_meta %}
+    {{ parent() }}
+    <link rel="canonical" href="{{ url('blog_post', {'slug': blogPost.slug}) }}" />
+{% endblock %}
 
 {% block head_meta_og_image -%}
     {% if blogPost.image %}

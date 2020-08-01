@@ -17,6 +17,9 @@
 
 {% block head_meta %}
     {{ parent() }}
+    <link rel="canonical" href="{{ url('mandate', {
+        'electionSlug': mandate.election.slug, 'politicianSlug': mandate.politician.slug
+    }) }}" />
     <meta name="description" content="{{ 'meta_description.mandate'|trans }}">
 {% endblock %}
 

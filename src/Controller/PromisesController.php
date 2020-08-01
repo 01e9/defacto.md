@@ -16,6 +16,7 @@ use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\RouterInterface;
 
 class PromisesController extends AbstractController
 {
@@ -51,8 +52,17 @@ class PromisesController extends AbstractController
      *     defaults={"statusSlug"="*", "politicianSlug"="*", "electionSlug"="*"}
      * )
      */
-    public function indexAction(Request $request, string $statusSlug, string $politicianSlug, string $electionSlug)
+    public function indexAction(
+        Request $request, RouterInterface $router,
+        string $statusSlug, string $politicianSlug, string $electionSlug
+    )
     {
+        $canonicalUrl = $router->generate('promises', [
+            'statusSlug' => $statusSlug,
+            'politicianSlug' => $politicianSlug,
+            'electionSlug' => $electionSlug,
+        ], RouterInterface::ABSOLUTE_URL);
+
         $promisesQuery = $this->promiseRepository->createQueryBuilder('p')->orderBy('p.madeTime', 'DESC');
         $promisesQuery->andWhere('p.published = :published')->setParameter('published', true);
 
@@ -101,6 +111,7 @@ class PromisesController extends AbstractController
             'status' => $status,
             'politician' => $politician,
             'election' => $election,
+            'canonicalUrl' => $canonicalUrl,
         ]);
     }
 

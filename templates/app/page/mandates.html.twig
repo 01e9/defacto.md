@@ -6,13 +6,14 @@
 {% import 'app/macros.html.twig' as app_macros %}
 {% import 'macros.html.twig' as macros %}
 
-{# todo: title #}
-
 {% block html_class %}bg-dark-pattern page-mandates{% endblock %}
 {% block body_class %}bg-transparent{% endblock %}
 
+{% block title %}{{ election.theElectedName }}{% endblock %}
+
 {% block head_meta %}
     {{ parent() }}
+    <link rel="canonical" href="{{ url('mandates', {'electionSlug': election.slug}) }}" />
     <meta name="robots" content="noindex, follow">
 {% endblock %}
 

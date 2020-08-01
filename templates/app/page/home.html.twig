@@ -108,15 +108,13 @@
                             }
                         ] %}
                         {% for partner in partners %}
-                            <span class="mx-lg-3" itemscope itemtype="https://schema.org/WebSite">
+                            <span class="mx-lg-3">
                                 <a
-                                    itemprop="url"
                                     href="{{ partner.url }}"
                                     target="_blank"
                                 >
                                     {{- "" -}}
                                     <img
-                                        itemprop="thumbnailUrl"
                                         src="{{ partner.image }}"
                                         class="d-inline-block partner-logo"
                                         alt="{{ partner.url }}"

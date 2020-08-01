@@ -27,9 +27,6 @@
     <main>
         <section
             class="bg-white"
-            itemscope
-            itemtype="https://schema.org/PlanAction"
-            itemid="#promise"
         >
             {% include 'app/component/after-header-space.html.twig' %}
 
@@ -42,32 +39,27 @@
                             title="{{ promise.madeTime|ago }}"
                             class="badge badge-primary align-top"
                         >
-                            <time itemprop="startTime" datetime="{{ promise.madeTime|date('Y-m-d') }}">
+                            <time>
                                 {{ promise.madeTime|date }}
                             </time>
                         </samp>
                     </p>
                     <p
                         class="h5 mb-3"
-                        itemprop="agent"
-                        itemscope
-                        itemtype="https://schema.org/Person"
                     >
                         <img
                             class="rounded-circle mb-2"
                             style="max-height: 3em"
                             src="{{ macros.politician_photo_url(promise.politician) }}"
                             alt="Politician"
-                            itemprop="image"
                         >
                         <br>
                         <a
                             href="{{ path("politician", {slug: promise.politician.slug}) }}"
-                            itemprop="url"
                         >
                             {{- "" -}}
-                            <span itemprop="givenName">{{ promise.politician.firstName }}</span>
-                            <span itemprop="familyName">{{ promise.politician.lastName }}</span>
+                            <span>{{ promise.politician.firstName }}</span>
+                            <span>{{ promise.politician.lastName }}</span>
                             {{- "" -}}
                         </a><br>
                         <span>{{ 'title._promised'|trans }}</span>
@@ -76,19 +68,18 @@
             {% endset %}
             {% set content %}
                 {% if mandate and mandate.constituency %}
-                    <div itemprop="location" itemscope itemtype="https://schema.org/AdministrativeArea">
+                    <div>
                         <sup>
                             <a
                                 href="{{ path('constituency_election', {
                                     electionSlug: promise.election.slug,
                                     slug: mandate.constituency.slug
                                 }) }}"
-                                itemprop="url"
-                            ><span itemprop="name">{{ mandate.constituency.name }}</span></a>
+                            ><span>{{ mandate.constituency.name }}</span></a>
                         </sup>
                     </div>
                 {% endif %}
-                <h1 class="h2" itemprop="name">{{ promise.name }}</h1>
+                <h1 class="h2">{{ promise.name }}</h1>
                 <div class="position-relative">
                     <div class="py-5 py-lg-0">
                         {% if promise.status %}
@@ -120,7 +111,7 @@
                     {% endif %}
                 </div>
                 {% if has_description %}
-                    <div class="my-3 raw-html text-border" itemprop="description">{{ promise.description|raw }}</div>
+                    <div class="my-3 raw-html text-border">{{ promise.description|raw }}</div>
                 {% endif %}
                 {% if mandate %}
                     <div class="py-1 px-3 d-inline-block alert alert-{{ promise.hasPrerogatives ? "success" : "warning" }}">
@@ -186,10 +177,7 @@
                                             title="{{ promiseUpdate.action.occurredTime|ago }}"
                                             class="badge badge-primary align-bottom"
                                         >
-                                            <time
-                                                itemprop="startTime"
-                                                datetime="{{ promiseUpdate.action.occurredTime|date('Y-m-d') }}"
-                                            >{{ promiseUpdate.action.occurredTime|date }}</time>
+                                            <time>{{ promiseUpdate.action.occurredTime|date }}</time>
                                         </samp>
                                     </p>
                                     <div>
@@ -211,7 +199,6 @@
                             {% set content %}
                                 <h4
                                     class="mb-{{ has_description ? '3' : '0' }}"
-                                    itemprop="name"
                                 >{{ promiseUpdate.action.name }}</h4>
                                 <div>
                                     {% if promiseUpdate.action.usedPowers is not empty %}
@@ -227,7 +214,6 @@
                                 {% if has_description %}
                                     <div
                                         class="raw-html"
-                                        itemprop="description"
                                     >{{ promiseUpdate.action.description|raw }}</div>
                                 {% endif %}
                                 {% if promiseUpdate.action.sources is not empty %}
@@ -237,9 +223,8 @@
                                 {% endif %}
                                 <div class="py-5"></div>
                             {% endset %}
-                            <div itemscope itemtype="https://schema.org/Action" class="position-relative">
+                            <div class="position-relative">
                                 <a name="action-{{ promiseUpdate.action.id }}" class="anchor"></a>
-                                <link itemprop="object" href="#promise">
                                 {% include "app/component/block/timeline/segment-dot.html.twig" with {
                                     header: header,
                                     content: content
@@ -277,8 +262,6 @@
     <div class="d-inline-block mb-0 h6">
         {% for source in list %}
             <a
-                itemprop="url"
-                content="{{ source.link }}"
                 href="{{ source.link }}"
                 target="_blank"
                 rel="nofollow"

@@ -31,9 +31,6 @@
 {% block main %}
     <main>
         <section
-            itemscope
-            itemtype="https://schema.org/Person"
-            itemid="{{ path('politician', {slug: politician.slug}) }}"
         >
             {% include "app/component/section/statistics/mandate-points.html.twig" with {
                 politician: politician,
@@ -71,16 +68,7 @@
                     {% set promises = promises_by_election[candidate.election.id]|default([]) %}
                     {% set color_name = mandate ? (mandate.ceasingDate ? "dark" : "success") : "info" %}
 
-                    <section
-                        itemscope
-                        itemtype="https://schema.org/{{ (mandate and not mandate.ceasingDate) ? "WinAction" : "VoteAction" }}"
-                    >
-                        <link
-                            itemprop="{{ mandate ? "agent" : "candidate" }}"
-                            href="{{ path('politician', {slug: politician.slug}) }}"
-                        >
-                        <meta itemprop="endTime" content="{{ candidate.election.date|date('Y-m-d') }}">
-
+                    <section>
                         <div class="card bg-{{ color_name }} border-{{ color_name }} {% if not loop.last %}mb-4{% endif %}">
                             <h5 class="card-header text-white clearfix">
                                 {% if mandate %}
@@ -97,7 +85,7 @@
                                             >
                                                 {{- "" -}}
                                                 {{ mandate.politician.female ? "title.elected_f"|trans : "title.elected"|trans }}
-                                                <span itemprop="name">
+                                                <span>
                                                     {{ mandate.institutionTitle.title.name }}
                                                     {{ "text.in_elections_from"|trans }}
                                                     {{ candidate.election.date|date }}
@@ -111,8 +99,6 @@
                                                     href="{{ mandate.decisionLink }}"
                                                     target="_blank"
                                                     class="{{ decisionLinkCass }}"
-                                                    itemprop="url"
-                                                    content="{{ mandate.decisionLink }}"
                                                 >{{ "action.view_decision"|trans }}</a>
                                             {% endif %}
                                         </div>
@@ -121,14 +107,13 @@
                                     <span class="fa fa-child mr-2"></span>
 
                                     {{ "title.candidate_in"|trans }}
-                                    <span itemprop="name">
+                                    <span>
                                         {{ candidate.election.name|lower }}
                                         {{ "text.from"|trans }}
                                         {{ candidate.election.date|date }}
                                     </span>
                                 {% endif %}
                                 {% if candidate.registrationDate %}
-                                    <meta itemprop="startTime" content="{{ candidate.registrationDate|date('Y-m-d') }}">
                                     <div class="row small">
                                         <div class="col mt-2 small text-light">
                                             <span class="mr-1">{{ "label.registration_date"|trans }}:</span>
@@ -136,8 +121,6 @@
                                                 <a
                                                     href="{{ candidate.registrationLink }}"
                                                     target="_blank"
-                                                    itemprop="url"
-                                                    content="{{ candidate.registrationLink }}"
                                                     class="text-light"
                                                 ><samp>{{ candidate.registrationDate|date }}</samp></a>
                                             {% else %}
@@ -161,8 +144,6 @@
                                             href="{{ mandate.ceasingLink }}"
                                             target="_blank"
                                             class="{{ decisionLinkCass }}"
-                                            itemprop="url"
-                                            content="{{ mandate.ceasingLink }}"
                                         >{{ "action.view_decision"|trans }}</a>
                                     {% endif %}
 
@@ -181,21 +162,17 @@
                                         <div class="col-12 col-lg-6">
                                             <div
                                                 class="mb-3"
-                                                itemscope
-                                                itemprop="location"
-                                                itemtype="https://schema.org/AdministrativeArea"
                                             >
                                                 <a
                                                     href="{{ path('constituency_election', {
                                                         slug: candidate.constituency.slug,
                                                         electionSlug: candidate.election.slug
                                                     }) }}"
-                                                    itemprop="url"
                                                 >
                                                     {{- "" -}}
                                                     <big class="fa fa-map-marker-alt mr-2"></big>
                                                     {{- "" -}}
-                                                    <span itemprop="name">{{ candidate.constituency.name }}</span>
+                                                    <span>{{ candidate.constituency.name }}</span>
                                                     {{- "" -}}
                                                 </a>
                                             </div>
@@ -343,7 +320,7 @@
                 <strong>{{ "label.birth_date"|trans }}</strong>
             </div>
             <div class="{{ detailClasses.colContent }}">
-                <samp itemprop="birthDate" content="{{ politician.birthDate|date('Y-m-d') }}">
+                <samp>
                     {{ politician.birthDate|date }}
                 </samp>
                 <small class="text-muted ml-3">
@@ -354,7 +331,6 @@
         </div>
     {% endif %}
     {% if politician.profession %}
-        <meta itemprop="jobTitle" content="{{ politician.profession }}">
         {{ self_macros.detail_block("label.profession"|trans, politician.profession, detailClasses) }}
     {% endif %}
     {% if politician.studies and politician.studies != emptyHtml %}
@@ -375,7 +351,7 @@
                                 <a
                                     href="{{ politician.website }}"
                                     target="_blank"
-                                ><span itemprop="url">{{ politician.website }}</span></a>
+                                ><span>{{ politician.website }}</span></a>
                             </p>
                         </div>
                     {% endif %}
@@ -393,7 +369,7 @@
                                 <span class="fas fa-envelope mr-2"></span>
                                 <a
                                     href="mailto:{{ politician.email }}"
-                                ><samp itemprop="email">{{ politician.email }}</samp></a>
+                                ><samp>{{ politician.email }}</samp></a>
                             </p>
                         </div>
                     {% endif %}
@@ -403,7 +379,7 @@
                                 <span class="fas fa-mobile-alt mr-2"></span>
                                 <a
                                     href="tel:{{ politician.phone }}"
-                                ><samp itemprop="telephone">{{ politician.phone }}</samp></a>
+                                ><samp>{{ politician.phone }}</samp></a>
                             </p>
                         </div>
                     {% endif %}

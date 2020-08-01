@@ -20,13 +20,13 @@
                             class="text-white"
                         >
                             {{- "" -}}
-                            <span itemprop="givenName">{{ politician.firstName }}</span>
-                            <span itemprop="familyName">{{ politician.lastName }}</span>
+                            <span>{{ politician.firstName }}</span>
+                            <span>{{ politician.lastName }}</span>
                             {{- "" -}}
                         </a>
                     {% else %}
-                        <span itemprop="givenName">{{ politician.firstName }}</span>
-                        <span itemprop="familyName">{{ politician.lastName }}</span>
+                        <span>{{ politician.firstName }}</span>
+                        <span>{{ politician.lastName }}</span>
                     {% endif %}
                 </h1>
             </div>
@@ -55,7 +55,6 @@
                         alt="{{ politician.firstName ~ " " ~ politician.lastName }}"
                         class="d-inline-block bg-white rounded-circle politician-photo my-2"
                         style="max-width: {{ maxPhotoWidth }};"
-                        itemprop="image"
                     >
                 {% endset %}
                 {% if is_mandate_page %}

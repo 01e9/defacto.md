@@ -6,9 +6,7 @@
 
 {% set politician_full_name = mandate.politician.firstName ~ " " ~ mandate.politician.lastName %}
 
-<div itemscope itemtype="https://schema.org/WinAction">
-    <meta itemprop="startTime" content="{{ mandate.beginDate|date('Y-m-d') }}">
-    <meta itemprop="endTime" content="{{ mandate.endDate|date('Y-m-d') }}">
+<div>
     <div class="pt-3 pb-5 bg-dark-pattern text-white">
         <h3 class="h2 text-center">
             <a
@@ -16,7 +14,7 @@
                 class="text-white"
             >
                 {{- "" -}}
-                <span itemprop="name">{{ politician_full_name }}</span>
+                <span>{{ politician_full_name }}</span>
                 {{- "" -}}
             </a>
         </h3>
@@ -40,7 +38,6 @@
                         <div class="col">
                             <h3 class="mb-3 text-center">
                                 <a
-                                    itemprop="url"
                                     href="{{ path("promises", {
                                         'politicianSlug': mandate.politician.slug,
                                         'electionSlug': mandate.election.slug

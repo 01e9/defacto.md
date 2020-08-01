@@ -1,15 +1,10 @@
 <div class="card p-3 promise-item bg-light">
-    <blockquote
-        class="blockquote mb-0 card-body p-0 p-md-3"
-        itemscope
-        itemtype="https://schema.org/PlanAction"
-    >
+    <blockquote class="blockquote mb-0 card-body p-0 p-md-3">
         <p>
             <a
                 href="{{ path('promise', {'slug': promise.slug}) }}"
                 class="promise-name"
-                itemprop="url"
-            ><span itemprop="name">{{ promise.name }}</span></a>
+            ><span>{{ promise.name }}</span></a>
         </p>
         <footer class="blockquote-footer">
             <small
@@ -17,22 +12,17 @@
                 data-toggle="tooltip" data-placement="right"
                 title="{{ promise.madeTime|date }}"
             >
-                <time
-                    itemprop="startTime"
-                    datetime="{{ promise.madeTime|date('Y-m-d') }}"
-                >{{ promise.madeTime|ago }}</time>
+                <time>{{ promise.madeTime|ago }}</time>
             </small>
         </footer>
         {% if (show_status is not defined or show_status) %}
             {% if promise.status %}
                 <div
                     class="status status-color-{{ promise.status.color }}"
-                    itemprop="description"
                 >{{ promise.status.name }}</div>
             {% else %}
                 <div
                     class="status text-muted"
-                    itemprop="description"
                 >{{ "placeholder.inactive_plural"|trans }}</div>
             {% endif %}
         {% endif %}

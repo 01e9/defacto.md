@@ -43,7 +43,7 @@ class BlogControllerTest extends WebTestCase
         $em = self::getDoctrine($client);
         $locale = self::getLocale($client);
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 20; $i++) {
             $this->makeBlogPost($em);
         }
 
@@ -55,7 +55,7 @@ class BlogControllerTest extends WebTestCase
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertEquals(1, $crawler->filter('body')->count());
         $this->assertEquals(1, $crawler->filter('.pagination')->count());
-        $this->assertEquals(7, $crawler->filter('.card h2')->count());
+        $this->assertEquals(12 /* todo: use constant/config */, $crawler->filter('.card h2')->count());
     }
 
     public function testViewAction()

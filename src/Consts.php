@@ -12,6 +12,8 @@ final class Consts
     const DATE_FORMAT_PHP = 'd.m.Y';
     const TIME_FORMAT_PHP = 'H:i:s';
 
+    const TWIG_SCHEMA_DATE_FORMAT = 'Y-m-d';
+
     const UPLOADS_DIR_POLITICIAN = '/uploads/politicians/';
     const UPLOADS_DIR_PARTY = '/uploads/parties/';
     const UPLOADS_DIR_BLOG = '/uploads/blog/';

@@ -33,57 +33,26 @@
                         <div class="col px-1">
                             <div
                                 class="card mb-3"
-                                itemscope
-                                itemtype="https://schema.org/BlogPosting"
                             >
-                                <div
-                                    itemprop="author publisher"
-                                    itemscope
-                                    itemtype="https://schema.org/Organization"
-                                >
-                                    <meta
-                                        itemprop="name"
-                                        content="{{ app.request.getHttpHost }}"
-                                    >
-                                    <div
-                                        itemprop="logo"
-                                        itemscope
-                                        itemtype="https://schema.org/ImageObject"
-                                    >
-                                        <meta
-                                            itemprop="url"
-                                            content="{{ app.request.getSchemeAndHttpHost ~ asset("img/logo-big.png") }}"
-                                        >
-                                    </div>
-                                </div>
-
                                 {% if blogPost.image %}
                                     <div class="ratio-16-9 overflow-hidden">
                                         <img
                                             src="{{ macros.blog_image_url(blogPost) }}"
                                             alt="Image"
                                             class="content-no-height rounded-top d-block"
-                                            itemprop="image"
                                         >
                                     </div>
                                 {% endif %}
                                 <div class="card-body px-lg-5 pb-lg-5 {% if not blogPost.image %}pt-lg-5{% endif %}">
                                     <h1
                                         class="h2"
-                                        itemprop="name headline"
                                     >{{ blogPost.title }}</h1>
                                     <p>
                                         <small>
-                                            <time
-                                                itemprop="datePublished"
-                                                datetime="{{ blogPost.publishTime|date('Y-m-d') }}"
-                                            >{{ blogPost.publishTime|date }}</time>
+                                            <time>{{ blogPost.publishTime|date }}</time>
                                         </small>
                                     </p>
-                                    <div
-                                        class="raw-html"
-                                        itemprop="articleBody"
-                                    >{{ blogPost.content|raw }}</div>
+                                    <div class="raw-html">{{ blogPost.content|raw }}</div>
                                 </div>
                             </div>
                         </div>

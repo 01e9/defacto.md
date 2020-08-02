@@ -296,10 +296,21 @@
                                                 </div>
                                             {% endif %}
                                         </div>
-                                        {% if problem_opinions[ problem.problem.id ] is defined %}
+                                        {# todo: move this logic in controller #}
+                                        {% set visible_problem_opinions = problem_opinions[ problem.problem.id ]|default([]) %}
+                                        {% if election.date < date() and mandates|length %}
+                                            {% set elected_opinions = [] %}
+                                            {% for opinion in visible_problem_opinions %}
+                                                {% if mandates[ opinion.politician.id ] is defined %}
+                                                    {% set elected_opinions = elected_opinions|merge([opinion]) %}
+                                                {% endif %}
+                                            {% endfor %}
+                                            {% set visible_problem_opinions = elected_opinions %}
+                                        {% endif %}
+                                        {% if visible_problem_opinions|length %}
                                             <div class="card-body bg-white rounded">
                                                 <h5 class="text-success font-weight-bold">{{ "title.candidates_solutions"|trans }}</h5>
-                                                {% for opinion in problem_opinions[ problem.problem.id ] %}
+                                                {% for opinion in visible_problem_opinions %}
                                                     <p class="{{ loop.last ? "mb-0" : "mb-1" }}">
                                                         <span>
                                                             <a

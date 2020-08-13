@@ -81,6 +81,8 @@
 {% endblock %}
 
 {% macro category_stats_section(mandate) %}
+    {% set categoryStatsByParent = mandate.competenceCategoryStatsByParentCategory %}
+
     <div class="bg-primary pt-4 pb-2 text-center">
         <div class="container">
             <div class="row text-white mb-3">
@@ -89,7 +91,7 @@
                 </div>
             </div>
             <div class="row">
-                {% for categoryStats in mandate.competenceCategoryStatsByParentCategory %}
+                {% for categoryStats in categoryStatsByParent %}
                 {# @var \App\Entity\MandateCompetenceCategoryStats categoryStats #}
                 <div class="col-12 col-lg mb-4">
                     <div class="bg-light-pattern py-4 px-3 rounded">
@@ -109,9 +111,9 @@
             </div>
         </div>
     </div>
-    {% if mandate.competenceCategoryStats|length > 1 %}
+    {% if categoryStatsByParent|length > 1 %}
         {% set chart_items = [] %}
-        {% for categoryStats in mandate.competenceCategoryStatsByParentCategory %}
+        {% for categoryStats in categoryStatsByParent %}
             {% set chart_items = chart_items|merge([{
                 y: categoryStats.competenceUsesPoints,
                 label: categoryStats.competenceCategory.nameWithParent

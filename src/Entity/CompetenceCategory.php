@@ -40,6 +40,13 @@ class CompetenceCategory
     private $name;
 
     /**
+     * @ORM\Column(type="string", length=250, nullable=true)
+     *
+     * @Assert\Length(min=3, max=250)
+     */
+    private $description;
+
+    /**
      * @var CompetenceCategory|null
      *
      * @ORM\ManyToOne(targetEntity="CompetenceCategory", fetch="EAGER")
@@ -88,6 +95,18 @@ class CompetenceCategory
     public function setParent(?CompetenceCategory $parent): self
     {
         $this->parent = $parent;
+
+        return $this;
+    }
+
+    public function getDescription() : ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description) : self
+    {
+        $this->description = $description;
 
         return $this;
     }

@@ -133,6 +133,7 @@ label:
     is_multiplied: Multiplică punctajul
     is_female: Femeie
     questionnaire_embed_link: Link chestionar (embed)
+    last_update: Ultima actualizare
 
 action:
     login: Autentificare
@@ -304,6 +305,7 @@ title:
     methodology_edit: Redactare metodologie
     methodology_delete: Ștergere metodologie
     latest_articles: Ultimele articole
+    about_competence_use_categories: Atribuțiile de care a făcut uz deputatul, repartizate pe domeniile de activitate
 
 placeholder:
     choose_option: Alegeți o opțiune
@@ -368,6 +370,17 @@ text:
         Credem că putem ajuta alegătorii să-și ajusteze așteptările privind competențele pe care le au politicienii aleși.
         Iar prin monitorizarea activității și gradului de responsabilitate a acestora,
         alegătorii vor putea face o alegere mai informată.
+
+    competence_multiplication_meaning: >-
+        Punctaj dublat pentru utilizarea atribuției în scopul îndeplinirii promisiunilor electorale
+        sau a rezolvării problemelor semnalate de grupurile de cetățeni
+    points_meaning: |-
+        Clasificarea punctajelor:
+        • 0.5 puncte - declarații întrebări, avize, prezența la ședințe, etc;
+        • 1 punct - contrasemnare proiecte, implicarea părților terțe, etc;
+        • 1.5 puncte - înaintarea proiectelor, întâlnirea cu cetățenii, demersuri către autorități;
+
+        Mai multe despre punctaj în metodologia de monitorizare
 
 meta_description:
     main: "Platformă de monitorizare a promisiunilor electorale și activității politicienilor aleși"

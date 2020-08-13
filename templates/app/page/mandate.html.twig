@@ -93,7 +93,8 @@
                 {# @var \App\Entity\MandateCompetenceCategoryStats categoryStats #}
                 <div class="col-12 col-lg mb-4">
                     <div class="bg-light-pattern py-4 px-3 rounded">
-                        <h5>{{ categoryStats.competenceCategory.nameWithParent }}</h5>
+                        <h3>{{ categoryStats.competenceCategory.nameWithParent }}</h3>
+                        <p class="small text-muted mb-2">{{ categoryStats.competenceCategory.description }}</p>
                         <div class="font-size-2">
                             <strong class="text-info">{{ categoryStats.competenceUsesPoints }}</strong>
                             <small>{{ "text.points"|trans({"%count%": categoryStats.competenceUsesPoints}) }}</small>
@@ -118,6 +119,7 @@
         {% endfor %}
 
         <div class="bg-dark py-4">
+            <h4 class="text-muted text-center mb-3">{{ "title.about_competence_use_categories"|trans }}</h4>
             <div
                 id="categories-pie-chart"
                 class="w-100"
@@ -139,8 +141,20 @@
             </div>
             <div class="row justify-content-center">
                 <div class="col-lg-8">
+                    {% set tooltip_template -%}
+                        <div class="tooltip points-tooltip"><div class="arrow"></div><div class="tooltip-inner text-left p-3"></div></div>
+                    {%- endset %}
                     {% for competenceUse in mandate.competenceUses %}
                         {# @var \App\Entity\CompetenceUse competenceUse #}
+
+                        {% if loop.first %}
+                            <div class="alert alert-info text-center">
+                                {{ "label.last_update"|trans }}
+                                <samp class="font-weight-bold mx-1">{{ competenceUse.useDate|date }}</samp>
+                                <span class="text-muted">({{ competenceUse.useDate|ago }})</span>
+                            </div>
+                        {% endif %}
+
                         <div class="card{% if not loop.last %} mb-4{% endif %}">
                             <div class="card-body pt-3">
                                 <div class="row mb-3">
@@ -158,7 +172,14 @@
                                     </div>
                                     <div class="col-8 col-lg-auto text-right d-flex align-items-center">
                                         <div>
-                                            <span class="text-info font-weight-bold font-size-2 line-height-0 align-middle">
+                                            <span
+                                                class="text-info font-weight-bold font-size-2 line-height-0 align-middle"
+                                                data-toggle="tooltip"
+                                                data-html="true"
+                                                data-placement="left"
+                                                data-template="{{ tooltip_template|escape('html_attr') }}"
+                                                title="{{ "text.points_meaning"|trans|nl2br }}"
+                                            >
                                                 {{ competenceUse.competence.points }}
                                             </span>
                                         </div>
@@ -166,8 +187,10 @@
                                             {% if competenceUse.multiplied %}
                                                 <span
                                                     class="badge badge-success ml-1 mr-2"
-                                                    data-toggle="tooltip" data-placement="left"
-                                                    title="todo: ce inseamnă asta..."
+                                                    data-toggle="tooltip"
+                                                    data-placement="left"
+                                                    data-template="{{ tooltip_template|escape('html_attr') }}"
+                                                    title="{{ "text.competence_multiplication_meaning"|trans }}"
                                                 >
                                                     <span class="fa fa-times"></span>
                                                     <big><samp>{{ competence_use_multiplication_factor }}</samp></big>

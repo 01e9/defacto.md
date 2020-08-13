@@ -391,6 +391,11 @@ html.page-mandate {
     #categories-pie-chart {
         height: 15rem;
     }
+
+    .points-tooltip .tooltip-inner {
+        width: 500px;
+        max-width: 100%;
+    }
 }
 
 html.page-mandates {

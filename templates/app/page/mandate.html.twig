@@ -111,14 +111,14 @@
     </div>
     {% if mandate.competenceCategoryStats|length > 1 %}
         {% set chart_items = [] %}
-        {% for categoryStats in mandate.competenceCategoryStats %}
+        {% for categoryStats in mandate.competenceCategoryStatsByParentCategory %}
             {% set chart_items = chart_items|merge([{
                 y: categoryStats.competenceUsesPoints,
                 label: categoryStats.competenceCategory.nameWithParent
             }]) %}
         {% endfor %}
 
-        <div class="bg-dark py-4">
+        <div class="bg-dark pt-4 pb-3">
             <h4 class="text-muted text-center mb-3">{{ "title.about_competence_use_categories"|trans }}</h4>
             <div
                 id="categories-pie-chart"

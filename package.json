@@ -1,6 +1,6 @@
 {
     "dependencies": {
-        "@ckeditor/ckeditor5-build-classic": "^11.2.0",
+        "@ckeditor/ckeditor5-build-classic": "^21.0.0",
         "@fortawesome/fontawesome-free": "^5.11.2",
         "@types/bootstrap": "^4.3.1",
         "@types/googlemaps": "^3.38.0",

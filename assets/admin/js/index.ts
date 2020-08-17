@@ -5,9 +5,9 @@ import { initElementEditors } from "./editors";
 import { initElementGoogleMaps } from "./google-map";
 
 document.body.addEventListener("app:initElement", ({ detail: element }: CustomEvent) => {
+    initElementEditors(element);
     initElementDatePickers(element);
     initElementSlugGenerators(element);
-    initElementEditors(element);
     initElementGoogleMaps(element);
 });
 

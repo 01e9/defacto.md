@@ -13,22 +13,14 @@
                 onclick="(function(wrap){
                     var newEl = document.createElement('div'),
                         html = wrap.attributes['data-prototype'].value,
-                        counterAttrName = 'data-prototype-counter',
-                        counter = 0;
+                        uniqId = '_' + new Date().getTime();
 
-                    wrap.attributes[counterAttrName] || (function(){
-                            var attr = document.createAttribute(counterAttrName);
-                            attr.value = String(counter);
-                            wrap.setAttributeNode(attr);
-                        })();
-                    wrap.attributes[counterAttrName].value = String(parseInt(wrap.attributes[counterAttrName].value) + 1);
-
-                    newEl.innerHTML = html.replace(/__name__/g, 'new_' + wrap.attributes[counterAttrName].value);
+                    newEl.innerHTML = html.replace(/__name__/g, uniqId);
                     newEl.querySelector('legend').remove();
 
-                    document.body.dispatchEvent(new CustomEvent('app:initElement', {detail: newEl.firstChild}));
-
                     wrap.appendChild(newEl.firstChild);
+
+                    document.body.dispatchEvent(new CustomEvent('app:initElement', {detail: wrap.lastChild}));
                 })(document.getElementById('{{ form.vars.id }}'))"
             >{{ ('action.add_' ~ form.vars.name)|trans }}</button>
         </div>

@@ -5,7 +5,7 @@ import { LANG } from "../../config";
 export function initElementEditors(element) {
     $(element).find('textarea.wysiwyg:not(.initialized)').addClass('initialized').each((i, textarea) => {
         ClassicEditor.create(textarea, {
-            extraPlugins: [ MyCustomUploadAdapterPlugin ],
+            extraPlugins: [ MyCustomUploadAdapterPlugin, ],
             toolbar: [
                 'heading',
                 '|', 'bold', 'italic', 'blockQuote', 'link', 'bulletedList', 'numberedList', 'imageUpload', 'insertTable',

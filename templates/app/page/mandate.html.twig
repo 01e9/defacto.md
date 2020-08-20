@@ -143,9 +143,6 @@
             </div>
             <div class="row justify-content-center">
                 <div class="col-lg-8">
-                    {% set popover_template -%}
-                        <div class="popover big-popover"><div class="arrow"></div><h3 class="popover-header"></h3><div class="popover-body"></div></div>
-                    {%- endset %}
                     {% for competenceUse in mandate.competenceUses %}
                         {# @var \App\Entity\CompetenceUse competenceUse #}
 
@@ -191,24 +188,7 @@
                                             </span>
                                             {{ "text.points"|trans({"%count%": final_points}) }}
                                         </div>
-                                        <sup class="ml-3">
-                                            {% set tooltip_content -%}
-                                                {{ "text.points_meaning"|trans({'%methodology_link%': path('methodologies')})|nl2br }}
-                                                {% if competenceUse.multiplied %}
-                                                    {{ "<hr>" }}
-                                                    {{ "text.competence_multiplication_meaning"|trans }}
-                                                {% endif %}
-                                            {%- endset %}
-                                            <button
-                                                type="button"
-                                                class="btn btn-sm btn-light border-info text-info rounded py-0"
-                                                data-toggle="popover"
-                                                data-trigger="focus"
-                                                data-html="true"
-                                                data-template="{{ popover_template|escape('html_attr') }}"
-                                                data-content="{{ tooltip_content }}"
-                                            ><span class="fa fa-info"></span></button>
-                                        </sup>
+                                        {{ self_macros.points_info_button(competenceUse.multiplied) }}
                                     </div>
                                 </div>
                                 <h6 class="mb-0 alert alert-info bg-light">
@@ -236,5 +216,31 @@
             </div>
         </div>
     </div>
+{% endmacro %}
+
+{% macro points_info_button(multiplied) %}
+    {% set tooltip_content_points -%}
+        {{ "text.points_meaning"|trans({'%methodology_link%': path('methodologies')})|nl2br }}
+    {%- endset %}
+    {% set tooltip_content_doubled_points -%}
+        {{ "text.points_meaning"|trans({'%methodology_link%': path('methodologies')})|nl2br }}
+        {{ "<hr>" }}
+        {{ "text.competence_multiplication_meaning"|trans }}
+    {%- endset %}
+    {% set popover_template -%}
+        <div class="popover big-popover"><div class="arrow"></div><h3 class="popover-header"></h3><div class="popover-body"></div></div>
+    {%- endset %}
+
+    <sup class="ml-3">
+        <button
+            type="button"
+            class="btn btn-sm btn-light border-info text-info rounded py-0"
+            data-toggle="popover"
+            data-trigger="focus"
+            data-html="true"
+            data-template="{{ popover_template|escape('html_attr') }}"
+            data-content="{{ multiplied|default(false) ? tooltip_content_doubled_points : tooltip_content_points }}"
+        ><span class="fa fa-info"></span></button>
+    </sup>
 {% endmacro %}
 

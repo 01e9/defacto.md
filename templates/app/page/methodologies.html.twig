@@ -14,7 +14,7 @@
 {% endblock %}
 
 {% block main %}
-    <main class="container-fluid bg-light-pattern pb-5">
+    <main class="bg-light-pattern pb-5">
         {% include 'app/component/after-header-space.html.twig' %}
         <header>
             <h1 class="text-center mb-4">
@@ -25,16 +25,18 @@
             </h1>
         </header>
         {% if methodologies is empty %}
-            <div class="row">
-                <div class="col text-center text-secondary">
-                    <p class="h3 mt-4"><span class="fa fa-surprise"></span></p>
+            <div class="container">
+                <div class="row">
+                    <div class="col text-center text-secondary">
+                        <p class="h3 mt-4"><span class="fa fa-surprise"></span></p>
+                    </div>
                 </div>
             </div>
         {% else %}
-            <div class="container-fluid px-0 px-md-3 px-xl-5">
+            <div class="container px-md-3 px-xl-5">
                 <div class="row">
                     {% for methodology in methodologies %}
-                        <div class="col-12 col-xl-6">
+                        <div class="col-12">
                             <div class="card mb-3 text-center">
                                 <div class="card-body p-xl-5">
                                     <h2 class="mb-0">

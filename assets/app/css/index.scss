@@ -57,6 +57,7 @@
 
 //endregion
 
+//region Promise
 .status-stamp {
     font-family: $app-font-stamp;
     display: inline-block;;
@@ -145,6 +146,7 @@
         }
     }
 }
+//endregion
 
 #instant-search-modal {
     .list-group {
@@ -306,6 +308,15 @@
     }
 }
 
+.popover.big-popover {
+    max-width: 95vw;
+
+    .popover-body {
+        width: 500px;
+        max-width: 100%;
+    }
+}
+
 .font-size-2 {
     font-size: 2rem;
     line-height: 2rem;
@@ -381,20 +392,11 @@ html.page-home {
         max-height: 6rem;
         max-width: 15rem;
     }
-
-    .site-title-section {
-        border-bottom: 5px solid $primary;
-    }
 }
 
 html.page-mandate {
     #categories-pie-chart {
         height: 15rem;
-    }
-
-    .points-tooltip .tooltip-inner {
-        width: 500px;
-        max-width: 100%;
     }
 }
 

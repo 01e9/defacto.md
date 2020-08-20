@@ -23,12 +23,15 @@
 
 {% block main %}
     <main>
-        <div class="container-fluid site-title-section">
-            <div class="row">
-                <div class="col text-center bg-dark-pattern text-light py-4">
-                    <h1 class="h3 mb-0">{{ "title.site"|trans }}</h1>
+        <div>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col text-center bg-dark-pattern text-light py-4">
+                        <h1 class="h3 mb-0">{{ "title.site"|trans }}</h1>
+                    </div>
                 </div>
             </div>
+            <div class="bg-primary pt-1"></div>
         </div>
         <div class="container-fluid px-0 pb-5 bg-light-pattern">
             <div class="container">
@@ -151,7 +154,11 @@
     {% if election %}
         <a
             href="{{ path('mandates', {"electionSlug": election.slug}) }}"
-            class="btn btn-block btn-warning mt-3 py-3"
+            class="btn btn-block btn-warning mt-3"
         >{{ "action.view_the_complete_list"|trans }}</a>
     {% endif %}
+
+    <div class="text-muted text-center mt-2">
+        <small>{{ "text.responsibility_index_of_deputies_methodology"|trans({'%methodology_link%': path('methodologies')})|raw }}</small>
+    </div>
 {% endmacro %}

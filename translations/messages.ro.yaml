@@ -360,6 +360,8 @@ text:
     find_us_on: "Ne găsiți pe"
     responsibility_index_of_constituency_deputies: >-
         Indicele de responsabilitate a deputaților aleși în circumscripțiile uninominale
+    responsibility_index_of_deputies_methodology: >-
+        Gradul de responsabilitate a deputaților este calculat conform <a href="%methodology_link%">metodologiei</a>
     information_about_constituencies: >-
         Informații despre circumscripțiile electorale
     mandate_and_promises: Mandatul și promisiunile electorale
@@ -380,7 +382,14 @@ text:
         • 1 punct - contrasemnare proiecte, implicarea părților terțe, etc;
         • 1.5 puncte - înaintarea proiectelor, întâlnirea cu cetățenii, demersuri către autorități;
 
-        Mai multe despre punctaj în metodologia de monitorizare
+        Mai multe despre punctaj în <a href="%methodology_link%">metodologia de monitorizare</a>
+    top_mandates_meaning: >-
+        Un deputat responsabil lucrează la rezolvarea problemelor semnalate de către cetățeni
+        utilizând în acest scop atribuțiile prevăzute de legislație.
+        Mai jos vedeți clasamentul celor mai responsabili deputați aleși în circumscripțiile uninominale
+        și punctajul acumulat de aceștia.
+        Detalii despre cum se formează punctajul găsiți în
+        <a href="%methodology_link%">metodologia de monitorizare</a>.
 
 meta_description:
     main: "Platformă de monitorizare a promisiunilor electorale și activității politicienilor aleși"

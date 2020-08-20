@@ -143,11 +143,14 @@
             </div>
             <div class="row justify-content-center">
                 <div class="col-lg-8">
-                    {% set tooltip_template -%}
-                        <div class="tooltip points-tooltip"><div class="arrow"></div><div class="tooltip-inner text-left p-3"></div></div>
+                    {% set popover_template -%}
+                        <div class="popover big-popover"><div class="arrow"></div><h3 class="popover-header"></h3><div class="popover-body"></div></div>
                     {%- endset %}
                     {% for competenceUse in mandate.competenceUses %}
                         {# @var \App\Entity\CompetenceUse competenceUse #}
+
+                        {% set final_points = competenceUse.competence.points * (
+                            competenceUse.multiplied ? competence_use_multiplication_factor : 1) %}
 
                         {% if loop.first %}
                             <div class="alert alert-info text-center">
@@ -172,36 +175,40 @@
                                     <div class="col-12 col-lg order-last order-lg-0 mt-3 mt-lg-0">
                                         {{ competenceUse.competence.category.nameWithParent }}
                                     </div>
-                                    <div class="col-8 col-lg-auto text-right d-flex align-items-center">
-                                        <div>
-                                            <span
-                                                class="text-info font-weight-bold font-size-2 line-height-0 align-middle"
-                                                data-toggle="tooltip"
-                                                data-html="true"
-                                                data-placement="left"
-                                                data-template="{{ tooltip_template|escape('html_attr') }}"
-                                                title="{{ "text.points_meaning"|trans|nl2br }}"
-                                            >
-                                                {{ competenceUse.competence.points }}
-                                            </span>
-                                        </div>
-                                        <div class="pl-2">
-                                            {% if competenceUse.multiplied %}
-                                                <span
-                                                    class="badge badge-success ml-1 mr-2"
-                                                    data-toggle="tooltip"
-                                                    data-placement="left"
-                                                    data-template="{{ tooltip_template|escape('html_attr') }}"
-                                                    title="{{ "text.competence_multiplication_meaning"|trans }}"
-                                                >
+                                    <div class="col col-lg-auto pr-1 text-right d-flex align-items-center justify-content-end">
+                                        {% if competenceUse.multiplied %}
+                                            <div class="d-none d-sm-block mr-4">
+                                                <span class="text-info">{{ competenceUse.competence.points }}</span>
+                                                <span class="text-warning">
                                                     <span class="fa fa-times"></span>
-                                                    <big><samp>{{ competence_use_multiplication_factor }}</samp></big>
+                                                    <big class="font-weight-bold">{{ competence_use_multiplication_factor }}</big>
                                                 </span>
-                                            {% endif %}
-                                            {% set count = competenceUse.competence.points * (
-                                                competenceUse.multiplied ? competence_use_multiplication_factor : 1) %}
-                                            {{ "text.points"|trans({"%count%": count}) }}
+                                            </div>
+                                        {% endif %}
+                                        <div>
+                                            <span class="text-info font-weight-bold font-size-2 line-height-0 align-middle">
+                                                {{ final_points }}
+                                            </span>
+                                            {{ "text.points"|trans({"%count%": final_points}) }}
                                         </div>
+                                        <sup class="ml-3">
+                                            {% set tooltip_content -%}
+                                                {{ "text.points_meaning"|trans({'%methodology_link%': path('methodologies')})|nl2br }}
+                                                {% if competenceUse.multiplied %}
+                                                    {{ "<hr>" }}
+                                                    {{ "text.competence_multiplication_meaning"|trans }}
+                                                {% endif %}
+                                            {%- endset %}
+                                            <button
+                                                type="button"
+                                                class="btn btn-sm btn-light border-info text-info rounded py-0"
+                                                data-toggle="popover"
+                                                data-trigger="focus"
+                                                data-html="true"
+                                                data-template="{{ popover_template|escape('html_attr') }}"
+                                                data-content="{{ tooltip_content }}"
+                                            ><span class="fa fa-info"></span></button>
+                                        </sup>
                                     </div>
                                 </div>
                                 <h6 class="mb-0 alert alert-info bg-light">

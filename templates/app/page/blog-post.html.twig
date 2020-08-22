@@ -13,6 +13,7 @@
 {% block head_meta %}
     {{ parent() }}
     <link rel="canonical" href="{{ url('blog_post', {'slug': blogPost.slug}) }}" />
+    <meta name="robots" content="noindex, follow">
 {% endblock %}
 
 {% block head_meta_og_image -%}
@@ -24,8 +25,7 @@
 {%- endblock %}
 
 {% block main %}
-    <main class="bg-light-pattern pb-5">
-        {% include 'app/component/after-header-space.html.twig' %}
+    <main class="bg-light-pattern pt-4 pb-5">
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 offset-lg-2">

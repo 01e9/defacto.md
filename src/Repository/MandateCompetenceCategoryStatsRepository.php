@@ -2,8 +2,11 @@
 
 namespace App\Repository;
 
+use App\Entity\Mandate;
 use App\Entity\MandateCompetenceCategoryStats;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -14,8 +17,51 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class MandateCompetenceCategoryStatsRepository extends ServiceEntityRepository
 {
-    public function __construct(RegistryInterface $registry)
+    private CompetenceCategoryRepository $competenceCategoryRepository;
+
+    public function __construct(RegistryInterface $registry, CompetenceCategoryRepository $competenceCategoryRepository)
     {
         parent::__construct($registry, MandateCompetenceCategoryStats::class);
+
+        $this->competenceCategoryRepository = $competenceCategoryRepository;
+    }
+
+    public function findStatsByParentCategory(Mandate $mandate): Collection
+    {
+        /** @var MandateCompetenceCategoryStats[] $stats {parentCategoryId: Stats} */
+        $stats = [];
+
+        foreach ($this->competenceCategoryRepository->findBy(['parent' => null]) as $parentCategory) {
+            $stat = new MandateCompetenceCategoryStats();
+            $stat->setCompetenceUsesPoints(0);
+            $stat->setCompetenceUsesCount(0);
+            $stat->setCompetenceCategory($parentCategory);
+
+            $stats[ $parentCategory->getId() ] = $stat;
+        }
+
+        foreach (
+            $mandate->getCompetenceCategoryStats()
+            as $categoryStat /** @var MandateCompetenceCategoryStats $categoryStat */
+        ) {
+            $parentCategory = $categoryStat->getCompetenceCategory()->getParent() ?: $categoryStat->getCompetenceCategory();
+            $parentCategoryStats = $stats[ $parentCategory->getId() ];
+
+            $parentCategoryStats->setCompetenceUsesPoints(
+                $parentCategoryStats->getCompetenceUsesPoints() + $categoryStat->getCompetenceUsesPoints()
+            );
+            $parentCategoryStats->setCompetenceUsesCount(
+                $parentCategoryStats->getCompetenceUsesCount() + $categoryStat->getCompetenceUsesCount()
+            );
+        }
+
+        usort($stats, function (MandateCompetenceCategoryStats $a, MandateCompetenceCategoryStats $b) {
+            if ($a->getCompetenceUsesPoints() === $b->getCompetenceUsesPoints()) {
+                return 0;
+            }
+            return ($a->getCompetenceUsesPoints() > $b->getCompetenceUsesPoints()) ? -1 : 1;
+        });
+
+        return new ArrayCollection($stats);
     }
 }

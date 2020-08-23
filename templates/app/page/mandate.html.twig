@@ -1,5 +1,6 @@
 {# @var \App\Entity\Mandate mandate #}
 {# @var int rank #}
+{# @var array categoryStatsByParent #}
 
 {% extends 'app/base.html.twig' %}
 {% import 'macros.html.twig' as macros %}
@@ -34,7 +35,7 @@
             } only %}
         </section>
         {% if mandate.competenceCategoryStats|length %}
-            {{ self_macros.category_stats_section(mandate) }}
+            {{ self_macros.category_stats_section(mandate, categoryStatsByParent) }}
             {{ self_macros.competence_use_list_section(mandate) }}
         {% else %}
             <div class="bg-secondary py-5 text-center">
@@ -80,9 +81,7 @@
     {% endif %}
 {% endblock %}
 
-{% macro category_stats_section(mandate) %}
-    {% set categoryStatsByParent = mandate.competenceCategoryStatsByParentCategory %}
-
+{% macro category_stats_section(mandate, categoryStatsByParent) %}
     <div class="bg-primary pt-4 pb-2 text-center">
         <div class="container">
             <div class="row text-white mb-3">

@@ -100,6 +100,9 @@
                         <div class="font-size-2">
                             <strong class="text-info">{{ categoryStats.competenceUsesPoints }}</strong>
                             <small>{{ "text.points"|trans({"%count%": categoryStats.competenceUsesPoints}) }}</small>
+                            <span class="ml-2">
+                                {{ self_macros.points_info_button() }}
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -188,7 +191,9 @@
                                             </span>
                                             {{ "text.points"|trans({"%count%": final_points}) }}
                                         </div>
-                                        {{ self_macros.points_info_button(competenceUse.multiplied) }}
+                                        <div class="ml-3">
+                                            {{ self_macros.points_info_button(competenceUse.multiplied) }}
+                                        </div>
                                     </div>
                                 </div>
                                 <h6 class="mb-0 alert alert-info bg-light">
@@ -231,7 +236,7 @@
         <div class="popover big-popover"><div class="arrow"></div><h3 class="popover-header"></h3><div class="popover-body"></div></div>
     {%- endset %}
 
-    <sup class="ml-3">
+    <sup>
         <button
             type="button"
             class="btn btn-sm btn-light border-info text-info rounded py-0"

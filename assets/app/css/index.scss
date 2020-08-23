@@ -39,6 +39,11 @@
     }
 }
 
+.bg-dark.text-white a,
+.bg-dark.text-light a {
+    color: lighten($primary, $app-color-lighten-amount);
+}
+
 //region Background patterns
 
 .bg-light-pattern {

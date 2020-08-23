@@ -143,7 +143,7 @@
                 {% else %}
                     <span class="fa fa-vote-yea mx-2"></span>
                     <span class="mr-1">{{ mandate.politician.female ? "text.elected_f"|trans : "text.elected"|trans }}</span>
-                    <span>{{ mandate.institutionTitle.title.name }}</span>
+                    <span>{{ mandate.politician.female ? mandate.institutionTitle.title.nameFemale : mandate.institutionTitle.title.name }}</span>
                 {% endif %}
             </h3>
             <div class="pt-3">

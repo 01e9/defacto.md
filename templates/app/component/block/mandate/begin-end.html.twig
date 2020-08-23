@@ -24,7 +24,9 @@
             {% if hide_title|default(false) %}
                 {{ remaining_time }}
             {% else %}
-                <span class="badge badge-light p-2">{{ mandate.institutionTitle.title.name }}</span>
+                <span class="badge badge-light p-2">
+                    {{- mandate.politician ? mandate.institutionTitle.title.nameFemale : mandate.institutionTitle.title.name -}}
+                </span>
             {% endif %}
         </div>
         <div class="text-right col-6 col-md-auto">

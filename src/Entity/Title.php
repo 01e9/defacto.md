@@ -45,7 +45,23 @@ class Title
      * @Assert\NotBlank()
      * @Assert\Length(min=3, max=50)
      */
+    private $nameFemale;
+
+    /**
+     * @ORM\Column(type="string", length=50)
+     *
+     * @Assert\NotBlank()
+     * @Assert\Length(min=3, max=50)
+     */
     private $theName;
+
+    /**
+     * @ORM\Column(type="string", length=50)
+     *
+     * @Assert\NotBlank()
+     * @Assert\Length(min=3, max=50)
+     */
+    private $theNameFemale;
 
     /**
      * @ORM\ManyToMany(targetEntity="Power", cascade={"persist"})
@@ -63,7 +79,7 @@ class Title
         return $this->slug;
     }
 
-    public function setSlug(?string $slug) : Title
+    public function setSlug(?string $slug) : self
     {
         $this->slug = $slug;
 
@@ -75,9 +91,21 @@ class Title
         return $this->name;
     }
 
-    public function setName(?string $name) : Title
+    public function setName(?string $name) : self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getNameFemale() : ?string
+    {
+        return $this->nameFemale;
+    }
+
+    public function setNameFemale(?string $nameFemale) : self
+    {
+        $this->nameFemale = $nameFemale;
 
         return $this;
     }
@@ -87,9 +115,21 @@ class Title
         return $this->theName;
     }
 
-    public function setTheName(?string $theName) : Title
+    public function setTheName(?string $theName) : self
     {
         $this->theName = $theName;
+
+        return $this;
+    }
+
+    public function getTheNameFemale() : ?string
+    {
+        return $this->theNameFemale;
+    }
+
+    public function setTheNameFemale(?string $theNameFemale) : self
+    {
+        $this->theNameFemale = $theNameFemale;
 
         return $this;
     }
@@ -99,7 +139,7 @@ class Title
         return $this->powers;
     }
 
-    public function setPowers($powers) : Title
+    public function setPowers($powers) : self
     {
         $this->powers = $powers;
 

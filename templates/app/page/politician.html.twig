@@ -86,7 +86,9 @@
                                                 {{- "" -}}
                                                 {{ mandate.politician.female ? "title.elected_f"|trans : "title.elected"|trans }}
                                                 <span>
-                                                    {{ mandate.institutionTitle.title.name }}
+                                                    {{ mandate.politician.female
+                                                        ? mandate.institutionTitle.title.nameFemale
+                                                        : mandate.institutionTitle.title.name }}
                                                     {{ "text.in_elections_from"|trans }}
                                                     {{ candidate.election.date|date }}
                                                 </span>

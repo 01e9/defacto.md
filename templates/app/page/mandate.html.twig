@@ -138,9 +138,9 @@
 
     <div class="bg-light-pattern pt-4 pb-5">
         <div class="container">
-            <div class="row text-center mb-3">
+            <div class="row text-center">
                 <div class="col">
-                    <h2>{{ "title.used_competences"|trans }}</h2>
+                    <h2 class="mb-3">{{ "title.used_competences"|trans }}</h2>
                 </div>
             </div>
             <div class="row justify-content-center">
@@ -152,10 +152,13 @@
                             competenceUse.multiplied ? competence_use_multiplication_factor : 1) %}
 
                         {% if loop.first %}
-                            <div class="alert alert-info text-center">
+                            {% set lastUpdateTime = (mandate.competenceUsesUpdateTime and mandate.competenceUsesUpdateTime > competenceUse.useDate)
+                                ? mandate.competenceUsesUpdateTime : competenceUse.useDate %}
+
+                            <div class="small text-center mb-3">
+                                <span class="fa fa-search text-primary mr-1"></span>
                                 {{ "label.last_update"|trans }}
-                                <samp class="font-weight-bold mx-1">{{ competenceUse.useDate|date }}</samp>
-                                <span class="text-muted">({{ competenceUse.useDate|ago }})</span>
+                                <samp class="font-weight-bold ml-1">{{ lastUpdateTime|date }}</samp>
                             </div>
                         {% endif %}
 

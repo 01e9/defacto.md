@@ -134,6 +134,7 @@ label:
     is_female: Femeie
     questionnaire_embed_link: Link chestionar (embed)
     last_update: Ultima actualizare
+    last_update_of_competence_uses: Ultima actualizare a competențelor folosite
 
 action:
     login: Autentificare
@@ -390,6 +391,9 @@ text:
         și punctajul acumulat de aceștia.
         Detalii despre cum se formează punctajul găsiți în
         <a href="%methodology_link%">metodologia de monitorizare</a>.
+    about_last_updated_competence_uses: >-
+        Se afișează pe site doar dacă este mai mare decât data ultimei competențe folosite.
+        În restul cazurilor se afișează data ultimei competențe folosite.
 
 meta_description:
     main: "Platformă de monitorizare a promisiunilor electorale și activității politicienilor aleși"

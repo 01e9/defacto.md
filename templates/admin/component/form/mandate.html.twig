@@ -76,6 +76,18 @@
 {% if id %}
     <div class="row mb-3">
         <div class="col">
+            <div class="card bg-dark text-white">
+                <div class="card-body pb-0">
+                    {{ form_row(form.competenceUsesUpdateTime, {
+                        'type': 'text',
+                        'attr': {'class': 'datepicker-input', 'readonly': true}
+                    }) }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col">
             {% include 'admin/component/form/widget/addable.html.twig' with {field: form.competenceUses} only %}
         </div>
     </div>

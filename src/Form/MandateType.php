@@ -79,6 +79,13 @@ class MandateType extends AbstractType
                 'label' => 'label.ceasing_reason',
                 'required' => false,
             ])
+            ->add('competenceUsesUpdateTime', DateType::class, [
+                'label' => 'label.last_update_of_competence_uses',
+                'widget' => 'single_text',
+                'format' => Consts::DATE_FORMAT_INTL,
+                'required' => false,
+                'help' => 'text.about_last_updated_competence_uses',
+            ])
             ->add('competenceUses', CollectionType::class, [
                 'label' => 'label.competence_uses',
                 'allow_add' => true,

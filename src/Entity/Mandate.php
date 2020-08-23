@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Consts;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -134,6 +135,17 @@ class Mandate
      * @Assert\Url()
      */
     private $ceasingLink;
+
+    /**
+     * Last time the monitor checked if there is something new about this mandate competence uses
+     *
+     * @var \DateTimeInterface
+     *
+     * @ORM\Column(type="date", nullable=true)
+     *
+     * @Assert\LessThanOrEqual("today")
+     */
+    private $competenceUsesUpdateTime;
 
     /**
      * @ORM\OneToMany(targetEntity="CompetenceUse", mappedBy="mandate", cascade={"persist", "remove"})
@@ -313,7 +325,17 @@ class Mandate
         return $this;
     }
 
-    //region competenceCategoryStats
+    public function getCompetenceUsesUpdateTime() : ?\DateTime
+    {
+        return $this->competenceUsesUpdateTime;
+    }
+
+    public function setCompetenceUsesUpdateTime(?\DateTime $date) : self
+    {
+        $this->competenceUsesUpdateTime = $date;
+
+        return $this;
+    }
 
     public function getCompetenceCategoryStats(): Collection
     {
@@ -327,11 +349,9 @@ class Mandate
         return $this;
     }
 
-    //endregion
-
     public function getChoiceName() : string
     {
-        $dateFormat = 'd.m.Y';
+        $dateFormat = Consts::DATE_FORMAT_PHP;
 
         return (
             ($this->getPolitician()

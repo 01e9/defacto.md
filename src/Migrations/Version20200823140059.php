@@ -33,5 +33,6 @@ final class Version20200823140059 extends AbstractMigration
 
         $this->addSql('CREATE SCHEMA public');
         $this->addSql('ALTER TABLE titles DROP name_female');
+        $this->addSql('ALTER TABLE titles DROP the_name_female');
     }
 }

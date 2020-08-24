@@ -25,7 +25,7 @@
                 {{ remaining_time }}
             {% else %}
                 <span class="badge badge-light p-2">
-                    {{- mandate.politician ? mandate.institutionTitle.title.nameFemale : mandate.institutionTitle.title.name -}}
+                    {{- mandate.politician.female ? mandate.institutionTitle.title.nameFemale : mandate.institutionTitle.title.name -}}
                 </span>
             {% endif %}
         </div>

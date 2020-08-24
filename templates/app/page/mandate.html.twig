@@ -11,7 +11,7 @@
 
 {% block title %}
     {{ mandate.politician.firstName }} {{ mandate.politician.lastName }}
-    • {{ mandate.institutionTitle.title.name }}
+    • {{ mandate.politician.female ? mandate.institutionTitle.title.nameFemale : mandate.institutionTitle.title.name }}
     • {{ mandate.beginDate|date }} - {{ (mandate.ceasingDate ? mandate.ceasingDate : mandate.endDate)|date }}
 {% endblock %}
 {% block head_meta_og_image %}{{ app.request.getSchemeAndHttpHost ~ macros.politician_photo_url(mandate.politician) }}{% endblock %}

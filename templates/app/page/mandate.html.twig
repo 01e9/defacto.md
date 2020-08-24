@@ -113,9 +113,10 @@
             </div>
         </div>
     </div>
-    {% if categoryStatsByParent|length > 1 %}
+    {% set statsForChart = categoryStatsByParent|filter(c => c.competenceUsesPoints > 0) %}
+    {% if statsForChart|length > 1 %}
         {% set chart_items = [] %}
-        {% for categoryStats in categoryStatsByParent %}
+        {% for categoryStats in statsForChart %}
             {% set chart_items = chart_items|merge([{
                 y: categoryStats.competenceUsesPoints,
                 label: categoryStats.competenceCategory.nameWithParent
@@ -198,8 +199,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <h6 class="mb-0 alert alert-info bg-light">
-                                    <div class="text-info h6 mb-2">{{ "label.competence"|trans }}</div>
+                                <h6 class="mb-0 alert alert-warning">
+                                    <div class="text-warning-darker h6 mb-2">{{ "label.competence"|trans }}</div>
                                     <div class="text-body">{{ competenceUse.competence.name }}</div>
                                 </h6>
                                 {% if competenceUse.description and competenceUse.description != emptyHtml %}

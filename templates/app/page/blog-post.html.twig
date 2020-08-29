@@ -13,7 +13,6 @@
 {% block head_meta %}
     {{ parent() }}
     <link rel="canonical" href="{{ url('blog_post', {'slug': blogPost.slug}) }}" />
-    <meta name="robots" content="noindex, follow">
 {% endblock %}
 
 {% block head_meta_og_image -%}

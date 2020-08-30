@@ -19,18 +19,22 @@
                 <div class="col">
                     <div class="row">
                         <div class="col px-1">
-                            <div
+                            <article
                                 class="card mb-3"
+                                itemscope
+                                itemtype="https://schema.org/Guide"
                             >
                                 <div class="card-body px-lg-5 pb-lg-5 pt-lg-5">
                                     <h1
-                                        class="h1 mb-4 text-center"
+                                        class="mb-4 text-center"
+                                        itemprop="headline"
                                     >{{ methodology.title }}</h1>
                                     <div
                                         class="raw-html"
+                                        itemprop="text"
                                     >{{ methodology.content|raw }}</div>
                                 </div>
-                            </div>
+                            </article>
                         </div>
                     </div>
                 </div>

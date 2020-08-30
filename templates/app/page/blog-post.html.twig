@@ -30,30 +30,57 @@
                 <div class="col-lg-8 offset-lg-2">
                     <div class="row">
                         <div class="col px-1">
-                            <div
+                            <article
                                 class="card mb-3"
+                                itemscope
+                                itemtype="https://schema.org/BlogPosting"
                             >
+                                <div itemprop="author" itemscope itemtype="https://schema.org/NGO" >
+                                    <meta itemprop="name" content="{{ org_name }}" />
+                                    <div itemprop="logo" itemscope itemtype="https://schema.org/ImageObject">
+                                        <meta itemprop="url" content="{{ absolute_url(asset('img/logo-big.png')) }}" />
+                                    </div>
+                                </div>
+                                <div itemprop="publisher" itemscope itemtype="https://schema.org/Organization">
+                                    <meta itemprop="name" content="{{ org_name }}" />
+                                    <div itemprop="logo" itemscope itemtype="https://schema.org/ImageObject">
+                                        <meta itemprop="url" content="{{ absolute_url(asset('img/logo-big.png')) }}" />
+                                    </div>
+                                </div>
+
                                 {% if blogPost.image %}
-                                    <div class="ratio-16-9 overflow-hidden">
+                                    <header class="ratio-16-9 overflow-hidden">
                                         <img
                                             src="{{ macros.blog_image_url(blogPost) }}"
                                             alt="Image"
                                             class="content-no-height rounded-top d-block"
+                                            itemprop="image"
                                         >
-                                    </div>
+                                    </header>
                                 {% endif %}
                                 <div class="card-body px-lg-5 pb-lg-5 {% if not blogPost.image %}pt-lg-5{% endif %}">
                                     <h1
                                         class="h2"
+                                        itemprop="headline"
                                     >{{ blogPost.title }}</h1>
                                     <p>
                                         <small>
-                                            <time>{{ blogPost.publishTime|date }}</time>
+                                            <time
+                                                itemprop="datePublished"
+                                                datetime="{{ blogPost.publishTime|date(constant('App\\Consts::TWIG_SCHEMA_DATE_FORMAT')) }}"
+                                            >{{ blogPost.publishTime|date }}</time>
+                                            <meta
+                                                itemprop="dateModified"
+                                                content="{{ blogPost.publishTime|date(constant('App\\Consts::TWIG_SCHEMA_DATE_FORMAT')) }}"
+                                            >
                                         </small>
                                     </p>
-                                    <div class="raw-html">{{ blogPost.content|raw }}</div>
+                                    <div
+                                        class="raw-html"
+                                        itemprop="articleBody"
+                                    >{{ blogPost.content|raw }}</div>
                                 </div>
-                            </div>
+                            </article>
                         </div>
                     </div>
                 </div>

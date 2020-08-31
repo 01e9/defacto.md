@@ -27,7 +27,9 @@
                 {{- "" -}}
                 {{ election.date < date() ? election.theElectedName : election.theName }}
             </h2>
-            <p class="text-muted text-center"><small>{{ "text.information_about_constituencies"|trans }}</small></p>
+            <p class="text-muted text-center">
+                <small>{{ "text.information_about_constituencies"|trans }}</small>
+            </p>
             <div class="alert alert-info py-4 mb-0">
                 <div class="row">
                     <div class="col mb-3">

@@ -22,12 +22,15 @@
 {% endblock %}
 
 {% block main %}
-    <main>
+    <main
+        itemscope
+        itemtype="https://schema.org/WebSite"
+    >
         <div>
             <div class="container-fluid">
                 <div class="row">
                     <div class="col text-center bg-dark-pattern text-light py-4">
-                        <h1 class="h3 mb-0">{{ "title.site"|trans }}</h1>
+                        <h1 class="h3 mb-0" itemprop="headline">{{ "title.site"|trans }}</h1>
                     </div>
                 </div>
             </div>
@@ -43,9 +46,13 @@
                         ) }}
                     </div>
                     {% if current_election %}
+                        {% set election = current_election.election %}
+                        <meta itemprop="text" content="{{ election.date < date() ? election.theElectedName : election.theName }}">
+                        <meta itemprop="text" content="{{ "text.information_about_constituencies"|trans }}">
+
                         <div class="col-12 col-lg-6 mt-4 mt-lg-0">
                             {% include 'app/component/block/statistics/election.html.twig' with {
-                                election: current_election.election,
+                                election: election,
                                 constituencies: current_election.constituencies
                             } only %}
                         </div>
@@ -58,9 +65,11 @@
                 <div class="bg-primary text-white text-center pt-5 pb-3">
                     <h2>
                         <span class="fa fa-flag mr-3"></span>
-                        {{ president_mandate.mandate.institutionTitle.title.name }}
+                        <span itemprop="text">{{ president_mandate.mandate.institutionTitle.title.name }}</span>
                     </h2>
-                    <div class="text-white-50 text-center"><small>{{ "text.mandate_and_promises"|trans }}</small></div>
+                    <div class="text-white-50 text-center">
+                        <small itemprop="text">{{ "text.mandate_and_promises"|trans }}</small>
+                    </div>
                 </div>
                 {% include 'app/component/section/statistics/mandate-votes-and-promises.html.twig' with {
                     mandate: president_mandate.mandate,
@@ -72,7 +81,7 @@
         <div class="bg-info text-white text-center py-5">
             <h3 class="mb-3">
                 <span class="fa fa-walking mr-2"></span>
-                {{ "title.the_politicians_promise_actions"|trans }}
+                <span itemprop="text">{{ "title.the_politicians_promise_actions"|trans }}</span>
             </h3>
             <a
                 href="{{ path('actions') }}"
@@ -86,7 +95,61 @@
                 } only %}
             </noindex>
         {% endif %}
-        {% include 'app/component/section/about-us.html.twig' only %}
+
+        <article
+            class="container-fluid bg-light-pattern py-5"
+            itemprop="about" itemscope itemtype="https://schema.org/AboutPage"
+        >
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6">
+                        <header>
+                            <h3 itemprop="headline">{{ 'title.about_project'|trans }}</h3>
+                        </header>
+                        <div itemprop="text">
+                            <p>{{ "text.about_project"|trans }}</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6" itemprop="text">
+                        <div>
+                            <h3>{{ 'title.why_are_we_doing_this'|trans }}</h3>
+                        </div>
+                        <p>{{ "text.why_are_we_doing_this"|trans }}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="row">
+                            <div class="col text-lg-center">
+                                <h3 class="h1 mb-3">{{ 'title.about_us'|trans }}</h3>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col" itemprop="text">
+                                {# todo: move in settings #}
+                                <p>
+                                    Echipa s-a constituit în urma campaniei civice <a href="http://avemcevotam.md/" target="_blank">AVEM CE VOTĂM</a>,
+                                    care a avut drept scop încurajarea tinerilor să participe la alegerile prezidenţiale din anul 2016.
+                                    Prin intermediul campaniei s-au identificat cele mai importante probleme ale tinerilor,
+                                    iar candidaţii la funcția de președinte au fost întrebați cum îşi propun rezolvarea acestora.
+                                </p>
+                                <p>
+                                    Campania a fost organizată de grupul de inițiativă neafiliat politic <a href="http://www.challenger.md/" target="_blank">CHALLENGER</a>,
+                                    care promovează participarea democratică a cetățenilor și a politicienilor în procesul decizional.
+                                    Credem că democrația este un efort continuu, care nu se limitează doar la ziua votării,
+                                    iar comunicarea sistematică între politicieni și cetățeni este un element fundamental al acesteia.
+                                    Alte proiecte CHALLENGER:
+                                    <a href="http://daeuvotez.challenger.md/" target="_blank">DA' EU VOTEZ</a>,
+                                    <a href="https://www.facebook.com/cantarestetivotul/" target="_blank">Cântărește-ți votul</a> și
+                                    <a href="http://primariamea.md/" target="_blank">Primăria Mea</a>.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+
         <section class="container-fluid bg-white py-5">
             <div class="row">
                 <div class="col text-center">
@@ -142,10 +205,12 @@
     <h2 class="h3 text-center">
         <span class="fa fa-medal mr-3"></span>
         {{- "" -}}
-        {{ "title.top_responsible_deputies"|trans }}
+        <span itemprop="text">{{ "title.top_responsible_deputies"|trans }}</span>
     </h2>
 
-    <p class="text-muted text-center"><small>{{ "text.responsibility_index_of_constituency_deputies"|trans }}</small></p>
+    <p class="text-muted text-center">
+        <small itemprop="text">{{ "text.responsibility_index_of_constituency_deputies"|trans }}</small>
+    </p>
 
     {% include "app/component/block/mandate/rank-list.html.twig" with {
         mandates: mandates

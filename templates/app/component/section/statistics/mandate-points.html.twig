@@ -7,9 +7,8 @@
 
 {% set is_mandate_page = is_mandate_page is defined ? is_mandate_page : false %}
 {% set is_competence_use_trakced = mandate and mandate.election.competenceUseTracked %}
-{% set maxPhotoWidth = '8rem' %}
 
-<div class="py-4 bg-dark-pattern text-white">
+<div class="py-4 bg-dark-pattern text-white block-mandate-points">
     <div class="container-fluid">
         <div class="row">
             <div class="col text-center">
@@ -54,7 +53,6 @@
                         src="{{ macros.politician_photo_url(politician) }}"
                         alt="{{ politician.firstName ~ " " ~ politician.lastName }}"
                         class="d-inline-block bg-white rounded-circle politician-photo my-2"
-                        style="max-width: {{ maxPhotoWidth }};"
                     >
                 {% endset %}
                 {% if is_mandate_page %}

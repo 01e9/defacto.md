@@ -16,11 +16,13 @@
 {% endblock %}
 {% block head_meta_og_image %}{{ app.request.getSchemeAndHttpHost ~ macros.politician_photo_url(mandate.politician) }}{% endblock %}
 
+{% set canonical_url = url('mandate', {
+    'electionSlug': mandate.election.slug, 'politicianSlug': mandate.politician.slug
+}) %}
+
 {% block head_meta %}
     {{ parent() }}
-    <link rel="canonical" href="{{ url('mandate', {
-        'electionSlug': mandate.election.slug, 'politicianSlug': mandate.politician.slug
-    }) }}" />
+    <link rel="canonical" href="{{ canonical_url }}" />
     <meta name="description" content="{{ 'meta_description.mandate'|trans }}">
 {% endblock %}
 
@@ -36,7 +38,7 @@
         </section>
         {% if mandate.competenceCategoryStats|length %}
             {{ self_macros.category_stats_section(mandate, categoryStatsByParent) }}
-            {{ self_macros.competence_use_list_section(mandate) }}
+            {{ self_macros.competence_use_list_section(mandate, canonical_url) }}
         {% else %}
             <div class="bg-secondary py-5 text-center">
                 <h3 class="mb-0">
@@ -46,6 +48,38 @@
         {% endif %}
     </main>
     {% include 'app/component/section/footer.html.twig' only %}
+
+    <div
+        id="mandate-politician"
+        itemscope
+        itemtype="https://schema.org/Person"
+        itemid="{{ path('politician', {'slug': mandate.politician.slug}) }}"
+    >
+        <meta itemprop="givenName" content="{{ mandate.politician.firstName }}">
+        <meta itemprop="familyName" content="{{ mandate.politician.lastName }}">
+        <div
+            itemprop="hasOccupation"
+            itemscope
+            itemtype="https://schema.org/Role"
+        >
+
+            <meta
+                itemprop="startDate"
+                content="{{ mandate.beginDate|date(constant('App\\Consts::TWIG_SCHEMA_DATE_FORMAT')) }}"
+            >
+            <meta
+                itemprop="endDate"
+                content="{{ mandate.endDate|date(constant('App\\Consts::TWIG_SCHEMA_DATE_FORMAT')) }}"
+            >
+            <meta
+                itemprop="roleName"
+                content="{{ mandate.politician.female
+                ? mandate.institutionTitle.title.nameFemale
+                : mandate.institutionTitle.title.name
+                }}"
+            >
+        </div>
+    </div>
 {% endblock %}
 
 {% block javascripts %}
@@ -91,24 +125,31 @@
             </div>
             <div class="row">
                 {% for categoryStats in categoryStatsByParent %}
-                {# @var \App\Entity\MandateCompetenceCategoryStats categoryStats #}
-                <div class="col-12 col-lg mb-4">
-                    <div class="bg-light-pattern py-4 px-3 rounded">
-                        <h3>{{ categoryStats.competenceCategory.nameWithParent }}</h3>
-                        <p class="small text-muted mb-2">{{ categoryStats.competenceCategory.description }}</p>
-                        <div class="font-size-2">
-                            <strong class="text-info">{{ categoryStats.competenceUsesPoints }}</strong>
-                            <small>{{ "text.points"|trans({"%count%": categoryStats.competenceUsesPoints}) }}</small>
-                            <span class="ml-2">
-                                {{ self_macros.points_info_button() }}
-                            </span>
+                    {# @var \App\Entity\MandateCompetenceCategoryStats categoryStats #}
+                    <div
+                        class="col-12 col-lg mb-4"
+                        itemscope
+                        itemtype="https://schema.org/Class"
+                    >
+                        <div class="bg-light-pattern py-4 px-3 rounded">
+                            <h3 itemprop="name">{{ categoryStats.competenceCategory.nameWithParent }}</h3>
+                            <p
+                                class="small text-muted mb-2"
+                                itemprop="description"
+                            >{{ categoryStats.competenceCategory.description }}</p>
+                            <div class="font-size-2">
+                                <strong class="text-info">{{ categoryStats.competenceUsesPoints }}</strong>
+                                <small>{{ "text.points"|trans({"%count%": categoryStats.competenceUsesPoints}) }}</small>
+                                <span class="ml-2">
+                                    {{ self_macros.points_info_button() }}
+                                </span>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                {% if loop.index0 and not loop.index0 % 2 %}
-            </div><div class="row">
-                {% endif %}
+                    {% if loop.index0 and not loop.index0 % 2 %}
+                </div><div class="row">
+                    {% endif %}
                 {% endfor %}
             </div>
         </div>
@@ -134,7 +175,7 @@
     {% endif %}
 {% endmacro %}
 
-{% macro competence_use_list_section(mandate) %}
+{% macro competence_use_list_section(mandate, canonical_url) %}
     {% set emptyHtml = '<p>&nbsp;</p>' %}
 
     <div class="bg-light-pattern pt-4 pb-5">
@@ -163,19 +204,46 @@
                             </div>
                         {% endif %}
 
-                        <div class="card{% if not loop.last %} mb-4{% endif %}">
+                        <div
+                            class="card{% if not loop.last %} mb-4{% endif %}"
+                            itemscope
+                            itemtype="https://schema.org/AchieveAction"
+                            itemid="{{ canonical_url }}#competence-use-{{ competenceUse.id }}"
+                        >
+                            {#<meta
+                                itemprop="agent"
+                                itemscope
+                                itemtype="https://schema.org/Person"
+                                itemref="mandate-politician"
+                            >#}
+                            <link itemprop="agent" href="{{ path('politician', {'slug': mandate.politician.slug}) }}">
+                            <div
+                                itemprop="result"
+                                itemscope
+                                itemtype="https://schema.org/PropertyValue"
+                            >
+                                <meta
+                                    itemprop="name"
+                                    content="{{ competenceUse.competence.points }} {{ "text.points"|trans({"%count%": final_points}) }}"
+                                >
+                                <meta itemprop="unitText" content="point">
+                                <meta itemprop="value" content="{{ competenceUse.competence.points }}">
+                            </div>
+
                             <div class="card-body pt-3">
                                 <div class="row mb-3">
                                     <div class="col-auto pr-0">
-                                        <span
+                                        <time
+                                            datetime="{{ competenceUse.useDate|date(constant('App\\Consts::TWIG_SCHEMA_DATE_FORMAT')) }}"
+                                            itemprop="startTime"
                                             class="badge badge-primary align-middle"
                                             data-toggle="tooltip" data-placement="right"
                                             title="{{ competenceUse.useDate|ago }}"
                                         >
                                             {{ competenceUse.useDate|date }}
-                                        </span>
+                                        </time>
                                     </div>
-                                    <div class="col-12 col-lg order-last order-lg-0 mt-3 mt-lg-0">
+                                    <div class="col-12 col-lg order-last order-lg-0 mt-3 mt-lg-0" itemprop="object">
                                         {{ competenceUse.competence.category.nameWithParent }}
                                     </div>
                                     <div class="col col-lg-auto pr-1 text-right d-flex align-items-center justify-content-end">
@@ -199,12 +267,23 @@
                                         </div>
                                     </div>
                                 </div>
-                                <h6 class="mb-0 alert alert-warning">
-                                    <div class="text-warning-darker h6 mb-2">{{ "label.competence"|trans }}</div>
-                                    <div class="text-body">{{ competenceUse.competence.name }}</div>
+                                <h6
+                                    class="mb-0 alert alert-warning"
+                                    itemprop="instrument"
+                                    itemscope
+                                    itemtype="https://schema.org/Action"
+                                >
+                                    <div
+                                        class="text-warning-darker h6 mb-2"
+                                        itemprop="name"
+                                    >{{ "label.competence"|trans }}</div>
+                                    <div
+                                        class="text-body"
+                                        itemprop="description"
+                                    >{{ competenceUse.competence.name }}</div>
                                 </h6>
                                 {% if competenceUse.description and competenceUse.description != emptyHtml %}
-                                    <div class="mt-3 raw-html">
+                                    <div class="mt-3 raw-html" itemprop="description">
                                         {{ competenceUse.description|raw }}
                                     </div>
                                 {% endif %}
@@ -214,6 +293,7 @@
                                             href="{{ competenceUse.sourceLink }}"
                                             target="_blank"
                                             class="btn btn-sm btn-outline-info"
+                                            itemprop="url"
                                         >{{ "action.view_source"|trans }}</a>
                                     </div>
                                 {% endif %}

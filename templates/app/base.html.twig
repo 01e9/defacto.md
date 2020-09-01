@@ -1,5 +1,18 @@
 {% extends 'base.html.twig' %}
 
+{% block head_meta %}
+    {{ parent() }}
+
+    {# fixme #}
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+                new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','GTM-NPP6CKJ');</script>
+    <!-- End Google Tag Manager -->
+{% endblock %}
+
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('build/app/styles.css') }}">
@@ -11,6 +24,12 @@
 {% endblock %}
 
 {% block body %}
+    {# fixme #}
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NPP6CKJ"
+                      height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
     {% block navbar %}
         {% if is_granted('ROLE_ADMIN') %}
             {% include 'admin/component/navbar.html.twig' %}

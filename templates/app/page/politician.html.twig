@@ -30,8 +30,7 @@
 
 {% block main %}
     <main>
-        <section
-        >
+        <section>
             {% include "app/component/section/statistics/mandate-points.html.twig" with {
                 politician: politician,
                 mandate: last_valid_mandate ? last_valid_mandate.mandate : null,
@@ -42,7 +41,17 @@
                 {{ self_macros.politician_bio(politician, detailClasses, emptyHtml) }}
             {% endset %}
             {% if politician_bio|trim|length %}
-                <div class="container-fluid px-0 py-5 bg-white">
+                <div
+                    class="container-fluid px-0 py-5 bg-white"
+                    itemscope
+                    itemtype="https://schema.org/Person"
+                    itemid="{{ path('politician', {'slug': politician.slug}) }}"
+                >
+                    <meta itemprop="givenName" content="{{ politician.firstName }}">
+                    <meta itemprop="familyName" content="{{ politician.lastName }}">
+                    <meta itemprop="gender" content="http://schema.org/{{ politician.female ? "Female" : "Male" }}">
+                    <meta itemprop="image" content="{{ macros.politician_photo_url(politician) }}">
+
                     <div class="container">
                         <div class="row justify-content-center">
                             <div class="col-lg-8">
@@ -322,9 +331,11 @@
                 <strong>{{ "label.birth_date"|trans }}</strong>
             </div>
             <div class="{{ detailClasses.colContent }}">
-                <samp>
-                    {{ politician.birthDate|date }}
-                </samp>
+                <meta
+                    itemprop="birthDate"
+                    content="{{ politician.birthDate|date(constant('App\\Consts::TWIG_SCHEMA_DATE_FORMAT')) }}"
+                >
+                <samp>{{ politician.birthDate|date }}</samp>
                 <small class="text-muted ml-3">
                     <samp>{{ politician.birthDate|age }}</samp>
                     {{ "text.years_n"|trans({'%count%': politician.birthDate|age}) }}
@@ -333,12 +344,24 @@
         </div>
     {% endif %}
     {% if politician.profession %}
+        <meta
+            itemprop="knowsAbout"
+            content="{{ politician.profession }}"
+        >
         {{ self_macros.detail_block("label.profession"|trans, politician.profession, detailClasses) }}
     {% endif %}
     {% if politician.studies and politician.studies != emptyHtml %}
+        <meta
+            itemprop="knowsAbout"
+            content="{{ politician.studies }}"
+        >
         {{ self_macros.detail_block("label.studies"|trans, politician.studies, detailClasses, "raw") }}
     {% endif %}
     {% if politician.previousTitles and politician.previousTitles != emptyHtml %}
+        <meta
+            itemprop="knowsAbout"
+            content="{{ politician.previousTitles }}"
+        >
         {{ self_macros.detail_block("label.previous_titles"|trans, politician.previousTitles, detailClasses, "raw") }}
     {% endif %}
     {% if politician.website or politician.facebook or politician.email or politician.phone %}
@@ -366,6 +389,7 @@
                         </div>
                     {% endif %}
                     {% if politician.email %}
+                        <meta itemprop="email" content="{{ politician.email }}">
                         <div class="col-lg-6">
                             <p>
                                 <span class="fas fa-envelope mr-2"></span>
@@ -376,6 +400,7 @@
                         </div>
                     {% endif %}
                     {% if politician.phone %}
+                        <meta itemprop="telephone" content="{{ politician.phone }}">
                         <div class="col-lg-6">
                             <p>
                                 <span class="fas fa-mobile-alt mr-2"></span>

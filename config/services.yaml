@@ -6,8 +6,6 @@ parameters:
     app_locales: ro # ro|ru|en
     app_org_name: 'DeFacto Moldova'
 
-    google_maps_api_key: '%env(GOOGLE_MAPS_API_KEY)%'
-
 services:
     # default configuration for services in *this* file
     _defaults:

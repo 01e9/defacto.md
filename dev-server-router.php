@@ -5,7 +5,7 @@ do {
         break;
     }
 
-    if (preg_match('/\.[a-z]{1,5}$/', $_SERVER["REQUEST_URI"])) {
+    if (preg_match('/\.[a-z][a-z0-9]{1,5}$/', $_SERVER["REQUEST_URI"])) {
         return false;
     }
 } while(false);

@@ -62,7 +62,6 @@
             itemscope
             itemtype="https://schema.org/Role"
         >
-
             <meta
                 itemprop="startDate"
                 content="{{ mandate.beginDate|date(constant('App\\Consts::TWIG_SCHEMA_DATE_FORMAT')) }}"
@@ -211,12 +210,6 @@
                             itemtype="https://schema.org/AchieveAction"
                             itemid="{{ canonical_url }}#competence-use-{{ competenceUse.id }}"
                         >
-                            {#<meta
-                                itemprop="agent"
-                                itemscope
-                                itemtype="https://schema.org/Person"
-                                itemref="mandate-politician"
-                            >#}
                             <link itemprop="agent" href="{{ path('politician', {'slug': mandate.politician.slug}) }}">
                             <div
                                 itemprop="result"

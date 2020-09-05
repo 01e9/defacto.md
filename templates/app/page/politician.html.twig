@@ -76,22 +76,48 @@
                     {% set mandate = mandates_by_election[candidate.election.id]|default(null) %}
                     {% set promises = promises_by_election[candidate.election.id]|default([]) %}
                     {% set color_name = mandate ? (mandate.ceasingDate ? "dark" : "success") : "info" %}
+                    {% set mandate_link = path('mandate', {
+                        "electionSlug": mandate.election.slug,
+                        "politicianSlug": mandate.politician.slug
+                    }) %}
 
-                    <section>
+                    <section
+                        itemscope
+                        itemtype="https://schema.org/{{ mandate ? "Win" : "Lose" }}Action"
+                    >
+                        <div itemprop="agent" itemscope itemtype="https://schema.org/Person">
+                            <meta itemprop="identifier" content="{{ path('politician', {'slug': politician.slug}) }}">
+                            <meta itemprop="givenName" content="{{ politician.firstName }}">
+                            <meta itemprop="familyName" content="{{ politician.lastName }}">
+                        </div>
+                        <meta itemprop="endTime" content="{{ candidate.election.date|date(constant('App\\Consts::TWIG_SCHEMA_DATE_FORMAT')) }}">
+                        {% if mandate %}
+                            <div itemprop="result" itemscope itemtype="https://schema.org/OrganizationRole">
+                                <meta
+                                    itemprop="roleName"
+                                    content="{{ mandate.politician.female
+                                    ? mandate.institutionTitle.title.nameFemale
+                                    : mandate.institutionTitle.title.name }}"
+                                >
+                                <meta
+                                    itemprop="startDate"
+                                    content="{{ mandate.beginDate|date(constant('App\\Consts::TWIG_SCHEMA_DATE_FORMAT')) }}"
+                                >
+                                <meta
+                                    itemprop="endDate"
+                                    content="{{ mandate.endDate|date(constant('App\\Consts::TWIG_SCHEMA_DATE_FORMAT')) }}"
+                                >
+                                <meta itemprop="url" content="{{ mandate_link }}">
+                            </div>
+                        {% endif %}
+
                         <div class="card bg-{{ color_name }} border-{{ color_name }} {% if not loop.last %}mb-4{% endif %}">
                             <h5 class="card-header text-white clearfix">
                                 {% if mandate %}
                                     <div class="row align-items-center">
                                         <div class="col-12 col-lg">
                                             <span class="fa fa-vote-yea mr-2"></span>
-
-                                            <a
-                                                href="{{ path('mandate', {
-                                                    "electionSlug": mandate.election.slug,
-                                                    "politicianSlug": mandate.politician.slug
-                                                }) }}"
-                                                class="text-white"
-                                            >
+                                            <a href="{{ mandate_link }}" class="text-white">
                                                 {{- "" -}}
                                                 {{ mandate.politician.female ? "title.elected_f"|trans : "title.elected"|trans }}
                                                 <span>
@@ -170,6 +196,7 @@
                             <div class="card-body bg-white rounded">
                                 <div class="row align-items-center">
                                     {% if candidate.constituency %}
+                                        <meta itemprop="location" content="{{ candidate.constituency.name }}">
                                         <div class="col-12 col-lg-6">
                                             <div
                                                 class="mb-3"
@@ -213,10 +240,21 @@
                                 </div>
                                 <div class="row">
                                     <div class="col">
-                                        <div class="bg-light rounded p-3">
-                                            <h3 class="text-info mb-4">{{ "label.electoral_platform"|trans }}</h3>
+                                        <div
+                                            class="bg-light rounded p-3"
+                                            itemprop="instrument"
+                                            itemscope
+                                            itemtype="https://schema.org/Thing"
+                                        >
+                                            <h3
+                                                class="text-info mb-4"
+                                                itemprop="name"
+                                            >{{ "label.electoral_platform"|trans }}</h3>
                                             {% if candidate.electoralPlatform and candidate.electoralPlatform != emptyHtml %}
-                                                <div class="raw-html">{{ candidate.electoralPlatform|raw }}</div>
+                                                <div
+                                                    class="raw-html"
+                                                    itemprop="description"
+                                                >{{ candidate.electoralPlatform|raw }}</div>
                                             {% elseif not candidate.electoralPlatformLink %}
                                                 <div class="alert alert-dark mb-0 text-muted">
                                                     {# fixme: translate #}
@@ -234,6 +272,7 @@
                                                         href="{{ candidate.electoralPlatformLink }}"
                                                         target="_blank"
                                                         class="btn btn-sm btn-outline-info"
+                                                        itemprop="url"
                                                     >{{ "label.electoral_platform_link"|trans }}</a>
                                                 </div>
                                             {% endif %}

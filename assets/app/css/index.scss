@@ -72,20 +72,6 @@
     padding: .3em .3em 0;
 }
 
-.promise-page-header {
-    .status-stamp {
-        font-size: 2rem;
-        position: absolute;
-        right: .5em;
-        top: 0;
-    }
-
-    .raw-html {
-        z-index: 1;
-        position: relative;
-    }
-}
-
 .promise-statuses-statistics {
     @include media-breakpoint-down(sm) {
         h1 {
@@ -418,6 +404,26 @@ html.page-mandate {
 }
 
 html.page-mandates {
+}
+
+html.page-promise {
+    .politician-photo {
+        max-height: 3em;
+    }
+
+    .promise-page-header {
+        .status-stamp {
+            font-size: 2rem;
+            position: absolute;
+            right: .5em;
+            top: 0;
+        }
+
+        .raw-html {
+            z-index: 1;
+            position: relative;
+        }
+    }
 }
 
 //endregion

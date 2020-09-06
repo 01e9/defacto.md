@@ -6,7 +6,7 @@
 {% import 'macros.html.twig' as macros %}
 {% import _self as self_macros %}
 
-{% block html_class %}bg-dark-pattern{% endblock %}
+{% block html_class %}bg-dark-pattern page-promise{% endblock %}
 {% block body_class %}bg-transparent{% endblock %}
 
 {% set has_description = (promise.description|trim is not empty and promise.description != '<p>&nbsp;</p>') %}
@@ -25,7 +25,17 @@
 
 {% block main %}
     <main>
-        <section class="bg-white pt-4">
+        <section
+            class="bg-white pt-4"
+            itemscope
+            itemtype="https://schema.org/Claim"
+            itemid="{{ path('promise', {'slug': promise.slug}) }}"
+        >
+            <meta itemprop="genre" content="{{ "title.promises"|trans }}">
+            {% if mandate %}
+                <meta itemprop="expires" content="{{ mandate.endDate|date(constant('App\\Consts::TWIG_SCHEMA_DATE_FORMAT')) }}">
+            {% endif %}
+
             {% set header %}
                 <header>
                     <p>
@@ -35,27 +45,35 @@
                             title="{{ promise.madeTime|ago }}"
                             class="badge badge-primary align-top"
                         >
-                            <time>
+                            <time
+                                itemprop="datePublished"
+                                datetime="{{ promise.madeTime|date(constant('App\\Consts::TWIG_SCHEMA_DATE_FORMAT')) }}"
+                            >
                                 {{ promise.madeTime|date }}
                             </time>
                         </samp>
                     </p>
                     <p
                         class="h5 mb-3"
+                        itemprop="author"
+                        itemscope
+                        itemtype="https://schema.org/Person"
+                        itemid="{{ path("politician", {"slug": promise.politician.slug}) }}"
                     >
                         <img
-                            class="rounded-circle mb-2"
-                            style="max-height: 3em"
+                            class="rounded-circle mb-2 politician-photo"
                             src="{{ macros.politician_photo_url(promise.politician) }}"
                             alt="Politician"
+                            itemprop="image"
                         >
                         <br>
                         <a
                             href="{{ path("politician", {slug: promise.politician.slug}) }}"
+                            itemprop="url"
                         >
                             {{- "" -}}
-                            <span>{{ promise.politician.firstName }}</span>
-                            <span>{{ promise.politician.lastName }}</span>
+                            <span itemprop="givenName">{{ promise.politician.firstName }}</span>
+                            <span itemprop="familyName">{{ promise.politician.lastName }}</span>
                             {{- "" -}}
                         </a><br>
                         <span>{{ 'title._promised'|trans }}</span>
@@ -75,7 +93,7 @@
                         </sup>
                     </div>
                 {% endif %}
-                <h1 class="h2">{{ promise.name }}</h1>
+                <h1 class="h2" itemprop="headline">{{ promise.name }}</h1>
                 <div class="position-relative">
                     <div class="py-5 py-lg-0">
                         {% if promise.status %}
@@ -96,6 +114,7 @@
                             {% for category in promise.categories %}
                                 <span
                                     class="badge badge-info{% if not loop.first %} ml-3{% endif %}"
+                                    itemprop="genre"
                                 >{{ category.name }}</span>
                             {% endfor %}
                         </div>
@@ -107,7 +126,7 @@
                     {% endif %}
                 </div>
                 {% if has_description %}
-                    <div class="my-3 raw-html text-border">{{ promise.description|raw }}</div>
+                    <div class="my-3 raw-html text-border" itemprop="description">{{ promise.description|raw }}</div>
                 {% endif %}
                 {% if mandate %}
                     <div class="py-1 px-3 d-inline-block alert alert-{{ promise.hasPrerogatives ? "success" : "warning" }}">
@@ -173,7 +192,10 @@
                                             title="{{ promiseUpdate.action.occurredTime|ago }}"
                                             class="badge badge-primary align-bottom"
                                         >
-                                            <time>{{ promiseUpdate.action.occurredTime|date }}</time>
+                                            <time
+                                                itemprop="endTime"
+                                                datetime="{{ promiseUpdate.action.occurredTime|date(constant('App\\Consts::TWIG_SCHEMA_DATE_FORMAT')) }}"
+                                            >{{ promiseUpdate.action.occurredTime|date }}</time>
                                         </samp>
                                     </p>
                                     <div>
@@ -195,11 +217,15 @@
                             {% set content %}
                                 <h4
                                     class="mb-{{ has_description ? '3' : '0' }}"
+                                    itemprop="name"
                                 >{{ promiseUpdate.action.name }}</h4>
                                 <div>
                                     {% if promiseUpdate.action.usedPowers is not empty %}
                                         {% for power in promiseUpdate.action.usedPowers %}
-                                            <span class="badge badge-info align-top mb-3">{{ power.name }}</span>
+                                            <span
+                                                class="badge badge-info align-top mb-3"
+                                                itemprop="instrument"
+                                            >{{ power.name }}</span>
                                         {% endfor %}
                                     {% endif %}
                                 </div>
@@ -210,6 +236,7 @@
                                 {% if has_description %}
                                     <div
                                         class="raw-html"
+                                        itemprop="description"
                                     >{{ promiseUpdate.action.description|raw }}</div>
                                 {% endif %}
                                 {% if promiseUpdate.action.sources is not empty %}
@@ -219,8 +246,17 @@
                                 {% endif %}
                                 <div class="py-5"></div>
                             {% endset %}
-                            <div class="position-relative">
+                            <div
+                                class="position-relative"
+                                itemscope
+                                itemtype="https://schema.org/AchieveAction"
+                                itemid="#action-{{ promiseUpdate.action.id }}"
+                            >
                                 <a name="action-{{ promiseUpdate.action.id }}" class="anchor"></a>
+
+                                <link itemprop="object" href="{{ path('promise', {'slug': promise.slug}) }}">
+                                <link itemprop="agent" href="{{ path("politician", {"slug": promise.politician.slug}) }}"/>
+
                                 {% include "app/component/block/timeline/segment-dot.html.twig" with {
                                     header: header,
                                     content: content
@@ -262,6 +298,7 @@
                 target="_blank"
                 rel="nofollow"
                 class="badge badge-light badge-wrap"
+                itemprop="url"
             >{{ source.name }}</a>
         {% endfor %}
     </div>

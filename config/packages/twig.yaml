@@ -7,7 +7,7 @@ twig:
         timezone: Europe/Chisinau
     globals:
         google_maps_api_key: '%env(GOOGLE_MAPS_API_KEY)%'
-        google_analytics_key: '%env(GOOGLE_ANALYTICS_KEY)%'
-        google_tag_manager_id: '%env(GOOGLE_TAG_MANAGER_ID)%'
+        google_analytics_key: '%env(default::GOOGLE_ANALYTICS_KEY)%'
+        google_tag_manager_id: '%env(default::GOOGLE_TAG_MANAGER_ID)%'
         competence_use_multiplication_factor: !php/const App\Consts::COMPETENCE_USE_MULTIPLICATION_FACTOR
         org_name: '%app_org_name%'

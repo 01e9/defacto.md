@@ -11,6 +11,12 @@ use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * @method Promise|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Promise|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Promise[]    findAll()
+ * @method Promise[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ */
 class PromiseRepository extends ServiceEntityRepository
 {
     private $paginator;

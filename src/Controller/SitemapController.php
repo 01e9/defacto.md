@@ -145,6 +145,7 @@ class SitemapController extends AbstractController
     {
         $promises = $this->promiseRepository->createQueryBuilder('p')
             ->select('p')
+            ->where('p.published = true')
             ->orderBy('p.madeTime', 'DESC')
             ->getQuery()
             ->getResult();

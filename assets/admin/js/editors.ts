@@ -76,15 +76,18 @@ class MyUploadAdapter {
     }
 
     _sendRequest() {
-        const data = new FormData();
-        data.append('image', this.loader.file);
+        this.loader.file.then(image => {
+            const data = new FormData();
 
-        this.xhr.send(data);
+            data.append('image', image);
+
+            this.xhr.send(data);
+        });
     }
 }
 
 function MyCustomUploadAdapterPlugin(editor) {
-    editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
+    editor.plugins.get('FileRepository').createUploadAdapter = loader => {
         return new MyUploadAdapter(loader);
     };
 }

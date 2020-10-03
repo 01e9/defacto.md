@@ -1,5 +1,4 @@
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic/build/ckeditor"
-import "@ckeditor/ckeditor5-build-classic/build/translations/ro"
+import ClassicEditor from "../ckeditor/build/ckeditor";
 import { LANG } from "../../config";
 
 export function initElementEditors(element) {
@@ -8,7 +7,7 @@ export function initElementEditors(element) {
             extraPlugins: [ MyCustomUploadAdapterPlugin, ],
             toolbar: [
                 'heading',
-                '|', 'bold', 'italic', 'blockQuote', 'link', 'bulletedList', 'numberedList', 'imageUpload', 'insertTable',
+                '|', 'bold', 'italic', 'blockQuote', 'link', 'bulletedList', 'numberedList', 'imageUpload', 'horizontalLine', 'insertTable',
                 '|', 'undo', 'redo'
             ],
             language: 'ro'

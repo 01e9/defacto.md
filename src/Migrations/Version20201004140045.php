@@ -8,14 +8,19 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20200813130129 extends AbstractMigration
+final class Version20201004140045 extends AbstractMigration
 {
     public function up(Schema $schema) : void
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'postgresql', 'Migration can only be executed safely on \'postgresql\'.');
 
-        $this->addSql('ALTER TABLE competence_categories ADD description VARCHAR(250) DEFAULT NULL');
+        $this->addSql(<<<SQL
+INSERT INTO blog_categories (id, slug, name) VALUES
+    ('a03dc1ca-6ce9-4df7-958f-f3c269899dd7', 'rapoarte', 'Rapoarte'),
+    ('b8d1a2be-4cbb-4e3d-ade9-7371b439a0a4', 'pliante', 'Pliante')
+SQL
+        );
     }
 
     public function down(Schema $schema) : void
@@ -23,6 +28,6 @@ final class Version20200813130129 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'postgresql', 'Migration can only be executed safely on \'postgresql\'.');
 
-        $this->addSql('ALTER TABLE competence_categories DROP description');
+        $this->addSql('-- "VOID"');
     }
 }

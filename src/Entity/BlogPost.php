@@ -50,6 +50,13 @@ class BlogPost
     private $slug;
 
     /**
+     * note: can't use fetch="EAGER" because of form unable to save select value to NULL
+     * @ORM\ManyToOne(targetEntity="App\Entity\BlogCategory", inversedBy="posts")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $category;
+
+    /**
      * @var string
      * @ORM\Column(type="text")
      *
@@ -83,6 +90,18 @@ class BlogPost
     public function setSlug(string $slug): self
     {
         $this->slug = $slug;
+
+        return $this;
+    }
+
+    public function getCategory(): ?BlogCategory
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?BlogCategory $category): self
+    {
+        $this->category = $category;
 
         return $this;
     }

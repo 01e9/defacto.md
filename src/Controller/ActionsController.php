@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Consts;
 use App\Entity\Election;
 use App\Entity\Politician;
 use App\Repository\ElectionRepository;
@@ -92,8 +93,8 @@ class ActionsController extends AbstractController
 
         $actions = $this->paginator->paginate(
             $actionsQuery,
-            $request->query->getInt('page', 1), // fixme: hardcode
-            9 // fixme: hardcode
+            $request->query->getInt(Consts::QUERY_PARAM_PAGE, 1),
+            Consts::PAGINATION_SIZE_ACTIONS
         );
 
         return $this->render('app/page/actions.html.twig', [

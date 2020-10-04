@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Consts;
+use App\Repository\BlogCategoryRepository;
 use App\Repository\BlogPostRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -10,16 +12,19 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class BlogController extends AbstractController
 {
-    private $paginator;
-    private $blogPostRepository;
+    private PaginatorInterface $paginator;
+    private BlogPostRepository $blogPostRepository;
+    private BlogCategoryRepository $blogCategoryRepository;
 
     public function __construct(
         PaginatorInterface $paginator,
-        BlogPostRepository $blogPostRepository
+        BlogPostRepository $blogPostRepository,
+        BlogCategoryRepository $blogCategoryRepository
     )
     {
         $this->paginator = $paginator;
         $this->blogPostRepository = $blogPostRepository;
+        $this->blogCategoryRepository = $blogCategoryRepository;
     }
 
     /**
@@ -35,15 +40,22 @@ class BlogController extends AbstractController
         $blogPostsQuery = $this->blogPostRepository->createQueryBuilder('p')
             ->andWhere('p.publishTime IS NOT NULL')
             ->orderBy('p.publishTime', 'DESC');
+        if ($categorySlug = $request->query->get(Consts::QUERY_PARAM_CATEGORY)) {
+            $blogPostsQuery
+                ->innerJoin('p.category', 'pc', 'WITH', 'pc.slug = :categorySlug')
+                ->setParameter('categorySlug', $categorySlug)
+            ;
+        }
 
         $blogPosts = $this->paginator->paginate(
             $blogPostsQuery,
-            $request->query->getInt('page', 1), // fixme: hardcode
-            12 // fixme: hardcode
+            $request->query->getInt(Consts::QUERY_PARAM_PAGE, 1),
+            Consts::PAGINATION_SIZE_BLOG
         );
 
         return $this->render('app/page/blog.html.twig', [
             'blogPosts' => $blogPosts,
+            'categories' => $this->blogCategoryRepository->findWithPosts(),
         ]);
     }
 
@@ -58,7 +70,7 @@ class BlogController extends AbstractController
     public function viewAction(Request $request, string $slug)
     {
         $blogPost = $this->blogPostRepository->findOneBy(['slug' => $slug]);
-        if (!$blogPost) {
+        if (!$blogPost || !$blogPost->getPublishTime()) {
             throw $this->createNotFoundException();
         }
 

@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Consts;
 use App\Entity\BlogPost;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Knp\Component\Pager\Pagination\AbstractPagination;
@@ -32,8 +33,8 @@ class BlogPostRepository extends ServiceEntityRepository
 
         return $this->paginator->paginate(
             $query,
-            $request->query->getInt('page', 1), // fixme: hardcode
-            10 // fixme: hardcode
+            $request->query->getInt(Consts::QUERY_PARAM_PAGE, 1),
+            Consts::ADMIN_PAGINATION_SIZE_BLOG
         );
     }
 

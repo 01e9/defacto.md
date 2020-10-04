@@ -57,11 +57,20 @@
                                             <time
                                                 itemprop="datePublished"
                                                 datetime="{{ blogPost.publishTime|date(constant('App\\Consts::TWIG_SCHEMA_DATE_FORMAT')) }}"
-                                            >{{ blogPost.publishTime|date }}</time>
+                                                class="text-success"
+                                            ><samp>{{ blogPost.publishTime|date }}</samp></time>
                                             <meta
                                                 itemprop="dateModified"
                                                 content="{{ blogPost.publishTime|date(constant('App\\Consts::TWIG_SCHEMA_DATE_FORMAT')) }}"
                                             >
+
+                                            {% if blogPost.category %}
+                                                <a
+                                                    class="ml-3"
+                                                    href="{{ path('blog') }}?{{ constant('App\\Consts::QUERY_PARAM_CATEGORY') }}={{ blogPost.category.slug|escape('html_attr') }}"
+                                                >{{ blogPost.category.name }}</a>
+                                                <meta itemprop="genre" content="{{ blogPost.category.name|escape('html_attr') }}">
+                                            {% endif %}
                                         </small>
                                     </p>
                                     <div

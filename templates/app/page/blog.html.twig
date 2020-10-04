@@ -1,4 +1,8 @@
+{# @var array blogPosts #}
+{# @var array categories #}
+
 {% extends 'app/base.html.twig' %}
+
 {% import 'app/macros.html.twig' as app_macros %}
 {% import 'macros.html.twig' as macros %}
 
@@ -13,11 +17,33 @@
 {% endblock %}
 
 {% set max_title_length = 50 %}
+{% set selectedCategorySlug = app.request.query.get(constant('App\\Consts::QUERY_PARAM_CATEGORY')) %}
 
 {% block main %}
     <main class="container-fluid bg-light-pattern pt-4 pb-5">
         <header>
             <h1 class="text-center mb-4">{{ "title.blog"|trans }}</h1>
+
+            {% if categories|length %}
+                <div class="row">
+                    <div class="col text-center mb-4 py-3 bg-dark-pattern">
+                        <h5 class="text-white mb-3">{{ "label.categories"|trans }}</h5>
+
+                        {% for category in categories %}
+                            {% set isSelected = selectedCategorySlug == category.slug %}
+                            <a
+                                href="{{ path('blog') }}{%
+                                    if not isSelected %}?{{ constant('App\\Consts::QUERY_PARAM_CATEGORY') }}={{ category.slug|escape('html_attr') }}{% endif
+                                %}"
+                                class="btn btn-sm{%
+                                    if isSelected %} btn-info{% else %} btn-outline-info{% endif
+                                %}{%
+                                    if not loop.last %} mr-3{% endif %}"
+                            >{{ category.name }}</a>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
         </header>
         {% if blogPosts is empty %}
             <div class="row">
@@ -26,7 +52,7 @@
                 </div>
             </div>
         {% else %}
-            <div class="row">
+            <div class="row justify-content-center">
                 {% for blogPost in blogPosts %}
                     <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
                         <div class="card mb-3">
@@ -53,7 +79,16 @@
                                     >{{ blogPost.title|truncate(max_title_length, true) }}</a>
                                 </h2>
                                 <div>
-                                    <samp class="small text-muted">{{ blogPost.publishTime|date }}</samp>
+                                    <small>
+                                        <samp class="text-success">{{ blogPost.publishTime|date }}</samp>
+
+                                        {% if blogPost.category and blogPost.category.slug != selectedCategorySlug %}
+                                            <a
+                                                class="ml-3"
+                                                href="{{ path('blog') }}?{{ constant('App\\Consts::QUERY_PARAM_CATEGORY') }}={{ blogPost.category.slug|escape('html_attr') }}"
+                                            >{{ blogPost.category.name }}</a>
+                                        {% endif %}
+                                    </small>
                                 </div>
                             </div>
                         </div>

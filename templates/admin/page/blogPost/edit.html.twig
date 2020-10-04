@@ -10,7 +10,8 @@
                 {title: 'title.blog'|trans, link: path('admin_blog_posts')}
             ],
             current: {title: 'title.blog_post_edit'|trans},
-            add: {link: path('admin_blog_post_add'), text: 'action.add_blog_post'|trans}
+            add: {link: path('admin_blog_post_add'), text: 'action.add_blog_post'|trans},
+            frontendLink: path("blog_post", {slug: blogPost.slug})
         } only %}
 
         {% include 'admin/component/form/blogPost.html.twig' with {form: form, blogPost: blogPost} only %}

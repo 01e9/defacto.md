@@ -92,6 +92,7 @@ label:
     mandate: Mandat
     status: Statut
     published: Publicat(ă)
+    not_published: Ascuns(ă)
     hasPrerogatives: Are prerogative
     doesNotHavePrerogatives: Nu are prerogative
     category: Categoria
@@ -315,6 +316,7 @@ placeholder:
     search: Căutare
     keywords: Cuvinte cheie
     no_status: Fără statut
+    no_category: Fără categorie
     no_promise_update: Nu schimbă statutul
     no_mandate_politician: Neales încă
     no_constituency: Fără circumscripție

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Consts;
 use App\Repository\ElectionRepository;
 use App\Repository\MandateCompetenceCategoryStatsRepository;
 use App\Repository\MandateRepository;
@@ -46,8 +47,8 @@ class MandatesController extends AbstractController
 
         $mandates = $this->paginator->paginate(
             $query,
-            $request->query->getInt('page', 1), // fixme: hardcode
-            20 // fixme: hardcode
+            $request->query->getInt(Consts::QUERY_PARAM_PAGE, 1),
+            Consts::PAGINATION_SIZE_MANDATES
         );
 
         $firstMandateRank = ($firstMandate = $mandates->getItems()[0] ?? null)

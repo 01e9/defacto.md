@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Consts;
 use App\Entity\BlogPost;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -15,6 +16,8 @@ use Symfony\Component\Validator\Constraints\File;
 
 class BlogPostType extends AbstractType
 {
+    const OPTION_CATEGORIES = 'categories';
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -48,13 +51,26 @@ class BlogPostType extends AbstractType
                         'mimeTypes' => ["image/jpeg", "image/png", "image/gif"],
                     ])
                 ],
-            ]);
+            ])
+            ->add('category', ChoiceType::class, [
+                'label' => 'label.category',
+                'placeholder' => 'placeholder.no_category',
+                'choices' => $options['categories'],
+                'choice_value' => 'id',
+                'required' => false,
+            ])
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
-            'data_class' => BlogPost::class,
-        ]);
+        $resolver
+            ->setDefaults([
+                'data_class' => BlogPost::class,
+            ])
+            ->setDefined([self::OPTION_CATEGORIES])
+            ->addAllowedTypes(self::OPTION_CATEGORIES, 'array')
+            ->setRequired([self::OPTION_CATEGORIES])
+        ;
     }
 }

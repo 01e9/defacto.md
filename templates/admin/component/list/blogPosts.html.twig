@@ -1,9 +1,38 @@
+{% import 'macros.html.twig' as macros %}
+
 <div class="list-group list-group-flush">
     {% for blogPost in pagination %}
         <a class="list-group-item list-group-item-action" href="{{ path('admin_blog_post_edit', {id: blogPost.id}) }}">
-            <h5 {% if not blogPost.publishTime %}class="text-muted font-italic"{% endif %}>
-                {{ blogPost.title }}
-            </h5>
+            <div class="row">
+                <div class="col-12 col-md-auto mb-3 mb-md-0">
+                    <div class="ratio-16-9 overflow-hidden" style="width: 7rem;">
+                        <img
+                            class="content-no-height rounded-top d-block"
+                            src="{{ macros.blog_image_url(blogPost) }}"
+                            alt="Image"
+                        >
+                    </div>
+                </div>
+                <div class="col-12 col-md">
+                    <h4>{{ blogPost.title }}</h4>
+                    <div>
+                        <samp class="small text-{% if blogPost.publishTime %}success{% else %}muted{% endif %}">
+                            {% if blogPost.publishTime %}
+                                {{ blogPost.publishTime|date }}
+                            {% else %}
+                                {{ "label.not_published"|trans }}
+                            {% endif %}
+                        </samp>
+                        <span class="ml-3 badge badge-{% if blogPost.category %}info{% else %}light{% endif %}">
+                            {% if blogPost.category %}
+                                {{ blogPost.category.name }}
+                            {% else %}
+                                {{ "placeholder.no_category"|trans }}
+                            {% endif %}
+                        </span>
+                    </div>
+                </div>
+            </div>
         </a>
     {% endfor %}
 

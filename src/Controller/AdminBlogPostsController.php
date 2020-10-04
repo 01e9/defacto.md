@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\BlogPost;
 use App\Form\BlogPostDeleteType;
 use App\Form\BlogPostType;
+use App\Repository\BlogCategoryRepository;
 use App\Repository\BlogPostRepository;
 use App\Service\EntityFileUploader;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -24,13 +25,16 @@ class AdminBlogPostsController extends AbstractController
 {
     private EntityFileUploader $entityFileUploader;
     private BlogPostRepository $blogPostsRepository;
+    private BlogCategoryRepository $blogCategoryRepository;
 
     public function __construct(
         BlogPostRepository $blogPostsRepository,
+        BlogCategoryRepository $blogCategoryRepository,
         EntityFileUploader $entityFileUploader
     )
     {
         $this->blogPostsRepository = $blogPostsRepository;
+        $this->blogCategoryRepository = $blogCategoryRepository;
         $this->entityFileUploader = $entityFileUploader;
     }
 
@@ -54,7 +58,9 @@ class AdminBlogPostsController extends AbstractController
     {
         $blogPost = new BlogPost();
 
-        $form = $this->createForm(BlogPostType::class, $blogPost, []);
+        $form = $this->createForm(BlogPostType::class, $blogPost, [
+            'categories' => $this->blogCategoryRepository->getAdminChoices(),
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -92,7 +98,9 @@ class AdminBlogPostsController extends AbstractController
             throw $this->createNotFoundException();
         }
 
-        $form = $this->createForm(BlogPostType::class, $blogPost, []);
+        $form = $this->createForm(BlogPostType::class, $blogPost, [
+            'categories' => $this->blogCategoryRepository->getAdminChoices(),
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

@@ -21,6 +21,11 @@
     <div class="col-lg-3">
         <div class="row">
             <div class="col">
+                {{ form_row(form.category) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
                 {{ form_row(form.publishTime, {
                     'type': 'text',
                     'attr': {'class': 'datepicker-input'}
@@ -36,8 +41,8 @@
     </div>
 </div>
 
-<div class="row">
-    <div class="col-lg-2">
+<div class="row mt-4">
+    <div class="col-lg-3">
         {% include 'admin/component/form/field/photo.html.twig' with {
             field: form.imageUpload,
             imagePath: (blogPost is defined and blogPost.image)

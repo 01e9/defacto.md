@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Consts;
 use App\Entity\Election;
 use App\Entity\Mandate;
 use App\Entity\Politician;
@@ -102,8 +103,8 @@ class PromisesController extends AbstractController
 
         $promises = $this->paginator->paginate(
             $promisesQuery,
-            $request->query->getInt('page', 1), // fixme: hardcode
-            9 // fixme: hardcode
+            $request->query->getInt(Consts::QUERY_PARAM_PAGE, 1),
+            Consts::PAGINATION_SIZE_PROMIES
         );
 
         return $this->render('app/page/promises.html.twig', [

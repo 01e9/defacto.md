@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Consts;
 use App\Data\Filter\PromisesFilterData;
 use App\Entity\Promise;
 use App\Entity\Mandate;
@@ -68,8 +69,8 @@ class PromiseRepository extends ServiceEntityRepository
 
         return $this->paginator->paginate(
             $query,
-            $request->query->getInt('page', 1), // fixme: hardcode
-            10 // fixme: hardcode
+            $request->query->getInt(Consts::QUERY_PARAM_PAGE, 1),
+            Consts::ADMIN_PAGINATION_SIZE_PROMISES
         );
     }
 

@@ -10,7 +10,8 @@
                 {title: 'title.politicians'|trans, link: path('admin_politicians')}
             ],
             current: {title: 'title.politician_edit'|trans},
-            add: {link: path('admin_politician_add'), text: 'action.add_politician'|trans}
+            add: {link: path('admin_politician_add'), text: 'action.add_politician'|trans},
+            frontendLink: path("politician", {slug: politician.slug})
         } only %}
 
         {% include 'admin/component/form/politician.html.twig' with {form: form, politician: politician} only %}

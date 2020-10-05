@@ -104,7 +104,7 @@ class PromisesController extends AbstractController
         $promises = $this->paginator->paginate(
             $promisesQuery,
             $request->query->getInt(Consts::QUERY_PARAM_PAGE, 1),
-            Consts::PAGINATION_SIZE_PROMIES
+            Consts::PAGINATION_SIZE_PROMISES
         );
 
         return $this->render('app/page/promises.html.twig', [

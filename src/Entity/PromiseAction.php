@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\PromiseActionRepository")
@@ -14,6 +15,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *      @ORM\UniqueConstraint(name="promise_action_unique_slug", columns={"slug"})
  *     }
  * )
+ *
+ * @UniqueEntity(fields={"slug"})
  */
 class PromiseAction
 {

@@ -61,7 +61,7 @@ class BlogPost
      * @ORM\Column(type="text")
      *
      * @Assert\NotBlank()
-     * @Assert\Length(min="100", max="10000")
+     * @Assert\Length(min="100", max="60000")
      */
     private $content;
 

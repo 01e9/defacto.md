@@ -46,7 +46,7 @@ class ExceptionSubscriber implements EventSubscriberInterface
 
     public function redirectToLocale(GetResponseForExceptionEvent $event)
     {
-        if (!$event->getException() instanceof NotFoundHttpException) {
+        if (!$event->getThrowable() instanceof NotFoundHttpException) {
             return;
         }
 

@@ -6,7 +6,7 @@ use App\Consts;
 use App\Entity\BlogPost;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Knp\Component\Pager\Pagination\AbstractPagination;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Knp\Component\Pager\PaginatorInterface;
 
@@ -20,7 +20,7 @@ class BlogPostRepository extends ServiceEntityRepository
 {
     private $paginator;
 
-    public function __construct(RegistryInterface $registry, PaginatorInterface $paginator)
+    public function __construct(ManagerRegistry $registry, PaginatorInterface $paginator)
     {
         parent::__construct($registry, BlogPost::class);
 

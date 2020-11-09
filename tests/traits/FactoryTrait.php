@@ -23,7 +23,7 @@ use App\Entity\PromiseSource;
 use App\Entity\PromiseUpdate;
 use App\Entity\Status;
 use App\Entity\Title;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use App\Tests\traits\UtilsTrait;
 
 trait FactoryTrait

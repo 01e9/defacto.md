@@ -62,7 +62,7 @@ class AdminMandatesControllerTest extends WebTestCase
         $client->submit($form, $formData);
         $route = $this->assertRedirectsToRoute($client->getResponse(), 'admin_mandate_edit');
 
-        $em->clear('App:Mandate');
+        $em->clear();
         /** @var Mandate $mandate */
         $mandate = $em->getRepository('App:Mandate')->find($route['id']);
 
@@ -78,6 +78,7 @@ class AdminMandatesControllerTest extends WebTestCase
 
     public function testEditActionAccess()
     {
+        static::ensureKernelShutdown();
         $client = static::createClient();
         $client->insulate();
         $em = self::getDoctrine($client);
@@ -125,7 +126,7 @@ class AdminMandatesControllerTest extends WebTestCase
         $client->submit($form, $formData);
         $this->assertRedirectsToRoute($client->getResponse(), 'admin_mandate_edit');
 
-        $em->clear('App:Mandate');
+        $em->clear();
         /** @var Mandate $mandate */
         $mandate = $em->getRepository('App:Mandate')->find($mandate->getId());
 
@@ -141,6 +142,7 @@ class AdminMandatesControllerTest extends WebTestCase
 
     public function testDeleteActionAccess()
     {
+        static::ensureKernelShutdown();
         $client = static::createClient();
         $client->insulate();
         $em = self::getDoctrine($client);
@@ -165,7 +167,7 @@ class AdminMandatesControllerTest extends WebTestCase
         $client->submit($form);
         $this->assertRedirectsToRoute($client->getResponse(), 'admin_mandates');
 
-        $em->clear('App:Mandate');
+        $em->clear();
         /** @var Mandate $mandate */
         $mandate = $em->getRepository('App:Mandate')->find($mandate->getId());
 

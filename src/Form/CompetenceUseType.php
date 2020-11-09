@@ -57,6 +57,7 @@ class CompetenceUseType extends AbstractType
                 'label' => 'label.use_date',
                 'widget' => 'single_text',
                 'format' => Consts::DATE_FORMAT_INTL,
+                'html5' => false,
             ])
             ->add('isMultiplied', CheckboxType::class, [
                 'label' => 'label.is_multiplied',

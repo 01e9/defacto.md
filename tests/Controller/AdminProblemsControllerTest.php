@@ -5,7 +5,7 @@ namespace App\Tests\Controller;
 use App\Entity\Problem;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use App\Tests\TestCaseTrait;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 
 class AdminProblemsControllerTest extends WebTestCase
 {
@@ -58,7 +58,7 @@ class AdminProblemsControllerTest extends WebTestCase
         $client->submit($form, $formData);
         $route = $this->assertRedirectsToRoute($client->getResponse(), 'admin_problem_edit');
 
-        $em->clear('App:Problem');
+        $em->clear();
         /** @var Problem $problem */
         $problem = $em->getRepository('App:Problem')->find($route['id']);
 
@@ -75,6 +75,7 @@ class AdminProblemsControllerTest extends WebTestCase
 
     public function testEditActionAccess()
     {
+        static::ensureKernelShutdown();
         $client = static::createClient();
         $client->insulate();
 
@@ -120,7 +121,7 @@ class AdminProblemsControllerTest extends WebTestCase
         $client->submit($form, $formData);
         $this->assertRedirectsToRoute($client->getResponse(), 'admin_problem_edit');
 
-        $em->clear('App:Problem');
+        $em->clear();
         /** @var Problem $problem */
         $problem = $em->getRepository('App:Problem')->find($problem->getId());
 
@@ -137,6 +138,7 @@ class AdminProblemsControllerTest extends WebTestCase
 
     public function testDeleteActionAccess()
     {
+        static::ensureKernelShutdown();
         $client = static::createClient();
         $client->insulate();
 
@@ -162,7 +164,7 @@ class AdminProblemsControllerTest extends WebTestCase
         $client->submit($form);
         $this->assertRedirectsToRoute($client->getResponse(), 'admin_problems');
 
-        $em->clear('App:Problem');
+        $em->clear();
         /** @var Problem $problem */
         $problem = $em->getRepository('App:Problem')->find($problem->getId());
 

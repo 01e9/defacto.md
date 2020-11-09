@@ -5,7 +5,7 @@ namespace App\Tests\Controller;
 use App\Entity\Politician;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use App\Tests\TestCaseTrait;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class AdminPoliticiansControllerTest extends WebTestCase
@@ -107,6 +107,7 @@ class AdminPoliticiansControllerTest extends WebTestCase
 
     public function testEditActionAccess()
     {
+        static::ensureKernelShutdown();
         $client = static::createClient();
         $client->insulate();
 
@@ -153,7 +154,7 @@ class AdminPoliticiansControllerTest extends WebTestCase
         $client->submit($form, $formData);
         $this->assertRedirectsToRoute($client->getResponse(), 'admin_politician_edit');
 
-        $em->clear('App:Politician');
+        $em->clear();
         $politician = $em->getRepository('App:Politician')->find($politician->getId());
 
         $this->assertNotNull($politician);
@@ -186,7 +187,7 @@ class AdminPoliticiansControllerTest extends WebTestCase
         $client = self::createAdminClient();
         $em = self::getDoctrine($client);
 
-        $em->clear('App:Politician');
+        $em->clear();
         $politician = $em->getRepository('App:Politician')->find($politician->getId());
 
         $this->assertNotNull($politician);
@@ -203,6 +204,7 @@ class AdminPoliticiansControllerTest extends WebTestCase
 
     public function testDeleteActionAccess()
     {
+        static::ensureKernelShutdown();
         $client = static::createClient();
         $client->insulate();
 
@@ -228,7 +230,7 @@ class AdminPoliticiansControllerTest extends WebTestCase
         $client->submit($form);
         $this->assertRedirectsToRoute($client->getResponse(), 'admin_politicians');
 
-        $em->clear('App:Politician');
+        $em->clear();
         /** @var Politician $politician */
         $politician = $em->getRepository('App:Politician')->find($politician->getId());
 

@@ -15,6 +15,7 @@ class BlogControllerTest extends WebTestCase
 
         $this->resetDb();
 
+        static::ensureKernelShutdown();
         $client = static::createClient();
         $client->insulate();
 
@@ -37,6 +38,7 @@ class BlogControllerTest extends WebTestCase
 
     public function testIndexActionWithPagination()
     {
+        static::ensureKernelShutdown();
         $client = static::createClient();
         $client->insulate();
 
@@ -60,6 +62,7 @@ class BlogControllerTest extends WebTestCase
 
     public function testViewAction()
     {
+        static::ensureKernelShutdown();
         $client = static::createClient();
         $client->insulate();
 

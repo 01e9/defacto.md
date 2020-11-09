@@ -46,6 +46,7 @@ class ConstituencyCandidateType extends AbstractType
                 'label' => 'label.registration_date',
                 'widget' => 'single_text',
                 'format' => Consts::DATE_FORMAT_INTL,
+                'html5' => false,
                 'required' => false,
             ])
             ->add('registrationLink', TextType::class, [

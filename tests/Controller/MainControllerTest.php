@@ -11,6 +11,7 @@ class MainControllerTest extends WebTestCase
 
     public function testHomeAction()
     {
+        static::ensureKernelShutdown();
         $client = static::createClient();
         $client->insulate();
 

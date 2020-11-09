@@ -45,6 +45,7 @@ class PoliticianType extends AbstractType
                 'label' => 'label.birth_date',
                 'widget' => 'single_text',
                 'format' => Consts::DATE_FORMAT_INTL,
+                'html5' => false,
                 'required' => false,
             ])
             ->add('studies', TextareaType::class, [

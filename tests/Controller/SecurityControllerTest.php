@@ -12,6 +12,8 @@ class SecurityControllerTest extends WebTestCase
     public function testLogin()
     {
         $path = '/login';
+
+        static::ensureKernelShutdown();
         $client = static::createClient();
         $client->insulate();
 

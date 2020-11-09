@@ -7,7 +7,7 @@ use App\Entity\MandateCompetenceCategoryStats;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @method MandateCompetenceCategoryStats|null find($id, $lockMode = null, $lockVersion = null)
@@ -19,7 +19,7 @@ class MandateCompetenceCategoryStatsRepository extends ServiceEntityRepository
 {
     private CompetenceCategoryRepository $competenceCategoryRepository;
 
-    public function __construct(RegistryInterface $registry, CompetenceCategoryRepository $competenceCategoryRepository)
+    public function __construct(ManagerRegistry $registry, CompetenceCategoryRepository $competenceCategoryRepository)
     {
         parent::__construct($registry, MandateCompetenceCategoryStats::class);
 

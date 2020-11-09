@@ -7,7 +7,7 @@ use App\Entity\Constituency;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use App\Tests\TestCaseTrait;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 
 class AdminConstituenciesControllerTest extends WebTestCase
 {
@@ -77,6 +77,7 @@ class AdminConstituenciesControllerTest extends WebTestCase
 
     public function testEditActionAccess()
     {
+        static::ensureKernelShutdown();
         $client = static::createClient();
         $client->insulate();
 
@@ -123,7 +124,7 @@ class AdminConstituenciesControllerTest extends WebTestCase
 
         $this->assertRedirectsToRoute($client->getResponse(), 'admin_constituency_edit');
 
-        $em->clear('App:Constituency');
+        $em->clear();
         /** @var Constituency $constituency */
         $constituency = $em->getRepository('App:Constituency')->find($constituency->getId());
 
@@ -179,7 +180,7 @@ class AdminConstituenciesControllerTest extends WebTestCase
 
         $this->assertRedirectsToRoute($client->getResponse(), 'admin_constituency_edit');
 
-        $em->clear('App:Constituency');
+        $em->clear();
         /** @var Constituency $constituency */
         $constituency = $em->getRepository('App:Constituency')->find($constituency->getId());
 
@@ -209,7 +210,7 @@ class AdminConstituenciesControllerTest extends WebTestCase
 
         $this->assertRedirectsToRoute($client->getResponse(), 'admin_constituency_edit');
 
-        $em->clear('App:Constituency');
+        $em->clear();
         /** @var Constituency $constituency */
         $constituency = $em->getRepository('App:Constituency')->find($constituency->getId());
 
@@ -268,7 +269,7 @@ class AdminConstituenciesControllerTest extends WebTestCase
 
         $this->assertRedirectsToRoute($client->getResponse(), 'admin_constituency_edit');
 
-        $em->clear('App:Constituency');
+        $em->clear();
         /** @var Constituency $constituency */
         $constituency = $em->getRepository('App:Constituency')->find($constituency->getId());
 
@@ -298,7 +299,7 @@ class AdminConstituenciesControllerTest extends WebTestCase
 
         $this->assertRedirectsToRoute($client->getResponse(), 'admin_constituency_edit');
 
-        $em->clear('App:Constituency');
+        $em->clear();
         /** @var Constituency $constituency */
         $constituency = $em->getRepository('App:Constituency')->find($constituency->getId());
 
@@ -365,7 +366,7 @@ class AdminConstituenciesControllerTest extends WebTestCase
 
         $this->assertRedirectsToRoute($client->getResponse(), 'admin_constituency_edit');
 
-        $em->clear('App:Constituency');
+        $em->clear();
         /** @var Constituency $constituency */
         $constituency = $em->getRepository('App:Constituency')->find($constituency->getId());
 
@@ -397,7 +398,7 @@ class AdminConstituenciesControllerTest extends WebTestCase
 
         $this->assertRedirectsToRoute($client->getResponse(), 'admin_constituency_edit');
 
-        $em->clear('App:Constituency');
+        $em->clear();
         /** @var Constituency $constituency */
         $constituency = $em->getRepository('App:Constituency')->find($constituency->getId());
 
@@ -411,6 +412,7 @@ class AdminConstituenciesControllerTest extends WebTestCase
 
     public function testDeleteActionAccess()
     {
+        static::ensureKernelShutdown();
         $client = static::createClient();
         $client->insulate();
 
@@ -436,7 +438,7 @@ class AdminConstituenciesControllerTest extends WebTestCase
         $client->submit($form);
         $this->assertRedirectsToRoute($client->getResponse(), 'admin_constituencies');
 
-        $em->clear('App:Constituency');
+        $em->clear();
         /** @var Constituency $constituency */
         $constituency = $em->getRepository('App:Constituency')->find($constituency->getId());
 

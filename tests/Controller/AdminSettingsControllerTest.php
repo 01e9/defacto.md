@@ -5,7 +5,7 @@ namespace App\Tests\Controller;
 use App\Repository\SettingRepository;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use App\Tests\TestCaseTrait;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 
 class AdminSettingsControllerTest extends WebTestCase
 {
@@ -18,6 +18,7 @@ class AdminSettingsControllerTest extends WebTestCase
 
     public function testEditActionAccess()
     {
+        static::ensureKernelShutdown();
         $client = static::createClient();
         $em = self::getDoctrine($client);
         $setting = $em->getRepository('App:Setting')->findOneBy([]);

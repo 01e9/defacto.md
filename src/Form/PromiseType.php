@@ -41,6 +41,7 @@ class PromiseType extends AbstractType
                 'label' => 'label.made_date',
                 'widget' => 'single_text',
                 'format' => Consts::DATE_FORMAT_INTL,
+                'html5' => false,
             ])
             ->add('status', ChoiceType::class, [
                 'label' => 'label.status',

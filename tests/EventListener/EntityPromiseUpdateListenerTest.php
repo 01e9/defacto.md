@@ -7,7 +7,7 @@ use App\Entity\PromiseUpdate;
 use App\Repository\PromiseActionRepository;
 use App\Repository\PromiseRepository;
 use App\Tests\TestCaseTrait;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class EntityPromiseUpdateListenerTest extends WebTestCase

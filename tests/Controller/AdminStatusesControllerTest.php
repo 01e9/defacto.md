@@ -5,7 +5,7 @@ namespace App\Tests\Controller;
 use App\Entity\Status;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use App\Tests\TestCaseTrait;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 
 class AdminStatusesControllerTest extends WebTestCase
 {
@@ -68,6 +68,7 @@ class AdminStatusesControllerTest extends WebTestCase
 
     public function testEditActionAccess()
     {
+        static::ensureKernelShutdown();
         $client = static::createClient();
         $client->insulate();
 
@@ -116,7 +117,7 @@ class AdminStatusesControllerTest extends WebTestCase
         $client->submit($form, $formData);
         $this->assertRedirectsToRoute($client->getResponse(), 'admin_status_edit');
 
-        $em->clear('App:Status');
+        $em->clear();
         /** @var Status $status */
         $status = $em->getRepository('App:Status')->find($status->getId());
 
@@ -134,6 +135,7 @@ class AdminStatusesControllerTest extends WebTestCase
 
     public function testDeleteActionAccess()
     {
+        static::ensureKernelShutdown();
         $client = static::createClient();
         $client->insulate();
 
@@ -159,7 +161,7 @@ class AdminStatusesControllerTest extends WebTestCase
         $client->submit($form);
         $this->assertRedirectsToRoute($client->getResponse(), 'admin_settings');
 
-        $em->clear('App:Status');
+        $em->clear();
         /** @var Status $status */
         $status = $em->getRepository('App:Status')->find($status->getId());
 

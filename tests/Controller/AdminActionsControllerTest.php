@@ -11,7 +11,7 @@ use App\Entity\PromiseUpdate;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use App\Tests\TestCaseTrait;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 
 class AdminActionsControllerTest extends WebTestCase
 {
@@ -153,6 +153,7 @@ class AdminActionsControllerTest extends WebTestCase
 
     public function testEditActionAccess()
     {
+        static::ensureKernelShutdown();
         $client = static::createClient();
         $client->insulate();
 
@@ -247,7 +248,7 @@ class AdminActionsControllerTest extends WebTestCase
         $client->request($form->getMethod(), $form->getUri(), $formPhpValues);
         $this->assertRedirectsToRoute($client->getResponse(), 'admin_action_edit');
 
-        $em->clear('App:PromiseAction');
+        $em->clear();
         $action = $em->getRepository('App:PromiseAction')->find($action->getId());
 
         $this->assertNotNull($action);
@@ -278,7 +279,7 @@ class AdminActionsControllerTest extends WebTestCase
         $client->request($form->getMethod(), $form->getUri(), $formPhpValues);
         $this->assertRedirectsToRoute($client->getResponse(), 'admin_action_edit');
 
-        $em->clear('App:PromiseAction');
+        $em->clear();
         $action = $em->getRepository('App:PromiseAction')->find($action->getId());
 
         $this->assertNotNull($action);
@@ -319,7 +320,7 @@ class AdminActionsControllerTest extends WebTestCase
         $client->request($form->getMethod(), $form->getUri(), $formPhpValues);
         $this->assertRedirectsToRoute($client->getResponse(), 'admin_action_edit');
 
-        $em->clear('App:PromiseAction');
+        $em->clear();
         /** @var PromiseAction $action */
         $action = $em->getRepository('App:PromiseAction')->find($action->getId());
 
@@ -351,7 +352,7 @@ class AdminActionsControllerTest extends WebTestCase
         $client->request($form->getMethod(), $form->getUri(), $formPhpValues);
         $this->assertRedirectsToRoute($client->getResponse(), 'admin_action_edit');
 
-        $em->clear('App:PromiseAction');
+        $em->clear();
         $action = $em->getRepository('App:PromiseAction')->find($action->getId());
 
         $this->assertNotNull($action);
@@ -388,7 +389,7 @@ class AdminActionsControllerTest extends WebTestCase
         $client->request($form->getMethod(), $form->getUri(), $formPhpValues);
         $this->assertRedirectsToRoute($client->getResponse(), 'admin_action_edit');
 
-        $em->clear('App:PromiseAction');
+        $em->clear();
         /** @var PromiseAction $action */
         $action = $em->getRepository('App:PromiseAction')->find($action->getId());
 
@@ -427,7 +428,7 @@ class AdminActionsControllerTest extends WebTestCase
         $client->request($form->getMethod(), $form->getUri(), $formPhpValues);
         $this->assertRedirectsToRoute($client->getResponse(), 'admin_action_edit');
 
-        $em->clear('App:PromiseAction');
+        $em->clear();
         $action = $em->getRepository('App:PromiseAction')->find($action->getId());
 
         $this->assertNotNull($action);
@@ -442,6 +443,7 @@ class AdminActionsControllerTest extends WebTestCase
 
     public function testDeleteActionAccess()
     {
+        static::ensureKernelShutdown();
         $client = static::createClient();
         $client->insulate();
 
@@ -473,7 +475,7 @@ class AdminActionsControllerTest extends WebTestCase
         $client->submit($form);
         $this->assertRedirectsToRoute($client->getResponse(), 'admin_promises');
 
-        $manager->clear('App:PromiseAction');
+        $manager->clear();
 
         /** @var Status $action */
         $action = $manager->getRepository('App:PromiseAction')->find($action->getId());

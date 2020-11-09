@@ -11,6 +11,7 @@ class PoliticiansControllerTest extends WebTestCase
 
     public function testViewAction()
     {
+        static::ensureKernelShutdown();
         $client = static::createClient();
         $client->insulate();
 

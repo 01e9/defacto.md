@@ -59,7 +59,7 @@ class AdminBlogPostsControllerTest extends WebTestCase
         $client->submit($form, $formData);
         $route = $this->assertRedirectsToRoute($client->getResponse(), 'admin_blog_post_edit');
 
-        $em->clear('App:BlogPost');
+        $em->clear();
         /** @var BlogPost $blogPost */
         $blogPost = $em->getRepository('App:BlogPost')->find($route['id']);
 
@@ -111,6 +111,7 @@ class AdminBlogPostsControllerTest extends WebTestCase
 
     public function testEditActionAccess()
     {
+        static::ensureKernelShutdown();
         $client = static::createClient();
         $client->insulate();
 
@@ -158,7 +159,7 @@ class AdminBlogPostsControllerTest extends WebTestCase
         $client->submit($form, $formData);
         $this->assertRedirectsToRoute($client->getResponse(), 'admin_blog_post_edit');
 
-        $em->clear('App:BlogPost');
+        $em->clear();
         /** @var BlogPost $blogPost */
         $blogPost = $em->getRepository('App:BlogPost')->find($blogPost->getId());
 
@@ -196,7 +197,7 @@ class AdminBlogPostsControllerTest extends WebTestCase
         $client = self::createAdminClient();
         $em = self::getDoctrine($client);
 
-        $em->clear('App:BlogPost');
+        $em->clear();
         $blogPost = $em->getRepository('App:BlogPost')->find($blogPost->getId());
 
         $this->assertNotNull($blogPost);
@@ -213,6 +214,7 @@ class AdminBlogPostsControllerTest extends WebTestCase
 
     public function testDeleteActionAccess()
     {
+        static::ensureKernelShutdown();
         $client = static::createClient();
         $client->insulate();
 
@@ -238,7 +240,7 @@ class AdminBlogPostsControllerTest extends WebTestCase
         $client->submit($form);
         $this->assertRedirectsToRoute($client->getResponse(), 'admin_blog_posts');
 
-        $em->clear('App:BlogPost');
+        $em->clear();
         /** @var BlogPost $blogPost */
         $blogPost = $em->getRepository('App:BlogPost')->find($blogPost->getId());
 

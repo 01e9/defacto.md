@@ -9,9 +9,7 @@ use App\Entity\Mandate;
 use App\Repository\Vo\ConstituencyElectionVo;
 use App\Repository\Vo\ElectionDataVo;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\AbstractQuery;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @method Election|null find($id, $lockMode = null, $lockVersion = null)
@@ -25,7 +23,7 @@ class ElectionRepository extends ServiceEntityRepository
     private ConstituencyRepository $constituencyRepository;
     private MandateRepository $mandateRepository;
 
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Election::class);
     }

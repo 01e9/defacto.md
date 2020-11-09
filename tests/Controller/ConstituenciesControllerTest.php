@@ -11,6 +11,7 @@ class ConstituenciesControllerTest extends WebTestCase
 
     public function testViewElectionAction()
     {
+        static::ensureKernelShutdown();
         $client = static::createClient();
         $client->insulate();
 

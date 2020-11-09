@@ -5,7 +5,7 @@ namespace App\Tests\Controller;
 use App\Entity\Party;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use App\Tests\TestCaseTrait;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class AdminPartiesControllerTest extends WebTestCase
@@ -60,7 +60,7 @@ class AdminPartiesControllerTest extends WebTestCase
 
         $route = $this->assertRedirectsToRoute($client->getResponse(), 'admin_party_edit');
 
-        $em->clear('App:Party');
+        $em->clear();
         /** @var Party $party */
         $party = $em->getRepository('App:Party')->find($route['id']);
 
@@ -112,6 +112,7 @@ class AdminPartiesControllerTest extends WebTestCase
 
     public function testEditActionAccess()
     {
+        static::ensureKernelShutdown();
         $client = static::createClient();
         $client->insulate();
         $em = self::getDoctrine($client);
@@ -202,6 +203,7 @@ class AdminPartiesControllerTest extends WebTestCase
 
     public function testDeleteActionAccess()
     {
+        static::ensureKernelShutdown();
         $client = static::createClient();
         $client->insulate();
 
@@ -227,7 +229,7 @@ class AdminPartiesControllerTest extends WebTestCase
         $client->submit($form);
         $this->assertRedirectsToRoute($client->getResponse(), 'admin_parties');
 
-        $em->clear('App:Party');
+        $em->clear();
         /** @var Party $party */
         $party = $em->getRepository('App:Party')->find($party->getId());
 

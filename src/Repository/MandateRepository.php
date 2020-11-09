@@ -11,7 +11,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Query\Expr;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 /**
  * @method Mandate|null find($id, $lockMode = null, $lockVersion = null)
@@ -24,7 +24,7 @@ class MandateRepository extends ServiceEntityRepository
     private SettingRepository $settingRepository;
     private ElectionRepository $electionRepository;
 
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Mandate::class);
     }

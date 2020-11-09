@@ -37,6 +37,7 @@ class BlogPostType extends AbstractType
                 'label' => 'label.published_date',
                 'widget' => 'single_text',
                 'format' => Consts::DATE_FORMAT_INTL,
+                'html5' => false,
                 'required' => false,
                 'help' => 'text.leave_blank_to_not_publish',
             ])

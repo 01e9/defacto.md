@@ -39,6 +39,7 @@ class ActionType extends AbstractType
                 'label' => 'label.occurred_time',
                 'widget' => 'single_text',
                 'format' => Consts::DATE_FORMAT_INTL,
+                'html5' => false,
             ])
             ->add('mandate', ChoiceType::class, [
                 'label' => 'label.mandate',

@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use App\Tests\TestCaseTrait;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 
 class AdminPromisesControllerTest extends WebTestCase
 {
@@ -157,6 +157,7 @@ class AdminPromisesControllerTest extends WebTestCase
 
     public function testEditActionAccess()
     {
+        static::ensureKernelShutdown();
         $client = static::createClient();
         $client->insulate();
 
@@ -204,7 +205,7 @@ class AdminPromisesControllerTest extends WebTestCase
 
         $this->assertRedirectsToRoute($client->getResponse(), 'admin_promise_edit');
 
-        $em->clear('App:Promise');
+        $em->clear();
         /** @var Promise $promise */
         $promise = $em->getRepository('App:Promise')->find($promise->getId());
 
@@ -237,7 +238,7 @@ class AdminPromisesControllerTest extends WebTestCase
 
         $this->assertRedirectsToRoute($client->getResponse(), 'admin_promise_edit');
 
-        $em->clear('App:Promise');
+        $em->clear();
         /** @var Promise $promise */
         $promise = $em->getRepository('App:Promise')->find($promise->getId());
 
@@ -270,7 +271,7 @@ class AdminPromisesControllerTest extends WebTestCase
 
         $this->assertRedirectsToRoute($client->getResponse(), 'admin_promise_edit');
 
-        $em->clear('App:Promise');
+        $em->clear();
         /** @var Promise $promise */
         $promise = $em->getRepository('App:Promise')->find($promise->getId());
 
@@ -308,7 +309,7 @@ class AdminPromisesControllerTest extends WebTestCase
 
         $this->assertRedirectsToRoute($client->getResponse(), 'admin_promise_edit');
 
-        $em->clear('App:Promise');
+        $em->clear();
         /** @var Promise $promise */
         $promise = $em->getRepository('App:Promise')->find($promise->getId());
 
@@ -340,7 +341,7 @@ class AdminPromisesControllerTest extends WebTestCase
 
         $this->assertRedirectsToRoute($client->getResponse(), 'admin_promise_edit');
 
-        $em->clear('App:Promise');
+        $em->clear();
         /** @var Promise $promise */
         $promise = $em->getRepository('App:Promise')->find($promise->getId());
 
@@ -357,6 +358,7 @@ class AdminPromisesControllerTest extends WebTestCase
 
     public function testDeleteActionAccess()
     {
+        static::ensureKernelShutdown();
         $client = static::createClient();
         $client->insulate();
 
@@ -382,7 +384,7 @@ class AdminPromisesControllerTest extends WebTestCase
         $client->submit($form);
         $this->assertRedirectsToRoute($client->getResponse(), 'admin_promises');
 
-        $em->clear('App:Promise');
+        $em->clear();
         /** @var Promise $promise */
         $promise = $em->getRepository('App:Promise')->find($promise->getId());
 

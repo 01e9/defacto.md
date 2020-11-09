@@ -11,6 +11,7 @@ class PromisesControllerTest extends WebTestCase
 
     public function testIndexAction()
     {
+        static::ensureKernelShutdown();
         $client = static::createClient();
         $client->insulate();
 
@@ -30,6 +31,7 @@ class PromisesControllerTest extends WebTestCase
 
     public function testViewActionInactive()
     {
+        static::ensureKernelShutdown();
         $client = static::createClient();
         $client->insulate();
 
@@ -46,6 +48,7 @@ class PromisesControllerTest extends WebTestCase
 
     public function testViewActionPublished()
     {
+        static::ensureKernelShutdown();
         $client = static::createClient();
         $client->insulate();
 
@@ -67,6 +70,7 @@ class PromisesControllerTest extends WebTestCase
 
     public function testViewActionNotPublished()
     {
+        static::ensureKernelShutdown();
         $client = static::createClient();
         $client->insulate();
 

@@ -6,7 +6,7 @@ use App\Entity\Competence;
 use App\Entity\CompetenceUse;
 use App\Entity\Title;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 
 /**

@@ -14,7 +14,7 @@ use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use App\Tests\traits\FactoryTrait;
 
 trait TestCaseTrait
@@ -44,6 +44,7 @@ trait TestCaseTrait
     protected static function getConsoleApplication()
     {
         if (null === self::$consoleApplication) {
+            static::ensureKernelShutdown();
             $client = self::createClient();
             $client->insulate();
 
@@ -138,6 +139,7 @@ trait TestCaseTrait
 
     protected static function createAdminClient(): Client
     {
+        static::ensureKernelShutdown();
         $client = self::createClient();
         $client->insulate();
         $client->followRedirects(false);
@@ -154,6 +156,7 @@ trait TestCaseTrait
         $isPassed = true;
 
         if (!$client) {
+            static::ensureKernelShutdown();
             $client = self::createClient();
             $client->insulate();
         }
@@ -207,6 +210,7 @@ trait TestCaseTrait
     {
         self::assertEquals(302, $response->getStatusCode());
 
+        static::ensureKernelShutdown();
         $router = self::createClient()->getContainer()->get("router");
         $route = $router->match($response->getTargetUrl());
 

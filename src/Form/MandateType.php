@@ -22,11 +22,13 @@ class MandateType extends AbstractType
                 'label' => 'label.begin_date',
                 'widget' => 'single_text',
                 'format' => Consts::DATE_FORMAT_INTL,
+                'html5' => false,
             ])
             ->add('ceasingDate', DateType::class, [
                 'label' => 'label.ceasing_date',
                 'widget' => 'single_text',
                 'format' => Consts::DATE_FORMAT_INTL,
+                'html5' => false,
                 'required' => false,
                 'help' => 'text.fill_to_mark_as_ceased',
             ])
@@ -34,6 +36,7 @@ class MandateType extends AbstractType
                 'label' => 'label.end_date',
                 'widget' => 'single_text',
                 'format' => Consts::DATE_FORMAT_INTL,
+                'html5' => false,
             ])
             ->add('election', ChoiceType::class, [
                 'label' => 'label.election',
@@ -83,6 +86,7 @@ class MandateType extends AbstractType
                 'label' => 'label.last_update_of_competence_uses',
                 'widget' => 'single_text',
                 'format' => Consts::DATE_FORMAT_INTL,
+                'html5' => false,
                 'required' => false,
                 'help' => 'text.about_last_updated_competence_uses',
             ])

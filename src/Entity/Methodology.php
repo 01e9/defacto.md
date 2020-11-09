@@ -43,7 +43,7 @@ class Methodology
      * @ORM\Column(type="text")
      *
      * @Assert\NotBlank()
-     * @Assert\Length(min="100", max="50000")
+     * @Assert\Length(min=100, max=50000)
      */
     private $content;
 

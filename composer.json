@@ -1,46 +1,45 @@
 {
     "type": "project",
-    "name": "arteniioleg/defacto.md",
+    "name": "01e9/defacto.md",
     "description": "Monitor promises made by directly elected politicians",
     "license": "GPL-3.0-or-later",
     "require": {
         "php": "^7.4",
         "ext-iconv": "*",
-        "algolia/search-bundle": "^3.2",
+        "algolia/search-bundle": "^4",
         "cocur/slugify": "^4.0",
-        "doctrine/doctrine-migrations-bundle": "^1.0",
-        "guzzlefry/twig-age-extension": "@dev",
-        "knplabs/knp-paginator-bundle": "^4.0",
+        "doctrine/doctrine-migrations-bundle": "^3.0",
+        "knplabs/knp-paginator-bundle": "^5.0",
         "knplabs/knp-time-bundle": "^1.8",
         "sensio/framework-extra-bundle": "^5.2",
-        "symfony/asset": "^4.0",
-        "symfony/console": "^4.0",
-        "symfony/expression-language": "^4.0",
+        "symfony/asset": "^5.1",
+        "symfony/console": "^5.1",
+        "symfony/dotenv": "^5.1",
+        "symfony/expression-language": "^5.1",
         "symfony/flex": "^1.0",
-        "symfony/form": "^4.0",
-        "symfony/framework-bundle": "^4.0",
-        "symfony/lts": "^4@dev",
+        "symfony/form": "^5.1",
+        "symfony/framework-bundle": "^5.1",
         "symfony/maker-bundle": "^1.0",
+        "symfony/mime": "5.1.*",
         "symfony/orm-pack": "^1.0",
         "symfony/profiler-pack": "^1.0",
-        "symfony/security-bundle": "^4.0",
-        "symfony/translation": "^4.0",
-        "symfony/twig-bundle": "^4.0",
-        "symfony/validator": "^4.0",
-        "symfony/web-profiler-bundle": "^4.0",
+        "symfony/security-bundle": "^5.1",
+        "symfony/translation": "^5.1",
+        "symfony/twig-bundle": "^5.1",
+        "symfony/validator": "^5.1",
+        "symfony/web-profiler-bundle": "^5.1",
         "symfony/web-server-bundle": "^4.0",
-        "symfony/webpack-encore-pack": "^1.0",
-        "symfony/yaml": "^4.0",
-        "twig/extensions": "^1.5",
-        "twig/twig": "^2.4"
+        "symfony/yaml": "^5.1",
+        "twig/extra-bundle": "^3.1",
+        "twig/intl-extra": "^3.1",
+        "twig/string-extra": "^3.1",
+        "twig/twig": "^3"
     },
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^3.0",
-        "symfony/browser-kit": "^4.0",
-        "symfony/css-selector": "^4.0",
-        "symfony/dotenv": "^4.0",
-        "symfony/phpunit-bridge": "^4.0",
-        "symfony/thanks": "^1.0"
+        "symfony/browser-kit": "^5.1",
+        "symfony/css-selector": "^5.1",
+        "symfony/phpunit-bridge": "^5.1"
     },
     "config": {
         "preferred-install": {
@@ -67,7 +66,8 @@
     "scripts": {
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
-            "assets:install --symlink --relative %PUBLIC_DIR%": "symfony-cmd"
+            "assets:install --symlink --relative %PUBLIC_DIR%": "symfony-cmd",
+            "assets:install %PUBLIC_DIR%": "symfony-cmd"
         },
         "post-install-cmd": [
             "@auto-scripts"
@@ -81,8 +81,8 @@
     },
     "extra": {
         "symfony": {
-            "id": "01C22HYHY9HEKNP06G4G8ASKJQ",
-            "allow-contrib": false
+            "allow-contrib": false,
+            "require": "5.1.*"
         }
     }
 }

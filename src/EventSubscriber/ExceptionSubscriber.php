@@ -4,7 +4,7 @@ namespace App\EventSubscriber;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
-use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
+use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
@@ -44,7 +44,7 @@ class ExceptionSubscriber implements EventSubscriberInterface
         ];
     }
 
-    public function redirectToLocale(GetResponseForExceptionEvent $event)
+    public function redirectToLocale(ExceptionEvent $event)
     {
         if (!$event->getThrowable() instanceof NotFoundHttpException) {
             return;

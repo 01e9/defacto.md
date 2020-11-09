@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\BrowserKit\CookieJar;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
-use Symfony\Bundle\FrameworkBundle\Client;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -81,12 +81,12 @@ trait TestCaseTrait
 
     //region Shortcuts
 
-    protected static function getDoctrine(Client $client): EntityManagerInterface
+    protected static function getDoctrine(KernelBrowser $client): EntityManagerInterface
     {
         return $client->getContainer()->get('doctrine.orm.default_entity_manager');
     }
 
-    protected static function getLocale(Client $client): string
+    protected static function getLocale(KernelBrowser $client): string
     {
         return $client->getContainer()->getParameter('locale');
     }
@@ -95,7 +95,7 @@ trait TestCaseTrait
 
     //region User utils
 
-    protected static function logInClientAsRole(Client $client, string $role) : void
+    protected static function logInClientAsRole(KernelBrowser $client, string $role) : void
     {
         $user = self::createUserWithRole(
             $role,
@@ -137,7 +137,7 @@ trait TestCaseTrait
         return $user;
     }
 
-    protected static function createAdminClient(): Client
+    protected static function createAdminClient(): KernelBrowser
     {
         static::ensureKernelShutdown();
         $client = self::createClient();
@@ -151,7 +151,7 @@ trait TestCaseTrait
 
     //region Assertions
 
-    protected static function assertOnlyAdminCanAccess(string $pathWithoutLang, Client $client = null)
+    protected static function assertOnlyAdminCanAccess(string $pathWithoutLang, KernelBrowser $client = null)
     {
         $isPassed = true;
 

@@ -76,7 +76,7 @@
                                         href="{{ path('blog_post', {slug: blogPost.slug}) }}"
                                         class="text-body"
                                         title="{{ blogPost.title }}"
-                                    >{{ blogPost.title|truncate(max_title_length, true) }}</a>
+                                    >{{ blogPost.title|u.truncate(max_title_length, true) }}</a>
                                 </h2>
                                 <div>
                                     <small>

@@ -38,13 +38,3 @@ services:
     App\EventListener\EntityFileDeleteListener:
         tags:
             - { name: doctrine.event_listener, event: preRemove }
-
-    twig.extension.date.age:
-        class: Guzzlefry\Twig\AgeExtension
-        tags:
-            - { name: twig.extension }
-
-    twig.extension.text:
-        class: Twig_Extensions_Extension_Text
-        tags:
-            - { name: twig.extension }

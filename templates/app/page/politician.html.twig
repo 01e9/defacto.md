@@ -375,10 +375,6 @@
                     content="{{ politician.birthDate|date(constant('App\\Consts::TWIG_SCHEMA_DATE_FORMAT')) }}"
                 >
                 <samp>{{ politician.birthDate|date }}</samp>
-                <small class="text-muted ml-3">
-                    <samp>{{ politician.birthDate|age }}</samp>
-                    {{ "text.years_n"|trans({'%count%': politician.birthDate|age}) }}
-                </small>
             </div>
         </div>
     {% endif %}

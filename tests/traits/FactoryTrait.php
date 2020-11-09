@@ -67,7 +67,9 @@ trait FactoryTrait
 
         $title = new Title();
         $title->setName("Test ${random}");
-        $title->setTheName("Test ${random}");
+        $title->setNameFemale("Testa ${random}");
+        $title->setTheName("The test ${random}");
+        $title->setTheNameFemale("The testa ${random}");
         $title->setSlug("test-${random}");
 
         $em->persist($title);

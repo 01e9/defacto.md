@@ -11,12 +11,16 @@
         content="{% block head_meta_og_image %}{{ app.request.getSchemeAndHttpHost ~ asset("img/logo-big.png") }}{% endblock %}"
     >
     <title>{% block title %}deFACTO{% endblock %}</title>
-    {% block stylesheets %}{% endblock %}
+    {% block stylesheets %}
+        <link rel="stylesheet" href="{{ asset('vendor.css') }}">
+    {% endblock %}
 </head>
 <body class="{% block body_class %}{% endblock %}">
 {% block body %}{% endblock %}
 
-{% block javascripts %}{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('vendor.js') }}"></script>
+{% endblock %}
 
 {# it's not mandatory to set the timezone in localizeddate(). This is done to
    avoid errors when the 'intl' PHP extension is not available and the application

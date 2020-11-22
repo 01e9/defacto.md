@@ -58,6 +58,9 @@ module.exports = {
         "build/app/scripts": path.join(sourcePath, 'app/js/index.ts'),
         "build/app/styles": path.join(sourcePath, 'app/css/index.scss'),
 
+        "build/app/pages/mandate/scripts": path.join(sourcePath, 'app/pages/mandate/index.ts'),
+        "build/app/pages/mandate/styles": path.join(sourcePath, 'app/pages/mandate/index.scss'),
+
         "build/admin/scripts": path.join(sourcePath, 'admin/js/index.ts'),
         "build/admin/styles": path.join(sourcePath, 'admin/css/index.scss'),
     },
@@ -73,6 +76,16 @@ module.exports = {
             new TerserJSPlugin({sourceMap: !isProduction}),
             new OptimizeCSSAssetsPlugin({})
         ],
+        splitChunks: {
+            cacheGroups: {
+                node_modules: {
+                    name: 'vendor',
+                    chunks: 'all',
+                    test: /node_modules/,
+                    priority: 40
+                }
+            }
+        }
     },
     devtool: isProduction ? false : 'inline-source-map',
     watchOptions: {

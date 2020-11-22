@@ -26,6 +26,11 @@
     <meta name="description" content="{{ 'meta_description.mandate'|trans }}">
 {% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('build/app/pages/mandate/styles.css') }}">
+{% endblock %}
+
 {% block main %}
     <main>
         <section>
@@ -84,6 +89,8 @@
 
 {% block javascripts %}
     {{ parent() }}
+
+    <script src="{{ asset('build/app/pages/mandate/scripts.js') }}"></script>
 
     {% if mandate.competenceCategoryStats|length > 1 %}
         <script src="{{ asset('js/canvasjs.min.js') }}"></script>

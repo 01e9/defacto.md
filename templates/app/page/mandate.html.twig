@@ -36,6 +36,7 @@
                 is_mandate_page: true
             } only %}
         </section>
+        <div class="position-relative"><div id="details" class="anchor"></div></div>
         {% if mandate.competenceCategoryStats|length %}
             {{ self_macros.category_stats_section(mandate, categoryStatsByParent) }}
             {{ self_macros.competence_use_list_section(mandate, canonical_url) }}

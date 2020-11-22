@@ -78,7 +78,10 @@
                         </p>
                         {%- if show_link -%}
                             <a
-                                href="{{ path('mandate', {'electionSlug': mandate.election.slug, 'politicianSlug': politician.slug}) }}"
+                                href="{{ path('mandate', {
+                                    'electionSlug': mandate.election.slug,
+                                    'politicianSlug': politician.slug
+                                }) }}#details"
                                 class="btn btn-sm btn-outline-info text-nowrap"
                             ><small>{{ "action.see_points_details"|trans }}<span class="fa fa-chart-pie ml-2"></span></small></a>
                         {%- endif -%}

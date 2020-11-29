@@ -8,7 +8,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CompetenceUseRepository")
  * @ORM\Table(
- *     name="competence_uses"
+ *     name="competence_uses",
+ *     indexes={
+ *      @ORM\Index(name="competence_use_mandate_use_data", columns={"mandate_id", "use_date"})
+ *     }
  * )
  */
 class CompetenceUse

@@ -11,6 +11,7 @@ final class Consts
     const DATE_FORMAT_INTL = 'dd.MM.yyyy';
     const DATE_FORMAT_PHP = 'd.m.Y';
     const TIME_FORMAT_PHP = 'H:i:s';
+    const DATE_FORMAT_COMPETENCE_USE_MONTH = 'm.Y';
 
     const TWIG_SCHEMA_DATE_FORMAT = 'Y-m-d';
 

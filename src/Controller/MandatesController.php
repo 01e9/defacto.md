@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Consts;
+use App\Repository\CompetenceUseRepository;
 use App\Repository\ElectionRepository;
 use App\Repository\MandateCompetenceCategoryStatsRepository;
 use App\Repository\MandateRepository;
@@ -67,7 +68,8 @@ class MandatesController extends AbstractController
      */
     public function viewAction(
         string $electionSlug, string $politicianSlug,
-        MandateCompetenceCategoryStatsRepository $categoryStatsRepository
+        MandateCompetenceCategoryStatsRepository $categoryStatsRepository,
+        CompetenceUseRepository $competenceUseRepository
     )
     {
         $mandate = $this->repository->findOneBySlugs($electionSlug, $politicianSlug);
@@ -77,11 +79,13 @@ class MandatesController extends AbstractController
 
         $rank = $this->repository->findCompetencePointsRank($mandate);
         $categoryStatsByParent = $categoryStatsRepository->findStatsByParentCategory($mandate);
+        $statsByMonth = $competenceUseRepository->findUseCountByMonth($mandate);
 
         return $this->render('app/page/mandate.html.twig', [
             'mandate' => $mandate,
             'rank' => $rank,
             'categoryStatsByParent' => $categoryStatsByParent,
+            'statsByMonth' => $statsByMonth,
         ]);
     }
 }

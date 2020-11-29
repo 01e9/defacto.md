@@ -2,4 +2,22 @@ html.page-mandate {
   #categories-pie-chart {
     height: 15rem;
   }
+
+  #used-competences-by-month {
+    white-space: nowrap;
+    height: 12em;
+
+    .flex-column {
+      width: 5em;
+    }
+
+    .chart-bar-count {
+      font-size: 3rem;
+
+      .position-absolute {
+        left: 0;
+        bottom: 0;
+      }
+    }
+  }
 }

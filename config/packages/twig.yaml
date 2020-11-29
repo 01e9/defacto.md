@@ -10,5 +10,7 @@ twig:
         google_analytics_key: '%env(default::GOOGLE_ANALYTICS_KEY)%'
         google_tag_manager_id: '%env(default::GOOGLE_TAG_MANAGER_ID)%'
         hotjar_id: '%env(default::HOTJAR_ID)%'
+        algolia_app_id: '%env(default::ALGOLIA_APP_ID)%'
+        algolia_public_api_key: '%env(default::ALGOLIA_PUBLIC_API_KEY)%'
         competence_use_multiplication_factor: !php/const App\Consts::COMPETENCE_USE_MULTIPLICATION_FACTOR
         org_name: '%app_org_name%'

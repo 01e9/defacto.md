@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     {% block head_meta %}
-        <meta name="google-maps-api-key" content="{{ google_maps_api_key }}">
+        <meta name="google-maps-api-key" content="{{ google_maps_api_key|escape('html_attr') }}">
     {% endblock %}
     <meta
         name="og:image"

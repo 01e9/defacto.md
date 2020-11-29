@@ -1,13 +1,9 @@
-import { includeScript } from "./utils";
+import { includeScript, selectMetaContent } from "./utils";
+import { LANG, META_NAME_GOOGLE_MAPS_API_KEY } from "~/config";
 
 export function includeGoogleMapsScript(document: Document) {
-    const apiKeyMeta = document.querySelector("head > meta[name='google-maps-api-key']");
-    const apiKey = apiKeyMeta ? apiKeyMeta.getAttribute("content") : "";
+    const apiKey = selectMetaContent(META_NAME_GOOGLE_MAPS_API_KEY);
+    const src = `https://maps.googleapis.com/maps/api/js?key=${encodeURIComponent(apiKey)}&language=${LANG}`;
 
-    const lang = document.querySelector('html').getAttribute('lang');
-
-    return includeScript(
-        "https://maps.googleapis.com/maps/api/js?key=" + encodeURIComponent(apiKey) + "&language=" + lang,
-        document
-    );
+    return includeScript(src, document);
 }

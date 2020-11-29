@@ -38,3 +38,8 @@ export const includeScript: (src: string, document: Document) => Promise<{}> = (
         }
     });
 })();
+
+export const selectMetaContent = (metaName: string): string => {
+    const meta = document.querySelector(`head > meta[name="${metaName}"]`);
+    return meta ? meta.getAttribute("content") : "";
+};

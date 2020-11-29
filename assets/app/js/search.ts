@@ -1,21 +1,28 @@
 import InstantSearch from 'instantsearch.js/es/lib/InstantSearch'
 import Hits from 'instantsearch.js/es/widgets/hits/hits'
 import SearchBox from 'instantsearch.js/es/widgets/search-box/search-box'
-import { IS_PRODUCTION, ALGOLIA_APP_ID, ALGOLIA_API_KEY, LANG } from "../../config";
+import {
+    IS_PRODUCTION,
+    LANG,
+    META_NAME_ALGOLIA_APP_ID, META_NAME_ALGOLIA_API_KEY
+} from "../../config";
+import {selectMetaContent} from "~/common/js/utils";
 
 const selectors = {
-    $input: type => $('#search-'+ type +'-input'),
-    $hits: type => $('#search-'+ type)
+    $input: type => $(`#search-${type}-input`),
+    $hits: type => $(`#search-${type}`)
 };
 
 function createInstantSearchInstances(types) {
     let instances = {};
 
     types.forEach((type, i) => {
+        const appId = selectMetaContent(META_NAME_ALGOLIA_APP_ID);
+        const apiKey = selectMetaContent(META_NAME_ALGOLIA_API_KEY);
         let instance = new InstantSearch({
-            appId: ALGOLIA_APP_ID,
-            apiKey: ALGOLIA_API_KEY,
-            indexName: (IS_PRODUCTION ? 'prod_' : 'dev_') + type.id,
+            appId,
+            apiKey,
+            indexName: `${IS_PRODUCTION ? 'prod_' : 'dev_'}${type.id}`,
             searchParameters: {
                 hitsPerPage: 10
             }

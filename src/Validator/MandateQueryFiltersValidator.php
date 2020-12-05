@@ -3,6 +3,8 @@
 namespace App\Validator;
 
 use App\Consts;
+use App\Filter\MandateFilter;
+use App\Repository\CompetenceCategoryRepository;
 use Symfony\Component\PropertyInfo\Type;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -14,10 +16,15 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class MandateQueryFiltersValidator extends ConstraintValidator
 {
     private ValidatorInterface $validator;
+    private CompetenceCategoryRepository $categoryRepository;
 
-    public function __construct(ValidatorInterface $validator)
+    public function __construct(
+        ValidatorInterface $validator,
+        CompetenceCategoryRepository $categoryRepository
+    )
     {
         $this->validator = $validator;
+        $this->categoryRepository = $categoryRepository;
     }
 
     public function validate($query, Constraint $constraint)
@@ -32,27 +39,40 @@ class MandateQueryFiltersValidator extends ConstraintValidator
             new Assert\Collection([
                 'allowExtraFields' => true,
                 'fields' => [
-                    Consts::QUERY_FILTER_FROM_DATE => new Assert\Optional([
+                    MandateFilter::QUERY_FROM_DATE => new Assert\Optional(new Assert\Sequentially([
                         new Assert\Type(Type::BUILTIN_TYPE_STRING),
                         new Assert\Regex(Consts::DATE_FILTER_FORMAT_REGEX),
-                    ]),
-                    Consts::QUERY_FILTER_FROM_DATE => new Assert\Optional([
+                    ])),
+                    MandateFilter::QUERY_FROM_DATE => new Assert\Optional(new Assert\Sequentially([
                         new Assert\Type(Type::BUILTIN_TYPE_STRING),
                         new Assert\Regex(Consts::DATE_FILTER_FORMAT_REGEX),
-                    ]),
+                    ])),
+                    MandateFilter::QUERY_CATEGORY => new Assert\Optional(new Assert\Sequentially([
+                        new Assert\Type(Type::BUILTIN_TYPE_STRING),
+                        new Assert\Callback(function (string $slug, ExecutionContextInterface $context) {
+                            if ($slug && !$this->categoryRepository->findOneBy(['slug' => $slug])) {
+                                $context
+                                    ->buildViolation(Consts::VALIDATION_MESSAGE_INVALID_VALUE)
+                                    ->addViolation();
+                            }
+                        }),
+                    ])),
                 ],
             ]),
             new Assert\Callback(function (array $query, ExecutionContextInterface $context) {
-                if (!isset($query[Consts::QUERY_FILTER_FROM_DATE]) || !isset($query[Consts::QUERY_FILTER_TO_DATE])) {
+                if (
+                    !isset($query[MandateFilter::QUERY_FROM_DATE]) ||
+                    !isset($query[MandateFilter::QUERY_TO_DATE])
+                ) {
                     return;
                 }
 
-                $fromDate = \DateTime::createFromFormat(Consts::DATE_FORMAT_PHP, $query[Consts::QUERY_FILTER_FROM_DATE]);
-                $toDate = \DateTime::createFromFormat(Consts::DATE_FORMAT_PHP, $query[Consts::QUERY_FILTER_TO_DATE]);
+                $fromDate = \DateTime::createFromFormat(Consts::DATE_FORMAT_PHP, $query[MandateFilter::QUERY_FROM_DATE]);
+                $toDate = \DateTime::createFromFormat(Consts::DATE_FORMAT_PHP, $query[MandateFilter::QUERY_TO_DATE]);
 
                 if ($fromDate && $toDate && $fromDate >= $toDate) {
-                    $context->buildViolation('Invalid date')
-                        ->atPath('[' . Consts::QUERY_FILTER_TO_DATE . ']')
+                    $context->buildViolation(Consts::VALIDATION_MESSAGE_INVALID_VALUE)
+                        ->atPath('[' . MandateFilter::QUERY_TO_DATE . ']')
                         ->addViolation();
                 }
             })

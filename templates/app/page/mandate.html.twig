@@ -2,6 +2,7 @@
 {# @var int rank #}
 {# @var array categoryStatsByParent #}
 {# @var array statsByMonth #}
+{# @var array competenceUses #}
 
 {% extends 'app/base.html.twig' %}
 {% import 'macros.html.twig' as macros %}
@@ -20,6 +21,15 @@
 {% set canonical_url = url('mandate', {
     'electionSlug': mandate.election.slug, 'politicianSlug': mandate.politician.slug
 }) %}
+
+{% set lastUpdateTime = mandate.competenceUses|length
+    ? (
+        (mandate.competenceUsesUpdateTime and mandate.competenceUsesUpdateTime > mandate.competenceUses[0].useDate)
+        ? mandate.competenceUsesUpdateTime
+        : mandate.competenceUses[0].useDate
+    )
+    : null
+%}
 
 {% block head_meta %}
     {{ parent() }}
@@ -45,7 +55,13 @@
         <div class="position-relative"><div id="details" class="anchor"></div></div>
         {% if mandate.competenceCategoryStats|length %}
             {{ self_macros.category_stats_section(mandate, categoryStatsByParent) }}
-            {{ self_macros.competence_use_list_section(mandate, canonical_url, statsByMonth) }}
+            {{ self_macros.competence_use_list_section(
+                mandate,
+                canonical_url,
+                statsByMonth,
+                lastUpdateTime,
+                competenceUses
+            ) }}
         {% else %}
             <div class="bg-secondary py-5 text-center">
                 <h3 class="mb-0">
@@ -184,7 +200,7 @@
     {% endif %}
 {% endmacro %}
 
-{% macro competence_use_list_section(mandate, canonical_url, statsByMonth) %}
+{% macro competence_use_list_section(mandate, canonical_url, statsByMonth, lastUpdateTime, competenceUses) %}
     {% import _self as self_macros %}
 
     {% set emptyHtml = '<p>&nbsp;</p>' %}
@@ -201,16 +217,13 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-8">
-                    {% for competenceUse in mandate.competenceUses %}
+                    {% for competenceUse in competenceUses %}
                         {# @var \App\Entity\CompetenceUse competenceUse #}
 
                         {% set final_points = competenceUse.competence.points * (
                             competenceUse.multiplied ? competence_use_multiplication_factor : 1) %}
 
                         {% if loop.first %}
-                            {% set lastUpdateTime = (mandate.competenceUsesUpdateTime and mandate.competenceUsesUpdateTime > competenceUse.useDate)
-                                ? mandate.competenceUsesUpdateTime : competenceUse.useDate %}
-
                             <div class="small text-center mb-3">
                                 <span class="fa fa-search text-primary mr-1"></span>
                                 {{ "label.last_update"|trans }}

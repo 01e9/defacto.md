@@ -50,6 +50,5 @@ final class Consts
     const PAGINATION_SIZE_MANDATES = 20;
     const PAGINATION_SIZE_PROMISES = 9;
 
-    const QUERY_FILTER_FROM_DATE = 'from_date';
-    const QUERY_FILTER_TO_DATE = 'to_date';
+    const VALIDATION_MESSAGE_INVALID_VALUE = 'This value is not valid.';
 }

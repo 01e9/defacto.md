@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Consts;
 use App\Entity\CompetenceUse;
 use App\Entity\Mandate;
+use App\Filter\MandateFilter;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\Platforms\OraclePlatform;
 use Doctrine\Persistence\ManagerRegistry;
@@ -65,5 +66,27 @@ class CompetenceUseRepository extends ServiceEntityRepository
         }
 
         return $paddedResult;
+    }
+
+    public function findByFilter(Mandate $mandate, MandateFilter $filter): array
+    {
+        $query = $this->createQueryBuilder('cu')
+            ->where('cu.mandate = :mandate')
+            ->setParameter('mandate', $mandate)
+            ->orderBy('cu.useDate', 'DESC')
+        ;
+
+        if ($filter->fromDate) {
+            $query->andWhere('cu.useDate >= :fromDate')->setParameter('fromDate', $filter->fromDate);
+        }
+        if ($filter->toDate) {
+            $query->andWhere('cu.useDate <= :toDate')->setParameter('toDate', $filter->toDate);
+        }
+        if ($filter->category) {
+            $query->join('cu.competence', 'c');
+            $query->andWhere('c.category = :category')->setParameter('category', $filter->category);
+        }
+
+        return $query->getQuery()->getResult();
     }
 }

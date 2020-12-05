@@ -3,7 +3,8 @@
 namespace App\Controller;
 
 use App\Consts;
-use App\Dto\QueryFilter\MandateFilter;
+use App\Filter\MandateFilter;
+use App\Repository\CompetenceCategoryRepository;
 use App\Repository\CompetenceUseRepository;
 use App\Repository\ElectionRepository;
 use App\Repository\MandateCompetenceCategoryStatsRepository;
@@ -77,7 +78,7 @@ class MandatesController extends AbstractController
         CompetenceUseRepository $competenceUseRepository,
         ValidatorInterface $validator,
         Request $request,
-        TranslatorInterface $translator
+        CompetenceCategoryRepository $categoryRepository
     )
     {
         $filterViolations = $validator->validate($request->query->all(), new MandateQueryFilters());
@@ -90,7 +91,7 @@ class MandatesController extends AbstractController
                 $this->addFlash('error', $message);
             }
         } else {
-            $filter = MandateFilter::createFromValidQueryArray($request->query->all());
+            $filter = MandateFilter::createFromValidQueryArray($request->query->all(), $categoryRepository);
         }
 
         $mandate = $this->repository->findOneBySlugs($electionSlug, $politicianSlug);
@@ -101,12 +102,14 @@ class MandatesController extends AbstractController
         $rank = $this->repository->findCompetencePointsRank($mandate);
         $categoryStatsByParent = $categoryStatsRepository->findStatsByParentCategory($mandate);
         $statsByMonth = $competenceUseRepository->findUseCountByMonth($mandate);
+        $competenceUses = $competenceUseRepository->findByFilter($mandate, $filter);
 
         return $this->render('app/page/mandate.html.twig', [
             'mandate' => $mandate,
             'rank' => $rank,
             'categoryStatsByParent' => $categoryStatsByParent,
             'statsByMonth' => $statsByMonth,
+            'competenceUses' => $competenceUses,
         ]);
     }
 }

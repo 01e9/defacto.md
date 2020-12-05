@@ -3,14 +3,19 @@
 namespace App\Controller;
 
 use App\Consts;
+use App\Dto\QueryFilter\MandateFilter;
 use App\Repository\CompetenceUseRepository;
 use App\Repository\ElectionRepository;
 use App\Repository\MandateCompetenceCategoryStatsRepository;
 use App\Repository\MandateRepository;
+use App\Validator\MandateQueryFilters;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\ConstraintViolationInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class MandatesController extends AbstractController
 {
@@ -69,9 +74,25 @@ class MandatesController extends AbstractController
     public function viewAction(
         string $electionSlug, string $politicianSlug,
         MandateCompetenceCategoryStatsRepository $categoryStatsRepository,
-        CompetenceUseRepository $competenceUseRepository
+        CompetenceUseRepository $competenceUseRepository,
+        ValidatorInterface $validator,
+        Request $request,
+        TranslatorInterface $translator
     )
     {
+        $filterViolations = $validator->validate($request->query->all(), new MandateQueryFilters());
+        if ($filterViolations->count()) {
+            $filter = new MandateFilter();
+
+            foreach ($filterViolations as $violation) {
+                /** @var ConstraintViolationInterface $violation */
+                $message = "{$violation->getPropertyPath()}: {$violation->getMessage()}";
+                $this->addFlash('error', $message);
+            }
+        } else {
+            $filter = MandateFilter::createFromValidQueryArray($request->query->all());
+        }
+
         $mandate = $this->repository->findOneBySlugs($electionSlug, $politicianSlug);
         if (!$mandate) {
             throw $this->createNotFoundException();

@@ -82,9 +82,9 @@ class CompetenceUseRepository extends ServiceEntityRepository
         if ($filter->toDate) {
             $query->andWhere('cu.useDate <= :toDate')->setParameter('toDate', $filter->toDate);
         }
-        if ($filter->category) {
+        if ($filter->categories) {
             $query->join('cu.competence', 'c');
-            $query->andWhere('c.category = :category')->setParameter('category', $filter->category);
+            $query->andWhere('c.category IN(:categories)')->setParameter('categories', $filter->categories);
         }
 
         return $query->getQuery()->getResult();

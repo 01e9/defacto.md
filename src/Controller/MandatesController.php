@@ -9,6 +9,7 @@ use App\Repository\CompetenceUseRepository;
 use App\Repository\ElectionRepository;
 use App\Repository\MandateCompetenceCategoryStatsRepository;
 use App\Repository\MandateRepository;
+use App\Service\MandateCompetenceUseStatsComputer;
 use App\Validator\MandateQueryFilters;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -78,7 +79,8 @@ class MandatesController extends AbstractController
         CompetenceUseRepository $competenceUseRepository,
         ValidatorInterface $validator,
         Request $request,
-        CompetenceCategoryRepository $categoryRepository
+        CompetenceCategoryRepository $categoryRepository,
+        MandateCompetenceUseStatsComputer $competenceUseStatsComputer
     )
     {
         $filterViolations = $validator->validate($request->query->all(), new MandateQueryFilters());
@@ -100,7 +102,10 @@ class MandatesController extends AbstractController
         }
 
         $rank = $this->repository->findCompetencePointsRank($mandate);
-        $categoryStatsByParent = $categoryStatsRepository->findStatsByParentCategory($mandate);
+        $categoryStatsByParent = $categoryStatsRepository->findStatsByParentCategory(
+            $mandate,
+            $filter->isEmpty() ? null : $competenceUseStatsComputer->compute($mandate, $filter)->categoryStats
+        );
         $statsByMonth = $competenceUseRepository->findUseCountByMonth($mandate);
         $competenceUses = $competenceUseRepository->findByFilter($mandate, $filter);
 

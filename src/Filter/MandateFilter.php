@@ -5,6 +5,7 @@ namespace App\Filter;
 use App\Consts;
 use App\Entity\CompetenceCategory;
 use App\Repository\CompetenceCategoryRepository;
+use Doctrine\Common\Collections\Collection;
 
 class MandateFilter
 {
@@ -14,7 +15,13 @@ class MandateFilter
 
     public ?\DateTime $fromDate = null;
     public ?\DateTime $toDate = null;
-    public ?CompetenceCategory $category = null;
+    /** @var Collection|CompetenceCategory[]|null  */
+    public ?Collection $categories = null;
+
+    public function isEmpty(): bool
+    {
+        return !$this->fromDate && !$this->toDate && !$this->categories;
+    }
 
     public static function createFromValidQueryArray(array $query, CompetenceCategoryRepository $categoryRepository): self
     {
@@ -36,7 +43,7 @@ class MandateFilter
             !empty($query[self::QUERY_CATEGORY]) &&
             ($category = $categoryRepository->findOneBy(['slug' => $query[self::QUERY_CATEGORY]]))
         ) {
-            $filter->category = $category;
+            $filter->categories = $categoryRepository->findWithChildren($category);
         }
 
         return $filter;

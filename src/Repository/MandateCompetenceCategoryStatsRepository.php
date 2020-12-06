@@ -26,8 +26,10 @@ class MandateCompetenceCategoryStatsRepository extends ServiceEntityRepository
         $this->competenceCategoryRepository = $competenceCategoryRepository;
     }
 
-    public function findStatsByParentCategory(Mandate $mandate): Collection
+    public function findStatsByParentCategory(Mandate $mandate, ?Collection $categoryStats = null): Collection
     {
+        $categoryStats = $categoryStats ?: $mandate->getCompetenceCategoryStats();
+
         /** @var MandateCompetenceCategoryStats[] $stats {parentCategoryId: Stats} */
         $stats = [];
 
@@ -40,10 +42,7 @@ class MandateCompetenceCategoryStatsRepository extends ServiceEntityRepository
             $stats[ $parentCategory->getId() ] = $stat;
         }
 
-        foreach (
-            $mandate->getCompetenceCategoryStats()
-            as $categoryStat /** @var MandateCompetenceCategoryStats $categoryStat */
-        ) {
+        foreach ($categoryStats as $categoryStat /** @var MandateCompetenceCategoryStats $categoryStat */) {
             $parentCategory = $categoryStat->getCompetenceCategory()->getParent() ?: $categoryStat->getCompetenceCategory();
             $parentCategoryStats = $stats[ $parentCategory->getId() ];
 

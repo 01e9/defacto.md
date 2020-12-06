@@ -4,6 +4,8 @@ namespace App\Repository;
 
 use App\Entity\CompetenceCategory;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -40,5 +42,22 @@ class CompetenceCategoryRepository extends ServiceEntityRepository
         ksort($choices);
 
         return $choices;
+    }
+
+    public function findWithChildren(?CompetenceCategory $category): Collection
+    {
+        $collection = new ArrayCollection();
+
+        if (!$category) {
+            return $collection;
+        }
+
+        $collection->add($category);
+
+        foreach ($this->findBy(['parent' => $category]) as $childCategory) {
+            $collection->add($childCategory);
+        }
+
+        return $collection;
     }
 }

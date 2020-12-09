@@ -30,6 +30,7 @@
     )
     : null
 %}
+{% set lastUpdateTime = lastUpdateTime <= date("today") ? lastUpdateTime : date("today") %}
 
 {% block head_meta %}
     {{ parent() }}

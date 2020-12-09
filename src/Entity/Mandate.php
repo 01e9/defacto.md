@@ -143,7 +143,7 @@ class Mandate
      *
      * @ORM\Column(type="date", nullable=true)
      *
-     * @Assert\LessThanOrEqual("today")
+     * @Assert\LessThanOrEqual("tomorrow")
      */
     private $competenceUsesUpdateTime;
 

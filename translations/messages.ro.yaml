@@ -342,6 +342,7 @@ text:
     elected_f: aleasă
     mandate_ceased_on: mandat încetat pe %date%
     the_mandate_ends_in: mandatul încetează %time%
+    the_mandate_ended_ago: mandatul a încetat %time%
     in: în
     in_elections_from: în alegerile din
     in_elections_for: în alegerile pentru

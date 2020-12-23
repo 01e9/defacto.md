@@ -3,11 +3,17 @@
 
 {% import 'macros.html.twig' as macros %}
 
+{% set endDate = mandate.endDate|date_modify("tomorrow midnight -1 seconds") %}
+
 {% set remaining_time %}
     <div class="mt-{{ hide_title|default(false) ? '1' : '2' }} small text-light {%
         if hide_title|default(false) %}text-center{% else %}text-right{% endif %}"
     >
-        <small>{{ "text.the_mandate_ends_in"|trans({"%time%": mandate.endDate|ago}) }}</small>
+        <small>{{
+            endDate > date()
+            ? "text.the_mandate_ends_in"|trans({"%time%": endDate|ago})
+            : "text.the_mandate_ended_ago"|trans({"%time%": endDate|ago})
+        }}</small>
     </div>
 {% endset %}
 
@@ -25,12 +31,14 @@
                 {{ remaining_time }}
             {% else %}
                 <span class="badge badge-light p-2">
-                    {{- mandate.politician.female ? mandate.institutionTitle.title.nameFemale : mandate.institutionTitle.title.name -}}
+                    {{- mandate.politician.female
+                    ? mandate.institutionTitle.title.nameFemale
+                    : mandate.institutionTitle.title.name -}}
                 </span>
             {% endif %}
         </div>
         <div class="text-right col-6 col-md-auto">
-            <span class="badge badge-primary text-light">{{ mandate.endDate|date }}</span>
+            <span class="badge badge-primary text-light">{{ endDate|date }}</span>
         </div>
     </div>
     {% if mandate.endDate > date() %}

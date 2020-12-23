@@ -424,10 +424,12 @@
             <div class="container">
                 <span class="navbar-brand mr-4">{{ "title.filters"|trans }}</span>
                 {% if not filter.empty %}
-                    <a
-                        class="btn-sm btn-link flex-grow-1 flex-lg-grow-0 d-lg-none{% if not filter.empty %} btn-outline-dark{% endif %}"
-                        href="?#filters"
-                    >{{ "action.reset"|trans }}</a>
+                    <span class="flex-grow-1 flex-lg-grow-0 d-lg-none">
+                        <a
+                            class="btn-sm btn-link"
+                            href="?#filters"
+                        >{{ "action.reset"|trans }}</a>
+                    </span>
                 {% endif %}
                 <button
                     class="navbar-toggler text-white"

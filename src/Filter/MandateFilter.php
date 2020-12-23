@@ -41,9 +41,9 @@ class MandateFilter
         }
         if (
             !empty($query[self::QUERY_CATEGORY]) &&
-            ($category = $categoryRepository->findOneBy(['slug' => $query[self::QUERY_CATEGORY]]))
+            ($categories = $categoryRepository->findBy(['slug' => $query[self::QUERY_CATEGORY]]))
         ) {
-            $filter->categories = $categoryRepository->findWithChildren($category);
+            $filter->categories = $categoryRepository->findWithChildren($categories);
         }
 
         return $filter;

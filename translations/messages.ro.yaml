@@ -204,6 +204,8 @@ action:
     add_methodology: Adaugă metodologie
     edit_methodology: Modifică metodologie
     delete_methodology: Șterge metodologie
+    apply: Aplică
+    reset: Resetează
 
 title:
     site: deFacto - platformă de monitorizare a activității politicienilor aleși
@@ -308,6 +310,7 @@ title:
     methodology_delete: Ștergere metodologie
     latest_articles: Ultimele articole
     about_competence_use_categories: Atribuțiile de care a făcut uz deputatul, repartizate pe domeniile de activitate
+    filters: Filtre
 
 placeholder:
     choose_option: Alegeți o opțiune

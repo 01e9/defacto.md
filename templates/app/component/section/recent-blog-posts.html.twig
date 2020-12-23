@@ -33,7 +33,7 @@
                                         <a
                                             href="{{ path('blog_post', {"slug": post.slug}) }}"
                                             title="{{ post.title }}"
-                                        >{{ post.title|u.truncate(50, true) }}</a>
+                                        >{{ post.title|u.truncate(50, '…') }}</a>
                                     </h5>
                                     <div><small>{{ post.publishTime|date }}</small></div>
                                 </div>

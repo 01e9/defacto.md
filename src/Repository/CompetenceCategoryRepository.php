@@ -44,20 +44,38 @@ class CompetenceCategoryRepository extends ServiceEntityRepository
         return $choices;
     }
 
-    public function findWithChildren(?CompetenceCategory $category): Collection
+    /**
+     * @param CompetenceCategory|CompetenceCategory[] $categories
+     * @return Collection
+     */
+    public function findWithChildren($categories): Collection
     {
-        $collection = new ArrayCollection();
-
-        if (!$category) {
-            return $collection;
+        if (!$categories) {
+            return new ArrayCollection();
         }
 
-        $collection->add($category);
+        $categories = (array) $categories;
+        $categoryWithChildren = [];
 
-        foreach ($this->findBy(['parent' => $category]) as $childCategory) {
-            $collection->add($childCategory);
+        foreach ($categories as $category /** @var CompetenceCategory $category */) {
+            $categoryWithChildren[$category->getId()] = $category;
+
+            foreach ($this->findBy(['parent' => $categories]) as $childCategory) {
+                $categoryWithChildren[$childCategory->getId()] = $childCategory;
+            }
         }
 
-        return $collection;
+        return new ArrayCollection($categoryWithChildren);
+    }
+
+    public function getParentChoices() : array
+    {
+        $choices = [];
+
+        foreach ($this->findBy(['parent' => null], ['name' => 'ASC']) as $entity /** @var CompetenceCategory $entity */) {
+            $choices[$entity->getName()] = $entity;
+        }
+
+        return $choices;
     }
 }

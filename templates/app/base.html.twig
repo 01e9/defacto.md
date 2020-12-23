@@ -16,6 +16,12 @@
     {% endif %}
 {% endblock %}
 
+{% if form is defined %}
+    {% form_theme form 'app/form-theme.html.twig' %}
+{% elseif filterForm is defined %}
+    {% form_theme filterForm 'app/form-theme.html.twig' %}
+{% endif %}
+
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('build/app/styles.css') }}">

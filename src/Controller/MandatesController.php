@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Consts;
 use App\Filter\MandateFilter;
+use App\Form\Filter\MandateFilterType;
 use App\Repository\CompetenceCategoryRepository;
 use App\Repository\CompetenceUseRepository;
 use App\Repository\ElectionRepository;
@@ -101,6 +102,9 @@ class MandatesController extends AbstractController
             throw $this->createNotFoundException();
         }
 
+        $filterForm = $this->createForm(MandateFilterType::class);
+        $filterForm->handleRequest($request);
+
         $rank = $this->repository->findCompetencePointsRank($mandate);
         $categoryStatsByParent = $categoryStatsRepository->findStatsByParentCategory(
             $mandate,
@@ -115,6 +119,8 @@ class MandatesController extends AbstractController
             'categoryStatsByParent' => $categoryStatsByParent,
             'statsByMonth' => $statsByMonth,
             'competenceUses' => $competenceUses,
+            'filter' => $filter,
+            'filterForm' => $filterForm->createView(),
         ]);
     }
 }

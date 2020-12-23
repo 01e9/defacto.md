@@ -3,6 +3,8 @@
 {# @var array categoryStatsByParent #}
 {# @var array statsByMonth #}
 {# @var array competenceUses #}
+{# @var \App\Filter\MandateFilter filter #}
+{# @var \Symfony\Component\Form\FormInterface filterForm #}
 
 {% extends 'app/base.html.twig' %}
 {% import 'macros.html.twig' as macros %}
@@ -53,23 +55,35 @@
                 is_mandate_page: true
             } only %}
         </section>
-        <div class="position-relative"><div id="details" class="anchor"></div></div>
-        {% if mandate.competenceCategoryStats|length %}
-            {{ self_macros.category_stats_section(mandate, categoryStatsByParent) }}
-            {{ self_macros.competence_use_list_section(
-                mandate,
-                canonical_url,
-                statsByMonth,
-                lastUpdateTime,
-                competenceUses
-            ) }}
-        {% else %}
-            <div class="bg-secondary py-5 text-center">
-                <h3 class="mb-0">
-                    {{ "title.no_used_competences_found"|trans }}
-                </h3>
+        <div class="position-relative{%
+            if filter.empty %} bg-light{%
+            else %} pb-5 px-lg-4 bg-warning{% endif
+        %}">
+            <div class="position-relative"><div id="filters" class="anchor"></div></div>
+            {{ self_macros.filter_form(filter, filterForm) }}
+            <div class="filters-inner{% if not filter.empty %} rounded overflow-auto{% endif %}">
+                <div class="position-relative"><div id="details" class="anchor"></div></div>
+                {% if mandate.competenceCategoryStats|length %}
+                    {{ self_macros.category_stats_section(mandate, categoryStatsByParent, filter) }}
+                {% endif %}
+                {% if competenceUses|length %}
+                    {{ self_macros.competence_use_list_section(
+                        mandate,
+                        canonical_url,
+                        statsByMonth,
+                        lastUpdateTime,
+                        competenceUses,
+                        filter
+                    ) }}
+                {% else %}
+                    <div class="bg-secondary py-5 text-center">
+                        <h3 class="mb-0">
+                            {{ "title.no_used_competences_found"|trans }}
+                        </h3>
+                    </div>
+                {% endif %}
             </div>
-        {% endif %}
+        </div>
     </main>
     {% include 'app/component/section/footer.html.twig' only %}
 
@@ -140,7 +154,7 @@
     {% endif %}
 {% endblock %}
 
-{% macro category_stats_section(mandate, categoryStatsByParent) %}
+{% macro category_stats_section(mandate, categoryStatsByParent, filter) %}
     <div class="bg-primary pt-4 pb-2 text-center">
         <div class="container">
             <div class="row text-white mb-3">
@@ -152,7 +166,11 @@
                 {% for categoryStats in categoryStatsByParent %}
                     {# @var \App\Entity\MandateCompetenceCategoryStats categoryStats #}
                     <div
-                        class="col-12 col-lg mb-4"
+                        class="col-12 col-lg mb-4{%
+                            if not filter.empty and categoryStats.competenceCategory.id not in filter.categories|keys
+                        %} opacity-05{%
+                            endif
+                        %}"
                         itemscope
                         itemtype="https://schema.org/Class"
                         itemid="competence-category-{{ categoryStats.competenceCategory.slug }}"
@@ -201,7 +219,7 @@
     {% endif %}
 {% endmacro %}
 
-{% macro competence_use_list_section(mandate, canonical_url, statsByMonth, lastUpdateTime, competenceUses) %}
+{% macro competence_use_list_section(mandate, canonical_url, statsByMonth, lastUpdateTime, competenceUses, filter) %}
     {% import _self as self_macros %}
 
     {% set emptyHtml = '<p>&nbsp;</p>' %}
@@ -214,7 +232,9 @@
                 </div>
             </div>
         </div>
-        <noindex>{{ self_macros.competence_use_stats_section(statsByMonth) }}</noindex>
+        {% if filter.empty %}
+            <noindex>{{ self_macros.competence_use_stats_section(statsByMonth) }}</noindex>
+        {% endif %}
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-8">
@@ -393,4 +413,55 @@
             </div>
         </div>
     </div>
+{% endmacro %}
+
+{% macro filter_form(filter, filterForm) %}
+    <nav class="filter-navbar navbar navbar-light navbar-expand-lg small{%
+        if filter.empty %} bg-light{%
+        else %} bg-warning sticky-top{% endif
+    %}">
+        <div class="flex-grow-1 flex-lg-grow-0 d-lg-inline-block mx-lg-auto">
+            <div class="container">
+                <span class="navbar-brand mr-4">{{ "title.filters"|trans }}</span>
+                {% if not filter.empty %}
+                    <a
+                        class="btn-sm btn-link flex-grow-1 flex-lg-grow-0 d-lg-none{% if not filter.empty %} btn-outline-dark{% endif %}"
+                        href="?#filters"
+                    >{{ "action.reset"|trans }}</a>
+                {% endif %}
+                <button
+                    class="navbar-toggler text-white"
+                    type="button"
+                    data-toggle="collapse"
+                    data-target="#filters-nav-content"
+                >
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="filters-nav-content">
+                    {{ form_start(filterForm, {
+                        'attr': {'class': 'my-2 my-lg-0 d-lg-flex align-items-center', 'action': '#filters'}
+                    }) }}
+                    <div class="d-lg-inline-block">
+                        <div class="form-inline">
+                            {{ form_widget(filterForm.category, {'attr': {'class': 'form-control-sm'}}) }}
+                        </div>
+                    </div>
+                    <div class="d-lg-inline-block mt-3 mt-lg-0">
+                        <button
+                            class="btn btn-sm ml-lg-4 btn-outline-primary"
+                            type="submit"
+                        >{{ "action.apply"|trans }}</button>
+                        {% if not filter.empty %}
+                            <a
+                                class="btn btn-sm btn-link ml-3 d-none d-lg-inline"
+                                href="?#filters"
+                            >{{ "action.reset"|trans }}</a>
+                        {% endif %}
+                    </div>
+                    {{ form_end(filterForm) }}
+                </div>
+            </div>
+        </div>
+    </nav>
 {% endmacro %}

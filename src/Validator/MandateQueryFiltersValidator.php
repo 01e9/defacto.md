@@ -48,12 +48,14 @@ class MandateQueryFiltersValidator extends ConstraintValidator
                         new Assert\Regex(Consts::DATE_FILTER_FORMAT_REGEX),
                     ])),
                     MandateFilter::QUERY_CATEGORY => new Assert\Optional(new Assert\Sequentially([
-                        new Assert\Type(Type::BUILTIN_TYPE_STRING),
-                        new Assert\Callback(function (string $slug, ExecutionContextInterface $context) {
-                            if ($slug && !$this->categoryRepository->findOneBy(['slug' => $slug])) {
-                                $context
-                                    ->buildViolation(Consts::VALIDATION_MESSAGE_INVALID_VALUE)
-                                    ->addViolation();
+                        new Assert\Type(['type' => [Type::BUILTIN_TYPE_STRING, Type::BUILTIN_TYPE_ARRAY]]),
+                        new Assert\Callback(function ($slugs, ExecutionContextInterface $context) {
+                            foreach ((array) $slugs as $slug) {
+                                if ($slug && !$this->categoryRepository->findOneBy(['slug' => $slug])) {
+                                    $context
+                                        ->buildViolation(Consts::VALIDATION_MESSAGE_INVALID_VALUE)
+                                        ->addViolation();
+                                }
                             }
                         }),
                     ])),

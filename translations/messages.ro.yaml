@@ -136,6 +136,8 @@ label:
     questionnaire_embed_link: Link chestionar (embed)
     last_update: Ultima actualizare
     last_update_of_competence_uses: Ultima actualizare a competențelor folosite
+    from_date: De la data
+    to_date: Până la data
 
 action:
     login: Autentificare

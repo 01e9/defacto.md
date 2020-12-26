@@ -85,7 +85,7 @@ class MandatesController extends AbstractController
     )
     {
         $filterViolations = $validator->validate($request->query->all(), new MandateQueryFilters());
-        if ($filterViolations->count()) {
+        if (!($filterIsValid = !$filterViolations->count())) {
             $filter = new MandateFilter();
 
             foreach ($filterViolations as $violation) {
@@ -103,7 +103,9 @@ class MandatesController extends AbstractController
         }
 
         $filterForm = $this->createForm(MandateFilterType::class);
-        $filterForm->handleRequest($request);
+        if ($filterIsValid) {
+            $filterForm->handleRequest($request);
+        }
 
         $rank = $this->repository->findCompetencePointsRank($mandate);
         $categoryStatsByParent = $categoryStatsRepository->findStatsByParentCategory(

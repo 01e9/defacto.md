@@ -1,3 +1,6 @@
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+
 html.page-mandate {
   #categories-pie-chart {
     height: 15rem;
@@ -28,6 +31,12 @@ html.page-mandate {
       top: 55px;
 
       box-shadow: 0 0.3em 0 rgba(0,0,0,.1);
+    }
+  }
+
+  .datepicker-input {
+    @media (min-width: map-get($grid-breakpoints, sm)) {
+      width: 9em;
     }
   }
 }

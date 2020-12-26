@@ -167,7 +167,9 @@
                     {# @var \App\Entity\MandateCompetenceCategoryStats categoryStats #}
                     <div
                         class="col-12 col-lg mb-4{%
-                            if not filter.empty and categoryStats.competenceCategory.id not in filter.categories|keys
+                            if not filter.empty
+                                and filter.categories is not empty
+                                and categoryStats.competenceCategory.id not in filter.categories|keys
                         %} opacity-05{%
                             endif
                         %}"
@@ -447,11 +449,36 @@
                     <div class="d-lg-inline-block">
                         <div class="form-inline">
                             {{ form_widget(filterForm.category, {'attr': {'class': 'form-control-sm'}}) }}
+
+                            <div class="input-group ml-sm-4 mt-3 mt-sm-0">
+                                {{ form_widget(filterForm.from_date, {
+                                    'type': 'text',
+                                    'attr': {
+                                        'class': 'form-control-sm datepicker-input text-monospace',
+                                        'placeholder': filterForm.from_date.vars.label,
+                                    }
+                                }) }}
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text border-left-0">
+                                        <span class="fa fa-calendar-alt"></span>
+                                    </div>
+                                </div>
+                                {{ form_widget(filterForm.to_date, {
+                                    'type': 'text',
+                                    'attr': {
+                                        'class': 'form-control-sm datepicker-input text-monospace',
+                                        'placeholder': filterForm.to_date.vars.label,
+                                    }
+                                }) }}
+                            </div>
                         </div>
                     </div>
                     <div class="d-lg-inline-block mt-3 mt-lg-0">
                         <button
-                            class="btn btn-sm ml-lg-4 btn-outline-primary"
+                            class="btn btn-sm ml-lg-4{%
+                                if filter.empty %} btn-outline-primary{%
+                                else %} btn-primary{%
+                                endif %}"
                             type="submit"
                         >{{ "action.apply"|trans }}</button>
                         {% if not filter.empty %}

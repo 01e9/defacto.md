@@ -2,10 +2,12 @@
 
 namespace App\Form\Filter;
 
+use App\Consts;
 use App\Filter\MandateFilter;
 use App\Repository\CompetenceCategoryRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -28,6 +30,22 @@ class MandateFilterType extends AbstractType
                 'required' => false,
                 'choices' => $this->categoryRepository->getParentChoices(),
                 'choice_value' => 'slug',
+            ])
+            ->add(MandateFilter::QUERY_FROM_DATE, DateType::class, [
+                'label' => 'label.from_date',
+                'placeholder' => 'label.from_date',
+                'widget' => 'single_text',
+                'format' => Consts::DATE_FORMAT_INTL,
+                'html5' => false,
+                'required' => false,
+            ])
+            ->add(MandateFilter::QUERY_TO_DATE, DateType::class, [
+                'label' => 'label.to_date',
+                'placeholder' => 'label.to_date',
+                'widget' => 'single_text',
+                'format' => Consts::DATE_FORMAT_INTL,
+                'html5' => false,
+                'required' => false,
             ])
         ;
     }

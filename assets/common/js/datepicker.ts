@@ -1,5 +1,7 @@
 import "bootstrap-datepicker";
+import "bootstrap-datepicker/js/locales/bootstrap-datepicker.ro";
 import $ from "jquery";
+import { LANG } from "~/config";
 
 export function initElementDatePickers(element) {
     $(element).find('input.datepicker-input:not(.initialized)')
@@ -7,6 +9,7 @@ export function initElementDatePickers(element) {
         // @ts-ignore
         .datepicker({
             format: "dd.mm.yyyy",
-            todayHighlight: true
+            todayHighlight: true,
+            language: LANG
         });
 }

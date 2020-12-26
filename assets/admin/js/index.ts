@@ -1,6 +1,6 @@
 import 'bootstrap';
 import { initElementSlugGenerators } from "./slug-generator";
-import { initElementDatePickers } from "./datepicker";
+import { initElementDatePickers } from "../../common/js/datepicker";
 import { initElementEditors } from "./editors";
 import { initElementGoogleMaps } from "./google-map";
 

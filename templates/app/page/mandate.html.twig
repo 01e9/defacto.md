@@ -183,7 +183,7 @@
                             >{{ categoryStats.competenceCategory.description }}</p>
                             <div class="font-size-2">
                                 <strong class="text-info">{{ categoryStats.competenceUsesPoints }}</strong>
-                                <small>{{ "text.points"|trans({"%count%": categoryStats.competenceUsesPoints}) }}</small>
+                                <small>{{ "text.points"|trans({"%count%": categoryStats.competenceUsesPoints|transpoints}) }}</small>
                                 <span class="ml-2">
                                     {{ self_macros.points_info_button() }}
                                 </span>
@@ -266,7 +266,7 @@
                             >
                                 <meta
                                     itemprop="name"
-                                    content="{{ competenceUse.competence.points }} {{ "text.points"|trans({"%count%": final_points}) }}"
+                                    content="{{ competenceUse.competence.points }} {{ "text.points"|trans({"%count%": final_points|transpoints}) }}"
                                 >
                                 <meta itemprop="unitText" content="point">
                                 <meta itemprop="value" content="{{ competenceUse.competence.points }}">
@@ -302,7 +302,7 @@
                                             <span class="text-info font-weight-bold font-size-2 line-height-0 align-middle">
                                                 {{ final_points }}
                                             </span>
-                                            {{ "text.points"|trans({"%count%": final_points}) }}
+                                            {{ "text.points"|trans({"%count%": final_points|transpoints}) }}
                                         </div>
                                         <div class="ml-3">
                                             {{ self_macros.points_info_button(competenceUse.multiplied) }}

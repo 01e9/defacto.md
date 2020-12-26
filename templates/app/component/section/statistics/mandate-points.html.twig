@@ -74,7 +74,7 @@
                         </h6>
                         <p class="mb-3 text-white">
                             <strong class="mr-3 font-size-3 text-info d-lg-none">{{ mandate.competenceUsesPoints }}</strong>
-                            {{- "text.points"|trans({"%count%": mandate.competenceUsesPoints}) -}}
+                            {{- "text.points"|trans({"%count%": mandate.competenceUsesPoints|transpoints}) -}}
                         </p>
                         {%- if show_link -%}
                             <a

@@ -26,7 +26,7 @@ class MandateFilterType extends AbstractType
             ->add(MandateFilter::QUERY_CATEGORY, ChoiceType::class, [
                 'multiple' => false,
                 'label' => 'label.category',
-                'placeholder' => 'label.category',
+                'placeholder' => 'placeholder.all_categories',
                 'required' => false,
                 'choices' => $this->categoryRepository->getParentChoices(),
                 'choice_value' => 'slug',
@@ -38,6 +38,9 @@ class MandateFilterType extends AbstractType
                 'format' => Consts::DATE_FORMAT_INTL,
                 'html5' => false,
                 'required' => false,
+                'attr' => [
+                    'readonly' => true,
+                ],
             ])
             ->add(MandateFilter::QUERY_TO_DATE, DateType::class, [
                 'label' => 'label.to_date',
@@ -46,6 +49,9 @@ class MandateFilterType extends AbstractType
                 'format' => Consts::DATE_FORMAT_INTL,
                 'html5' => false,
                 'required' => false,
+                'attr' => [
+                    'readonly' => true,
+                ],
             ])
         ;
     }

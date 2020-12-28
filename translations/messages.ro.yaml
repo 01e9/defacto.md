@@ -327,6 +327,7 @@ placeholder:
     no_constituency: Fără circumscripție
     no_party: Independent
     no_type: Fără tip
+    all_categories: Toate categoriile
 
 text:
     at: la

@@ -36,7 +36,13 @@
 
 {% block head_meta %}
     {{ parent() }}
-    <link rel="canonical" href="{{ canonical_url }}" />
+
+    {% if filter.empty %}
+        <link rel="canonical" href="{{ canonical_url }}" />
+    {% else %}
+        <meta name="robots" content="noindex, nofollow">
+    {% endif %}
+
     <meta name="description" content="{{ 'meta_description.mandate'|trans }}">
 {% endblock %}
 

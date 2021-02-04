@@ -1,10 +1,10 @@
 FROM php:7.4-fpm as php-base
 
 RUN apt-get update \
-    && apt-get install -y wget unzip nano \
+    && apt-get install -y wget unzip nano sudo \
     && apt-get install -y \
         libzip-dev libfreetype6-dev libjpeg62-turbo-dev libmcrypt-dev libpng-dev libicu-dev libpq-dev libonig-dev \
-    && docker-php-ext-install -j$(nproc) zip mbstring json gd iconv pcntl intl pdo pdo_pgsql \
+    && docker-php-ext-install -j$(nproc) zip mbstring json gd iconv pcntl intl pdo pdo_pgsql opcache \
     && apt-get install -y nginx \
         && ln -sf /dev/stdout /var/log/nginx/access.log \
         && ln -sf /dev/stderr /var/log/nginx/error.log \

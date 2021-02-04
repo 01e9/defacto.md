@@ -10,7 +10,7 @@ class MandateCompetenceUseStatsVo
 {
     public int $useCount = 0;
 
-    public int $usePoints = 0;
+    public float $usePoints = 0;
 
     /** @var Collection|MandateCompetenceCategoryStats[] */
     public Collection $categoryStats;

@@ -387,9 +387,19 @@
         <div class="row">
             <div class="col px-0">
                 {% set maxUseCount = 0 %}
+                {% set firstUseIndex = null %}
+                {% set index = 0 %}
                 {% for useCount in statsByMonth %}
                     {% set maxUseCount = max(maxUseCount, useCount) %}
+
+                    {% if firstUseIndex is null and useCount %}
+                        {% set firstUseIndex = index %}
+                    {% endif %}
+                    {% set index = index + 1 %}
                 {% endfor %}
+                {% if firstUseIndex %}
+                    {% set statsByMonth = statsByMonth|slice(firstUseIndex - 1) %}
+                {% endif %}
 
                 <div id="used-competences-by-month" class="overflow-auto text-center py-3 px-4">
                     {% for month, useCount in statsByMonth %}

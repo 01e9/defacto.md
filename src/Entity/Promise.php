@@ -101,6 +101,7 @@ class Promise
     private $published;
 
     /**
+     * todo: ManyToMany(Prerogative)
      * @ORM\Column(type="boolean", options={"default":false})
      */
     private $hasPrerogatives;

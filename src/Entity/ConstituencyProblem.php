@@ -30,6 +30,10 @@ class ConstituencyProblem
 {
     use Traits\IdTrait;
 
+    const TYPE_LOCAL = 'local';
+    const TYPE_NATIONAL = 'national';
+    const TYPES = [ self::TYPE_LOCAL, self::TYPE_NATIONAL ];
+
     /**
      * @ORM\ManyToOne(targetEntity="Constituency", inversedBy="problems")
      * @ORM\JoinColumn(nullable=false)
@@ -61,13 +65,14 @@ class ConstituencyProblem
      * @ORM\Column(type="decimal", precision=5, scale=2, nullable=true)
      *
      * @Assert\GreaterThanOrEqual(1)
+     * @Assert\LessThanOrEqual(100)
      */
     private $percentage;
 
     /**
      * @ORM\Column(type="string", length=30, nullable=true)
      *
-     * @Assert\Choice({"local", "national"})
+     * @Assert\Choice(choices = ConstituencyProblem::TYPES)
      */
     private $type;
 

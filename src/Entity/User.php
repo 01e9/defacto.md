@@ -37,12 +37,12 @@ class User implements UserInterface, EquatableInterface, \Serializable
     /**
      * @ORM\Column(name="is_active", type="boolean", options={"default"=0})
      */
-    private $isActive;
+    private $isActive = false;
 
     /**
      * @ORM\Column(name="roles", type="simple_array", options={"default"="ROLE_USER"})
      */
-    private $roles;
+    private $roles = ["ROLE_USER" /* todo: const */];
 
     public function setId(?string $id)
     {

@@ -39,7 +39,7 @@ class PromiseAction
     /**
      * @ORM\Column(type="boolean", options={"default":false})
      */
-    private $published;
+    private $published = false;
 
     /**
      * @ORM\OneToMany(targetEntity="PromiseUpdate", mappedBy="action", cascade={"persist", "remove"})

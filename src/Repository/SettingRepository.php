@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 class SettingRepository extends ServiceEntityRepository
 {
+    // todo: move to env (and delete Setting)
     const PRESIDENT_INSTITUTION_TITLE_ID = 'president_institution_title_id';
     const CURRENT_ELECTION_ID = 'current_election_id';
 

@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
+// todo: rename PromiseStatus
 /**
  * @ORM\Entity(repositoryClass="App\Repository\StatusRepository")
  * @ORM\Table(
@@ -63,6 +64,7 @@ class Status
     /**
      * @ORM\Column(type="string", length=20, nullable=true)
      *
+     * todo: maybe choice?
      * @Assert\Regex(pattern="/^[a-z\-]{3,20}$/", message="invalid.color")
      */
     private $color;
